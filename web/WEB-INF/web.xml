@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+    <display-name>sid</display-name>
+    <context-param>
+        <param-name>webAppRootKey</param-name>
+        <param-value>sid</param-value>
+    </context-param>
+    <!-- Add Support for Spring -->
+    <listener>
+        <listener-class>
+                    org.springframework.web.context.ContextLoaderListener
+            </listener-class>
+    </listener>
+    <listener>
+        <listener-class>
+                    org.springframework.web.context.request.RequestContextListener
+            </listener-class>
+    </listener>
+    <context-param>
+        <param-name>
+         javax.faces.STATE_SAVING_METHOD
+    </param-name>
+        <param-value>client</param-value>
+    </context-param>
+    <context-param>
+        <param-name>log4jConfigLocation</param-name>
+        <param-value>/WEB-INF/classes/log4j.xml</param-value>
+    </context-param>
+    <listener>
+        <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+    </listener>
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>
+                        /WEB-INF/sid-data.xml
+                        /WEB-INF/sid-service.xml
+                        /WEB-INF/sid-tx.xml
+                </param-value>
+    </context-param>
+    <!-- Fin Spring -->
+    <context-param>
+        <param-name>javax.faces.PROJECT_STAGE</param-name>
+        <param-value>Production</param-value>
+    </context-param>
+    <!-- Resource Mapping - resources will be served compressed and packed in production -->
+    <servlet>
+        <servlet-name>Faces Servlet</servlet-name>
+        <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Faces Servlet</servlet-name>
+        <url-pattern>*.jsf</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Faces Servlet</servlet-name>
+        <url-pattern>/faces/*</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>CerrarSesion</servlet-name>
+        <servlet-class>gob.dp.sid.comun.ServletCerrarSesion</servlet-class>
+        <load-on-startup>5</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CerrarSesion</servlet-name>
+        <url-pattern>/cerrarSesion</url-pattern>
+    </servlet-mapping>
+    <session-config>
+        <session-timeout>30</session-timeout>
+    </session-config>
+    <welcome-file-list>
+        <welcome-file>faces/signin.xhtml</welcome-file>
+    </welcome-file-list>
+    <filter>
+        <filter-name>SeguridadSessionFilter</filter-name>
+        <filter-class>gob.dp.sid.comun.SeguridadSessionFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>SeguridadSessionFilter</filter-name>
+        <url-pattern>/faces/pages/*</url-pattern>
+    </filter-mapping>
+</web-app>

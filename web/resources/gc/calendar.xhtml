@@ -1,0 +1,24 @@
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:composite="http://xmlns.jcp.org/jsf/composite">
+
+    <composite:interface>
+        <composite:attribute name="value" required="true"/>
+        <composite:attribute name="id" required="false"/>
+        <composite:attribute name="idDiv" required="false"/>
+        <composite:attribute name="clase" default="form-control"/>
+    </composite:interface>
+
+    <composite:implementation>
+        <div class="input-group datepicker" id="#{cc.attrs.idDiv}">
+            <div class="input-group-addon  add-on">
+                <span class="glyphicon glyphicon-calendar"></span>
+            </div>
+            <input type="text" jsf:value="#{cc.attrs.value}" data-format="dd/MM/yyyy" id="#{cc.attrs.id}" class="#{cc.attrs.clase}">
+                <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
+            </input>
+        </div>
+    </composite:implementation>
+
+</html>            

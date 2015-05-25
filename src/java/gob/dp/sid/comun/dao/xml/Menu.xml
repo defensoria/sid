@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD iBatis Mapper 3.0 //EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="gob.dp.sid.comun.dao.MenuDao">
+    
+    <resultMap id="menuMap" type="menu">
+        <id property="id" column="N_ID_MENU" />
+        <result property="padre" column="C_INDPADRE"/>
+        <result property="descripcion" column="C_DESCRIPCION"/>
+        <result property="enlace" column="C_ENLACE"/>
+        <result property="clase" column="C_CLASS"/>
+    </resultMap>  
+
+    <select id="menuPadre" resultMap="menuMap">
+        select 
+        N_ID_MENU, 
+        C_INDPADRE,
+        C_DESCRIPCION,
+        C_ENLACE,
+        C_CLASS
+        FROM SID_MENU
+        WHERE C_INDPADRE IS NULL
+        AND N_ID_MENU NOT IN (27)
+        AND C_ESTADO = 'ACT'
+        ORDER BY N_ID_MENU
+    </select>  
+    
+    <select id="menuHijo" resultMap="menuMap" parameterType="int">
+        select 
+        N_ID_MENU, 
+        C_INDPADRE,
+        C_DESCRIPCION,
+        C_ENLACE,
+        C_CLASS
+        FROM SID_MENU
+        WHERE C_INDPADRE = #{id}
+        AND C_ESTADO = 'ACT'
+        ORDER BY N_ID_MENU
+    </select>  
+</mapper>

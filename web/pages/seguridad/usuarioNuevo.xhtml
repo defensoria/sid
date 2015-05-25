@@ -1,0 +1,178 @@
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:h="http://xmlns.jcp.org/jsf/html" 
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:gc="http://xmlns.jcp.org/jsf/composite/gc">
+    <ui:composition template="../template/template.xhtml">
+        <ui:define name="content">
+            <h:form id="frm" class="form-horizontal">
+                <gc:confirmAjax bean="#{usuarioNuevoController.insertarUsuario()}"/>
+                <div class="panel panel-default" style="background: #F5F5F5">
+                    <div class="panel-body">
+                        <span style="color: #0074cc; font-size: x-large;">Detalle del Usuario</span>
+                        <br/>
+                        <hr/>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Codigo</label> 
+                            <div class="col-sm-3">
+                                <input type="text" id="idTextCodigo" placeholder="Codigo" jsf:value="#{usuarioNuevoController.usuario.codigo}" style="width: 100%;" autocomplete="off" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">DNI</label>
+                            <div class="col-sm-3">
+                                <input type="text" id="idTextDNI" placeholder="DNI" jsf:value="#{usuarioNuevoController.usuario.dni}" style="width: 100%;" autocomplete="off" maxlength="8" onkeypress="return soloNumbero(event);"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Nombre</label>
+                            <div class="col-sm-3">
+                                <input type="text" id="idTextNombre" placeholder="Nombre" jsf:value="#{usuarioNuevoController.usuario.nombre}" style="width: 100%;" autocomplete="off" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Apellido Paterno</label>
+                            <div class="col-sm-3">
+                                <input type="text" id="idTextApellidoPat" placeholder="Apellido Paterno" jsf:value="#{usuarioNuevoController.usuario.apellidoPaterno}" style="width: 100%;" autocomplete="off" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Apellido Materno</label>
+                            <div class="col-sm-3">
+                                <input type="text" id="idTextApellidoMat" placeholder="Apellido Materno" jsf:value="#{usuarioNuevoController.usuario.apellidoMaterno}" style="width: 100%;" autocomplete="off" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Email</label>
+                            <div class="col-sm-3">
+                                <input class="form-control" type="text" placeholder="Email" jsf:value="#{usuarioNuevoController.usuario.email}" style="width: 100%;" autocomplete="off" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Clave</label>
+                            <div class="col-sm-3">
+                                <input class="form-control" type="password" id="idTextClave" placeholder="Clave" jsf:value="#{usuarioNuevoController.usuario.clave}" style="width: 100%;" autocomplete="off" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Confirmacion</label>
+                            <div class="col-sm-3">
+                                <input class="form-control" type="password" id="idTextRepiteClave" placeholder="Confirmacion" jsf:value="#{usuarioNuevoController.usuario.confirmacionClave}" style="width: 100%;" autocomplete="off" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Activo</label>
+                            <div class="col-sm-3">
+                                <h:selectBooleanCheckbox value="#{usuarioDetalleController.habilitado}"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Roles</label>
+                            <div class="col-sm-3">
+                                <h:selectManyCheckbox id="selManyRoles" value="#{usuarioNuevoController.lstRolesSeleccionados}" layout="pageDirection">
+                                    <f:selectItems id="selItemRolSel" value="#{usuarioNuevoController.lstRoles}" />
+                                </h:selectManyCheckbox>
+                            </div>
+                        </div>
+                    </div>  
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <a id="idBotonGuardar" class="btn btn-primary">
+                                <span class="glyphicon glyphicon-floppy-disk"/>Guardar
+                            </a>
+                            <h:outputText value="&#160;&#160;"/>
+                            <a jsf:immediate="true" jsf:action="#{usuarioNuevoController.regresar}" class="btn btn-danger">
+                                <span class="glyphicon glyphicon-share"/>Regresar
+                            </a>          
+                        </div>
+
+                        <script>
+                            $("#idBotonGuardar").click(function () {
+                                if ($('#idTextCodigo').val() === "") {
+                                    $('#idTextCodigo').addClass('error');
+                                    alertar("Debe de ingresar el codigo del usuario");
+                                    return false;
+                                }
+                                else {
+                                    $('#idTextCodigo').removeClass('error');
+                                }
+
+                                if ($('#idTextDNI').val() === "") {
+                                    $('#idTextDNI').addClass('error');
+                                    alertar("Debe de ingresar el DNI del usuario");
+                                    return false;
+                                }
+                                else {
+                                    $('#idTextDNI').removeClass('error');
+                                }
+
+                                if ($('#idTextNombre').val() === "") {
+                                    $('#idTextNombre').addClass('error');
+                                    alertar("Debe de ingresar el Nombre del usuario");
+                                    return false;
+                                }
+                                else {
+                                    $('#idTextNombre').removeClass('error');
+                                }
+
+                                if ($('#idTextApellidoPat').val() === "") {
+                                    $('#idTextApellidoPat').addClass('error');
+                                    alertar("Debe de ingresar el apellido paterno del usuario");
+                                    return false;
+                                }
+                                else {
+                                    $('#idTextApellidoPat').removeClass('error');
+                                }
+
+                                if ($('#idTextApellidoMat').val() === "") {
+                                    $('#idTextApellidoMat').addClass('error');
+                                    alertar("Debe de ingresar el apellido materno del usuario");
+                                    return false;
+                                }
+                                else {
+                                    $('#idTextApellidoMat').removeClass('error');
+                                }
+
+                                if ($('#idTextClave').val() === "") {
+                                    $('#idTextClave').addClass('error');
+                                    alertar("Debe de ingresar la clave del usuario");
+                                    return false;
+                                }
+                                else {
+                                    $('#idTextClave').removeClass('error');
+                                }
+
+                                if ($('#idTextRepiteClave').val() === "") {
+                                    $('#idTextRepiteClave').addClass('error');
+                                    alertar("Debe de confirmar la clave del usuario");
+                                    return false;
+                                }
+                                else {
+                                    $('#idTextRepiteClave').removeClass('error');
+                                }
+
+                                if ($('#idTextClave').val() === $('#idTextRepiteClave').val()) {
+                                    confirmar();
+                                } else {
+                                    alertar("Ambas claves deben ser iguales");
+                                    return false;
+                                }
+                            });
+
+                        </script>
+                    </div>
+                </div>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

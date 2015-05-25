@@ -1,0 +1,64 @@
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:h="http://xmlns.jcp.org/jsf/html" 
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:gc="http://xmlns.jcp.org/jsf/composite/gc">
+
+    <ui:composition template="../template/template.xhtml">
+
+        <ui:define name="content">
+            <h:form id="idForm" class="form-horizontal">
+                <h:messages />
+                <gc:confirmSubmit bean="#{registroController.guardarBorrador()}" />
+                <div class="panel panel-featured-top-primary">
+                    <div class="panel-body">
+                        <span class="text-resalt-primary">Resgistro de Entidad</span>
+                        <h:dataTable value="#{registroController.listaExpedientes}" var="expediente" binding="#{row}" class="table table-striped">
+                            <h:column>
+                                <f:facet name="header">Nro</f:facet>
+                                <h:outputText value="#{row.rowIndex+1}" />
+                            </h:column>
+                            
+                            <h:column>
+                                <f:facet name="header">Clasificacion</f:facet>
+                                <h:outputText value="#{expediente.clasificacionTipoNombre}" />
+                            </h:column>
+                            
+                            <h:column>
+                                <f:facet name="header">Ingreso</f:facet>
+                                <h:outputText value="#{expediente.ingresoTipoNombre}" />
+                            </h:column>
+                            
+                            <h:column>
+                                <f:facet name="header">fecha ingreso</f:facet>
+                                <h:outputText value="#{expediente.fechaIngreso}" >
+                                    <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
+                                </h:outputText>
+                            </h:column>
+                            
+                            <h:column>
+                                <f:facet name="header">Tema</f:facet>
+                                <h:outputText value="#{expediente.ingresoTipoTema}" />
+                            </h:column>
+                            
+                            <h:column>
+                                <f:facet name="header">Sub Tema</f:facet>
+                                <h:outputText value="#{expediente.ingresoTipoSubTema}" />
+                            </h:column>
+                            
+                            <h:column>
+                                <f:facet name="header"></f:facet>
+                                <a jsf:action="#{registroController.cargarExpedienteEdit(expediente)}">
+                                    <span class="glyphicon glyphicon-share" style="font-size: medium" />
+                                </a>
+                            </h:column>
+                            
+                        </h:dataTable>
+                    </div>
+                </div>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>            

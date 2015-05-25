@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD iBatis Mapper 3.0 //EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="usuarioDao">
+
+    <select id="generarCodigoUsuario" resultType="java.lang.String" >
+        select 'sid'||lpad(to_char(SEQ_sid_SEG_USUARIO.NEXTVAL),4,'0') from dual
+    </select>
+
+    <sql id="sqlBuscarUsuario">
+        select codigo_usuario     as codigo,
+        nom_usuario        as nombre,
+        ape_paterno        as apellidoPaterno,
+        ape_materno        as apellidoMaterno,
+        num_dni            as dni,
+        est_usuario        as estado,
+        clave_usuario      as clave,
+        des_email          as email,
+        tel_movil          as telefonoMovil,
+        tel_fijo           as telefonoFijo,
+        flag_clave_inicial as flagClaveInicial,
+        c_cargo            as cargo
+        from sid_seg_usuario
+        where
+        1=1
+        <if test="codigo!=null">
+            and  upper(codigo_usuario)=upper(#{codigo})
+        </if>
+        <if test="dni!=null">
+            and  num_dni=#{dni}
+        </if>
+       
+        <if test="nombre!=null">
+            and UPPER(nom_usuario)  LIKE '%'||UPPER(#{nombre})||'%'
+        </if>
+        <if test="apellidoPaterno!=null">
+            and UPPER(ape_paterno)  LIKE '%'||UPPER(#{apellidoPaterno})||'%'
+        </if>
+        <if test="apellidoMaterno!=null">
+            and UPPER(ape_materno)  LIKE '%'||UPPER(#{apellidoMaterno})||'%'
+        </if>
+
+        <if test="tieneInforme">
+            and UPPER(codigo_usuario) in (select distinct COD_USUARIO from sid_reg_informe)
+        </if>
+        order by codigo
+    </sql>
+   
+    <select id="getTotalBuscarUsuario"   parameterType="filtroUsuario" resultType="java.lang.Integer" >
+        SELECT COUNT(*) FROM (
+        <include refid="sqlBuscarUsuario"/>
+        ) TABLA_COUNT
+    </select>
+    
+    <select id="buscarUsuarioTotal" resultType="usuario" >
+        <include refid="sqlBuscarUsuario"/>
+    </select>
+
+    <select id="buscarUsuario" resultType="usuario" parameterType="filtroUsuario">
+        SELECT DISTINCT 
+        codigo_usuario     as codigo,
+        nom_usuario        as nombre,
+        ape_paterno        as apellidoPaterno,
+        ape_materno        as apellidoMaterno,
+        num_dni            as dni,
+        est_usuario        as estado,
+        clave_usuario      as clave,
+        des_email          as email,
+        tel_movil          as telefonoMovil,
+        tel_fijo           as telefonoFijo,
+        flag_clave_inicial as flagClaveInicial,
+        c_cargo            as cargo,
+        c_ruta             as ruta 
+        FROM (
+        SELECT codigo_usuario,
+        nom_usuario,
+        ape_paterno,
+        ape_materno,
+        num_dni,
+        est_usuario,
+        clave_usuario,
+        des_email,
+        tel_movil,
+        tel_fijo,
+        flag_clave_inicial,
+        c_cargo,
+        c_ruta,
+        ROWNUM numfila
+        FROM (
+        select codigo_usuario,
+        nom_usuario,
+        ape_paterno,
+        ape_materno,
+        num_dni,
+        est_usuario,
+        clave_usuario,
+        des_email,
+        tel_movil,
+        tel_fijo,
+        flag_clave_inicial,
+        c_cargo,
+        c_ruta
+        from sid_seg_usuario
+        where 1=1
+        order by codigo_usuario
+        ) B
+        ) A WHERE 1=1
+        <if test="ini!=null">
+           and a.numfila BETWEEN #{ini} AND #{fin}
+        </if>
+        <if test="codigo!=null">
+           and upper(codigo_usuario)=upper(#{codigo}) 
+        </if>
+        <if test="dni != null">
+           and num_dni LIKE '%'||#{dni}||'%'
+        </if>
+        <if test="nombre!=null">
+            and UPPER(nom_usuario)  LIKE '%'||UPPER(#{nombre})||'%'
+        </if>
+        <if test="apellidoPaterno!=null">
+            and UPPER(ape_paterno)  LIKE '%'||UPPER(#{apellidoPaterno})||'%'
+        </if>
+        <if test="apellidoMaterno!=null">
+            and UPPER(ape_materno)  LIKE '%'||UPPER(#{apellidoMaterno})||'%'
+        </if>
+    </select>
+
+
+    <select id="loginUsuario" resultType="java.lang.Integer" parameterType="usuario">
+        select count(*)
+        from sid_seg_usuario u, sid_vw_usuario t
+        where
+        u.codigo_usuario = t.usuario_usu and
+        upper(u.codigo_usuario)=upper(#{codigo}) and
+        t.tpircne =#{clave}  and
+        u.est_usuario='A'
+    </select>
+
+    <update id="modificarUsuario" parameterType="usuario">
+        update sid_seg_usuario
+        set
+        nom_usuario = UPPER(#{nombre}),
+        ape_paterno = UPPER(#{apellidoPaterno}),
+        ape_materno = UPPER(#{apellidoMaterno})
+        <if test="dni!=null">
+            ,num_dni = #{dni}
+        </if>
+        <if test="estado!=null">
+            ,est_usuario = #{estado}
+        </if>
+        <if test="clave!=null">
+            ,clave_usuario = #{clave}
+        </if>
+        <if test="email!=null">
+            ,des_email =#{email}
+        </if>
+        <if test="telefonoMovil!=null">
+            ,tel_movil = #{telefonoMovil}
+        </if>
+        <if test="telefonoFijo!=null">
+            ,tel_fijo = #{telefonoFijo}
+        </if>
+        <if test="flagClaveInicial!=null">
+            ,flag_clave_inicial = #{flagClaveInicial}
+        </if>
+        <if test="ruta!=null">
+            ,c_ruta = #{ruta}
+        </if>
+        where codigo_usuario = #{codigo}
+    </update>
+
+
+    <update id="cambiarClaveUsuario" parameterType="usuario">
+        update sid_seg_usuario
+        set clave_usuario = #{clave}    
+        where codigo_usuario = #{codigo}
+    </update>
+
+    <insert id="insertarUsuario" parameterType="usuario">
+        insert into sid_seg_usuario
+        (codigo_usuario,
+        nom_usuario,
+        ape_paterno,
+       
+        num_dni,
+        est_usuario,
+        <if test="email!=null">
+            des_email,
+        </if>
+        <if test="telefonoMovil!=null">
+            tel_movil,
+        </if>
+        <if test="telefonoFijo!=null">
+            tel_fijo,
+        </if>
+        <if test="flagClaveInicial!=null">
+            flag_clave_inicial,
+        </if>
+        <!--clave_usuario-->
+        ape_materno
+        )
+        values
+        (
+        #{codigo},
+        UPPER(#{nombre}),
+        UPPER(#{apellidoPaterno}),
+       
+        #{dni},
+        #{estado},
+        <if test="email!=null">
+            #{email},
+        </if>
+        <if test="telefonoMovil!=null">
+            #{telefonoMovil},
+        </if>
+        <if test="telefonoFijo!=null">
+            #{telefonoFijo},
+        </if>
+        <if test="flagClaveInicial!=null">
+            #{flagClaveInicial},
+        </if>
+        <!--#{clave}-->
+        UPPER(#{apellidoMaterno})
+        )
+    </insert>
+
+    <select id="consultarUsuario" resultType="usuario" parameterType="filtroUsuario">
+        select u.codigo_usuario     as codigo,
+        u.nom_usuario        as nombre,
+        u.ape_paterno        as apellidoPaterno,
+        u.ape_materno        as apellidoMaterno,
+        u.num_dni            as dni,
+        u.est_usuario        as estado,
+        u.num_dni            as clave,
+        u.des_email          as email,
+        u.tel_movil          as telefonoMovil,
+        u.tel_fijo           as telefonoFijo,
+        u.flag_clave_inicial as flagClaveInicial,
+        u.c_cargo            as cargo,
+        u.c_ruta             as ruta
+        from 
+        sid_seg_usuario u
+        <where>
+            est_usuario='A'
+               
+            <if test="codigo!=null">
+                and  upper(codigo_usuario)=UPPER(#{codigo})
+            </if>
+            <if test="dni!=null">
+                and  num_dni=#{dni}
+            </if>
+            <if test="nombre!=null">
+                and UPPER(nom_usuario)  LIKE '%'||UPPER(#{nombre})||'%'
+            </if>
+            <if test="apellidoPaterno!=null">
+                and UPPER(ape_paterno)  LIKE '%'||UPPER(#{apellidoPaterno})||'%'
+            </if>
+            <if test="apellidoMaterno!=null">
+                and UPPER(ape_materno)  LIKE '%'||UPPER(#{apellidoMaterno})||'%'
+            </if>
+        </where>
+    </select>
+
+
+</mapper>

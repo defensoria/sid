@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD iBatis Mapper 3.0 //EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="gob.dp.sid.registro.dao.PersonaDAO">
+    
+    <resultMap id="personaMap" type="persona">
+        <id property="id" column="N_IDPERSONA" />
+        <result property="nombre" column="C_NOMBRE"/>
+        <result property="apellidoPat" column="C_APELLIDOPAT"/>
+        <result property="apellidoMat" column="C_APELLIDOMAT"/>
+        <result property="dni" column="C_DNI"/>
+        <result property="ruc" column="C_RUC"/>
+        
+    </resultMap> 
+    
+    
+    <insert id="personaInsertar" parameterType="persona">
+        INSERT INTO SID_REG_PERSONA
+        (
+        <if test="nombre != null">
+            C_NOMBRE,
+        </if>
+        <if test="apellidoPat != null">
+            C_APELLIDOPAT,
+        </if>
+        <if test="apellidoMat != null">
+            C_APELLIDOMAT,
+        </if>
+        <if test="dni != null">
+            C_DNI,
+        </if>
+        <if test="ruc != null">
+            C_RUC,
+        </if>
+        N_IDPERSONA
+        )
+        VALUES 
+        (
+        <if test="nombre != null">
+            UPPER(#{nombre}),
+        </if>
+        <if test="apellidoPat != null">
+            UPPER(#{apellidoPat}),
+        </if>
+        <if test="apellidoMat != null">
+            UPPER(#{apellidoMat}),
+        </if>
+        <if test="dni != null">
+            #{dni},
+        </if>
+        <if test="ruc != null">
+            #{ruc},
+        </if>
+        SEQ_SID_REG_PERSONA.NextVal
+        )
+        <selectKey keyProperty="id" resultType="Long">
+            SELECT SEQ_SID_REG_PERSONA.CURRVAL FROM DUAL
+        </selectKey>
+    </insert>
+    
+    
+    <update id="personaUpdate" parameterType="persona">
+        UPDATE SID_REG_PERSONA
+        <set>
+        <if test="apellidoPat != null">
+            C_APELLIDOPAT = UPPER(#{apellidoPat}),
+        </if>
+        <if test="apellidoMat != null">
+            C_APELLIDOMAT = UPPER(#{apellidoMat}),
+        </if>
+        <if test="dni != null">
+            C_DNI = #{dni},
+        </if>
+        <if test="ruc != null">
+            C_RUC = #{ruc},
+        </if>
+        C_NOMBRE = UPPER(#{nombre})
+        </set>
+        <where>
+            N_IDPERSONA = #{id}
+        </where>
+    </update>
+    
+    <select id="personaBuscarCadena" resultMap="personaMap" parameterType="String" >
+        SELECT * FROM SID_REG_PERSONA
+        WHERE UPPER(C_NOMBRE||C_APELLIDOPAT||C_APELLIDOMAT||C_DNI) LIKE '%'||UPPER(#{value})||'%'
+    </select>
+    
+</mapper>

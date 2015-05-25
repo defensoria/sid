@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD iBatis Mapper 3.0 //EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="gob.dp.sid.comun.dao.ParametroDao">
+
+
+
+<resultMap id="parametroMap" type="parametro">
+    <id property="codigoParametro" column="NUM_PARAMETRO" />
+    <result property="padreParametro.codigoParametro" column="PADRE_PARAMETRO"/>
+    <result property="nombreParametro" column="NOMBRE_PARAMETRO"/>
+    <result property="valorParametro" column="VALOR_PARAMETRO"/>
+    <result property="estado.valorParametro" column="COD_ESTADO"/>
+</resultMap>
+
+ <select id="buscarParametro" resultMap="parametroMap" parameterType="filtroParametro">
+    SELECT
+       NUM_PARAMETRO,
+       PADRE_PARAMETRO,
+       NOMBRE_PARAMETRO,
+       VALOR_PARAMETRO,
+       COD_ESTADO
+    FROM
+        SID_PARAMETRO
+    <where>
+        <if test="codigoParametro != null">
+              NUM_PARAMETRO = #{codigoParametro}
+        </if>
+        <if test="codigoPadreParametro != null">
+             AND PADRE_PARAMETRO = #{codigoPadreParametro}
+        </if>
+    </where>
+    ORDER BY 
+    	<if test="ordenValor">
+              VALOR_PARAMETRO       
+        </if>
+    	<if test="!ordenValor">
+              NOMBRE_PARAMETRO       
+        </if>
+ </select>
+
+ <select id="consultarParametro" resultMap="parametroMap" parameterType="filtroParametro">
+    SELECT
+       NUM_PARAMETRO,
+       PADRE_PARAMETRO,
+       NOMBRE_PARAMETRO,
+       VALOR_PARAMETRO,
+       COD_ESTADO
+    FROM
+        SID_PARAMETRO
+    WHERE
+        NUM_PARAMETRO = #{codigoParametro}
+        AND PADRE_PARAMETRO = #{codigoPadreParametro}
+    ORDER BY NOMBRE_PARAMETRO
+ </select>
+ 
+ <select id="consultarParametroValor" resultMap="parametroMap" parameterType="filtroParametro">
+    SELECT
+       NUM_PARAMETRO,
+       PADRE_PARAMETRO,
+       NOMBRE_PARAMETRO,
+       VALOR_PARAMETRO,
+       COD_ESTADO
+    FROM
+        SID_PARAMETRO
+    WHERE
+        VALOR_PARAMETRO = #{valorParametro}
+        AND PADRE_PARAMETRO = #{codigoPadreParametro}
+    ORDER BY NOMBRE_PARAMETRO
+ </select>
+
+</mapper>

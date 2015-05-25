@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//ibatis.apache.org//DTD Config 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-config.dtd">
+	<!--
+		<!DOCTYPE sqlMapConfig PUBLIC "-//iBATIS.com//DTD SQL Map Config
+		2.0//EN" "http://www.ibatis.com/dtd/sql-map-config-2.dtd">
+	-->
+
+<configuration>
+    <settings>
+        <!-- changes from the defaults for testing -->
+        <setting name="cacheEnabled" value="false" />
+        <setting name="useGeneratedKeys" value="true" />
+        <setting name="defaultExecutorType" value="REUSE" />
+    </settings>
+
+    <typeAliases>
+        <typeAlias type="gob.dp.sid.administracion.seguridad.entity.Usuario" alias="usuario"/>
+        <typeAlias type="gob.dp.sid.administracion.seguridad.entity.UsuarioRol" alias="usuarioRol"/>
+        <typeAlias type="gob.dp.sid.administracion.seguridad.entity.Rol" alias="rol"/>
+        <typeAlias type="gob.dp.sid.administracion.seguridad.entity.Recurso" alias="recurso"/>
+        <typeAlias type="gob.dp.sid.administracion.seguridad.entity.RolRecurso" alias="rolRecurso"/>
+        <typeAlias type="gob.dp.sid.administracion.seguridad.bean.FiltroUsuario" alias="filtroUsuario"/>
+        
+        <typeAlias type="gob.dp.sid.administracion.parametro.entity.Catalogo" alias="catalogo"/>
+        <typeAlias type="gob.dp.sid.administracion.parametro.bean.FiltroCatalogo" alias="filtroCatalogo"/>
+        <typeAlias type="gob.dp.sid.comun.entity.Parametro" alias="parametro"/>
+        <typeAlias type="gob.dp.sid.comun.entity.FiltroParametro" alias="filtroParametro"/>
+        
+        <typeAlias type="gob.dp.sid.comun.Auditoria" alias="auditoria"/>
+        <typeAlias type="gob.dp.sid.comun.entity.Departamento" alias="departamento"/>
+        <typeAlias type="gob.dp.sid.comun.entity.Provincia" alias="provincia"/>
+        <typeAlias type="gob.dp.sid.comun.entity.Distrito" alias="distrito"/>
+        <typeAlias type="gob.dp.sid.comun.entity.Menu" alias="menu"/>
+        <typeAlias type="gob.dp.sid.comun.entity.Busqueda" alias="busqueda"/>
+        
+        <typeAlias type="gob.dp.sid.registro.entity.Expediente" alias="expediente"/>
+        <typeAlias type="gob.dp.sid.registro.entity.Persona" alias="persona"/>
+        <typeAlias type="gob.dp.sid.registro.entity.Entidad" alias="entidad"/>
+    </typeAliases>
+
+    <mappers>
+        <mapper resource="gob/dp/sid/administracion/seguridad/dao/xml/Usuario.xml" />
+        <mapper resource="gob/dp/sid/administracion/seguridad/dao/xml/Rol.xml" />
+        <mapper resource="gob/dp/sid/administracion/seguridad/dao/xml/Recurso.xml" />
+        <mapper resource="gob/dp/sid/administracion/seguridad/dao/xml/Auditoria.xml" />
+        <mapper resource="gob/dp/sid/administracion/parametro/dao/xml/Catalogo.xml" />
+        
+        <mapper resource="gob/dp/sid/comun/dao/xml/Departamento.xml" />
+        <mapper resource="gob/dp/sid/comun/dao/xml/Provincia.xml" />
+        <mapper resource="gob/dp/sid/comun/dao/xml/Distrito.xml" />
+        <mapper resource="gob/dp/sid/comun/dao/xml/Menu.xml" />
+        <mapper resource="gob/dp/sid/comun/dao/xml/Busqueda.xml" />
+        <mapper resource="gob/dp/sid/comun/dao/xml/Parametro.xml" />
+        
+        <mapper resource="gob/dp/sid/registro/dao/xml/Expediente.xml" />
+        <mapper resource="gob/dp/sid/registro/dao/xml/Persona.xml" />
+        <mapper resource="gob/dp/sid/registro/dao/xml/Entidad.xml" />
+    </mappers>
+    
+</configuration>

@@ -1,0 +1,285 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      class="fixed">
+
+    <h:head>
+
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <meta name="description" content=""/>
+        <meta name="author" content=""/>
+
+        <title>sid</title>
+
+        <!-- Bootstrap Core CSS -->
+        <link href="/sid/faces/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+
+        <!-- MetisMenu CSS -->
+        <link href="/sid/faces/bootstrap/css/metisMenu.min.css" rel="stylesheet"/>
+
+        <!-- Custom CSS -->
+        <link href="/sid/faces/bootstrap/css/sb-admin-2.css" rel="stylesheet"/>
+        <link rel="stylesheet" href="/sid/faces/enjoy/css/theme.css" />
+        <!-- Custom Fonts -->
+        <link href="/sid/faces/bootstrap/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+
+        <link href="/sid/faces/bootstrap/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css"/>
+
+        <link href="/sid/faces/bootstrap/css/slider.css" rel="stylesheet" type="text/css"/>
+
+        <link rel="stylesheet" href="/sid/faces/jqueryui/css/jquery.ui.all.css"/>
+        
+        <link href="/sid/faces/vis/css/vis.css" rel="stylesheet"/>
+
+        <!-- jQuery Version 1.11.0 -->
+        <script src="/sid/faces/bootstrap/js/jquery.min.js"></script>
+
+        <!-- Bootstrap Core JavaScript -->
+        <script src="/sid/faces/bootstrap/js/bootstrap.min.js"></script>
+
+        <!-- Metis Menu Plugin JavaScript -->
+        <script src="/sid/faces/bootstrap/js/metisMenu.min.js"></script>
+
+        <!-- Custom Theme JavaScript -->
+        <script src="/sid/faces/bootstrap/js/sb-admin-2.js"></script>
+
+        <script src="/sid/faces/bootstrap/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+
+        <script src="/sid/faces/bootstrap/js/bootstrap-slider.js" type="text/javascript"></script>
+
+
+        <script src="/sid/faces/jqueryui/js/jquery.ui.core.js"></script>
+        <script src="/sid/faces/jqueryui/js/jquery.ui.widget.js"></script>
+        <script src="/sid/faces/jqueryui/js/jquery.ui.position.js"></script>
+        <script src="/sid/faces/jqueryui/js/jquery.ui.menu.js"></script>
+        <script src="/sid/faces/jqueryui/js/jquery.ui.autocomplete.js"></script>
+
+        <script src="/sid/faces/vis/js/vis.js"></script>
+
+
+    </h:head>
+
+    <body>
+
+        <header class="header">
+            <div class="logo-container">
+                <a href="index.html" class="logo">
+                    <img src="/sid/faces/bootstrap/img/logo.png" height="35" alt="sid" />
+                </a>
+                <div class="visible-xs toggle-sidebar-left" data-toggle-class="sidebar-left-opened" data-target="html" data-fire-event="sidebar-left-opened">
+                    <i class="fa fa-bars" aria-label="Toggle sidebar"></i>
+                </div>
+            </div>
+            <div class="dat"><p>( Sistema de Monitoreo de Conflictos Sociales )</p></div>
+
+            <div class="header-right">							
+
+                <ul class="notifications">
+                    <li>
+                        <a href="#" class="dropdown-toggle notification-icon" data-toggle="dropdown">
+                            <i class="fa fa-bell"></i>
+                            <span class="badge">2</span>
+                        </a>
+
+                        <div class="dropdown-menu notification-menu">
+                            <div class="notification-title">
+                                <span class="pull-right label label-default">2</span>
+                                Alertas
+                            </div>
+
+                            <div class="content">
+                                <ul>
+                                    <li>
+                                        <a href="#" class="clearfix">
+                                            <div class="image">
+                                                <i class="fa fa-exclamation-triangle bg-danger"></i>
+                                            </div>
+                                            <span class="title">Hoy - 5:20 pm.</span>
+                                            <span class="message">Acuerdo por Reclamo de alza de tarifa de agua potable dispuesto por Sedapal</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="clearfix">
+                                            <div class="image">
+                                                <i class="fa fa-exclamation-triangle bg-warning"></i>
+                                            </div>
+                                            <span class="title">Mañana - 2:00 pm.</span>
+                                            <span class="message">Acuerdo por Reclamo de alza de tarifa de agua potable dispuesto por Sedapal</span>
+                                        </a>
+                                    </li>
+                                </ul>
+
+                                <hr />
+
+                                <div class="text-right">
+                                    <a href="#" class="view-more"><i class="fa fa-arrow-right"></i> Ver todas</a>
+                                </div>
+                            </div>
+                        </div>                            
+
+                    </li>
+                    <li>
+                        <a href="#" class="dropdown-toggle notification-icon">
+                            <i class="fa fa-newspaper-o"></i>
+                            <span class="badge">4</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="dropdown-toggle notification-icon">
+                            <i class="fa fa-rss"></i>
+                            <span class="badge">3</span>
+                        </a>                            
+                    </li>
+                </ul>
+
+                <span class="separator"></span>
+
+                <div id="userbox" class="userbox">
+                    <a href="#" data-toggle="dropdown">
+                        <figure class="profile-picture">
+                            <img src="/sid/faces/bootstrap/img/user-admin.png" alt="#{loginController.usuarioSesion.nombre} &nbsp; #{loginController.usuarioSesion.apellidoPaterno} &nbsp; #{loginController.usuarioSesion.apellidoMaterno}" class="img-circle" data-lock-picture="images/!logged-user.jpg" />
+                        </figure>
+                        
+                        <div class="profile-info" data-lock-name="John Doe" data-lock-email="johndoe@okler.com">
+                            <span class="name">#{loginController.usuarioSesion.nombre} &nbsp; #{loginController.usuarioSesion.apellidoPaterno} &nbsp; #{loginController.usuarioSesion.apellidoMaterno}</span>
+                            <span class="role">Adjunto en APCSG</span>
+                        </div>
+
+                        <i class="fa custom-caret"></i>
+                    </a>
+
+                    <div class="dropdown-menu">
+                        <ul class="list-unstyled">
+                            <li class="divider"></li>
+                            <li>
+                                <a role="menuitem" tabindex="-1" href="#"><i class="fa fa-user"></i> Mi perfil</a>
+                            </li>
+                            <li>
+                                <a role="menuitem" tabindex="-1" href="#"><i class="fa fa-lock"></i> Bloquear</a>
+                            </li>
+                            <li>
+                                <a href="/sid/cerrarSesion" role="menuitem" tabindex="-1" ><i class="fa fa-power-off"></i> Cerrar sesion</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </header>
+
+
+
+        <h:form id="formId">
+
+
+            <aside id="sidebar-left" class="sidebar-left">
+
+                <div class="sidebar-header">
+                    <div class="sidebar-title">
+                        MEN
+                    </div>
+                    <div class="sidebar-toggle hidden-xs" data-toggle-class="sidebar-left-collapsed" data-target="html" data-fire-event="sidebar-left-toggle">
+                        <i class="fa fa-bars" aria-label="Toggle sidebar"></i>
+                    </div>
+                </div>
+
+                <div class="nano">
+                    <div class="nano-content">
+                        <nav id="menu" class="nav-main" role="navigation">
+                            <ul class="nav nav-main">
+                                <c:forEach var="x" items="#{menuController.menuPadre}" >
+                                    <li>
+                                        <a href="#" jsf:action="#{menuController.cargarPagina(x.id)}">
+                                            <i class="#{x.clase}" aria-hidden="true"></i>
+                                            <span>#{x.descripcion}</span>
+                                        </a>
+                                    </li>
+                                </c:forEach>
+                            </ul>
+                        </nav>
+
+                    </div>
+
+                </div>
+
+            </aside>
+        </h:form>
+        <!-- /.navbar-static-side -->
+
+        <section role="main" class="content-body">
+            <header class="page-header">
+                <h2>Inicio</h2>
+                <h:form>
+                    <div class="right-wrapper pull-right">
+                    <ol class="breadcrumbs">
+                        
+                        
+                        <c:forEach var="y" items="#{menuController.menuHijo}" >
+                                    <li>
+                                        <a href="#" jsf:action="#{menuController.cargarPagina(y.id)}">
+                                <i class="fa fa-home" aria-hidden="true"></i>
+                                <span>#{y.descripcion}</span>
+                            </a>
+                        </li>
+                        </c:forEach>
+                    </ol>
+                </div>
+                </h:form>
+                
+            </header>
+            <br/><br/><br/><br/><br/>
+
+            <div class="row">
+                <div>
+                        <div class="panel-body">
+                            <ui:insert name="content">
+                            </ui:insert> 
+                        </div>                
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+
+        </section>
+        <!-- /#wrapper -->
+
+        <div class="modal js-loading-bar" id="loadModal">
+            <center>
+                <img style="background: white" src="/sid/faces/bootstrap/img/loading.gif" ></img>
+            </center>
+        </div>
+        <script>
+            this.$('.js-loading-bar').modal({
+                backdrop: 'static',
+                show: false
+            });
+
+            function closeModal(data) {
+                if (data.status === 'success') {
+                    $("#loadModal").modal('hide');
+                    $('body').removeClass('modal-open');
+                    $(".modal-backdrop").removeClass("modal-backdrop");
+                }
+            }
+
+            function loadingModal() {
+                $("#loadModal").modal('show');
+            }
+        </script>
+        
+        <script language="javascript">
+            // añadimos una función de callback que será invocada 
+            // cuando se produzca el evento de sesión caducada
+            function error(){
+                // obtenemos el componente que implementa la ventana modal para mostrarlo     
+                //alert('Sesion ha expirado');
+                
+                window.location='#{facesContext.externalContext.requestContextPath}/cerrarSesion.jsp';
+            }
+        </script>
+    </body>
+</html>

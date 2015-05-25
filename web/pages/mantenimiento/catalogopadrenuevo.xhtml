@@ -1,0 +1,85 @@
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:h="http://xmlns.jcp.org/jsf/html" 
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:gc="http://xmlns.jcp.org/jsf/composite/gc">
+    <ui:composition template="../template/template.xhtml">
+        <ui:define name="content">
+            <h:form id="frm" class="form-horizontal">
+                <h:messages/>
+                <gc:confirmAjax bean="#{catalogoController.insertarCatalogoPadre()}" />
+                <div class="panel panel-default" style="background: #F5F5F5">
+                    <div class="panel-body">
+                        <span style="color: #0074cc; font-size: x-large;">Datos del parametro</span>
+                        <br/>
+                        <hr/>
+                        <center>
+                            <table style="width: 50%">
+                                <tr>
+                                    <td>
+                                        <span style="font-weight: bold">Codigo: </span>
+                                    </td>
+
+                                    <td>
+                                        <span style="font-weight: bold">#{catalogoController.catalogoPadre.numParametro}</span>
+                                        <input type="hidden" id="idNumerParametro" value="#{catalogoController.catalogoPadre.numParametro}" />
+                                    </td>
+                                </tr>    
+                                <tr>    
+                                    <td>
+                                        <span style="font-weight: bold">Nombre </span>
+                                    </td>
+
+                                    <td>
+                                        <input id="idTxtNombreParametro" type="text" placeholder="Nombre" jsf:value="#{catalogoController.catalogoPadre.nombreParametro}" maxlength="80" style="width: 100%;" autocomplete="off" />
+                                    </td>
+                                </tr>
+                                <tr>    
+                                    <td>
+                                        <span style="font-weight: bold">Activo </span>
+                                    </td>
+
+                                    <td>
+                                        <h:selectBooleanCheckbox value="#{catalogoController.habilitado}" id="chkHabilitado"/>
+                                    </td>
+                                </tr>
+
+                                <tr>    
+                                    <td colspan="5">
+                                        <a id="idBotonGuardar" class="btn btn-primary">
+                                            <span class="glyphicon glyphicon-floppy-disk">
+                                            </span> Guardar
+                                        </a>
+                                        <h:outputText value="&#160;" />
+                                        <button type="submit" jsf:action="catalogoPadreList" class="btn btn-danger">
+                                            <span class="glyphicon glyphicon-share"/>Regresar
+                                        </button>   
+                                    </td>
+
+                                </tr>
+                            </table>
+                            <script>
+                                $("#idBotonGuardar").click(function () {
+                                    if($("#idNumerParametro").val() === ""){
+                                        if ($('#idTxtNombreParametro').val() === "") {
+                                            $('#idTxtNombreParametro').addClass('error');
+                                            alertar("Debe de ingresar el nombre del parametro");
+                                            return false;
+                                        }
+                                        else {
+                                            $('#idTxtNombreParametro').removeClass('error');
+                                        }
+                                        confirmar();
+                                    }else{
+                                        alertar("El paramentro ya existe vuelva al menu principal");
+                                    } 
+                                });
+
+                            </script>
+                        </center>
+                    </div>
+                </div>    
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>  

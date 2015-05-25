@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faces-config version="2.0" xmlns="http://java.sun.com/xml/ns/javaee" 
+              xmlns:xi="http://www.w3.org/2001/XInclude"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+              xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+              http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">
+
+
+  <application>
+      <el-resolver>
+        org.springframework.web.jsf.el.SpringBeanFacesELResolver
+      </el-resolver>
+      <locale-config>
+     	  <default-locale>es</default-locale>
+      </locale-config>
+  </application>
+  
+  <render-kit>
+    <renderer>
+        <component-family>javax.faces.Messages</component-family>
+        <renderer-type>javax.faces.Messages</renderer-type>
+        <renderer-class>gob.dp.sid.comun.BootstrapMessages</renderer-class>
+    </renderer>
+</render-kit>
+
+  <navigation-rule>
+        <navigation-case>
+                <from-outcome>login</from-outcome>
+                <to-view-id>/signin.xhtml</to-view-id>
+        </navigation-case>
+  </navigation-rule>
+    <navigation-rule>
+        <navigation-case>
+                <from-outcome>ingresarSistema</from-outcome>
+                <to-view-id>/pages/inicio/index.xhtml</to-view-id>
+        </navigation-case>
+  </navigation-rule>
+  <navigation-rule>
+        <navigation-case>
+                <from-outcome>usuarioLista</from-outcome>
+                <to-view-id>/pages/seguridad/usuarioList.xhtml</to-view-id>
+        </navigation-case>
+  </navigation-rule>
+   <navigation-rule>
+        <navigation-case>
+                <from-outcome>usuarioDetalle</from-outcome>
+                <to-view-id>/pages/seguridad/usuarioDetalle.xhtml</to-view-id>
+        </navigation-case>
+  </navigation-rule>
+   <navigation-rule>
+        <navigation-case>
+                <from-outcome>usuarioNuevo</from-outcome>
+                <to-view-id>/pages/seguridad/usuarioNuevo.xhtml</to-view-id>
+        </navigation-case>
+  </navigation-rule>
+   <navigation-rule>
+        <navigation-case>
+                <from-outcome>usuarioClave</from-outcome>
+                <to-view-id>/pages/seguridad/usuarioClave.xhtml</to-view-id>
+        </navigation-case>
+  </navigation-rule>
+  
+    <navigation-rule>
+        <navigation-case>
+                <from-outcome>catalogoPadreList</from-outcome>
+                <to-view-id>/pages/mantenimiento/catalogopadre.xhtml</to-view-id>
+        </navigation-case>
+  </navigation-rule>
+  <navigation-rule>
+        <navigation-case>
+                <from-outcome>catalogoHijoList</from-outcome>
+                <to-view-id>/pages/mantenimiento/catalogohijo.xhtml</to-view-id>
+        </navigation-case>
+  </navigation-rule>
+  <navigation-rule>
+        <navigation-case>
+                <from-outcome>catalogoHijoListVer</from-outcome>
+                <to-view-id>/pages/mantenimiento/catalogohijoVer.xhtml</to-view-id>
+        </navigation-case>
+  </navigation-rule>
+  <navigation-rule>
+        <navigation-case>
+                <from-outcome>catalogoPadreUpdate</from-outcome>
+                <to-view-id>/pages/mantenimiento/catalogopadreupdate.xhtml</to-view-id>
+        </navigation-case>
+  </navigation-rule>
+
+  <navigation-rule>
+        <navigation-case>
+                <from-outcome>catalogoPadreNuevo</from-outcome>
+                <to-view-id>/pages/mantenimiento/catalogopadrenuevo.xhtml</to-view-id>
+        </navigation-case>
+  </navigation-rule>
+
+  <navigation-rule>
+        <navigation-case>
+                <from-outcome>catalogoHijoUpdate</from-outcome>
+                <to-view-id>/pages/mantenimiento/catalogohijoupdate.xhtml</to-view-id>
+        </navigation-case>
+  </navigation-rule>
+
+  <navigation-rule>
+        <navigation-case>
+                <from-outcome>catalogoHijoNuevo</from-outcome>
+                <to-view-id>/pages/mantenimiento/catalogohijonuevo.xhtml</to-view-id>
+        </navigation-case>
+  </navigation-rule>
+  
+  <navigation-rule>
+        <navigation-case>
+                <from-outcome>rolLista</from-outcome>
+                <to-view-id>/pages/seguridad/roles.xhtml</to-view-id>
+        </navigation-case>
+  </navigation-rule>
+  <navigation-rule>
+        <navigation-case>
+                <from-outcome>verAsignarRecursoRol</from-outcome>
+                <to-view-id>/pages/seguridad/asignarRecursoRol.xhtml</to-view-id>
+        </navigation-case>
+  </navigation-rule>
+  
+  <navigation-rule>
+        <navigation-case>
+                <from-outcome>perfil</from-outcome>
+                <to-view-id>/pages/inicio/perfil.xhtml</to-view-id>
+        </navigation-case>
+  </navigation-rule>
+  
+  
+  <navigation-rule>
+        <navigation-case>
+                <from-outcome>expedienteNuevo</from-outcome>
+                <to-view-id>/pages/registro/expedienteNuevo.xhtml</to-view-id>
+        </navigation-case>
+  </navigation-rule>
+  
+  <navigation-rule>
+        <navigation-case>
+                <from-outcome>personaNuevo</from-outcome>
+                <to-view-id>/pages/registro/personaNuevo.xhtml</to-view-id>
+        </navigation-case>
+  </navigation-rule>
+  
+  
+  <navigation-rule>
+        <navigation-case>
+                <from-outcome>entidadNuevo</from-outcome>
+                <to-view-id>/pages/registro/entidadNuevo.xhtml</to-view-id>
+        </navigation-case>
+  </navigation-rule>
+  
+  <navigation-rule>
+        <navigation-case>
+                <from-outcome>expedienteBusqueda</from-outcome>
+                <to-view-id>/pages/registro/expedienteBusqueda.xhtml</to-view-id>
+        </navigation-case>
+  </navigation-rule>
+  
+  <navigation-rule>
+        <navigation-case>
+                <from-outcome>expedienteEdit</from-outcome>
+                <to-view-id>/pages/registro/expedienteEdit.xhtml</to-view-id>
+        </navigation-case>
+  </navigation-rule>
+  
+</faces-config>

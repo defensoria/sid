@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD iBatis Mapper 3.0 //EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="gob.dp.sid.registro.dao.ExpedienteDAO">
+    
+    <resultMap id="expedienteMap" type="expediente">
+        <id property="id" column="N_IDEXPEDIENTE" />
+        <result property="numero" column="C_NUMEROEXPEDIENTE"/>
+        <result property="tipoClasificion" column="C_TIPOCLASIFICACION"/>
+        <result property="tipoIngreso" column="C_TIPOINGRESO"/>
+        <result property="tipoTema" column="C_TIPOTEMA"/>
+        <result property="tipoSubtema" column="C_TIPOSUBTEMA"/>
+        <result property="fechaIngreso" column="D_FECHAINGRESO"/>
+        <result property="sumilla" column="C_SUMILLA"/>
+        <result property="observacion" column="C_OBSERVACIONES"/>
+        <result property="admision" column="C_ADMISION"/>
+        <result property="calificacion" column="N_CALIFICACION"/>
+        <result property="usuarioRegistro" column="C_USUREGISTRO"/>
+        <result property="estado" column="C_ESTADO"/>
+        <result property="version" column="N_VERSION"/>
+        <result property="fechaVersion" column="D_FECHAVERSION"/>
+        
+        <result property="clasificacionTipoNombre" column="TIPOCLASIFICACION"/>
+        <result property="ingresoTipoNombre" column="TIPOINGRESO"/>
+        <result property="ingresoTipoTema" column="TIPOTEMA"/>
+        <result property="ingresoTipoSubTema" column="TIPOSUBTEMA"/>
+        
+    </resultMap> 
+    
+    
+    <insert id="expedienteInsertar" parameterType="expediente">
+        INSERT INTO SID_REG_EXPEDIENTE
+        (
+        <if test="tipoClasificion != null">
+            C_TIPOCLASIFICACION,
+        </if>
+        <if test="tipoIngreso != null">
+            C_TIPOINGRESO,
+        </if>
+        <if test="tipoTema != null">
+            C_TIPOTEMA,
+        </if>
+        <if test="tipoSubtema != null">
+            C_TIPOSUBTEMA,
+        </if>
+        <if test="fechaIngreso != null">
+            D_FECHAINGRESO,
+        </if>
+        <if test="sumilla != null">
+            C_SUMILLA,
+        </if>
+        <if test="observacion != null">
+            C_OBSERVACIONES,
+        </if>
+        <if test="admision != null">
+            C_ADMISION,
+        </if>
+        <if test="calificacion != null">
+            N_CALIFICACION,
+        </if>
+        <if test="usuarioRegistro != null">
+            C_USUREGISTRO,
+        </if>
+        <if test="estado != null">
+            C_ESTADO,
+        </if>
+        <if test="version != null">
+            N_VERSION,
+        </if>
+        <if test="fechaVersion != null">
+            D_FECHAVERSION,
+        </if>
+        <if test="numero != null">
+            C_NUMEROEXPEDIENTE,
+        </if>
+        N_IDEXPEDIENTE
+        )
+        VALUES 
+        (
+        <if test="tipoClasificion != null">
+            #{tipoClasificion},
+        </if>
+        <if test="tipoIngreso != null">
+            #{tipoIngreso},
+        </if>
+        <if test="tipoTema != null">
+            #{tipoTema},
+        </if>
+        <if test="tipoSubtema != null">
+            #{tipoSubtema},
+        </if>
+        <if test="fechaIngreso != null">
+            #{fechaIngreso},
+        </if>
+        <if test="sumilla != null">
+            #{sumilla},
+        </if>
+        <if test="observacion != null">
+            #{observacion},
+        </if>
+        <if test="admision != null">
+            #{admision},
+        </if>
+        <if test="calificacion != null">
+            #{calificacion},
+        </if>
+        <if test="usuarioRegistro != null">
+            #{usuarioRegistro},
+        </if>
+        <if test="estado != null">
+            #{estado},
+        </if>
+        <if test="version != null">
+            #{version},
+        </if>
+        <if test="fechaVersion != null">
+            #{fechaVersion},
+        </if>
+        <if test="numero != null">
+            #{numero},
+        </if>
+        SEQ_SID_REG_EXPEDIENTE.NextVal
+        )
+        <selectKey keyProperty="id" resultType="Long">
+            SELECT SEQ_SID_REG_EXPEDIENTE.CURRVAL FROM DUAL
+        </selectKey>
+    </insert>
+    
+    
+    <update id="expedienteUpdate" parameterType="expediente">
+        UPDATE SID_REG_EXPEDIENTE
+        <set>
+            <if test="tipoClasificion != null">
+                C_TIPOCLASIFICACION = #{tipoClasificion},
+            </if>
+            <if test="tipoIngreso != null">
+                C_TIPOINGRESO = #{tipoIngreso},
+            </if>
+            <if test="tipoTema != null">
+                C_TIPOTEMA = #{tipoTema},
+            </if>
+            <if test="tipoSubtema != null">
+                C_TIPOSUBTEMA = #{tipoSubtema},
+            </if>
+            <if test="fechaIngreso != null">
+                D_FECHAINGRESO = #{fechaIngreso},
+            </if>
+            <if test="sumilla != null">
+                C_SUMILLA = #{sumilla},
+            </if>
+            <if test="observacion != null">
+                C_OBSERVACIONES = #{observacion},
+            </if>
+            <if test="admision != null">
+               C_ADMISION  = #{admision},
+            </if>
+            <if test="calificacion != null">
+                N_CALIFICACION = #{calificacion},
+            </if>
+            <if test="usuarioRegistro != null">
+                C_USUREGISTRO = #{usuarioRegistro},
+            </if>
+            <if test="estado != null">
+                C_ESTADO = #{estado},
+            </if>
+            <if test="fechaVersion != null">
+                D_FECHAVERSION = #{fechaVersion},
+            </if>
+            <if test="numero != null">
+                C_NUMEROEXPEDIENTE = #{numero}
+            </if>
+        </set>
+        <where>
+            N_IDEXPEDIENTE = #{id}
+        </where>
+    </update>
+    
+    
+    <select id="expedienteBuscar" resultMap="expedienteMap" parameterType="expediente">
+        SELECT A.*, 
+    B.NOMBRE_PARAMETRO TIPOCLASIFICACION,
+    C.NOMBRE_PARAMETRO TIPOINGRESO,
+    D.NOMBRE_PARAMETRO TIPOTEMA,
+    E.NOMBRE_PARAMETRO TIPOSUBTEMA
+        FROM SID_REG_EXPEDIENTE A
+        LEFT JOIN SID_PARAMETRO B 
+           ON A.C_TIPOCLASIFICACION = B.VALOR_PARAMETRO AND B.PADRE_PARAMETRO = 10
+        LEFT JOIN SID_PARAMETRO C   
+           ON A.C_TIPOINGRESO = C.VALOR_PARAMETRO AND C.PADRE_PARAMETRO = 20
+        LEFT JOIN SID_PARAMETRO D   
+           ON A.C_TIPOTEMA = D.VALOR_PARAMETRO AND D.PADRE_PARAMETRO = 30   
+        LEFT JOIN SID_PARAMETRO E  
+           ON E.PADRE_PARAMETRO = D.NUM_PARAMETRO AND A.C_TIPOSUBTEMA = E.VALOR_PARAMETRO
+           
+        WHERE A.C_ESTADO = 'A'
+    </select>
+    
+</mapper>

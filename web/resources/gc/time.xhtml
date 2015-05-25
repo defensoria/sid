@@ -1,0 +1,23 @@
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:composite="http://xmlns.jcp.org/jsf/composite">
+
+    <composite:interface>
+        <composite:attribute name="value" required="true"/>
+        <composite:attribute name="id" required="false"/>
+        <composite:attribute name="idDiv" required="false"/>
+    </composite:interface>
+
+    <composite:implementation>
+        <div class="input-group timepicker" id="#{cc.attrs.idDiv}">
+            <div class="input-group-addon  add-on">
+                <span class="glyphicon glyphicon-time"></span>
+            </div>
+            <input type="text" data-format="hh:mm:ss" jsf:value="#{cc.attrs.value}" id="#{cc.attrs.id}">
+                <f:convertDateTime pattern="HH:mm" timeZone="America/Lima" />
+            </input>
+        </div>
+    </composite:implementation>
+
+</html>            

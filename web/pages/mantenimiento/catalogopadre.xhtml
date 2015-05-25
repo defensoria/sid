@@ -1,0 +1,107 @@
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:h="http://xmlns.jcp.org/jsf/html" 
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+    <ui:composition template="../template/template.xhtml">
+
+        <ui:define name="content">
+            <script>
+                sessionStorage.setItem('menuHijoSession', 'Parametros');
+            </script>
+            <h:form id="frmFiltroCatalogo" class="form-horizontal">
+                <div class="panel panel-default" style="background: #F5F5F5">
+                    <div class="panel-body">
+                        <span style="color: #0074cc; font-size: x-large;">Criterios de Busqueda</span>
+                        <br/>
+                        <hr/>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Numero</label>
+                            <div class="col-sm-3">
+                                <input type="text" placeholder="Numero" jsf:value="#{catalogoController.busquedaCatalogoTemp.numParametro}" maxlength="8" style="width: 100%;" autocomplete="off" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Nombre parametro</label>
+                            <div class="col-sm-3">
+                                <input type="text" placeholder="Nombre parametro" jsf:value="#{catalogoController.busquedaCatalogoTemp.nombreParametro}" style="width: 100%;" autocomplete="off" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <a jsf:action="#{catalogoController.buscarCatalogoPadre(1)}" class="btn btn-primary" jsf:onclick="loadingModal()">
+                                    <span class="glyphicon glyphicon-search">
+                                        <f:ajax render="@form" execute="@form" onevent="closeModal"/>
+                                    </span> Buscar
+                                </a>
+                                <h:outputText value="&#160;" />
+                                <button type="submit" jsf:action="#{catalogoController.nuevoCatalogoPadre()}" class="btn btn-danger" jsf:onclick="loadingModal()">
+                                    <span class="glyphicon glyphicon-user" onevent="closeModal"></span> Crear
+                                </button>          
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <h:panelGrid style="width: 100%" styleClass="panel-titulo-listado-con-filtro"  >
+                    <h:outputText value="Listado de Catálogo Origen"/>
+                </h:panelGrid>
+
+                <h:dataTable value="#{catalogoController.listaCatalogo}" rendered="#{!empty catalogoController.listaCatalogo}" var="x" id="idDatatableCatalogoPadre"
+                             class="table table-striped" binding="#{cat}">
+
+                    <h:column>
+                        <f:facet name="header">#</f:facet>
+                        <h:outputText value="#{cat.rowIndex+1}" />
+                    </h:column>
+
+                    <h:column id="txtNumero">
+                        <f:facet name="header">
+                            <h:outputText value="Número " />
+                        </f:facet>
+                        <h:commandLink value="#{x.numParametro}" immediate="true"  action="#{catalogoController.viewCatalogoPadre(x.numParametro)}" />
+                    </h:column>
+
+                    <h:column id="txtParametro">
+                        <f:facet name="header">
+                            <h:outputText value="Parámetro" />
+                        </f:facet>
+                        <h:outputText value="#{x.nombreParametro}" />
+                    </h:column>
+
+                    <h:column id="txtEstado">
+                        <f:facet name="header">
+                            <h:outputText value="Estado" />
+                        </f:facet>
+                        <h:outputText value="#{x.nombreEstado}" />
+                    </h:column>
+
+                    <h:column id="enlace">
+                        <f:facet name="header">
+                            <h:outputText value="Derivado" />
+                        </f:facet>
+                        <h:commandLink value="ver derivados" immediate="true"  action="#{catalogoController.buscarCatalogoHijo(x.numParametro,1)}"/>
+                    </h:column>
+
+                </h:dataTable>
+                <ul class="pager" >
+                    <li>
+                        <a  jsf:action="#{catalogoController.buscarCatalogoPadre(catalogoController.nroPagina -1)}"
+                           jsf:rendered="#{!empty catalogoController.listaCatalogo}"  jsf:onclick="loadingModal()">Anterior
+                            <f:ajax render="@form" onevent="closeModal"/>
+                        </a>
+                    </li>
+                    <li>
+                        <a jsf:action="#{catalogoController.buscarCatalogoPadre(catalogoController.nroPagina +1)}"
+                           jsf:rendered="#{!empty catalogoController.listaCatalogo}"  jsf:onclick="loadingModal()">Siguiente
+                            <f:ajax render="@form" onevent="closeModal"/>
+                        </a>
+                    </li>
+                </ul>
+                
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>  
+

@@ -1,0 +1,83 @@
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:h="http://xmlns.jcp.org/jsf/html" 
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+    <ui:composition template="../template/template.xhtml">
+
+        <ui:define name="content">
+
+            <h:form>
+                <div class="panel panel-default" style="background: #F5F5F5">
+                    <div class="panel-body">
+                        <table style="width: 100%">
+                            <tr>
+                                <td>
+                                    <span style="color: #0074cc; font-size: x-large;">Listado de Catálogo Derivado</span>
+                                </td>
+                                <td style="float: right">
+                                    <a class="btn btn-danger" jsf:action="catalogoPadreList">
+                                        <span class="glyphicon glyphicon-share"/>Regresar
+                                    </a>
+                                </td>
+                            </tr>
+                        </table>
+                        <br/>
+                        <hr/>
+
+                        <h:dataTable value="#{catalogoController.listaCatalogoHijo}"  var="x" id="table" 
+                                     class="table table-striped" style="font-size: small" binding="#{hijo}">
+
+                            <h:column>
+                                <f:facet name="header">#</f:facet>
+                                <h:outputText value="#{hijo.rowIndex+1}" />
+                            </h:column>
+
+                            <h:column id="Numero">
+                                <f:facet name="header">
+                                    <h:outputText value="Número " />
+                                </f:facet>
+                                <h:commandLink value="#{x.numParametro}" immediate="true"  action="#{catalogoController.viewCatalogoHijo(x.numParametro)}" />
+                            </h:column>
+
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Parámetro" />
+                                </f:facet>
+                                <h:outputText value="#{x.nombreParametro}" />
+                            </h:column>
+
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Valor" />
+                                </f:facet>
+                                <h:outputText value="#{x.valorParametro}" />
+                            </h:column>
+
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Estado" />
+                                </f:facet>
+                                <h:outputText value="#{x.nombreEstado}" />
+                            </h:column>
+                        </h:dataTable>
+                        <ul class="pager" >
+                            <li><a jsf:action="#{catalogoController.buscarCatalogoHijo(catalogoController.padreParametro,catalogoController.nroPaginaHijo -1)}"
+                           jsf:rendered="true">Anterior
+                            <f:ajax render="@form" />
+                        </a>
+                    </li>
+                    <li>
+                        <a jsf:action="#{catalogoController.buscarCatalogoHijo(catalogoController.padreParametro,catalogoController.nroPaginaHijo +1)}"
+                           jsf:rendered="true">Siguiente
+                            <f:ajax render="@form" />
+                        </a>
+                    </li>
+                </ul>
+                    </div>
+                </div>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
+

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD iBatis Mapper 3.0 //EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="auditoriaDao">
+
+
+<insert id="insertarAuditoria" parameterType="auditoria">
+        <selectKey keyProperty="codigo" resultType="java.lang.String" order="BEFORE">
+            select lpad(SEQ_SID_AUDITORIA.NEXTVAL, 10, '0') from dual
+        </selectKey>
+        insert into SID_seg_auditoria
+          (codigo_auditoria,
+           codigo_accion,
+           <if test="usuario.codigo!=null">
+              codigo_usuario,
+           </if>
+           <if test="detalle!=null">
+             detalle,
+           </if>
+           fecha,
+           ip)
+        values
+          (#{codigo},
+           #{codigoAccion},
+           <if test="usuario.codigo!=null">
+              #{usuario.codigo},
+           </if>
+           <if test="detalle!=null">
+              #{detalle},
+           </if>
+           SYSDATE,
+           #{ip}
+           )
+</insert>
+
+
+
+</mapper>

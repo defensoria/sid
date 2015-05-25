@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD iBatis Mapper 3.0 //EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="gob.dp.sid.comun.dao.ProvinciaDao">
+    
+    <resultMap id="provinciaMap" type="provincia">
+        <id property="id" column="N_ID_PROV" />
+        <result property="departamento" column="N_ID_DPTO"/>
+        <result property="descripcion" column="C_DESCPROV"/>
+        <result property="coordenadax" column="C_COORDENADAX"/>
+        <result property="coordenaday" column="C_COORDENADAY"/>
+        <result property="zoom" column="N_ZOOM"/>
+    </resultMap>  
+
+    <select id="provinciaLista" resultMap="provinciaMap" parameterType="int">
+        select 
+        N_ID_PROV, 
+        N_ID_DPTO, 
+        C_DESCPROV 
+        FROM SID_UBIGEO_PROV
+        WHERE N_ID_DPTO =#{id}
+    </select> 
+    
+    <select id="provinciaOne" resultMap="provinciaMap" parameterType="int">
+        select 
+        N_ID_PROV, 
+        N_ID_DPTO, 
+        C_DESCPROV,
+        C_COORDENADAX,
+        C_COORDENADAY,
+        N_ZOOM 
+        FROM SID_UBIGEO_PROV
+        WHERE N_ID_PROV =#{id}
+    </select>    
+</mapper>

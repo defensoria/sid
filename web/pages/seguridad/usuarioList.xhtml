@@ -1,0 +1,148 @@
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:h="http://xmlns.jcp.org/jsf/html" 
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+    <ui:composition template="../template/template.xhtml">
+
+        <ui:define name="content">
+
+            <h:form id="idFormUsuarioList" class="form-horizontal">
+                <h:messages/>
+                <script>
+                    sessionStorage.setItem('menuHijoSession', 'Usuarios');
+                </script>
+                <div class="panel panel-default" style="background: #F5F5F5">
+                    <div class="panel-body">
+                        <table style="width: 100%">
+                            <tr >
+                                <td>
+                                    <span style="color: #0074cc; font-size: x-large;">Criterios de Busqueda</span>
+                                </td>
+                                <td style="text-align: right">
+                                    <a jsf:action="#{busquedaUsuarioController.buscarUsuario(1)}" class="btn btn-primary" jsf:onclick="loadingModal()">
+                                        <span class="glyphicon glyphicon-search"/>Buscar
+                                    </a>
+                                    <h:outputText value="&#160;&#160;"/>
+                                    <button type="submit" jsf:action="#{usuarioNuevoController.verUsuarioNuevo()}" class="btn btn-info" jsf:onclick="loadingModal()">
+                                        <span class="glyphicon glyphicon-user"/>Crear
+                                    </button>          
+                                </td>
+                            </tr>
+                        </table>
+
+                        <br/>
+                        <hr/>
+                        <table style="width: 50%">
+                            <tr>
+                                <td style="padding-bottom: 10px">
+                                    <label class="text-bold">Codigo</label>
+                                </td>
+                                <td  style="padding-bottom: 10px">
+                                    <input type="text" placeholder="Codigo" jsf:value="#{busquedaUsuarioController.usuario.codigo}" style="width: 100%;" autocomplete="off" maxlength="40"/>
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td style="padding-bottom: 10px">
+                                    <label class="text-bold">DNI</label>
+                                </td>
+                                <td style="padding-bottom: 10px">
+                                    <input type="text" placeholder="DNI" jsf:value="#{busquedaUsuarioController.usuario.dni}" style="width: 100%;" autocomplete="off" maxlength="8"  onkeypress="return soloNumbero(event);"/>
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td style="padding-bottom: 10px">
+                                    <label class="text-bold">Nombre</label>
+                                </td>
+                                <td style="padding-bottom: 10px">
+                                    <input type="text" placeholder="Nombre" jsf:value="#{busquedaUsuarioController.usuario.nombre}" style="width: 100%;" autocomplete="off"/>
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td style="padding-bottom: 10px">
+                                    <label class="text-bold">Apellido Paterno</label>
+                                </td>
+                                <td style="padding-bottom: 10px">
+                                    <input type="text" placeholder="Apellido Paterno" jsf:value="#{busquedaUsuarioController.usuario.apellidoPaterno}" style="width: 100%;" autocomplete="off"/>
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td style="padding-bottom: 10px">
+                                    <label class="text-bold">Apellido Materno</label>
+                                </td>
+                                <td style="padding-bottom: 10px">
+                                    <input type="text" placeholder="Apellido Materno" jsf:value="#{busquedaUsuarioController.usuario.apellidoMaterno}" style="width: 100%;" autocomplete="off"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>  
+                </div>    
+                
+
+                <h:dataTable value="#{busquedaUsuarioController.listaUsuario}" var="item" id="idDatatableActor"
+                             class="table table-striped" binding="#{usu}" rendered="#{busquedaUsuarioController.listaUsuario.size() > 0}">
+
+                    <h:column>
+                        <f:facet name="header">#</f:facet>
+                        <h:outputText value="#{usu.rowIndex+1}" />
+                    </h:column>
+
+                    <h:column id="colNombre">
+                        <f:facet name="header">
+                            <h:outputText value="Nombre"/>
+                        </f:facet>
+                        <h:outputText value="#{item.nombre}"/>
+                    </h:column>
+                    <h:column id="colApPaterno">
+                        <f:facet name="header">
+                            <h:outputText value="Apellido Paterno"/>
+                        </f:facet>
+                        <h:outputText value="#{item.apellidoPaterno}"/>
+                    </h:column>
+                    <h:column id="colApMaterno">
+                        <f:facet name="header">
+                            <h:outputText value="Apellido Materno"/>
+                        </f:facet>
+                        <h:outputText value="#{item.apellidoMaterno}"/>
+                    </h:column>
+
+                    <h:column id="colDni">
+                        <f:facet name="header">
+                            <h:outputText value="DNI"/>
+                        </f:facet>
+                        <h:outputText value="#{item.dni}"/>
+                    </h:column>
+                    <h:column id="colCambioClave">
+                        <f:facet name="header">
+                        </f:facet>
+                        <a jsf:action="#{usuarioDetalleController.verDetalleUsuario(item.codigo)}" data-toggle="tooltip" data-placement="bottom" title="Modificar usuario" jsf:onclick="loadingModal()">
+                            <span class="glyphicon glyphicon-edit" style="font-size: medium"/>
+                        </a>
+                        <h:outputText value="&#160;&#160;&#160;"/>
+                        <a jsf:action="#{usuarioClaveController.verCambioClave(item.codigo)}" data-toggle="tooltip" data-placement="bottom" title="Cambiar clave" jsf:onclick="loadingModal()">
+                            <span class="glyphicon glyphicon-lock" style="font-size: medium"/>
+                        </a>
+                    </h:column>
+                </h:dataTable>
+                <ul class="pager" >
+                    <li><a jsf:action="#{busquedaUsuarioController.buscarUsuario(busquedaUsuarioController.nroPagina -1)}"
+                           jsf:rendered="#{busquedaUsuarioController.listaUsuario.size() > 0}" jsf:onclick="loadingModal()">Anterior
+                            <f:ajax render="idDatatableActor" onevent="closeModal"/>
+                        </a>
+                    </li>
+                    <li>
+                        <a jsf:action="#{busquedaUsuarioController.buscarUsuario(busquedaUsuarioController.nroPagina +1)}"
+                           jsf:rendered="#{busquedaUsuarioController.listaUsuario.size() > 0}" jsf:onclick="loadingModal()">Siguiente
+                            <f:ajax render="idDatatableActor" onevent="closeModal"/>
+                        </a>
+                    </li>
+                </ul> 
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

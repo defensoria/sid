@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:h="http://xmlns.jcp.org/jsf/html" 
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+    <ui:composition template="../template/template.xhtml">
+        <ui:define name="content">
+            <h:form class="form-horizontal" enctype="multipart/form-data">
+                <div class="panel panel-default" style="background: #F5F5F5">
+                    <div class="panel-body">
+                        <table style="width: 100%">
+                            <tr>
+                                <td>
+                                    <span style="color: #0074cc; font-size: x-large;">Perfil</span>
+                                </td>
+                                <td>
+                                    <a class="btn btn-primary" jsf:onclick="return guardarImagen()" jsf:action="#{usuarioDetalleController.agregarImagen()}">
+                                        <span class="glyphicon glyphicon-floppy-disk">Guardar</span>
+                                    </a>
+                                    <script>
+                                        function refrescar(data) {
+                                            
+                        if (data.status === 'complete') {
+                            info("Se realizaron los cambios");
+                        }
+                        
+                    }
+                                    </script>
+                                </td>
+                            </tr>
+                        </table>
+                        
+                        <br/>
+                        <hr/>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Codigo</label>                           
+                            <label class="col-sm-2 control-label" style="text-align: left">#{usuarioDetalleController.usuario.codigo}</label>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">DNI</label>
+                            <label class="col-sm-2 control-label" style="text-align: left">#{usuarioDetalleController.usuario.dni}</label>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Nombre</label>
+                            <label class="col-sm-2 control-label" style="text-align: left">#{usuarioDetalleController.usuario.nombre}</label>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Apellido Paterno</label>
+                            <label class="col-sm-2 control-label" style="text-align: left">#{usuarioDetalleController.usuario.apellidoPaterno}</label>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Apellido Materno</label>
+                            <label class="col-sm-2 control-label" style="text-align: left">#{usuarioDetalleController.usuario.apellidoMaterno}</label>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Email</label>
+                            <label class="col-sm-2 control-label" style="text-align: left">#{usuarioDetalleController.usuario.email}</label>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Imagen</label>
+                            <label class="col-sm-2 control-label" style="text-align: left">
+                                <h:inputFile class="cMedio" value="#{usuarioDetalleController.file1}"/>
+                            </label>
+                        </div>    
+                            
+                        <div jsf:rendered="#{usuarioDetalleController.usuario.ruta != null}">
+                            <table class="table table-striped">
+                                        <tr>
+                                            <td>Imagen</td>
+                                            <td>ver</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td>#{usuarioDetalleController.usuario.ruta}</td>
+                                            <td>
+                                                <a target="_blank" href="#{usuarioDetalleController.usuario.ruta}">
+                                                    <span class="glyphicon glyphicon-picture" />
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </table>
+                        </div>
+                    </div>  
+                </div>
+                <script>
+                    function guardarImagen(){
+                        if ($(".cMedio").val() !== "") {
+                            if (!comprueba_extension($(".cMedio").val())) {
+                                alertar("Debe de ingresar un archivo de tipo imagen (.jpe o .png o.gif)");
+                                return false;
+                            }
+                        }
+                        return true;
+                    }
+                    
+                    function comprueba_extension(archivo) {
+                        //<![CDATA[
+
+                        extensiones_permitidas = new Array(".gif", ".jpg", ".png");
+                        extension = (archivo.substring(archivo.lastIndexOf("."))).toLowerCase();
+                        var permitida = false;
+                        for (var i = 0; i < extensiones_permitidas.length; i++) {
+                            if (extensiones_permitidas[i] === extension) {
+                                permitida = true;
+                                break;
+                            }
+                        }
+                        //]]>
+                        return permitida;
+                    }
+                </script>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

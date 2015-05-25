@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+  <!-- A1 is set to be a ConsoleAppender -->
+  <appender name="consola" class="org.apache.log4j.ConsoleAppender">
+    <!-- A1 uses PatternLayout -->
+    <layout class="org.apache.log4j.PatternLayout"> 
+      <param name="ConversionPattern" value="%-4r [%t] %-5p %c %x - %m%n"/> 
+    </layout> 
+  </appender> 
+  
+   <appender name="archivo" class="org.apache.log4j.RollingFileAppender"> 
+    <param name="file" value="../logs/sid.log  "/>
+    <param name="MaxFileSize" value="1024KB"/>
+    <!-- Keep one backup file -->
+    <param name="MaxBackupIndex" value="3"/>
+    <layout class="org.apache.log4j.PatternLayout"> 
+      <param name="ConversionPattern" value="%p %t %c - %m%n"/> 
+    </layout> 
+  </appender> 
+  
+
+
+  <logger name="org.springframework">
+    <level value="ERROR"/>
+  </logger>
+
+  <logger name="org.apache.commons">
+    <level value="DEBUG"/>
+  </logger>
+
+  <logger name="org.apache.ibatis">
+    <level value="DEBUG"/>
+  </logger>
+  
+  <logger name="java.sql.Connection">
+    <level value="DEBUG"/>
+  </logger>
+  
+  <logger name="java.sql.Statement">
+    <level value="DEBUG"/>
+  </logger>
+  
+  <logger name="java.sql.PreparedStatement">
+    <level value="DEBUG"/>
+  </logger>
+  
+  <logger name="java.sql.ResultSet">
+    <level value="DEBUG"/>
+  </logger>
+  
+  <logger name="org.ajax4jsf">
+    <level value="ERROR"/>
+  </logger>
+
+    <!-- Suppress invalid warning messages from JSF -->
+    <logger name="org.apache.myfaces.shared_impl.renderkit.html">
+        <level value="ERROR"/>
+    </logger>
+
+  <root> 
+    <!-- Set root logger level to DEBUG and its only appender to A1 -->
+    <priority value ="DEBUG" />
+    <appender-ref ref="archivo" /> 
+    <appender-ref ref="consola" /> 
+  </root>
+</log4j:configuration>

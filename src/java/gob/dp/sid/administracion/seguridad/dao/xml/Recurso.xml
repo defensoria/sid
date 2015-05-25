@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD iBatis Mapper 3.0 //EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="recursoDao">
+    
+    <select id="buscarRecurso" resultType="recurso" parameterType="recurso">
+          select
+               codigo_recurso       as codigo,
+               nombre_recurso       as nombre,
+               descripcion_recurso  as descripcion,
+               padre_recurso        as codigoPadre,
+               cod_estado           as estado,
+               url_recurso          as url
+          from sid_seg_recurso
+          where
+            1=1
+            <if test="codigo!=null">
+                and codigo_recurso=#{codigo}
+            </if>
+            <if test="nombre!=null">
+                and UPPER(nom_rol)  LIKE '%'||UPPER(#{nombre})||'%'
+            </if>
+            <if test="codigoPadre!=null">
+                and padre_recurso=#{codigoPadre}
+            </if>
+            <if test="estado!=null">
+                and estado=#{estado}
+            </if>
+            order by codigo
+    </select>
+
+    <select id="buscarRecursoSegunUsuario" parameterType="usuario" resultType="recurso">
+        select
+            distinct
+            re.codigo_recurso      as codigo,
+            re.nombre_recurso      as nombre,
+            re.descripcion_recurso as descripcion,
+            re.padre_recurso       as codigoPadre
+        from
+            sid_seg_usuario_rol  ur,
+            sid_seg_rol_recurso  rr,
+            sid_seg_recurso re,
+            sid_seg_rol ro
+        where
+            ur.codigo_usuario=#{codigo} and
+            re.cod_estado='A' and
+            ro.cod_estado='A' and
+            ur.codigo_rol=rr.codigo_rol and
+            re.codigo_recurso=rr.codigo_recurso and
+            ur.codigo_rol=ro.codigo_rol
+            order by codigo
+
+    </select>
+    
+     <select id="buscarRecursoSegunRol" parameterType="rol" resultType="recurso">
+        select
+              rec.codigo_recurso      as codigo,
+              rec.nombre_recurso      as nombre,
+              rec.descripcion_recurso as descripcion,
+              rec.padre_recurso       as codigoPadre
+
+		 from sid_seg_recurso rec,      
+		      sid_seg_rol_recurso rolRec
+		 where
+		      rec.cod_estado='A' and
+		      rec.codigo_recurso= rolRec.Codigo_Recurso and
+		      rolRec.Codigo_Rol=#{codigo}
+
+    </select>
+    
+    <insert id="insertarRolRecurso" parameterType="rolRecurso">
+    insert into sid_seg_rol_recurso
+        (codigo_rol,
+         codigo_recurso)
+    values(
+          #{rol.codigo},
+          #{recurso.codigo}
+         )
+    </insert>
+
+	<delete id="deleteRolRecurso" parameterType="rolRecurso">
+	    delete sid_seg_rol_recurso
+	    where codigo_rol = #{rol.codigo}
+	    and   codigo_recurso = #{recurso.codigo}
+	</delete>
+
+</mapper>

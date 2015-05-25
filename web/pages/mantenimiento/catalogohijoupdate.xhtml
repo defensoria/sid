@@ -1,0 +1,95 @@
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:h="http://xmlns.jcp.org/jsf/html" 
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:gc="http://xmlns.jcp.org/jsf/composite/gc">
+    <ui:composition template="../template/template.xhtml">
+        <ui:define name="content">
+            <h:form class="form-horizontal">
+                <h:messages/>
+                <gc:confirmAjax bean="#{catalogoController.updateCatalogoHijo(catalogoController.catalogoHijo.numParametro)}" />
+                <div class="panel panel-default" style="background: #F5F5F5">
+                    <div class="panel-body">
+                        <span style="color: #0074cc; font-size: x-large;">Criterios de Busqueda</span>
+                        <br/>
+                        <hr/>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Codigo:</label>
+                            <div class="col-sm-3">
+                                <label class="col-sm-3 control-label">#{catalogoController.catalogoHijo.numParametro}</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Padre:</label>
+                            <div class="col-sm-3">
+                                <h:selectOneMenu value="#{catalogoController.catalogoHijo.padreParametro}" >
+                                    <f:selectItems value="#{listasController.listarCatalogoPadre()}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.numParametro}" />
+                                </h:selectOneMenu>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Nombre:</label>
+                            <div class="col-sm-3">
+                                <input type="text" id="idTextNombre" placeholder="Nombre" jsf:value="#{catalogoController.catalogoHijo.nombreParametro}" maxlength="100" style="width: 100%;" autocomplete="off" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Valor parametro:</label>
+                            <div class="col-sm-3">
+                                <input type="text" id="idTextValor" placeholder="Valor parametro" jsf:value="#{catalogoController.catalogoHijo.valorParametro}" maxlength="2" style="width: 100%;" autocomplete="off" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Activo:</label>
+                            <div class="col-sm-3">
+                                <h:selectBooleanCheckbox value="#{catalogoController.habilitado}" id="chkHabilitado"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <a id="idBotonGuardar" class="btn btn-primary">
+                                            <span class="glyphicon glyphicon-floppy-disk">
+                                            </span> Guardar
+                                        </a>   
+                                <h:outputText value="&#160;" />
+                                <button type="submit" jsf:action="catalogoHijoList" class="btn btn-danger">
+                                    <span class="glyphicon glyphicon-share"/>Regresar
+                                </button>          
+                            </div>
+                            <script>
+                                $("#idBotonGuardar").click(function () {
+                                        if ($('#idTextNombre').val() === "") {
+                                            $('#idTextNombre').addClass('error');
+                                            alertar("Debe de ingresar el nombre del parametro");
+                                            return false;
+                                        }
+                                        else {
+                                            $('#idTextNombre').removeClass('error');
+                                        }
+                                        
+                                        if ($('#idTextValor').val() === "") {
+                                            $('#idTextValor').addClass('error');
+                                            alertar("Debe de ingresar el valor del parametro");
+                                            return false;
+                                        }
+                                        else {
+                                            $('#idTextValor').removeClass('error');
+                                        }
+                                        confirmar();
+                                   
+                                });
+
+                            </script>
+                        </div>
+                    </div>
+                </div>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>  

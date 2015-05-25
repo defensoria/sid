@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      class="fixed" id="idHtml">
+
+    <h:head>
+
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+        <title>SID</title>
+
+        <!-- Bootstrap Core CSS -->
+        <link href="/sid/faces/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css"/>
+        
+
+        <!-- MetisMenu CSS -->
+        <link href="/sid/faces/bootstrap/css/metisMenu.min.css" rel="stylesheet"/>
+
+        <!-- Custom CSS -->
+        <link href="/sid/faces/bootstrap/css/sb-admin-2.css" rel="stylesheet"/>
+        <link rel="stylesheet" href="/sid/faces/enjoy/css/theme.css" />
+        <!-- Custom Fonts -->
+        <link href="/sid/faces/bootstrap/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+
+        <link href="/sid/faces/bootstrap/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css"/>
+
+        <link href="/sid/faces/bootstrap/css/slider.css" rel="stylesheet" type="text/css"/>
+
+        <link rel="stylesheet" href="/sid/faces/jqueryui/css/jquery.ui.all.css"/>
+        
+        <!-- jQuery Version 1.11.0 -->
+        <script src="/sid/faces/bootstrap/js/jquery.min.js"></script>
+
+        <!-- Bootstrap Core JavaScript -->
+        <script src="/sid/faces/bootstrap/js/bootstrap.js"></script>
+
+        <!-- Metis Menu Plugin JavaScript -->
+        <script src="/sid/faces/bootstrap/js/metisMenu.min.js"></script>
+
+        <!-- Custom Theme JavaScript -->
+        <script src="/sid/faces/bootstrap/js/sb-admin-2.js"></script>
+
+        <script src="/sid/faces/bootstrap/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+
+        <script src="/sid/faces/bootstrap/js/bootstrap-slider.js" type="text/javascript"></script>
+
+
+        <script src="/sid/faces/jqueryui/js/jquery.ui.core.js"></script>
+        <script src="/sid/faces/jqueryui/js/jquery.ui.widget.js"></script>
+        <script src="/sid/faces/jqueryui/js/jquery.ui.position.js"></script>
+        <script src="/sid/faces/jqueryui/js/jquery.ui.menu.js"></script>
+        <script src="/sid/faces/jqueryui/js/jquery.ui.autocomplete.js"></script>
+
+
+    </h:head>
+
+    <style>
+        .error{
+            background: #F2DEDE;
+        }
+
+        a:hover {
+            cursor: pointer
+        }
+        
+        .disabled-form{
+            background: #EEEEEE; pointer-events:none;
+        }
+    </style>
+    <h:form>
+        <script>
+
+            $(document).ready(function () {
+                var stateMenu;
+                var i = 0;
+                stateMenu = sessionStorage.getItem('stateMenu');
+                //alert("stateMenu"+stateMenu);
+
+                if (stateMenu === '0') {
+                    //      alert("entro 1");
+                    $('#idHtml').removeClass("sidebar-left-collapsed");
+                }
+
+                if (stateMenu === '1') {
+                    //    alert("entro 2");
+                    $('#idHtml').addClass("sidebar-left-collapsed");
+                }
+
+                if (stateMenu !== null) {
+                    if (stateMenu === '0') {
+                        i = 0;
+                    }
+                    if (stateMenu === '1') {
+                        i = 1;
+                    }
+                }
+                //alert("i::"+i);
+                $('#idDivOcultarMenu').click(function () {
+                    // alert("i::"+i);
+                    if (i === 0) {
+                        $('#idHtml').addClass("sidebar-left-collapsed");
+                        i = 1;
+                    }
+                    else {
+                        $('#idHtml').removeClass("sidebar-left-collapsed");
+                        i = 0;
+                    }
+                    sessionStorage.setItem('stateMenu', i);
+                });
+
+            });
+
+        </script>
+    </h:form>
+    <body oncontextmenu="return false" onselectstart="return false" ondragstart="return false">
+
+        <!--Alerta-->
+        <div class="modal fade" id="idAlerta">
+            <div class="modal-dialog modal-sm" >
+                <div class="modal-content" style=" background: #FCF8E3">
+                    <div class="modal-header" style="padding: 5px;">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span style="color: black; font-size: large" ></span></button>
+                        <h4 style="color: #8A6D3B"><b>Alerta!</b></h4>
+                    </div>
+                    <div style="background: white;box-sizing: border-box;" >
+                        <div class="modal-body" style="padding: 7px;">
+                            <table style="width: 100%">
+                                <tr>
+                                    <td style="padding-right: 8px">
+                                        <img style="width: 30px" src="../../bootstrap/img/warning.png" />
+                                    </td>
+                                    <td>
+                                        <b><div id="mensaje" style="font-size: 1.2em" class="text-resalt-comun"></div></b>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--Info-->
+        <div class="modal fade" id="idInfo">
+            <div class="modal-dialog modal-sm" >
+                <div class="modal-content" style=" background: #D9EDF7">
+                    <div class="modal-header" style="padding: 5px;">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span style="color: black; font-size: large" ></span></button>
+                        <h4 style="color: #3170A5"><b>Info</b></h4>
+                    </div>
+                    <div style="background: white;box-sizing: border-box;" >
+                        <div class="modal-body" style="padding: 7px;">
+                            <table style="width: 100%">
+                                <tr>
+                                    <td style="padding-right: 8px">
+                                        <img style="width: 30px" src="../../bootstrap/img/info.png" />
+                                    </td>
+                                    <td>
+                                        <div id="mensajeInfo" style="font-size: 1.2em" class="text-resalt-comun"></div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Mensajes -->
+        <div class="modal fade" id="idMensaje">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content" style=" background: #FCF8E3">
+                    <div class="modal-header" style="padding: 5px;">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span style="color: black; font-size: large" ></span></button>
+                        <h4 style="color: #8A6D3B"><b>Alerta</b></h4>
+                    </div>
+                    <div style="background: white;box-sizing: border-box;" >
+                        <div class="modal-body" style="padding: 7px;">
+                            <table style="width: 100%">
+                                <tr>
+                                    <td style="padding-right: 8px">
+                                        <img style="width: 30px" src="../../bootstrap/img/warning.png" />
+                                    </td>
+                                    <td>
+                                        <div class="mensaje" style="color: #878787"></div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            function alertar(msg) {
+                $("#idAlerta").modal('show');
+                $("#mensaje").html(msg);
+            }
+
+            function info(msg) {
+                $("#idInfo").modal('show');
+                $("#mensajeInfo").html(msg);
+            }
+
+            function confirmar() {
+                $(".confirmacion").modal('show');
+            }
+
+        </script>
+        <h:form id="formId">
+            <header class="header">
+                <table style="width: 100%">
+                    <tr>
+                        <td style="width: 23%">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <a class="logo">
+                                            <img src="/sid/faces/bootstrap/img/logo.png" height="30" alt="sid" />
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p>( Sistema de Monitoreo de Conflictos Sociales )</p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+
+                        <td  style="width: 25%">
+                            <div class="content">
+                                <div id="idDivRegistro" class="form-group has-feedback" style="width: 100%" >
+                                    <input type="text" jsf:value="#{busquedaController.busqueda.nombre}" class="form-control input-sm"  placeholder="Buscar"/>
+
+                                    <a style="margin: auto" jsf:action="#{busquedaController.buscar()}" >
+                                        <span style="font-size: medium; top: 0px" class="glyphicon glyphicon-search form-control-feedback"/>
+
+                                    </a>
+                                </div>
+
+                            </div>
+                        </td>
+                        <td style="width: 47%">
+
+                            <div class="header-right">							
+
+                                <ul class="notifications">
+                                    <li>
+                                        <a href="#" class="dropdown-toggle notification-icon" data-toggle="dropdown">
+                                            <i class="fa fa-bell"></i>
+                                            <span class="badge">listaAlertaEjecutadas</span>
+                                        </a>
+
+                                        <div class="dropdown-menu notification-menu">
+                                            <div class="notification-title">
+                                                <span class="pull-right label label-default">listaAlertaEjecutadas</span>
+                                                Alertas
+                                            </div>
+
+                                            <div class="content">
+                                                <ul>
+                                                    
+                                                </ul>
+                                                <hr />
+
+                                                <div class="text-right">
+                                                    <a jsf:action="#{seguimientoAcuerdoController.cargarPagina()}" class="view-more"><i class="fa fa-arrow-right"></i> Ver todas</a>
+                                                </div>
+                                            </div>
+                                        </div>                            
+
+                                    </li>
+                                    <li>
+                                        <a href="#" class="dropdown-toggle notification-icon">
+                                            <i class="fa fa-newspaper-o"></i>
+                                            <span class="badge">4</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="dropdown-toggle notification-icon">
+                                            <i class="fa fa-rss"></i>
+                                            <span class="badge">3</span>
+                                        </a>                            
+                                    </li>
+                                </ul>
+
+                                <span class="separator" style="margin-left: 0px; margin-right: 0px"></span>
+
+                                <div id="userbox" class="userbox">
+                                    <a href="#" data-toggle="dropdown">
+                                        <figure class="profile-picture">
+                                            <img src="#{loginController.usuarioSesion.ruta == null? '/sid/faces/bootstrap/img/user-admin.png' : loginController.usuarioSesion.ruta}" alt="#{loginController.usuarioSesion.nombre} &#160; #{loginController.usuarioSesion.apellidoPaterno} &#160; #{loginController.usuarioSesion.apellidoMaterno}" class="img-circle" data-lock-picture="images/!logged-user.jpg" />
+                                        </figure>
+
+                                        <div class="profile-info">
+                                            <span >#{loginController.usuarioSesion.nombre} &#160; #{loginController.usuarioSesion.apellidoPaterno} &#160; #{loginController.usuarioSesion.apellidoMaterno}</span>
+                                            <span class="role">#{loginController.usuarioSesion.cargo}</span>
+                                        </div>
+
+                                        <i class="fa custom-caret"></i>
+                                    </a>
+
+                                    <div class="dropdown-menu">
+                                        <ul class="list-unstyled">
+                                            <li class="divider"></li>
+                                            <li>
+                                                <a role="menuitem" tabindex="-1" jsf:actionListener="#{usuarioDetalleController.verDetallePerfil()}" jsf:action="perfil"><i class="fa fa-user"></i> Mi perfil</a>
+                                            </li>
+                                            <li>
+                                                <a href="/sid/cerrarSesion" role="menuitem" tabindex="-1" ><i class="fa fa-power-off"></i> Cerrar sesion</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </header>
+
+            <aside id="sidebar-left" class="sidebar-left" style="max-width: 20%">
+
+                <div class="sidebar-header">
+                    <div class="sidebar-title">
+                        MENU
+                    </div>
+                    <div class="sidebar-toggle" id="idDivOcultarMenu" >
+                        <i class="fa fa-bars" aria-label="Toggle sidebar"></i>
+
+                    </div>
+                </div>
+
+
+                <div class="nano" >
+                    <div class="nano-content">
+                        <nav id="menu" class="nav-main" >
+                            <ul class="nav nav-main">
+                                <c:forEach var="x" items="#{menuController.menuPadre}" >
+                                    <li>
+                                        <a jsf:action="#{menuController.cargarPagina(x.id)}">
+                                            <i class="#{x.clase}" aria-hidden="true" ></i>
+                                            <span style="width: 100px">#{x.descripcion}</span>
+                                        </a>
+                                    </li>
+                                </c:forEach>
+                            </ul>
+                        </nav>
+
+                    </div>
+
+                </div>
+
+            </aside>
+        </h:form>
+        <!-- /.navbar-static-side -->
+
+        <section role="main" class="content-body">
+            <header class="page-header" style="left : 73px">
+                <h:form>
+                    <input type="hidden"  class="idCaso" />
+
+                    <table width="100%">
+                        <tr>
+                            <td style="width: 17%"></td>
+                            <td><h2 style="text-decoration: none; display: #{menuController.menuHijo.size() == 3? '':'none'}">
+                                    <span style="font-weight: bold; font-size: 0.8em" class="idNombreCaso"></span>
+                                </h2>
+                                <div class="right-wrapper pull-right">
+                                    <ol class="breadcrumbs">
+                                        <c:forEach var="y" items="#{menuController.menuHijo}" >
+                                            <li>
+                                                <h:commandLink action="#{menuController.cargarPagina(y.id)}">
+                                                    <span class="menuHijo">#{y.descripcion}</span>
+                                                </h:commandLink>
+                                            </li>
+                                        </c:forEach>
+                                    </ol>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+
+
+                    <script>
+                        $(document).ready(function () {
+                            $(".idCaso").val(sessionStorage.getItem("idCaso"));
+
+                            $(".menuHijo").each(function () {
+                                if ($(this).text() === sessionStorage.getItem("menuHijoSession")) {
+                                    $(this).css("font-weight", "bold").css("font-size", "1.5em");
+                                } else {
+                                    $(this).css("font-weight", "normal").css("font-size", "1em");
+                                }
+                            });
+
+                            $(".idNombreCaso").html(sessionStorage.getItem("nombreCaso"));
+                            if ($(".idNombreCaso").text().length > 41) {
+                                $(".idNombreCaso").text($(".idNombreCaso").text().slice(0, 40) + '...');
+                            }
+                            $('.idNombreCaso').mousemove(function () {
+                                $('.idNombreCaso').tooltip({
+                                    placement: 'bottom',
+                                    title: sessionStorage.getItem("nombreCaso")
+                                });
+                            });
+                        });
+                    </script>
+                </h:form>
+
+            </header>
+            <br/>
+            <h:form>
+
+                <div style="left: 0px; display: #{menuController.menuNieto.size() > 0? 'inherit;': 'none;'} top: 110px" class="page-header">
+
+                    <div class="right-wrapper pull-right">
+                        <ol class="breadcrumbs">
+                            <c:forEach var="y" items="#{menuController.menuNieto}" >
+                                <li >
+                                    <a style="text-decoration: none; color: silver" jsf:action="#{menuController.cargarPagina(y.id)}">
+                                        <i aria-hidden="true"></i>
+                                        <span class="menuNieto">#{y.descripcion}</span>
+                                    </a>
+                                </li>
+                            </c:forEach>
+                        </ol>
+                    </div>
+                    <input type="hidden" value="#{menuController.menuNieto.size()}" id="idInputNieto"/>
+                    <script>
+                        $(document).ready(function () {
+                            $(".menuNieto").each(function () {
+                                if ($(this).text() === sessionStorage.getItem("menuNietoSession")) {
+                                    $(this).css("font-weight", "bold").css("font-size", "1.5em");
+                                } else {
+                                    $(this).css("font-weight", "normal").css("font-size", "1em");
+                                }
+                            });
+                            if ($("#idInputNieto").val() === '0') {
+                                $('.idPanelBody').css('padding-top', '10px');
+                            } else {
+                                $('.idPanelBody').css('padding-top', '80px');
+                            }
+
+                        });
+                    </script>
+
+                </div>
+            </h:form>
+
+
+
+            <br/><br/><br/><br/><br/>
+
+            <div class="row">
+                <div>
+                    <div class="panel-body idPanelBody" >
+                        <h:messages />
+                        <ui:insert name="content">
+                        </ui:insert> 
+                    </div>                
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+
+        </section>
+        <!-- /#wrapper -->
+
+        <div class="modal js-loading-bar" data-toggle="modal" id="loadModal" tabindex="-1" role="dialog" aria-labelledby="loadModal"> style="vertical-align: central"  aria-hidden="true">
+            <br/><br/><br/><br/><br/>
+            <center>
+                <img style="background: white" src="/sid/faces/bootstrap/img/loading.gif" ></img>
+            </center>
+        </div>
+
+
+
+
+        <script>
+
+            this.$('.js-loading-bar').modal({
+                backdrop: 'static',
+                show: false
+            });
+
+            function closeModal(data) {
+                if (data.status === 'success') {
+                    $("#loadModal").modal('hide');
+                    $('body').removeClass('modal-open');
+                    $(".modal-backdrop").removeClass("modal-backdrop");
+                }
+            }
+
+            function closeModalInfo(data) {
+                if (data.status === 'success') {
+                    $("#loadModal").modal('hide');
+                    $('body').removeClass('modal-open');
+                    $(".modal-backdrop").removeClass("modal-backdrop");
+                    info("Se han realizado los cambios correctamente");
+                }
+            }
+
+            function loadingModal() {
+                $("#loadModal").modal('show');
+            }
+
+            function soloNumbero(e)
+            {
+                var keynum = window.event ? window.event.keyCode : e.which;
+                if ((keynum === 8) || (keynum === 46))
+                    return true;
+
+                return /\d/.test(String.fromCharCode(keynum));
+            }
+            
+            $('.datepicker').datetimepicker({
+                    pickTime: false
+                });
+                $(".datepicker").on("changeDate", function (ev) {
+                    $(this).datetimepicker("hide");
+                });
+
+                $('.timepicker').datetimepicker({
+                    pickDate: false
+                });
+        </script>
+
+        <script language="javascript">
+            // añadimos una función de callback que será invocada 
+            // cuando se produzca el evento de sesión caducada
+            function error() {
+                // obtenemos el componente que implementa la ventana modal para mostrarlo     
+                //alert('Sesion ha expirado');
+
+                window.location = '#{facesContext.externalContext.requestContextPath}/cerrarSesion.jsp';
+            }
+        </script>
+
+    </body>
+</html>

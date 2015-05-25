@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD iBatis Mapper 3.0 //EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="gob.dp.sid.registro.dao.EntidadDAO">
+    
+    <resultMap id="entidadMap" type="entidad">
+        <id property="id" column="N_IDENTIDAD" />
+        <result property="nombre" column="C_NOMBRE"/>
+        <result property="ruc" column="C_RUC"/>
+        <result property="fechaRegistro" column="D_FECHAREGISTRO"/>
+        <result property="usuarioRegistro" column="C_USU_REGISTRO"/>
+        
+    </resultMap> 
+    
+    
+    <insert id="entidadInsertar" parameterType="entidad">
+        INSERT INTO SID_REG_ENTIDAD
+        (
+        <if test="nombre != null">
+            C_NOMBRE,
+        </if>
+        <if test="ruc != null">
+            C_RUC,
+        </if>
+        <if test="fechaRegistro != null">
+            D_FECHAREGISTRO,
+        </if>
+        <if test="usuarioRegistro != null">
+            C_USU_REGISTRO,
+        </if>
+        N_IDENTIDAD
+        )
+        VALUES 
+        (
+        <if test="nombre != null">
+            UPPER(#{nombre}),
+        </if>
+        <if test="ruc != null">
+            #{ruc},
+        </if>
+        <if test="fechaRegistro != null">
+            #{fechaRegistro},
+        </if>
+        <if test="usuarioRegistro != null">
+            #{usuarioRegistro},
+        </if>
+        SEQ_SID_REG_ENTIDAD.NextVal
+        )
+        <selectKey keyProperty="id" resultType="Long">
+            SELECT SEQ_SID_REG_ENTIDAD.CURRVAL FROM DUAL
+        </selectKey>
+    </insert>
+    
+    
+    <update id="entidadUpdate" parameterType="entidad">
+        UPDATE SID_REG_ENTIDAD
+        <set>
+        <if test="ruc != null">
+            C_RUC = #{ruc},
+        </if>
+        <if test="fechaRegistro != null">
+            D_FECHAREGISTRO = #{fechaRegistro},
+        </if>
+        <if test="usuarioRegistro != null">
+            C_USU_REGISTRO = #{usuarioRegistro},
+        </if>
+        C_NOMBRE = UPPER(#{nombre})
+        </set>
+        <where>
+            N_IDENTIDAD = #{id}
+        </where>
+    </update>
+    
+    <select id="entidadBuscarCadena" resultMap="entidadMap" parameterType="String" >
+        SELECT * FROM SID_REG_ENTIDAD
+        WHERE UPPER(C_NOMBRE||C_RUC) LIKE '%'||UPPER(#{value})||'%'
+    </select>
+    
+</mapper>
