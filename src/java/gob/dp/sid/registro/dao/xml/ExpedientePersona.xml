@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD iBatis Mapper 3.0 //EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="gob.dp.sid.registro.dao.ExpedientePersonaDAO">
+    
+    <resultMap id="expedientePersonaMap" type="expedientePersona">
+        <result property="expediente.id" column="N_IDEXPEDIENTE"/>
+        <result property="persona.id" column="N_IDPERSONA"/>
+        <result property="cargo" column="C_CARGO"/>
+        <result property="persona.nombre" column="C_NOMBRE"/>
+        <result property="persona.apellidoPat" column="C_APELLIDOPAT"/>
+        <result property="persona.apellidoMat" column="C_APELLIDOMAT"/>
+    </resultMap> 
+    
+    
+    <insert id="expedientePersonaInsertar" parameterType="expedientePersona">
+        INSERT INTO SID_REG_EXPEDE_PERSONA
+        (
+        <if test="cargo != null">
+            C_CARGO,
+        </if>
+        N_IDEXPEDIENTE,
+        N_IDPERSONA
+        )
+        VALUES 
+        (
+        <if test="cargo != null">
+            #{cargo},    
+        </if>
+        #{expediente.id},
+        #{persona.id}
+        )
+    </insert>
+    
+    
+    <update id="expedientePersonaUpdate" parameterType="expedientePersona">
+        UPDATE SID_REG_EXPEDE_PERSONA
+        <set> 
+            C_CARGO = #{cargo}
+        </set>
+        <where>
+            N_IDPERSONA = #{persona.id} AND
+            N_IDEXPEDIENTE= #{expediente.id}
+        </where>
+    </update>
+    
+    <delete id="expedientePersonaDelete" parameterType="expedientePersona">
+        delete SID_REG_EXPEDE_PERSONA WHERE
+        N_IDPERSONA = #{persona.id} AND
+        N_IDEXPEDIENTE= #{expediente.id}
+    </delete>
+    
+    <select id="expedientePersonaContar" parameterType="expedientePersona" resultType="java.lang.Integer" >
+        select count(*) from SID_REG_EXPEDE_PERSONA
+        WHERE
+        N_IDPERSONA = #{persona.id} AND
+        N_IDEXPEDIENTE= #{expediente.id}
+    </select>
+    
+    <select id="expedientePersonaBuscarXExpediente" resultMap="expedientePersonaMap"  parameterType="long">
+        SELECT A.*, B.C_NOMBRE, B.C_APELLIDOPAT, B.C_APELLIDOMAT 
+        FROM SID_REG_EXPEDE_PERSONA A
+        INNER JOIN SID_REG_PERSONA B ON A.N_IDPERSONA = B.N_IDPERSONA
+        WHERE A.N_IDEXPEDIENTE = #{id}
+    </select>
+    
+</mapper>

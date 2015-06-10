@@ -18,6 +18,7 @@
         <result property="estado" column="C_ESTADO"/>
         <result property="version" column="N_VERSION"/>
         <result property="fechaVersion" column="D_FECHAVERSION"/>
+        <result property="etiqueta" column="C_ETIQUETA"/>
         
         <result property="clasificacionTipoNombre" column="TIPOCLASIFICACION"/>
         <result property="ingresoTipoNombre" column="TIPOINGRESO"/>
@@ -72,6 +73,9 @@
         <if test="numero != null">
             C_NUMEROEXPEDIENTE,
         </if>
+        <if test="etiqueta != null">
+            C_ETIQUETA,
+        </if>
         N_IDEXPEDIENTE
         )
         VALUES 
@@ -117,6 +121,9 @@
         </if>
         <if test="numero != null">
             #{numero},
+        </if>
+        <if test="etiqueta != null">
+            #{etiqueta},
         </if>
         SEQ_SID_REG_EXPEDIENTE.NextVal
         )
@@ -164,6 +171,9 @@
             </if>
             <if test="fechaVersion != null">
                 D_FECHAVERSION = #{fechaVersion},
+            </if>
+            <if test="etiqueta != null">
+                C_ETIQUETA = #{etiqueta},
             </if>
             <if test="numero != null">
                 C_NUMEROEXPEDIENTE = #{numero}

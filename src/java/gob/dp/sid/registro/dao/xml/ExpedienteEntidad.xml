@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD iBatis Mapper 3.0 //EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="gob.dp.sid.registro.dao.ExpedienteEntidadDAO">
+    
+    <resultMap id="expedienteEntidadMap" type="expedienteEntidad">
+        <result property="expediente.id" column="N_IDEXPEDIENTE"/>
+        <result property="entidad.id" column="N_IDENTIDAD"/>
+        <result property="entidad.nombre" column="C_NOMBRE"/>
+        <result property="entidad.ruc" column="C_RUC"/>
+    </resultMap> 
+    
+    
+    <insert id="expedienteEntidadInsertar" parameterType="expedienteEntidad">
+        INSERT INTO SID_REG_EXPEDE_ENTIDAD
+        (
+        N_IDEXPEDIENTE,
+        N_IDENTIDAD
+        )
+        VALUES 
+        (
+        #{expediente.id},
+        #{entidad.id}
+        )
+    </insert>
+    
+    <delete id="expedienteEntidadDelete" parameterType="expedienteEntidad">
+        DELETE SID_REG_EXPEDE_ENTIDAD WHERE
+        N_IDEXPEDIENTE = #{expediente.id} AND
+        N_IDENTIDAD = #{entidad.id}
+    </delete>
+    
+    <select id="expedienteEntidadContar" parameterType="expedienteEntidad" resultType="java.lang.Integer" >
+        select count(*) from SID_REG_EXPEDE_ENTIDAD
+        WHERE
+        N_IDEXPEDIENTE = #{expediente.id} AND
+        N_IDENTIDAD = #{entidad.id}
+    </select>
+    
+    <select id="expedienteEntidadBuscarXExpediente" resultMap="expedienteEntidadMap"  parameterType="long">
+        SELECT A.*, B.C_NOMBRE, B.C_RUC
+        FROM SID_REG_EXPEDE_ENTIDAD A
+        INNER JOIN SID_REG_ENTIDAD B ON A.N_IDENTIDAD = B.N_IDENTIDAD
+        WHERE A.N_IDEXPEDIENTE = #{id}
+    </select>
+    
+</mapper>

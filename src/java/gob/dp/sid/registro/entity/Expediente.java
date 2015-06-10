@@ -44,6 +44,8 @@ public class Expediente implements Serializable{
     
     private Date fechaVersion;
     
+    private String etiqueta;
+    
     /*agregados*/
     
     private String idEtiqueta;
@@ -228,6 +230,14 @@ public class Expediente implements Serializable{
 
     public void setIngresoTipoSubTema(String ingresoTipoSubTema) {
         this.ingresoTipoSubTema = ingresoTipoSubTema;
+    }
+
+    public String getEtiqueta() {
+        return etiqueta;
+    }
+
+    public void setEtiqueta(String etiqueta) {
+        this.etiqueta = etiqueta;
     }
     
     
