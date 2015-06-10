@@ -16,7 +16,7 @@
                         $(".confirmacion2").modal('show');
                     }
                 </script>
-                <gc:confirmSubmit classGC="confirmacion2" bean="#{registroController.guardarVersion()}"/>
+                <gc:confirmSubmit classGC="confirmacion2" bean="#{registroController.guardarVersion()}" mensaje="Esta seguro que desea generar una nueva version del expediente?"/>
                 <gc:confirmSubmit bean="#{registroController.guardarBorrador()}" />
                 <table style="width: 100%">
                     <tr>
@@ -40,7 +40,7 @@
                                             <td style="padding-bottom: 10px">
                                                 <table style="width: 100%">
                                                     <tr>
-                                                        <td>
+                                                        <td style="width: 40%">
                                                             fecha de Ingreso:
                                                         </td>
                                                         <td>
@@ -266,14 +266,14 @@
                                                     </h:column>
                                                     <h:column>
                                                         <f:facet name="header">Nombre</f:facet>
-                                                        <h:outputText value="#{persona.nombre} #{persona.apellidoPat} #{persona.apellidoMat}"/>
+                                                        <h:outputText value="#{persona.persona.nombre} #{persona.persona.apellidoPat} #{persona.persona.apellidoMat}"/>
                                                     </h:column>
                                                     <h:column>
                                                         <f:facet name="header">DNI</f:facet>
-                                                        <h:outputText value="#{persona.dni}"/>
+                                                        <h:outputText value="#{persona.persona.dni}"/>
                                                     </h:column>
                                                     <h:column>
-                                                        <h:selectOneMenu>
+                                                        <h:selectOneMenu value="#{persona.cargo}">
                                                             <f:selectItems value="#{listasComunesController.buscarExpedienteTipoActor(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
                                                         </h:selectOneMenu>
                                                     </h:column>
@@ -393,11 +393,11 @@
                                                     </h:column>
                                                     <h:column>
                                                         <f:facet name="header">Nombre</f:facet>
-                                                        <h:outputText value="#{entidad.nombre}"/>
+                                                        <h:outputText value="#{entidad.entidad.nombre}"/>
                                                     </h:column>
                                                     <h:column>
                                                         <f:facet name="header">RUC</f:facet>
-                                                        <h:outputText value="#{entidad.ruc}"/>
+                                                        <h:outputText value="#{entidad.entidad.ruc}"/>
                                                     </h:column>
                                                     <h:column>
                                                         <a jsf:action="#{registroController.removeEntidad(entidad)}" onclick="loadingModal()">

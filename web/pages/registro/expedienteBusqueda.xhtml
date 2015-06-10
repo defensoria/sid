@@ -14,7 +14,7 @@
                 <gc:confirmSubmit bean="#{registroController.guardarBorrador()}" />
                 <div class="panel panel-featured-top-primary">
                     <div class="panel-body">
-                        <span class="text-resalt-primary">Resgistro de Entidad</span>
+                        <span class="text-resalt-primary">Busqueda de Expedientes</span>
                         <h:dataTable value="#{registroController.listaExpedientes}" var="expediente" binding="#{row}" class="table table-striped">
                             <h:column>
                                 <f:facet name="header">Nro</f:facet>
@@ -49,7 +49,6 @@
                             </h:column>
                             
                             <h:column>
-                                <f:facet name="header"></f:facet>
                                 <a jsf:action="#{registroController.cargarExpedienteEdit(expediente)}"> 
                                     <span class="glyphicon glyphicon-share" style="font-size: medium" />
                                 </a>
