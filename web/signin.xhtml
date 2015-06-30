@@ -9,36 +9,32 @@
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <meta name="description" content=""/>
         <meta name="author" content=""/> 
-
         <title>Ingreso sid</title>
-        <link href="/sid/faces/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-        <link href="/sid/faces/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css"/>
+        <link href="/sid/faces/bootstrap/css/bootstrap.simco.min.css" rel="stylesheet" type="text/css"/>
         <link href="/sid/faces/bootstrap/css/signin.css" rel="stylesheet" type="text/css"/>
-        
-        
-        
-         </h:head>
+    </h:head>
+    <body>
+        <center>
+            <h1>sid <small>Sistema de Registro de Informacion Defensorial</small></h1>
+        </center>
+        <br/>
+        <div class="container">
 
-    <h:body>
-        
-            <center>
-                <h1>sid <small>Sistema de Registro de Informacion Defensorial</small></h1>
-            </center>
-            <br/>
-            <div class="container">
-
-                <h:form class="form-signin">
-                    <h3 class="form-signin-heading">Por favor, inicie sesión</h3>
-                    <input type="text" id="usuario" jsf:value="#{loginController.usuario.codigo}" class="form-control" placeholder="Usuario" required="true" style="width: 100%" autofocus="true"/>
-                    <input type="password" id="pass" jsf:value="#{loginController.usuario.clave}" class="form-control" placeholder="Contraseña" required="true" style="width: 100%"/>
-                    <label class="checkbox">
-                        <input type="checkbox" value="remember-me"/> Recordar
-                    </label>
-                    <button class="btn btn-lg btn-primary btn-block" jsf:action="#{loginController.ingresarSistema}" type="submit">Ingresar
-                        <span class="glyphicon glyphicon-user"></span>
-                    </button>
-                </h:form>
-            </div>
-      
-    </h:body>
+            <h:form class="form-signin">
+                <h3 class="form-signin-heading">Por favor, inicie sesión</h3>
+                <input type="text" id="usuario" jsf:value="#{loginController.usuario.codigo}" class="form-control" placeholder="Usuario" required="true" style="width: 100%" autofocus="true"/>
+                <input type="password" id="pass" jsf:value="#{loginController.usuario.clave}" class="form-control" placeholder="Contraseña" required="true" style="width: 100%"/>
+                <label class="checkbox">
+                    <input type="checkbox" value="remember-me"/> Recordar
+                </label>
+                <button class="btn btn-lg btn-primary btn-block" jsf:action="#{loginController.ingresarSistema}" type="submit">Ingresar
+                    <span class="glyphicon glyphicon-user"></span>
+                </button>
+            </h:form>
+        </div>
+        <link href="/sid/faces/enjoy/css/theme.min.css" rel="stylesheet" type="text/css"/>
+        <link href="/sid/faces/enjoy/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+        <link href="/sid/faces/bootstrap/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css"/>
+        <link href="/sid/faces/bootstrap/css/slider.min.css" rel="stylesheet" type="text/css"/>
+    </body>
 </html>
