@@ -79,4 +79,24 @@
         <filter-name>SeguridadSessionFilter</filter-name>
         <url-pattern>/faces/pages/*</url-pattern>
     </filter-mapping>
+    
+        <filter>
+        <filter-name>ExpiresFilter</filter-name>
+        <filter-class>gob.dp.sid.comun.ExpiresFilter</filter-class>
+        <init-param>
+            <param-name>days</param-name>
+            <param-value>30</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>ExpiresFilter</filter-name>
+        <url-pattern>*.css</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>ExpiresFilter</filter-name>
+        <url-pattern>*.js</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+    </filter-mapping>
+    
 </web-app>

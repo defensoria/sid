@@ -31,5 +31,35 @@ public class ExpedienteDAOImpl extends SqlSessionDaoSupport implements Expedient
     public List<Expediente> expedienteBuscar(Expediente expediente) {
         return getSqlSession().selectList("gob.dp.sid.registro.dao.ExpedienteDAO.expedienteBuscar", expediente);
     }
+
+    @Override
+    public List<Expediente> expedienteBuscarUsuario(String codigo) {
+        return getSqlSession().selectList("gob.dp.sid.registro.dao.ExpedienteDAO.expedienteBuscarUsuario", codigo);
+    }
+
+    @Override
+    public void expedienteConcluir(long idExpediente) {
+        getSqlSession().update("gob.dp.sid.registro.dao.ExpedienteDAO.expedienteConcluir", idExpediente);
+    }
+
+    @Override
+    public List<Expediente> expedienteBuscarUsuarioPaginado(Expediente expediente) {
+        return getSqlSession().selectList("gob.dp.sid.registro.dao.ExpedienteDAO.expedienteBuscarUsuarioPaginado", expediente);
+    }
+
+    @Override
+    public List<Expediente> expedienteReporteMesUsuario(Expediente expediente) {
+        return getSqlSession().selectList("gob.dp.sid.registro.dao.ExpedienteDAO.expedienteReporteMesUsuario", expediente);
+    }
+
+    @Override
+    public List<Expediente> expedientexPersona(long idPersona) {
+        return getSqlSession().selectList("gob.dp.sid.registro.dao.ExpedienteDAO.expedientexPersona", idPersona);
+    }
+
+    @Override
+    public List<Expediente> expedienteBuscarUsuarios(Expediente expediente) {
+        return getSqlSession().selectList("gob.dp.sid.registro.dao.ExpedienteDAO.expedienteBuscarUsuarios", expediente);
+    }
     
 }

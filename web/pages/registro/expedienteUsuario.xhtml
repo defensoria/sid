@@ -1,0 +1,301 @@
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:h="http://xmlns.jcp.org/jsf/html" 
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:gc="http://xmlns.jcp.org/jsf/composite/gc">
+
+    <ui:composition template="../template/template.xhtml">
+
+        <ui:define name="content">
+            <h:form id="idForm" class="form-horizontal">
+                <div class="panel panel-featured-top-primary">
+                    <div class="panel-body">
+                        <table style="width: 100%">
+                            <tr>
+                                <td style="width: 95%">
+                                    <table style="width: 100%">
+                                        <tr>
+                                            <td style="width: 35%; vertical-align: top">
+                                                <span class="text-resalt-primary">Busqueda</span>
+                                                <table>
+                                                    <tr>
+                                                        <td colspan="2" style="padding-bottom: 5px">
+                                                            <input jsf:value="#{registroController.personaBusqueda.dni}" maxlength="8" type="text" placeholder="Documento" />
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="2" style="padding-bottom: 5px">
+                                                            <input jsf:value="#{registroController.personaBusqueda.idExpediente}" maxlength="20" type="text" placeholder="Expediente" />
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="padding-bottom: 5px">
+                                                            <input jsf:value="#{registroController.personaBusqueda.apellidoPat}" maxlength="50" type="text" placeholder="Ap. paterno" />
+                                                        </td>
+                                                        <td style="padding-bottom: 5px">
+                                                            <input jsf:value="#{registroController.personaBusqueda.apellidoMat}" maxlength="50" type="text" placeholder="Ap. Materno" />
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="2" style="padding-bottom: 5px">
+                                                            <input jsf:value="#{registroController.personaBusqueda.nombre}" maxlength="100" type="text" placeholder="Nombre / Razon Social" />
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="2" style="padding-bottom: 5px">
+                                                            <a class="btn btn-primary" jsf:action="#{registroController.buscarPersonaGeneral()}">
+                                                                <span class="glyphicon glyphicon-search" />Buscar
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                            <td  style="width: 35%; vertical-align: top; padding-left: 5px; text-align: right">
+                                                <a style="text-decoration:none" class="btn btn-primary" jsf:rendered="#{registroController.indSeleccion}" jsf:action="#{registroController.cargarModalActor()}" jsf:onclick="loadingModal()">
+                                                    <span class="glyphicon glyphicon-plus"/>Nueva Persona
+                                                    <f:ajax render=":idForm" onevent="openModalNuevaPersona"/>
+                                                </a>
+                                                <script>
+                                                    function openModalNuevaPersona(data) {
+                                                        if (data.status === 'success') {
+                                                            $("#loadModal").modal('hide');
+                                                            $('body').removeClass('modal-open');
+                                                            $(".modal-backdrop").removeClass("modal-backdrop");
+                                                            $("#idModalNuevaPersona").modal('show');
+                                                        }
+                                                    }
+                                                </script>
+                                                <div class="modal fade" data-backdrop="static" data-keyboard="false" id="idModalNuevaPersona" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog" style="text-align: left">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <a type="button" class="close" data-dismiss="modal">
+                                                                    <span style="color:red" class="glyphicon glyphicon-remove"></span>
+                                                                </a>
+                                                                <span class="text-resalt-primary">Registro de Persona</span>
+                                                            </div>
+                                                            <div class="modal-body" style="padding:5px">
+                                                                <div class="panel-body">
+                                                                    <table style="width: 100%">
+                                                                        <tr>
+                                                                            <td style="width: 20%"><b>DNI:</b></td>
+                                                                            <td style="padding-bottom: 10px;">
+                                                                                <input type="text" placeholder="DNI" jsf:value="#{registroController.persona.dni}" style="width: 50%" maxlength="8"/>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td><b>Nombre:</b></td>
+                                                                            <td style="padding-bottom: 10px">
+                                                                                <input type="text" placeholder="Nombre" jsf:value="#{registroController.persona.nombre}" style="width: 90%" maxlength="200"/>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td><b>Apellido paterno:</b></td>
+                                                                            <td style="padding-bottom: 10px;">
+                                                                                <input type="text" placeholder="Apellido Paterno" jsf:value="#{registroController.persona.apellidoPat}" style="width: 90%" maxlength="100"/>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td><b>Apellido Materno:</b></td>
+                                                                            <td style="padding-bottom: 10px">
+                                                                                <input type="text" placeholder="Apellido Materno" jsf:value="#{registroController.persona.apellidoMat}" style="width: 90%" maxlength="100"/>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td><b>Dirección:</b></td>
+                                                                            <td style="padding-bottom: 10px">
+                                                                                <input type="text" placeholder="Dirección" jsf:value="#{registroController.persona.direccion}" style="width: 90%" maxlength="300"/><br/>
+                                                                                <h:panelGroup id="idUbigeoPersona">
+                                                                                    <table style="width:90%">
+                                                                                        <tr>
+                                                                                            <td style="width:33%">
+                                                                                                <h:selectOneMenu value="#{registroController.persona.idDepartamento}">
+                                                                                                    <f:selectItem itemLabel="Departamento" itemValue="0"/>
+                                                                                                    <f:selectItems value="#{registroController.listaDepartamento}" var="y" itemLabel="#{y.value}" itemValue="#{y.label}" />
+                                                                                                    <f:ajax listener="#{registroController.comboProvincia()}" render="idUbigeoPersona" />
+                                                                                                </h:selectOneMenu>
+                                                                                            </td>
+                                                                                            <td style="width:33%">
+                                                                                                <h:selectOneMenu id="cmbProvincia1" value="#{registroController.persona.idProvincia}">
+                                                                                                    <f:selectItem itemLabel="Provincia" itemValue="0"/>
+                                                                                                    <f:selectItems value="#{registroController.listaProvincia}" var="y" itemLabel="#{y.value} #{y.label}" itemValue="#{y.id}" />
+                                                                                                    <f:ajax listener="#{registroController.comboDistrito()}" render="cmbDistrito1"/>
+                                                                                                </h:selectOneMenu>
+                                                                                            </td>
+                                                                                            <td style="width:34%">
+                                                                                                <h:selectOneMenu id="cmbDistrito1" value="#{registroController.persona.idDistrito}">
+                                                                                                    <f:selectItem itemLabel="Distrito" itemValue="0"/>
+                                                                                                    <f:selectItems value="#{registroController.listaDistrito}" var="y" itemLabel="#{y.value} #{y.label}" itemValue="#{y.id}" />
+                                                                                                </h:selectOneMenu>
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                    </table>
+                                                                                </h:panelGroup>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td><b>Correo:</b></td>
+                                                                            <td style="padding-bottom: 10px">
+                                                                                <input type="text" placeholder="Correo electronico" jsf:value="#{registroController.persona.email}" style="width: 90%" maxlength="100"/>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td><b>Telefono 1:</b></td>
+                                                                            <td style="padding-bottom: 10px">
+                                                                                <input type="text" placeholder="Telefono 1" jsf:value="#{registroController.persona.telefono1}" style="width: 90%" maxlength="50"/>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td><b>Telefono 2:</b></td>
+                                                                            <td style="padding-bottom: 10px">
+                                                                                <input type="text" placeholder="Telefono 2" jsf:value="#{registroController.persona.telefono2}" style="width: 90%" maxlength="50"/>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <a  class="btn btn-default" data-dismiss="modal">
+                                                                        <span class="glyphicon glyphicon-remove"/>Cerrar
+                                                                    </a>
+                                                                    <a jsf:action="#{registroController.guardarVincularPersona()}" class="btn btn-primary">
+                                                                        <span class="glyphicon glyphicon-floppy-disk" />Guardar
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                                <h:panelGroup rendered="#{registroController.indSeleccion}" style="text-align: left">
+                                                    <h:dataTable value="#{registroController.listaPersonaGeneral}" var="per" binding="#{row}" class="table table-hover" rendered="#{registroController.listaPersonaGeneral.size() > 0}">
+                                                        <h:column>
+                                                            <f:facet name="header">Nro</f:facet>
+                                                            <h:outputText value="#{rowIndex.row+1}" />
+                                                        </h:column>
+                                                        <h:column>
+                                                            <f:facet name="header">Nombre completo</f:facet>
+                                                            <h:outputText value="#{per.nombre} #{per.apellidoPat} #{per.apellidoMat}" />
+                                                        </h:column>
+                                                        <h:column>
+                                                            <f:facet name="header">Documento</f:facet>
+                                                            <h:outputText value="#{per.dni}" />
+                                                        </h:column>
+                                                        <h:column>
+                                                            <a jsf:action="#{registroController.setearPersonaSeleccionada(per)}" >                            
+                                                                <span class="glyphicon glyphicon-share" style="font-size: medium"/>
+                                                            </a>
+                                                        </h:column>
+                                                    </h:dataTable>
+                                                </h:panelGroup>
+                                                <h:panelGroup rendered="#{!registroController.indSeleccion}">
+                                                    <table style="width: 100%">
+                                                        <tr>
+                                                            <td style="text-align: right">
+                                                                <a class="btn btn-primary" jsf:action="#{registroController.retornoListaPersonasSeleccionadas()}">
+                                                                    <span class="glyphicon glyphicon-share" />Regresar
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                    <br/>
+                                                    <table style="width: 100%; text-align: left" class="table table-hover">
+
+                                                        <tr>
+                                                            <td><span class="text-resalt-primary">Nombre: </span><span class="text-resalt-comun">#{registroController.personaSeleccionada.nombre} #{registroController.personaSeleccionada.apellidoPat} #{registroController.personaSeleccionada.apellidoMat}</span></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><span class="text-resalt-primary">DNI: </span><span class="text-resalt-comun">#{registroController.personaSeleccionada.dni}</span></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <span class="text-resalt-primary">Direccion: </span><span class="text-resalt-comun">#{registroController.personaSeleccionada.direccion}</span><br/>
+                                                                <span class="text-resalt-primary">Departamento: </span><span class="text-resalt-comun">#{registroController.personaSeleccionada.nombreDepartamento}</span><br/>
+                                                                <span class="text-resalt-primary">Provincia: </span><span class="text-resalt-comun">#{registroController.personaSeleccionada.nombreProvincia}</span><br/>
+                                                                <span class="text-resalt-primary">Distrito: </span><span class="text-resalt-comun">#{registroController.personaSeleccionada.nombreDistrito}</span><br/>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><span class="text-resalt-primary">Telefono 1: </span><span class="text-resalt-comun">#{registroController.personaSeleccionada.telefono1}</span></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><span class="text-resalt-primary">Telefono 2: </span><span class="text-resalt-comun">#{registroController.personaSeleccionada.telefono1}</span></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><span class="text-resalt-primary">Correo electronico: </span><span class="text-resalt-comun">#{registroController.personaSeleccionada.email}</span></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><span class="text-resalt-primary">Ultima actualización: </span><span class="text-resalt-comun"><h:outputText value="#{registroController.personaSeleccionada.fechaModificacion}" >
+                                                                    <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
+                                                                    </h:outputText></span></td>
+                                                        </tr>
+                                                    </table>
+                                                </h:panelGroup>
+                                            </td>
+                                            <td style="padding-left: 5px">
+                                                <h:panelGroup rendered="#{!registroController.indSeleccion}">
+                                                    <span class="text-resalt-primary">Tipo de registro: </span>
+                                                    <h:selectOneMenu class="selectRadio" value="#{registroController.personaSeleccionada.tipoExpediente}">
+                                                        <f:selectItem itemLabel="SELECCIONE" itemValue="0" /> 
+                                                        <f:selectItems value="#{listasComunesController.buscarExpedienteTipoClasificacion(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
+                                                    </h:selectOneMenu>
+                                                </h:panelGroup>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <td>
+                                    <a jsf:action="#{registroController.iniciarExpedienteNuevo()}" jsf:rendered="#{!registroController.indSeleccion}">
+                                        <span class="glyphicon glyphicon-share-alt" style="font-size: xx-large"/>
+                                    </a>
+                                </td>
+                            </tr>
+                        </table>
+                        <h:panelGroup rendered="#{registroController.listaExpedienteXPersona.size() > 0}">
+                            <div class="panel panel-warning">
+                                <div class="panel-heading">
+                                    Listado de Expedientes segun Persona
+                                </div>
+                                <div class="panel-body">
+                                    <h:dataTable value="#{registroController.listaExpedienteXPersona}" var="exped" class="table table-hover" binding="#{row4}">
+                                        <h:column>
+                                            <f:facet name="header">Nro</f:facet>
+                                            <h:outputText value="#{row4.rowIndex+1}" />
+                                        </h:column>
+                                        <h:column>
+                                                    <f:facet name="header">Expediente</f:facet>
+                                                    <h:outputText value="#{exped.numero}" />
+                                                </h:column>
+                                                <h:column>
+                                                    <f:facet name="header">Tipo</f:facet>
+                                                    <h:outputText value="#{exped.clasificacionTipoNombre}" />
+                                                </h:column>
+                                                <h:column>
+                                                    <f:facet name="header">Fecha Registro</f:facet>
+                                                    <h:outputText value="#{exped.fechaRegistro}" >
+                                                        <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
+                                                    </h:outputText>
+                                                </h:column>
+                                                <h:column>
+                                                    <f:facet name="header">Estado</f:facet>
+                                                    <h:outputText value="#{exped.general == 'A'? 'Activo' : 'Concluido' }" />
+                                                </h:column>
+                                        <h:column>
+                                                    <a jsf:action="#{registroController.cargarExpedienteEdit(exped)}">
+                                                        <span class="glyphicon glyphicon-pencil"/>
+                                                    </a>
+                                                </h:column>
+                                    </h:dataTable>
+                                </div>
+                            </div>
+                        </h:panelGroup>
+
+
+                    </div>
+                </div>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

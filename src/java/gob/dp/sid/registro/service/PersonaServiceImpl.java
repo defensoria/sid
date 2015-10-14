@@ -35,5 +35,10 @@ public class PersonaServiceImpl implements PersonaService{
     public List<Persona> personaBuscarCadena(String cadena) {
         return personaDAO.personaBuscarCadena(cadena);
     }
+
+    @Override
+    public List<Persona> personaBusarGeneral(Persona persona) {
+        return personaDAO.personaBusarGeneral(persona);
+    }
     
 }

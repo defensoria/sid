@@ -1,30 +1,159 @@
-<?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" 
-      xmlns:h="http://xmlns.jcp.org/jsf/html" 
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:jsf="http://xmlns.jcp.org/jsf">
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:composition template="../template/template.xhtml">
         <ui:define name="content">
-
             <h:form>
-                <h1>BIENVENIDO AL SID</h1>
-                <script>
-                    sessionStorage.clear();
-                    var usuario = sessionStorage.getItem('userSesion');
-                        if(usuario === null){
-                            var userJSON;
-                            userJSON = {
-                            'codigo': '#{sessionStorageController.usuarioSession.codigo}',
-                            'nombre': '#{sessionStorageController.usuarioSession.nombre}',
-                            'apellidoPat': '#{sessionStorageController.usuarioSession.apellidoPaterno}',
-                            'apellidoMat': '#{sessionStorageController.usuarioSession.apellidoMaterno}',
-                            'cargo':'#{sessionStorageController.usuarioSession.cargo}'
-                                    }
-                        sessionStorage.setItem('userSesion', JSON.stringify(userJSON));
-                        }
-            </script>
+                <table style="width: 100%">
+                    <tr>
+                        <td></td>
+                        <td style="text-align: right">
+                            <a class="btn btn-primary" jsf:action="#{registroController.cargarNuevaBusqueda()}">
+                                <span class="glyphicon glyphicon-user"/>
+                                Atención al Usuario
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+                <br/>
+                <div class="panel panel-primary">
+
+                    <div class="panel-body">
+                        <table style="width: 100%" class="table">
+                            <tr>
+                                <td style="width: 50%; padding-right: 2px;">
+                                    <div class="panel panel-primary">
+                                        <div class="panel-heading">
+                                            <span >Lista de Expedientes</span>
+                                        </div>
+                                        <div class="panel-body">
+                                            <h:dataTable value="#{registroController.listaExpedienteXUsuarioPaginado}" var="exped" class="table table-hover" binding="#{row3}">
+                                                <h:column>
+                                                    <f:facet name="header">Nro</f:facet>
+                                                    <h:outputText value="#{(row3.rowIndex+1)+(registroController.nroPagina-1)*10}" />
+                                                </h:column>
+                                                <h:column>
+                                                    <f:facet name="header">Expediente</f:facet>
+                                                    <h:outputText value="#{exped.numero}" />
+                                                </h:column>
+                                                <h:column>
+                                                    <f:facet name="header">Tipo</f:facet>
+                                                    <h:outputText value="#{exped.clasificacionTipoNombre}" />
+                                                </h:column>
+                                                <h:column>
+                                                    <f:facet name="header">Fecha Registro</f:facet>
+                                                    <h:outputText value="#{exped.fechaRegistro}" >
+                                                        <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
+                                                    </h:outputText>
+                                                </h:column>
+                                                <h:column>
+                                                    <f:facet name="header">Estado</f:facet>
+                                                    <h:outputText value="#{exped.general == 'A'? 'Activo' : 'Concluido' }" />
+                                                </h:column>
+                                                <h:column>
+                                                    <a jsf:action="#{registroController.cargarExpedienteEdit(exped)}">
+                                                        <span class="glyphicon glyphicon-pencil"/>
+                                                    </a>
+                                                </h:column>
+                                            </h:dataTable>
+                                            <ul class="pager">
+                                                <li>
+                                                    <a jsf:action="#{registroController.listarExpedienteUsuarioPaginado(registroController.nroPagina -1)}" jsf:rendered="#{!empty registroController.listaExpedienteXUsuarioPaginado}" jsf:onclick="loadingModal()">Anterior
+                                                        <f:ajax render="@form" onevent="closeModal"/>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a jsf:action="#{registroController.listarExpedienteUsuarioPaginado(registroController.nroPagina +1)}" jsf:rendered="#{!empty registroController.listaExpedienteXUsuarioPaginado}" jsf:onclick="loadingModal()">Siguiente
+                                                        <f:ajax render="@form" onevent="closeModal"/>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td style="padding-left: 2px">
+                                    <div class="panel panel-primary">
+                                        <div class="panel-heading">
+                                            <span >Atenciones</span>
+                                        </div>
+                                        <div class="panel-body">
+
+                                            <script>
+                                                $(function () {
+                                                    // Use Morris.Bar
+                                                    Morris.Bar({
+                                                        element: 'graph',
+                                                        data: [
+                                                #{registroController.grafico001}
+                                                        ],
+                                                        xkey: 'x',
+                                                        ykeys: ['y'],
+                                                        labels: ['Y']
+                                                    }).on('click', function (i, row) {
+                                                        console.log(i, row);
+                                                    });
+
+                                                    // Use Morris.Bar
+                                                    Morris.Bar({
+                                                        element: 'graph2',
+                                                        data: [
+                                                #{registroController.grafico002}
+                                                        ],
+                                                        xkey: 'x',
+                                                        ykeys: ['y', 'z'],
+                                                        labels: ['Activo', 'Concluido']
+                                                    }).on('click', function (i, row) {
+                                                        console.log(i, row);
+                                                    });
+
+
+                                                    var month_data = [
+                                                #{registroController.grafico003}
+                                                    ];
+                                                    Morris.Line({
+                                                        element: 'graph3',
+                                                        data: month_data,
+                                                        xkey: 'period',
+                                                        ykeys: ['queja', 'consulta', 'petitorio'],
+                                                        labels: ['queja', 'consulta', 'petitorio'],
+                                                        smooth: false
+                                                    });
+
+                                                });
+                                            </script>
+                                            <div id="graph"></div>
+
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-primary">
+                                        <div class="panel-heading">
+                                            <span >Gestión de Casos</span>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div id="graph2"></div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="panel panel-primary">
+                                        <div class="panel-heading">
+                                            <span >Otros Graficos</span>
+                                        </div>
+                                        <div class="panel-body">
+
+                                            <div id="graph3"></div>
+
+                                        </div>
+
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
             </h:form> 
         </ui:define>
     </ui:composition>

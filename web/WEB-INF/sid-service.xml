@@ -34,5 +34,8 @@
 
         <context:component-scan  base-package="gob.dp.sid.registro.service"/>
         <context:component-scan  base-package="gob.dp.sid.registro.controller" scoped-proxy="targetClass"  />
+        
+        <context:component-scan  base-package="gob.dp.sid.reporte.service"/>
+        <context:component-scan  base-package="gob.dp.sid.reporte.controller" scoped-proxy="targetClass"  />
 </beans>
 

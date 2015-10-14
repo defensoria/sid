@@ -15,10 +15,139 @@
                     function confirmar2() {
                         $(".confirmacion2").modal('show');
                     }
+                    function confirmar3() {
+                        $(".confirmacion3").modal('show');
+                    }
                 </script>
                 <gc:confirmSubmit classGC="confirmacion2" bean="#{registroController.guardarVersion()}"/>
+                <gc:confirmSubmit classGC="confirmacion3" bean="#{registroController.concluirExpediente()}" mensaje="Esta seguro que desea concluir el expediente?"/>
                 <gc:confirmSubmit bean="#{registroController.guardarBorrador()}" />
                 <table style="width: 100%">
+                    <tr>
+                        <td colspan="2">
+                            <div class="panel panel-featured-top-primary">
+                                <div class="panel-body" >
+                                    <table style="width: 100%">
+                                        <tr>
+                                            <td>
+                                                
+                                                <input type="hidden" id="idTipoClasificacion" jsf:value="#{registroController.expediente.tipoClasificion}" />
+                                    <span style="font-size: 2.5em" class="text-resalt-primary">Atención de Casos</span><br/>
+                                    <span id="idTextTipoClasificacion" class="text-resalt-comun" style="font-weight: bold;font-size: 1.5em">SELECCIONE</span>
+                                    <a href="#" class="trigger2">
+                                    <span style="color:#3183b9;font-size:large;vertical-align: top" class="glyphicon glyphicon-chevron-down trigger2"></span>
+                                </a>
+                                <div class="popover-markup" style="float:right">
+                                    <div class="head hide"><b class="text-primary">Seleccione</b></div>
+                                    <div class="content hide">
+                                        <div style="width:100%">
+                                            <c:forEach var="x" items="#{listasComunesController.buscarExpedienteTipoClasificacion(false,false,false)}">
+                                                <a class="alink" onclick="asignarTipo('${x.valorParametro}')">
+                                                <div class="alert fade in alert-danger" role="alert" style="padding-bottom:5px;padding-top:5px;margin-bottom:3px">
+                                                    <strong>
+                                                        <h:outputText value="${x.nombreParametro}" class="cTipoRegistro" style="cursor:pointer"/>
+                                                    </strong>
+                                                </div>
+                                            </a>
+                                            </c:forEach>
+                                            
+                                           
+                                        </div>
+                                    </div>
+                                </div>
+                                <style>.alink:hover{text-decoration:none}.alink:link{text-decoration:none}.alink:active{text-decoration:none}</style>
+                                <script>$('.trigger2').popover({html: true, placement: 'bottom', tabindex: '0', trigger: 'focus', title: function () {
+                                            return $(this).parent().find('.head').html();
+                                        }, content: function () {
+                                            return $(this).parent().find('.content').html();
+                                        }});
+                                    function asignarTipo(tipo) {
+                                        $("#idTipoClasificacion").val(tipo);
+                                        $("#idTextTipoClasificacion").css("color", "#3071A9");
+                                        if (tipo === "01") {
+                                            $("#idTextTipoClasificacion").text("QUEJA");
+                                            
+                                        }
+                                        if (tipo === "02") {
+                                            $("#idTextTipoClasificacion").text("CONSULTA");
+                                            
+                                        }
+                                        if (tipo === "03") {
+                                            $("#idTextTipoClasificacion").text("PETITORIO");
+                                            
+                                        }
+                                        if (tipo === "04") {
+                                            $("#idTextTipoClasificacion").text("SIN CLASIFICACION");
+                                            
+                                        }
+                                    }
+                                    if ($("#idTipoRegistro").val() !== "") {
+                                        if ($("#idTipoClasificacion").val() === "01") {
+                                            $("#idTextTipoClasificacion").text("QUEJA");
+                                            
+                                        }
+                                        if ($("#idTipoClasificacion").val() === "02") {
+                                            $("#idTextTipoClasificacion").text("CONSULTA");
+                                            
+                                        }
+                                        if ($("#idTipoClasificacion").val() === "03") {
+                                            $("#idTextTipoClasificacion").text("PETITORIO");
+                                            
+                                        }
+                                        if ($("#idTipoClasificacion").val() === "04") {
+                                            $("#idTextTipoClasificacion").text("SIN CLASIFICACION");
+                                            
+                                        }
+                                        $("#idTextTipoClasificacion").css("color", "#3071A9");
+                                    }
+                                    $(document).ready(function () {
+                                        if ($("#idTipoRegistro").val() !== "") {
+                                            if ($("#idTipoClasificacion").val() === "01") {
+                                            $("#idTextTipoClasificacion").text("QUEJA");
+                                            
+                                        }
+                                        if ($("#idTipoClasificacion").val() === "02") {
+                                            $("#idTextTipoClasificacion").text("CONSULTA");
+                                            
+                                        }
+                                        if ($("#idTipoClasificacion").val() === "03") {
+                                            $("#idTextTipoClasificacion").text("PETITORIO");
+                                            
+                                        }
+                                        if ($("#idTipoClasificacion").val() === "04") {
+                                            $("#idTextTipoClasificacion").text("SIN CLASIFICACION");
+                                            
+                                        }
+                                        $("#idTextTipoClasificacion").css("color", "#3071A9");
+        }
+    });</script>
+                                            </td>
+                                            <td style="text-align: right">
+                                                <h:panelGroup  id="idPanel3" rendered="#{registroController.expediente.id == null || registroController.expediente.version == 0}">
+                                <a class="btn btn-info" onclick="confirmar()">
+                                    <span class="glyphicon glyphicon-floppy-disk" />Borrador
+                                </a>
+                            </h:panelGroup>
+                            &#160;&#160;
+                            <h:panelGroup rendered="#{registroController.expediente.general != 'C'}">
+                                <a class="btn btn-primary" onclick="confirmar2()">
+                                <span class="glyphicon glyphicon-floppy-disk" />Guardar
+                            </a>
+                            </h:panelGroup>
+                            &#160;&#160;
+                            <h:panelGroup id="idPanel2" rendered="#{registroController.expediente.id != null and registroController.expediente.version > 0 and registroController.expediente.general != 'C'}">
+                            <a class="btn btn-warning" onclick="confirmar3()">
+                                <span class="glyphicon glyphicon-floppy-save" />Concluir
+                            </a>
+                                </h:panelGroup>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
                     <tr>
                         <td style="width: 50%; vertical-align: top; padding-right: 2px">
                             <div class="panel panel-featured-top-primary" id="idPanel1">
@@ -28,9 +157,7 @@
                                     <table style="width: 100%">
                                         <tr>
                                             <td style="width: 50%;padding-bottom: 10px">
-                                                <h:selectOneMenu value="#{registroController.expediente.tipoClasificion}">
-                                                    <f:selectItems value="#{listasComunesController.buscarExpedienteTipoClasificacion(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
-                                                </h:selectOneMenu>
+                                               
                                             </td>
                                             <td style="width: 50%; text-align: right">
                                                 <h:selectBooleanCheckbox id="idCheckbox" value="#{registroController.expediente.calificacion}" />Calificación aprobada
@@ -457,15 +584,7 @@
                     </tr>
                     <tr>
                         <td colspan="2" style="text-align: center">
-                            <h:panelGroup rendered="#{registroController.expediente.id == null || registroController.expediente.version == 0}">
-                                <a class="btn btn-info" onclick="confirmar()">
-                                    <span class="glyphicon glyphicon-floppy-disk" />Borrador
-                                </a>
-                            </h:panelGroup>
-                            &#160;&#160;
-                            <a class="btn btn-primary" onclick="confirmar2()">
-                                <span class="glyphicon glyphicon-floppy-disk" />Guardar
-                            </a>
+                           
                         </td>
                     </tr>
                 </table>

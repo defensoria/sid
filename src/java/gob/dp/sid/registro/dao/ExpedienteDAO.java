@@ -20,4 +20,16 @@ public interface ExpedienteDAO {
     
     public List<Expediente> expedienteBuscar(Expediente expediente); 
     
+    public List<Expediente> expedienteBuscarUsuario(String codigo); 
+    
+    public void expedienteConcluir(long idExpediente); 
+    
+    public List<Expediente> expedienteBuscarUsuarioPaginado(Expediente expediente); 
+    
+    public List<Expediente> expedienteReporteMesUsuario(Expediente expediente); 
+    
+    public List<Expediente> expedientexPersona(long idPersona); 
+    
+    public List<Expediente> expedienteBuscarUsuarios(Expediente expediente); 
+    
 }

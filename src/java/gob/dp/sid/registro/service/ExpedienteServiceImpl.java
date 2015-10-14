@@ -64,5 +64,34 @@ public class ExpedienteServiceImpl implements ExpedienteService{
     public List<Expediente> expedienteBuscar(Expediente expediente) {
         return expedienteDAO.expedienteBuscar(expediente);
     }
+
+    @Override
+    public List<Expediente> expedienteBuscarUsuario(String codigo) {
+        return expedienteDAO.expedienteBuscarUsuario(codigo);
+    }
+
+    @Override
+    public void expedienteConcluir(long idExpediente) {
+        expedienteDAO.expedienteConcluir(idExpediente);
+    }
+
+    @Override
+    public List<Expediente> expedienteBuscarUsuarioPaginado(Expediente expediente) {
+        return expedienteDAO.expedienteBuscarUsuarioPaginado(expediente);
+    }
+
+    @Override
+    public List<Expediente> expedienteReporteMesUsuario(Expediente expediente) {
+        return expedienteDAO.expedienteReporteMesUsuario(expediente);    }
+
+    @Override
+    public List<Expediente> expedientexPersona(long idPersona) {
+        return expedienteDAO.expedientexPersona(idPersona);
+    }
+
+    @Override
+    public List<Expediente> expedienteBuscarUsuarios(Expediente expediente) {
+        return expedienteDAO.expedienteBuscarUsuarios(expediente);
+    }
     
 }

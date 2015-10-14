@@ -38,6 +38,8 @@
         <typeAlias type="gob.dp.sid.registro.entity.Entidad" alias="entidad"/>
         <typeAlias type="gob.dp.sid.registro.entity.ExpedientePersona" alias="expedientePersona"/>
         <typeAlias type="gob.dp.sid.registro.entity.ExpedienteEntidad" alias="expedienteEntidad"/>
+        
+        <typeAlias type="gob.dp.sid.reporte.entity.Reporte" alias="reporte"/>
     </typeAliases>
 
     <mappers>
@@ -59,6 +61,8 @@
         <mapper resource="gob/dp/sid/registro/dao/xml/Entidad.xml" />
         <mapper resource="gob/dp/sid/registro/dao/xml/ExpedientePersona.xml" />
         <mapper resource="gob/dp/sid/registro/dao/xml/ExpedienteEntidad.xml" />
+        
+        
     </mappers>
     
 </configuration>

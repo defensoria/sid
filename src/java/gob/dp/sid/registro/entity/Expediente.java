@@ -42,9 +42,15 @@ public class Expediente implements Serializable{
     
     private Integer version;
     
-    private Date fechaVersion;
+    private Date fechaRegistro;
     
     private String etiqueta;
+    
+    private String usuarioModificacion;
+    
+    private Date fechaModificacion;
+    
+    private String general;
     
     /*agregados*/
     
@@ -60,7 +66,15 @@ public class Expediente implements Serializable{
     
     private String ingresoTipoSubTema;
     
+    private Integer ini;
     
+    private Integer fin;
+    
+    private Integer count;
+    
+    private String mes;
+    
+    private String usuarioCompleto;
 
     public Long getId() {
         return id;
@@ -176,12 +190,12 @@ public class Expediente implements Serializable{
         this.version = version;
     }
 
-    public Date getFechaVersion() {
-        return fechaVersion;
+    public Date getFechaRegistro() {
+        return fechaRegistro;
     }
 
-    public void setFechaVersion(Date fechaVersion) {
-        this.fechaVersion = fechaVersion;
+    public void setFechaRegistro(Date fechaRegistro) {
+        this.fechaRegistro = fechaRegistro;
     }
 
     public String getIdEtiqueta() {
@@ -238,6 +252,70 @@ public class Expediente implements Serializable{
 
     public void setEtiqueta(String etiqueta) {
         this.etiqueta = etiqueta;
+    }
+
+    public String getUsuarioModificacion() {
+        return usuarioModificacion;
+    }
+
+    public void setUsuarioModificacion(String usuarioModificacion) {
+        this.usuarioModificacion = usuarioModificacion;
+    }
+
+    public Date getFechaModificacion() {
+        return fechaModificacion;
+    }
+
+    public void setFechaModificacion(Date fechaModificacion) {
+        this.fechaModificacion = fechaModificacion;
+    }
+
+    public String getGeneral() {
+        return general;
+    }
+
+    public void setGeneral(String general) {
+        this.general = general;
+    }
+
+    public Integer getIni() {
+        return ini;
+    }
+
+    public void setIni(Integer ini) {
+        this.ini = ini;
+    }
+
+    public Integer getFin() {
+        return fin;
+    }
+
+    public void setFin(Integer fin) {
+        this.fin = fin;
+    }
+
+    public Integer getCount() {
+        return count;
+    }
+
+    public void setCount(Integer count) {
+        this.count = count;
+    }
+
+    public String getMes() {
+        return mes;
+    }
+
+    public void setMes(String mes) {
+        this.mes = mes;
+    }
+
+    public String getUsuarioCompleto() {
+        return usuarioCompleto;
+    }
+
+    public void setUsuarioCompleto(String usuarioCompleto) {
+        this.usuarioCompleto = usuarioCompleto;
     }
     
     

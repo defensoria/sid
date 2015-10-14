@@ -6,6 +6,7 @@
 package gob.dp.sid.registro.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  *
@@ -24,6 +25,38 @@ public class Persona implements Serializable{
     private String dni;
     
     private String ruc;
+    
+    private String direccion;
+    
+    private String email;
+    
+    private String telefono1;
+    
+    private String telefono2;
+    
+    private Integer idDepartamento;
+    
+    private Integer idProvincia;
+    
+    private Integer idDistrito;
+    
+    private String usuRegistro;
+    
+    private Date fechaRegistro;
+    
+    private String usuModificacion;
+            
+    private Date fechaModificacion;        
+    /*temporales*/
+    private String idExpediente;
+    
+    private String tipoExpediente;
+    
+    private String nombreDepartamento;
+    
+    private String nombreProvincia;
+    
+    private String nombreDistrito;
 
     public Long getId() {
         return id;
@@ -71,6 +104,134 @@ public class Persona implements Serializable{
 
     public void setRuc(String ruc) {
         this.ruc = ruc;
+    }
+
+    public String getIdExpediente() {
+        return idExpediente;
+    }
+
+    public void setIdExpediente(String idExpediente) {
+        this.idExpediente = idExpediente;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getTelefono1() {
+        return telefono1;
+    }
+
+    public void setTelefono1(String telefono1) {
+        this.telefono1 = telefono1;
+    }
+
+    public String getTelefono2() {
+        return telefono2;
+    }
+
+    public void setTelefono2(String telefono2) {
+        this.telefono2 = telefono2;
+    }
+
+    public Integer getIdDepartamento() {
+        return idDepartamento;
+    }
+
+    public void setIdDepartamento(Integer idDepartamento) {
+        this.idDepartamento = idDepartamento;
+    }
+
+    public Integer getIdProvincia() {
+        return idProvincia;
+    }
+
+    public void setIdProvincia(Integer idProvincia) {
+        this.idProvincia = idProvincia;
+    }
+
+    public Integer getIdDistrito() {
+        return idDistrito;
+    }
+
+    public void setIdDistrito(Integer idDistrito) {
+        this.idDistrito = idDistrito;
+    }
+
+    public String getTipoExpediente() {
+        return tipoExpediente;
+    }
+
+    public void setTipoExpediente(String tipoExpediente) {
+        this.tipoExpediente = tipoExpediente;
+    }
+
+    public String getNombreDepartamento() {
+        return nombreDepartamento;
+    }
+
+    public void setNombreDepartamento(String nombreDepartamento) {
+        this.nombreDepartamento = nombreDepartamento;
+    }
+
+    public String getNombreProvincia() {
+        return nombreProvincia;
+    }
+
+    public void setNombreProvincia(String nombreProvincia) {
+        this.nombreProvincia = nombreProvincia;
+    }
+
+    public String getNombreDistrito() {
+        return nombreDistrito;
+    }
+
+    public void setNombreDistrito(String nombreDistrito) {
+        this.nombreDistrito = nombreDistrito;
+    }
+
+    public String getUsuRegistro() {
+        return usuRegistro;
+    }
+
+    public void setUsuRegistro(String usuRegistro) {
+        this.usuRegistro = usuRegistro;
+    }
+
+    public Date getFechaRegistro() {
+        return fechaRegistro;
+    }
+
+    public void setFechaRegistro(Date fechaRegistro) {
+        this.fechaRegistro = fechaRegistro;
+    }
+
+    public String getUsuModificacion() {
+        return usuModificacion;
+    }
+
+    public void setUsuModificacion(String usuModificacion) {
+        this.usuModificacion = usuModificacion;
+    }
+
+    public Date getFechaModificacion() {
+        return fechaModificacion;
+    }
+
+    public void setFechaModificacion(Date fechaModificacion) {
+        this.fechaModificacion = fechaModificacion;
     }
     
     

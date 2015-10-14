@@ -17,13 +17,16 @@
         <result property="usuarioRegistro" column="C_USUREGISTRO"/>
         <result property="estado" column="C_ESTADO"/>
         <result property="version" column="N_VERSION"/>
-        <result property="fechaVersion" column="D_FECHAVERSION"/>
+        <result property="fechaRegistro" column="D_FECHAREGISTRO"/>
         <result property="etiqueta" column="C_ETIQUETA"/>
-        
+        <result property="general" column="C_ESTADOGENERAL"/>
         <result property="clasificacionTipoNombre" column="TIPOCLASIFICACION"/>
         <result property="ingresoTipoNombre" column="TIPOINGRESO"/>
         <result property="ingresoTipoTema" column="TIPOTEMA"/>
         <result property="ingresoTipoSubTema" column="TIPOSUBTEMA"/>
+        <result property="count" column="TOTAL"/>
+        <result property="mes" column="MES"/>
+        <result property="usuarioCompleto" column="USUARIOCOMPLETO"/>
         
     </resultMap> 
     
@@ -67,8 +70,8 @@
         <if test="version != null">
             N_VERSION,
         </if>
-        <if test="fechaVersion != null">
-            D_FECHAVERSION,
+        <if test="fechaRegistro != null">
+            D_FECHAREGISTRO,
         </if>
         <if test="numero != null">
             C_NUMEROEXPEDIENTE,
@@ -76,6 +79,7 @@
         <if test="etiqueta != null">
             C_ETIQUETA,
         </if>
+        C_ESTADOGENERAL,
         N_IDEXPEDIENTE
         )
         VALUES 
@@ -116,8 +120,8 @@
         <if test="version != null">
             #{version},
         </if>
-        <if test="fechaVersion != null">
-            #{fechaVersion},
+        <if test="fechaRegistro != null">
+            #{fechaRegistro},
         </if>
         <if test="numero != null">
             #{numero},
@@ -125,6 +129,7 @@
         <if test="etiqueta != null">
             #{etiqueta},
         </if>
+        'A',
         SEQ_SID_REG_EXPEDIENTE.NextVal
         )
         <selectKey keyProperty="id" resultType="Long">
@@ -158,7 +163,7 @@
                 C_OBSERVACIONES = #{observacion},
             </if>
             <if test="admision != null">
-               C_ADMISION  = #{admision},
+                C_ADMISION  = #{admision},
             </if>
             <if test="calificacion != null">
                 N_CALIFICACION = #{calificacion},
@@ -169,8 +174,8 @@
             <if test="estado != null">
                 C_ESTADO = #{estado},
             </if>
-            <if test="fechaVersion != null">
-                D_FECHAVERSION = #{fechaVersion},
+            <if test="fechaRegistro != null">
+                D_FECHAREGISTRO = #{fechaRegistro},
             </if>
             <if test="etiqueta != null">
                 C_ETIQUETA = #{etiqueta},
@@ -184,24 +189,83 @@
         </where>
     </update>
     
+    <update id="expedienteConcluir" parameterType="long">
+        UPDATE SID_REG_EXPEDIENTE
+        <set>
+            C_ESTADOGENERAL = 'C'
+        </set>
+        <where>
+            N_IDEXPEDIENTE = #{id}
+        </where>
+    </update>
+    
     
     <select id="expedienteBuscar" resultMap="expedienteMap" parameterType="expediente">
         SELECT A.*, 
-    B.NOMBRE_PARAMETRO TIPOCLASIFICACION,
-    C.NOMBRE_PARAMETRO TIPOINGRESO,
-    D.NOMBRE_PARAMETRO TIPOTEMA,
-    E.NOMBRE_PARAMETRO TIPOSUBTEMA
+        B.NOMBRE_PARAMETRO TIPOCLASIFICACION,
+        C.NOMBRE_PARAMETRO TIPOINGRESO,
+        D.NOMBRE_PARAMETRO TIPOTEMA,
+        E.NOMBRE_PARAMETRO TIPOSUBTEMA
         FROM SID_REG_EXPEDIENTE A
         LEFT JOIN SID_PARAMETRO B 
-           ON A.C_TIPOCLASIFICACION = B.VALOR_PARAMETRO AND B.PADRE_PARAMETRO = 10
+        ON A.C_TIPOCLASIFICACION = B.VALOR_PARAMETRO AND B.PADRE_PARAMETRO = 10
         LEFT JOIN SID_PARAMETRO C   
-           ON A.C_TIPOINGRESO = C.VALOR_PARAMETRO AND C.PADRE_PARAMETRO = 20
+        ON A.C_TIPOINGRESO = C.VALOR_PARAMETRO AND C.PADRE_PARAMETRO = 20
         LEFT JOIN SID_PARAMETRO D   
-           ON A.C_TIPOTEMA = D.VALOR_PARAMETRO AND D.PADRE_PARAMETRO = 30   
+        ON A.C_TIPOTEMA = D.VALOR_PARAMETRO AND D.PADRE_PARAMETRO = 30   
         LEFT JOIN SID_PARAMETRO E  
-           ON E.PADRE_PARAMETRO = D.NUM_PARAMETRO AND A.C_TIPOSUBTEMA = E.VALOR_PARAMETRO
+        ON E.PADRE_PARAMETRO = D.NUM_PARAMETRO AND A.C_TIPOSUBTEMA = E.VALOR_PARAMETRO
            
         WHERE A.C_ESTADO = 'A'
+    </select>
+    
+    <select id="expedienteBuscarUsuario" resultMap="expedienteMap" parameterType="String">
+        SELECT A.*, B.NOMBRE_PARAMETRO AS TIPOCLASIFICACION FROM SID_REG_EXPEDIENTE A
+        INNER JOIN SID_PARAMETRO B ON A.C_TIPOCLASIFICACION = B.VALOR_PARAMETRO
+        AND B.PADRE_PARAMETRO = 10
+        WHERE A.C_USUREGISTRO  = #{value}
+        AND A.C_ESTADO = 'A'
+    </select>
+    
+    <select id="expedienteReporteMesUsuario" resultMap="expedienteMap" parameterType="expediente">
+        SELECT COUNT(A.N_IDEXPEDIENTE) TOTAL, TO_CHAR(A.D_FECHAINGRESO, 'YYYY-MM') MES FROM SID_REG_EXPEDIENTE A
+        WHERE A.C_USUREGISTRO  = #{usuarioRegistro}
+        AND A.C_ESTADO = 'A'
+        AND A.C_TIPOCLASIFICACION = #{tipoClasificion}
+        GROUP BY TO_CHAR(A.D_FECHAINGRESO, 'YYYY-MM')
+    </select>
+    
+    <select id="expedientexPersona" resultMap="expedienteMap" parameterType="expediente">
+        SELECT A.*, B.NOMBRE_PARAMETRO AS TIPOCLASIFICACION FROM SID_REG_EXPEDIENTE A 
+        INNER JOIN SID_PARAMETRO B ON A.C_TIPOCLASIFICACION = B.VALOR_PARAMETRO
+        AND B.PADRE_PARAMETRO = 10
+INNER JOIN SID_REG_EXPEDE_PERSONA C ON A.N_IDEXPEDIENTE = C.N_IDEXPEDIENTE
+WHERE C.N_IDPERSONA = #{id} AND A.C_ESTADO = 'A'
+    </select>
+    
+    
+    <select id="expedienteBuscarUsuarioPaginado" resultMap="expedienteMap" parameterType="expediente">
+        SELECT A.*
+        FROM (
+        SELECT
+        B.*,
+        ROWNUM numfila
+        FROM (
+        SELECT A.*, B.NOMBRE_PARAMETRO AS TIPOCLASIFICACION FROM SID_REG_EXPEDIENTE A
+        INNER JOIN SID_PARAMETRO B ON A.C_TIPOCLASIFICACION = B.VALOR_PARAMETRO
+        AND B.PADRE_PARAMETRO = 10
+        WHERE A.C_USUREGISTRO  = #{usuarioRegistro}
+        AND A.C_ESTADO = 'A'
+        ) B
+        ) A WHERE a.numfila BETWEEN #{ini} AND #{fin}
+    </select>
+    
+    
+    
+    <select id="expedienteBuscarUsuarios" resultMap="expedienteMap" parameterType="expediente">
+        SELECT DISTINCT A.C_USUREGISTRO, B.NOM_USUARIO||' '||B.APE_PATERNO||' '||B.APE_MATERNO  USUARIOCOMPLETO FROM SID_REG_EXPEDIENTE A 
+        INNER JOIN SID_SEG_USUARIO B ON A.C_USUREGISTRO = B.CODIGO_USUARIO
+        WHERE A.C_ESTADO = 'A' AND A.N_VERSION > 0
     </select>
     
 </mapper>

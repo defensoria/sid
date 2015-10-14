@@ -19,4 +19,6 @@ public interface PersonaDAO {
     public void personaUpdate(Persona persona);
     
     public List<Persona> personaBuscarCadena(String cadena);
+    
+    public List<Persona> personaBusarGeneral(Persona persona);
 }

@@ -38,6 +38,10 @@ public class Usuario implements Serializable
     
     private String ruta;
     
+    private String sexo;
+    
+    private Integer nivel;
+    
     private String ip; //auditoria
 
     private List<Rol> listaRol;
@@ -181,7 +185,7 @@ public class Usuario implements Serializable
 
     public List<Rol> getListaRol() {
     	if (listaRol==null)
-    		listaRol=new ArrayList<Rol>();
+    		listaRol=new ArrayList<>();
         return listaRol;
     }
 
@@ -219,6 +223,22 @@ public class Usuario implements Serializable
 
     public void setRuta(String ruta) {
         this.ruta = ruta;
+    }
+
+    public String getSexo() {
+        return sexo;
+    }
+
+    public void setSexo(String sexo) {
+        this.sexo = sexo;
+    }
+
+    public Integer getNivel() {
+        return nivel;
+    }
+
+    public void setNivel(Integer nivel) {
+        this.nivel = nivel;
     }
 
 }

@@ -6,6 +6,7 @@ import gob.dp.sid.comun.controller.BusquedaController;
 import gob.dp.sid.comun.entity.Menu;
 import gob.dp.sid.comun.service.MenuService;
 import gob.dp.sid.registro.controller.RegistroController;
+import gob.dp.sid.reporte.controller.ReporteController;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +38,7 @@ public class MenuController implements Serializable{
     public void cargarMenu(){
         cargarBusquedaGeneral();
         menuPadre = menuService.menuPadre();
-        //cargarPagina(0);
+        cargarPagina(0);
     }
     
     private void cargarBusquedaGeneral(){
@@ -46,14 +47,21 @@ public class MenuController implements Serializable{
         busquedaController.inicioBusqueda();
     }
     
+    public String inicio(){
+        cargarPagina(0);
+        return "ingresarSistema";
+    }
     
     public String cargarPagina(int codigoPagina) {
-        if(codigoPagina == 0)
-        
         menuHijo = null;
         menuNieto = new ArrayList<>();
-        
         FacesContext context = FacesContext.getCurrentInstance();
+        
+        if(codigoPagina == 0){
+            RegistroController registroController = (RegistroController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "registroController");
+            registroController.inicio();
+            return null;
+        }
         
         if(codigoPagina == 1){
             RegistroController registroController = (RegistroController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "registroController");
@@ -123,6 +131,18 @@ public class MenuController implements Serializable{
             CatalogoController catalogoController = (CatalogoController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "catalogoController");
             menuHijo = menuService.menuHijo(15);
             return catalogoController.cargarPagina();
+        }
+        
+        if(codigoPagina == 16){
+            ReporteController reporteController = (ReporteController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "reporteController");
+            //menuHijo = menuService.menuHijo(15);
+            return reporteController.inicio();
+        }
+        
+        if(codigoPagina == 17){
+            RolController rolController = (RolController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "rolController");
+            //menuHijo = menuService.menuHijo(15);
+            return rolController.cargarGrafica();
         }
         
         if(codigoPagina == 33){

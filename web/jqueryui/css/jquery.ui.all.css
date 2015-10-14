@@ -8,5 +8,5 @@
  *
  * http://api.jqueryui.com/category/theming/
  */
-@import "jquery.ui.base.css";
-@import "jquery.ui.theme.css";
+
+@import "https://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css";

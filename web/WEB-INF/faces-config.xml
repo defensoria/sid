@@ -163,4 +163,25 @@
         </navigation-case>
   </navigation-rule>
   
+  <navigation-rule>
+        <navigation-case>
+                <from-outcome>expedienteUsuario</from-outcome>
+                <to-view-id>/pages/registro/expedienteUsuario.xhtml</to-view-id>
+        </navigation-case>
+  </navigation-rule>
+  
+  <navigation-rule>
+        <navigation-case>
+                <from-outcome>expedienteReporte</from-outcome>
+                <to-view-id>/pages/reportes/expedienteReporte.xhtml</to-view-id>
+        </navigation-case>
+  </navigation-rule>
+  
+  <navigation-rule>
+        <navigation-case>
+                <from-outcome>usuarioRoles</from-outcome>
+                <to-view-id>/pages/seguridad/usuarioRoles.xhtml</to-view-id>
+        </navigation-case>
+  </navigation-rule>
+  
 </faces-config>

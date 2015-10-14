@@ -8,8 +8,17 @@
         <result property="apellidoPat" column="C_APELLIDOPAT"/>
         <result property="apellidoMat" column="C_APELLIDOMAT"/>
         <result property="dni" column="C_DNI"/>
-        <result property="ruc" column="C_RUC"/>
-        
+        <result property="direccion" column="C_DIRECCION"/>
+        <result property="email" column="C_EMAIL"/>
+        <result property="telefono1" column="C_TELEFONO1"/>
+        <result property="telefono2" column="C_TELEFONO2"/>
+        <result property="idDepartamento" column="N_IDDEPA"/>
+        <result property="idProvincia" column="N_IDPROV"/>
+        <result property="idDistrito" column="N_IDDISTR"/>
+        <result property="usuRegistro" column="C_USUREGISTRO"/>
+        <result property="fechaRegistro" column="D_FECHAREGISTRO"/>
+        <result property="usuModificacion" column="C_USUMODIFICACION"/>
+        <result property="fechaModificacion" column="D_FECHAMODIFICACION"/>
     </resultMap> 
     
     
@@ -31,24 +40,90 @@
         <if test="ruc != null">
             C_RUC,
         </if>
+        <if test="direccion != null">
+            C_DIRECCION,
+        </if>
+        <if test="email != null">
+            C_EMAIL,
+        </if>
+        <if test="telefono1 != null">
+            C_TELEFONO1,
+        </if>
+        <if test="telefono2 != null">
+            C_TELEFONO2,
+        </if>
+        <if test="idDepartamento != null">
+            N_IDDEPA,
+        </if>
+        <if test="idProvincia != null">
+            N_IDPROV,
+        </if>
+        <if test="idDistrito != null">
+            N_IDDISTR,
+        </if>
+        <if test="usuRegistro != null">
+            C_USUREGISTRO,
+        </if>
+        <if test="fechaRegistro != null">
+            D_FECHAREGISTRO,
+        </if>
+        <if test="usuModificacion != null">
+            C_USUMODIFICACION,
+        </if>
+        <if test="fechaModificacion != null">
+            D_FECHAMODIFICACION,
+        </if>
         N_IDPERSONA
         )
         VALUES 
         (
         <if test="nombre != null">
-            UPPER(#{nombre}),
+            #{nombre},
         </if>
         <if test="apellidoPat != null">
-            UPPER(#{apellidoPat}),
+            #{apellidoPat},
         </if>
         <if test="apellidoMat != null">
-            UPPER(#{apellidoMat}),
+            #{apellidoMat},
         </if>
         <if test="dni != null">
             #{dni},
         </if>
         <if test="ruc != null">
             #{ruc},
+        </if>
+        <if test="direccion != null">
+            #{direccion},
+        </if>
+        <if test="email != null">
+            #{email},
+        </if>
+        <if test="telefono1 != null">
+            #{telefono1},
+        </if>
+        <if test="telefono2 != null">
+            #{telefono2},
+        </if>
+        <if test="idDepartamento != null">
+            #{idDepartamento},
+        </if>
+        <if test="idProvincia != null">
+            #{idProvincia},
+        </if>
+        <if test="idDistrito != null">
+            #{idDistrito},
+        </if>
+        <if test="usuRegistro != null">
+            #{usuRegistro},
+        </if>
+        <if test="fechaRegistro != null">
+            #{fechaRegistro},
+        </if>
+         <if test="usuModificacion != null">
+            #{usuModificacion},
+        </if>
+        <if test="fechaModificacion != null">
+            #{fechaModificacion},
         </if>
         SEQ_SID_REG_PERSONA.NextVal
         )
@@ -73,6 +148,33 @@
         <if test="ruc != null">
             C_RUC = #{ruc},
         </if>
+        <if test="direccion != null">
+            C_DIRECCION = #{direccion},
+        </if>
+        <if test="email != null">
+            C_EMAIL = #{email},
+        </if>
+        <if test="telefono1 != null">
+            C_TELEFONO1 = #{telefono1},
+        </if>
+        <if test="telefono2 != null">
+            C_TELEFONO2 = #{telefono2},
+        </if>
+        <if test="idDepartamento != null">
+            N_IDDEPA = #{idDepartamento},
+        </if>
+        <if test="idProvincia != null">
+            N_IDPROV = #{idProvincia},
+        </if>
+        <if test="idDistrito != null">
+            N_IDDISTR = #{idDistrito},
+        </if>
+        <if test="fechaModificacion != null">
+            D_FECHAMODIFICACION = #{fechaModificacion},
+        </if>
+        <if test="usuModificacion != null">
+            C_USUMODIFICACION = #{usuarioModificacion},
+        </if>
         C_NOMBRE = UPPER(#{nombre})
         </set>
         <where>
@@ -83,6 +185,31 @@
     <select id="personaBuscarCadena" resultMap="personaMap" parameterType="String" >
         SELECT * FROM SID_REG_PERSONA
         WHERE UPPER(C_NOMBRE||C_APELLIDOPAT||C_APELLIDOMAT||C_DNI) LIKE '%'||UPPER(#{value})||'%'
+    </select>
+    
+    <select id="personaBusarGeneral" resultMap="personaMap" parameterType="persona" >
+        SELECT DISTINCT A.* FROM SID_REG_PERSONA A
+        LEFT JOIN SID_REG_EXPEDE_PERSONA B ON 
+        A.N_IDPERSONA = B.N_IDPERSONA
+        LEFT JOIN SID_REG_EXPEDIENTE C
+        ON B.N_IDEXPEDIENTE = C.N_IDEXPEDIENTE
+        WHERE 1 = 1
+        <if test="nombre != null">
+            AND UPPER(A.C_NOMBRE) LIKE '%'||UPPER(#{nombre})||'%'
+        </if>
+        <if test="apellidoPat != null">
+            AND UPPER(A.C_APELLIDOPAT) LIKE '%'||UPPER(#{apellidoPat})||'%'
+        </if>
+        <if test="apellidoMat != null">
+            AND UPPER(A.C_APELLIDOMAT) LIKE '%'||UPPER(#{apellidoMat})||'%'
+        </if>
+        <if test="idExpediente != null">
+            AND C.C_NUMEROEXPEDIENTE = #{idExpediente}
+        </if>
+        <if test="dni != null">
+            AND C.C_DNI = #{dni}
+        </if>
+        AND 1 = 1
     </select>
     
 </mapper>

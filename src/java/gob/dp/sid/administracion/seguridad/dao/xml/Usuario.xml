@@ -18,7 +18,9 @@
         tel_movil          as telefonoMovil,
         tel_fijo           as telefonoFijo,
         flag_clave_inicial as flagClaveInicial,
-        c_cargo            as cargo
+        c_cargo            as cargo,
+        c_sexo             as sexo,
+        n_nivel             as nivel
         from sid_seg_usuario
         where
         1=1

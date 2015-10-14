@@ -31,5 +31,10 @@ public class PersonaDAOImpl extends SqlSessionDaoSupport implements PersonaDAO{
     public List<Persona> personaBuscarCadena(String cadena) {
         return getSqlSession().selectList("gob.dp.sid.registro.dao.PersonaDAO.personaBuscarCadena", cadena);
     }
+
+    @Override
+    public List<Persona> personaBusarGeneral(Persona persona) {
+        return getSqlSession().selectList("gob.dp.sid.registro.dao.PersonaDAO.personaBusarGeneral", persona);
+    }
     
 }

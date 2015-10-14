@@ -20,4 +20,6 @@ public interface PersonaService {
     
     public List<Persona> personaBuscarCadena(String cadena);
     
+    public List<Persona> personaBusarGeneral(Persona persona);
+    
 }
