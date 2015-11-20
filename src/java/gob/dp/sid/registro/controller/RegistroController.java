@@ -8,6 +8,7 @@ package gob.dp.sid.registro.controller;
 import gob.dp.sid.administracion.seguridad.controller.LoginController;
 import gob.dp.sid.administracion.seguridad.entity.Usuario;
 import gob.dp.sid.comun.ConstantesUtil;
+import gob.dp.sid.comun.SelectVO;
 import gob.dp.sid.comun.controller.AbstractManagedBean;
 import gob.dp.sid.comun.entity.Departamento;
 import gob.dp.sid.comun.entity.Distrito;
@@ -17,13 +18,18 @@ import gob.dp.sid.comun.entity.Provincia;
 import gob.dp.sid.comun.service.CacheService;
 import gob.dp.sid.comun.service.ParametroService;
 import gob.dp.sid.comun.service.UbigeoService;
+import gob.dp.sid.comun.type.AntesDespuesType;
+import gob.dp.sid.comun.type.RepeticionType;
+import gob.dp.sid.comun.type.TiempoType;
 import gob.dp.sid.registro.entity.Entidad;
 import gob.dp.sid.registro.entity.Expediente;
 import gob.dp.sid.registro.entity.ExpedienteEntidad;
+import gob.dp.sid.registro.entity.ExpedienteGestion;
 import gob.dp.sid.registro.entity.ExpedientePersona;
 import gob.dp.sid.registro.entity.Persona;
 import gob.dp.sid.registro.service.EntidadService;
 import gob.dp.sid.registro.service.ExpedienteEntidadService;
+import gob.dp.sid.registro.service.ExpedienteGestionService;
 import gob.dp.sid.registro.service.ExpedientePersonaService;
 import gob.dp.sid.registro.service.ExpedienteService;
 import gob.dp.sid.registro.service.PersonaService;
@@ -52,6 +58,8 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     private static final Logger log = Logger.getLogger(RegistroController.class);
 
     private Expediente expediente;
+    
+    private ExpedienteGestion expedienteGestion;
 
     private Persona persona;
 
@@ -106,6 +114,12 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     private String grafico003;
 
     private Integer nroPagina = 1;
+    
+    private List<SelectItem> listaTiempo;
+
+    private List<SelectItem> listaAntesDespues;
+    
+    private List<SelectItem> listaRepeticion;
 
     @Autowired
     private ExpedienteService expedienteService;
@@ -130,6 +144,9 @@ public class RegistroController extends AbstractManagedBean implements Serializa
 
     @Autowired
     private UbigeoService ubigeoService;
+    
+    @Autowired
+    private ExpedienteGestionService expedienteGestionService;
 
     public String cargarNuevoExpediente() {
         expediente = new Expediente();
@@ -160,6 +177,11 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         indSeleccion = true;
         return "expedienteUsuario";
     }
+    
+    public String cargarExpedienteGestion(){
+        expedienteGestion = new ExpedienteGestion();
+        return "expedienteGestion";
+    }
 
     public void inicio() {
         usuarioSession();
@@ -168,6 +190,11 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         cargarGraficos001();
         cargarGraficos002();
         cargarGraficos003();
+    }
+    
+    public void registarExpedienteGestion(){
+        expedienteGestion.setIdExpediente(expediente.getId());
+        expedienteGestionService.expedienteGestionInsertar(expedienteGestion);
     }
 
     public void listarExpedienteUsuarioPaginado(Integer pagina) {
@@ -871,6 +898,77 @@ public class RegistroController extends AbstractManagedBean implements Serializa
 
     public void setListaExpedienteXPersona(List<Expediente> listaExpedienteXPersona) {
         this.listaExpedienteXPersona = listaExpedienteXPersona;
+    }
+
+    public ExpedienteGestion getExpedienteGestion() {
+        return expedienteGestion;
+    }
+
+    public void setExpedienteGestion(ExpedienteGestion expedienteGestion) {
+        this.expedienteGestion = expedienteGestion;
+    }
+
+    public List<SelectItem> getListaTiempo() {
+        try {
+            listaTiempo = new ArrayList<>();
+            List<SelectVO> tiposTiempo = TiempoType.getList();
+            if (tiposTiempo != null) {
+                listaTiempo.add(new SelectItem("0", "[Seleccione]"));
+                for (SelectVO tipoTiempo : tiposTiempo) {
+                    listaTiempo.add(new SelectItem(tipoTiempo.getId(),
+                            tipoTiempo.getValue()));
+                }
+            }
+        } catch (Exception e) {
+            log.debug(e.getMessage());
+        }
+        return listaTiempo;
+    }
+
+    public void setListaTiempo(List<SelectItem> listaTiempo) {
+        this.listaTiempo = listaTiempo;
+    }
+
+    public List<SelectItem> getListaAntesDespues() {
+        try {
+            listaAntesDespues = new ArrayList<>();
+            List<SelectVO> tiposAntesDespues = AntesDespuesType.getList();
+            if (tiposAntesDespues != null) {
+                listaAntesDespues.add(new SelectItem("0", "[Seleccione]"));
+                for (SelectVO tipoAntesDespues : tiposAntesDespues) {
+                    listaAntesDespues.add(new SelectItem(tipoAntesDespues.getId(),
+                            tipoAntesDespues.getValue()));
+                }
+            }
+        } catch (Exception e) {
+            log.debug(e.getMessage());
+        }
+        return listaAntesDespues;
+    }
+
+    public void setListaAntesDespues(List<SelectItem> listaAntesDespues) {
+        this.listaAntesDespues = listaAntesDespues;
+    }
+
+    public List<SelectItem> getListaRepeticion() {
+        try {
+            listaRepeticion = new ArrayList<>();
+            List<SelectVO> tiposRepeticion = RepeticionType.getList();
+            if (tiposRepeticion != null) {
+                listaRepeticion.add(new SelectItem("0", "[Seleccione]"));
+                for (SelectVO tipoRepeticion : tiposRepeticion) {
+                    listaRepeticion.add(new SelectItem(tipoRepeticion.getId(),
+                            tipoRepeticion.getValue()));
+                }
+            }
+        } catch (Exception e) {
+            log.debug(e.getMessage());
+        }
+        return listaRepeticion;
+    }
+
+    public void setListaRepeticion(List<SelectItem> listaRepeticion) {
+        this.listaRepeticion = listaRepeticion;
     }
 
 }

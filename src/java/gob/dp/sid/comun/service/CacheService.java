@@ -27,4 +27,8 @@ public interface CacheService {
     
     public List<Parametro> buscarExpedienteEtiquetas();
     
+    public List<Parametro> buscarGestionTipoAccion();
+    
+    public List<Parametro> buscarGestionTipoCalidadRespuesta();
+    
 }

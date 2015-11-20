@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD iBatis Mapper 3.0 //EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="gob.dp.sid.registro.dao.ExpedienteGestionDAO">
+    
+    <resultMap id="expedienteGestionMap" type="expedienteGestion">
+        <id property="id" column="N_ID_GESTION" />
+        <result property="idExpediente" column="N_IDEXPEDIENTE"/>
+        <result property="tipo" column="C_TIPO"/>
+        <result property="fecha" column="D_FECHA"/>
+        <result property="descripcion" column="C_DESCRIPCION"/>
+        <result property="institucion" column="C_INSTITUCION"/>
+        <result property="indEntidadQuejada" column="C_INDENTQUEJADA"/>
+        <result property="nombre" column="C_NOMBREFUNC"/>
+        <result property="apellidoPaterno" column="C_APEPATFUNC"/>
+        <result property="apellidoMaterno" column="C_APEMATFUNC"/>
+        <result property="indAlertar" column="C_INDALERTAR"/>
+        <result property="inicioSeguimiento" column="D_FECINISEGUIMIENTO" />
+        <result property="finSeguimiento" column="D_FECFINSEGUIMIENTO"/>
+        <result property="tipoTiempoIni" column="C_INDTIPOTIEMPOINI"/>
+        <result property="tipoTiempoFin" column="C_INDTIPOTIEMPOFIN"/>
+        <result property="numeroInicial" column="N_NUMEROTIEMPOINI"/>
+        <result property="numeroFinal" column="N_NUMEROTIEMPOFIN"/>
+        <result property="indicadorAntesDespuesIni" column="C_INDANTESDESPUESINI"/>
+        <result property="indicadorAntesDespuesFin" column="C_INDANTESDESPUESFIN"/>
+        <result property="inicioDefinitivo" column="D_FECINISEGUIMIENTOFINAL"/>
+        <result property="finDefinitivo" column="D_FECFINSEGUIMIENTOFINAL"/>
+        <result property="indiceRepeticion" column="C_INDREPETICION"/>
+        <result property="indicadorSeleccionHoraIni" column="C_INDSELECCIONHORAINI"/>
+        <result property="indicadorSeleccionHoraFin" column="C_INDSELECCIONHORAFIN"/>
+        <result property="nota" column="C_NOTA"/>
+        <result property="respuesta" column="C_RESPUESTA"/>
+        <result property="fechaRespuesta" column="D_FECHARESPUESTA"/>
+        <result property="tipoCalidad" column="C_CALIDADRESPUESTA"/>
+        <result property="detalleRespuesta" column="C_DESCRIPCIONRESPUESTA"/>
+        <result property="observacionRespuesta" column="C_OBSERVACIONES"/>
+        
+    </resultMap> 
+    
+    
+    <insert id="expedienteGestionInsertar" parameterType="expedienteGestion">
+        INSERT INTO SID_REG_GESTION
+        (
+        <if test="idExpediente != null">
+            N_IDEXPEDIENTE,
+        </if>
+        <if test="tipo != null">
+            C_TIPO,
+        </if>
+        <if test="descripcion != null">
+            C_DESCRIPCION,
+        </if>
+        <if test="indEntidadQuejada != null">
+            C_INDENTQUEJADA,
+        </if>
+        <if test="nombre != null">
+            C_NOMBREFUNC,
+        </if>
+        <if test="apellidoPaterno != null">
+            C_APEPATFUNC,
+        </if>
+        <if test="apellidoMaterno != null">
+            C_APEMATFUNC,
+        </if>
+        <if test="indAlertar != null">
+            C_INDALERTAR,
+        </if>
+        <if test="inicioSeguimiento != null">
+            D_FECINISEGUIMIENTO,
+        </if>
+        <if test="finSeguimiento != null">
+            D_FECFINSEGUIMIENTO,
+        </if>
+        <if test="tipoTiempoIni != null">
+            C_INDTIPOTIEMPOINI,
+        </if>
+        <if test="tipoTiempoFin != null">
+            C_INDTIPOTIEMPOFIN,
+        </if>
+        <if test="numeroInicial != null">
+            N_NUMEROTIEMPOINI,
+        </if>
+        <if test="numeroFinal != null">
+            N_NUMEROTIEMPOFIN,
+        </if>
+        <if test="indicadorAntesDespuesIni != null">
+            C_INDANTESDESPUESINI,
+        </if>
+        <if test="indicadorAntesDespuesFin != null">
+            C_INDANTESDESPUESFIN,
+        </if>
+        <if test="inicioDefinitivo != null">
+            D_FECINISEGUIMIENTOFINAL,
+        </if>
+        <if test="finDefinitivo != null">
+            D_FECFINSEGUIMIENTOFINAL,
+        </if>
+        <if test="indiceRepeticion != null">
+            C_INDREPETICION,
+        </if>
+        <if test="indicadorSeleccionHoraIni != null">
+            C_INDSELECCIONHORAINI,
+        </if>
+        <if test="indicadorSeleccionHoraFin != null">
+            C_INDSELECCIONHORAFIN,
+        </if>
+        <if test="nota != null">
+            C_NOTA,
+        </if>
+        <if test="respuesta != null">
+            C_RESPUESTA,
+        </if>
+        <if test="fechaRespuesta != null">
+            D_FECHARESPUESTA,
+        </if>
+        <if test="tipoCalidad != null">
+            C_CALIDADRESPUESTA,
+        </if>
+        <if test="detalleRespuesta != null">
+            C_DESCRIPCIONRESPUESTA,
+        </if>
+        <if test="observacionRespuesta != null">
+            C_OBSERVACIONES,
+        </if>
+        N_ID_GESTION
+        )
+        VALUES 
+        (
+        <if test="idExpediente != null">
+            #{idExpediente},
+        </if>
+        <if test="tipo != null">
+            #{tipo},
+        </if>
+        <if test="descripcion != null">
+            #{descripcion},
+        </if>
+        <if test="indEntidadQuejada != null">
+            #{indEntidadQuejada},
+        </if>
+        <if test="nombre != null">
+            #{nombre},
+        </if>
+        <if test="apellidoPaterno != null">
+            #{apellidoPaterno},
+        </if>
+        <if test="apellidoMaterno != null">
+            #{apellidoMaterno},
+        </if>
+        <if test="indAlertar != null">
+            #{indAlertar},
+        </if>
+        <if test="inicioSeguimiento != null">
+            #{inicioSeguimiento},
+        </if>
+        <if test="finSeguimiento != null">
+            #{finSeguimiento},
+        </if>
+        <if test="tipoTiempoIni != null">
+            #{tipoTiempoIni},
+        </if>
+        <if test="tipoTiempoFin != null">
+            #{tipoTiempoFin},
+        </if>
+        <if test="numeroInicial != null">
+            #{numeroInicial},
+        </if>
+        <if test="numeroFinal != null">
+            #{numeroFinal},
+        </if>
+        <if test="indicadorAntesDespuesIni != null">
+            #{indicadorAntesDespuesIni},
+        </if>
+        <if test="indicadorAntesDespuesFin != null">
+            #{indicadorAntesDespuesFin},
+        </if>
+        <if test="inicioDefinitivo != null">
+            #{inicioDefinitivo},
+        </if>
+        <if test="finDefinitivo != null">
+            #{finDefinitivo},
+        </if>
+        <if test="indiceRepeticion != null">
+            #{indiceRepeticion},
+        </if>
+        <if test="indicadorSeleccionHoraIni != null">
+            #{indicadorSeleccionHoraIni},
+        </if>
+        <if test="indicadorSeleccionHoraFin != null">
+            #{indicadorSeleccionHoraFin},
+        </if>
+        <if test="nota != null">
+            #{nota},
+        </if>
+        <if test="respuesta != null">
+            #{respuesta},
+        </if>
+        <if test="fechaRespuesta != null">
+            #{fechaRespuesta},
+        </if>
+        <if test="tipoCalidad != null">
+            #{tipoCalidad},
+        </if>
+        <if test="detalleRespuesta != null">
+            #{detalleRespuesta},
+        </if>
+        <if test="observacionRespuesta != null">
+            #{observacionRespuesta},
+        </if>
+        SEQ_SID_REG_GESTION.NextVal
+        )
+        <selectKey keyProperty="id" resultType="Long">
+            SELECT SEQ_SID_REG_GESTION.CURRVAL FROM DUAL
+        </selectKey>
+    </insert>
+    
+    
+    <update id="expedienteGestionUpdate" parameterType="expedienteGestion">
+        UPDATE SID_REG_ENTIDAD
+        <set>
+        <if test="ruc != null">
+            C_RUC = #{ruc},
+        </if>
+        <if test="fechaRegistro != null">
+            D_FECHAREGISTRO = #{fechaRegistro},
+        </if>
+        <if test="usuarioRegistro != null">
+            C_USU_REGISTRO = #{usuarioRegistro},
+        </if>
+        C_NOMBRE = UPPER(#{nombre})
+        </set>
+        <where>
+            N_IDENTIDAD = #{id}
+        </where>
+    </update>
+    
+    <select id="expedienteGestionBuscarOne" resultMap="expedienteGestionMap" parameterType="String" >
+        SELECT * FROM SID_REG_ENTIDAD
+        WHERE UPPER(C_NOMBRE||C_RUC) LIKE '%'||UPPER(#{value})||'%'
+    </select>
+    
+</mapper>

@@ -93,6 +93,11 @@ public class MenuController implements Serializable{
             return registroController.cargarBusquedaExpediente();
         }
         
+        if(codigoPagina == 6){
+            RegistroController registroController = (RegistroController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "registroController");
+            menuHijo = menuService.menuHijo(1);
+            return registroController.cargarExpedienteGestion();
+        }
         
         if(codigoPagina == 12){
             

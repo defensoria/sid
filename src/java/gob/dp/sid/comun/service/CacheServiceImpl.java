@@ -34,6 +34,10 @@ public class CacheServiceImpl implements CacheService{
     private static final Integer CACHE_PARAMETRO_EXPEDIENTE_TIPO_ACTOR = 50;
     
     private static final Integer CACHE_PARAMETRO_ETIQUETA = 60;
+    
+    private static final Integer CACHE_PARAMETRO_GESTION_TIPO_ACCION = 70;
+    
+    private static final Integer CACHE_PARAMETRO_GESTION_TIPO_CALIDAD_RESPUESTA = 80;
 
     private volatile HashMap<Integer, Object> contenedor = null;
 
@@ -91,6 +95,16 @@ public class CacheServiceImpl implements CacheService{
     @Override
     public List<Parametro> buscarExpedienteEtiquetas() {
         return buscarParametro(CACHE_PARAMETRO_ETIQUETA, CACHE_PARAMETRO_ETIQUETA);
+    }
+    
+    @Override
+    public List<Parametro> buscarGestionTipoAccion() {
+        return buscarParametro(CACHE_PARAMETRO_GESTION_TIPO_ACCION, CACHE_PARAMETRO_GESTION_TIPO_ACCION);
+    }
+    
+    @Override
+    public List<Parametro> buscarGestionTipoCalidadRespuesta() {
+        return buscarParametro(CACHE_PARAMETRO_GESTION_TIPO_CALIDAD_RESPUESTA, CACHE_PARAMETRO_GESTION_TIPO_CALIDAD_RESPUESTA);
     }
     
     private Object getElemento(Integer key) {

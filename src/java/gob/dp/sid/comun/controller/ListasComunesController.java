@@ -50,6 +50,14 @@ public class ListasComunesController {
     public List<Parametro> buscarExpedienteEtiquetas(boolean insertarTODOS, boolean insertarNINGUNO, boolean insertarSELECCIONE) {
         return insertarValoresDefectoParametro(cacheService.buscarExpedienteEtiquetas(), insertarTODOS, insertarNINGUNO, insertarSELECCIONE);
     }
+    
+    public List<Parametro> buscarGestionTipoAccion(boolean insertarTODOS, boolean insertarNINGUNO, boolean insertarSELECCIONE) {
+        return insertarValoresDefectoParametro(cacheService.buscarGestionTipoAccion(), insertarTODOS, insertarNINGUNO, insertarSELECCIONE);
+    }
+    
+    public List<Parametro> buscarGestionTipoCalidadRespuesta(boolean insertarTODOS, boolean insertarNINGUNO, boolean insertarSELECCIONE) {
+        return insertarValoresDefectoParametro(cacheService.buscarGestionTipoCalidadRespuesta(), insertarTODOS, insertarNINGUNO, insertarSELECCIONE);
+    }
 
     private List insertarValoresDefectoParametro(List lst, boolean insertarTODOS, boolean insertarNINGUNO, boolean insertarSELECCIONE) {
         if (insertarTODOS) {

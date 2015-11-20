@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD iBatis Mapper 3.0 //EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="gob.dp.sid.registro.dao.EtapaEstadoDAO">
+    
+    <resultMap id="etapaEstadoMap" type="etapaEstado">
+        <id property="id" column="N_ID_ETAPAESTADO" />
+        <result property="idEtapa" column="N_ID_ETAPA"/>
+        <result property="idEstado" column="N_ID_ESTADO"/>
+        <result property="idExpediente" column="N_ID_EXPEDIENTE"/>
+        <result property="detalle" column="C_DETALLE"/>
+        <result property="expedienteNumero" column="C_NUMEROEXPEDIENTE"/>
+        
+    </resultMap> 
+    
+    
+    <insert id="etapaEstadoInsertar" parameterType="etapaEstado">
+        INSERT INTO SID_REG_ENTIDAD
+        (
+        <if test="idEtapa != null">
+            N_ID_ETAPA,
+        </if>
+        <if test="idEstado != null">
+            N_ID_ESTADO,
+        </if>
+        <if test="detalle != null">
+            C_DETALLE,
+        </if>
+        <if test="idExpediente != null">
+            N_ID_EXPEDIENTE,
+        </if>
+        <if test="expedienteNumero != null">
+            C_NUMEROEXPEDIENTE,
+        </if>
+        N_ID_ETAPAESTADO
+        )
+        VALUES 
+        (
+        <if test="idEtapa != null">
+            #{idEtapa},
+        </if>
+        <if test="idEstado != null">
+            #{idEstado},
+        </if>
+        <if test="detalle != null">
+            #{detalle},
+        </if>
+        <if test="idExpediente != null">
+            #{idExpediente},
+        </if>
+        <if test="expedienteNumero != null">
+            #{expedienteNumero},
+        </if>
+        SEQ_SID_REG_ETAPAESTADO.NextVal
+        )
+        <selectKey keyProperty="id" resultType="Long">
+            SELECT SEQ_SID_REG_ETAPAESTADO.CURRVAL FROM DUAL
+        </selectKey>
+    </insert>
+    
+    
+</mapper>

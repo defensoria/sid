@@ -29,6 +29,51 @@
                                 <div class="panel-body" >
                                     <table style="width: 100%">
                                         <tr>
+                                            <td colspan="2">
+                                                <span style="font-size: 2em" class="text-resalt-primary">Expediente: #{registroController.expediente.numero}</span>
+                                            </td>
+                                            </tr>
+                                        <tr>
+                                            <td colspan="2">
+                                                <br/>
+                                                <table style="width: 90%">
+                                                    <tr>
+                                                        <td style="width: 10%">
+                                                            <span class="text-primary" style="font-size: 1.5em">Etapa:</span>
+                                                        </td>
+                                                        <td>
+                                                            <div class="btn-group btn-group-justified" role="group" aria-label="...">
+  <div class="btn-group" role="group">
+      <button type="button" class="btn btn-warning">Left</button>
+  </div>
+  <div class="btn-group" role="group">
+    <button type="button" class="btn btn-default">Middle</button>
+  </div>
+  <div class="btn-group" role="group">
+    <button type="button" class="btn btn-default">Right</button>
+  </div>
+</div>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <table style="width: 90%">
+                                                    <tr>
+                                                        <td style="width: 10%">
+                                                            <span class="text-primary" style="font-size: 1.5em">Estado:</span>
+                                                        </td>
+                                                        <td>
+                                                            <div class="panel-body">
+                                    <h:selectOneRadio  value="#{registroController.expediente.admision}">
+                                        <f:selectItem itemValue="AD" itemLabel="Admitida&#160;&#160;&#160;" />
+                                        <f:selectItem itemValue="AN" itemLabel="No admitida" />
+                                    </h:selectOneRadio>
+                                </div>
+                                                        </td>
+                                        </tr>
+                                        <tr>
                                             <td>
                                                 
                                                 <input type="hidden" id="idTipoClasificacion" jsf:value="#{registroController.expediente.tipoClasificion}" />
@@ -143,11 +188,15 @@
                                             </td>
                                         </tr>
                                     </table>
+                                        </tr>
+                                    </table>
                                     
                                 </div>
                             </div>
                         </td>
                     </tr>
+                </table>
+                <table style="width: 100%">
                     <tr>
                         <td style="width: 50%; vertical-align: top; padding-right: 2px">
                             <div class="panel panel-featured-top-primary" id="idPanel1">
@@ -562,14 +611,6 @@
                         </td>
                         <td style="vertical-align: top; padding-left: 2px">
                             <span class="text-resalt-primary">Admisión</span>
-                            <div class="panel panel-featured-top-primary" style="height: 200px">
-                                <div class="panel-body">
-                                    <h:selectOneRadio  value="#{registroController.expediente.admision}">
-                                        <f:selectItem itemValue="AD" itemLabel="Admitida" />
-                                        <f:selectItem itemValue="AN" itemLabel="No admitida" />
-                                    </h:selectOneRadio>
-                                </div>
-                            </div>
                         </td>
                     </tr>
                     <tr>
