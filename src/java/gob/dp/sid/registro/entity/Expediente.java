@@ -32,7 +32,13 @@ public class Expediente implements Serializable{
     
     private String observacion;
     
-    private String admision;
+    private Integer estadoCalificacion;
+    
+    private Integer estadoInvestigacion;
+    
+    private Integer estadoPersuacion;
+    
+    private Integer estadoSeguimiento;
     
     private Boolean calificacion;
     
@@ -148,12 +154,12 @@ public class Expediente implements Serializable{
         this.observacion = observacion;
     }
 
-    public String getAdmision() {
-        return admision;
+    public Integer getEstadoCalificacion() {
+        return estadoCalificacion;
     }
 
-    public void setAdmision(String admision) {
-        this.admision = admision;
+    public void setEstadoCalificacion(Integer estadoCalificacion) {
+        this.estadoCalificacion = estadoCalificacion;
     }
 
     public Boolean getCalificacion() {
@@ -317,6 +323,29 @@ public class Expediente implements Serializable{
     public void setUsuarioCompleto(String usuarioCompleto) {
         this.usuarioCompleto = usuarioCompleto;
     }
-    
+
+    public Integer getEstadoInvestigacion() {
+        return estadoInvestigacion;
+    }
+
+    public void setEstadoInvestigacion(Integer estadoInvestigacion) {
+        this.estadoInvestigacion = estadoInvestigacion;
+    }
+
+    public Integer getEstadoPersuacion() {
+        return estadoPersuacion;
+    }
+
+    public void setEstadoPersuacion(Integer estadoPersuacion) {
+        this.estadoPersuacion = estadoPersuacion;
+    }
+
+    public Integer getEstadoSeguimiento() {
+        return estadoSeguimiento;
+    }
+
+    public void setEstadoSeguimiento(Integer estadoSeguimiento) {
+        this.estadoSeguimiento = estadoSeguimiento;
+    }
     
 }

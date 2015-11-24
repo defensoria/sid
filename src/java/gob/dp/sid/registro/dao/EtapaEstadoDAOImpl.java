@@ -18,9 +18,17 @@ public class EtapaEstadoDAOImpl extends SqlSessionDaoSupport implements EtapaEst
 
     @Override
     public void etapaEstadoInsertar(EtapaEstado etapaEstado) {
-        getSqlSession().insert("gob.dp.sid.registro.dao.EtapaEstadoDAO.etapaEstadoInsertar", etapaEstado);
+        getSqlSession().insert("gob.dp.sid.registro.dao.EtapaEstadoDAO.etapaEstadoInsertar", etapaEstado);    
     }
-    
-    
-    
+
+    @Override
+    public void etapaEstadoUpdate(EtapaEstado etapaEstado) {
+        getSqlSession().update("gob.dp.sid.registro.dao.EtapaEstadoDAO.etapaEstadoUpdate", etapaEstado);
+    }
+
+    @Override
+    public EtapaEstado etapaEstadoVigente(long idExpediente) {
+        return getSqlSession().selectOne("gob.dp.sid.registro.dao.EtapaEstadoDAO.etapaEstadoVigente", idExpediente);
+    }
+
 }

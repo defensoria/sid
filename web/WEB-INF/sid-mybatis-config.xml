@@ -40,6 +40,7 @@
         <typeAlias type="gob.dp.sid.registro.entity.ExpedienteEntidad" alias="expedienteEntidad"/>
         <typeAlias type="gob.dp.sid.registro.entity.ExpedienteGestion" alias="expedienteGestion"/>
         <typeAlias type="gob.dp.sid.registro.entity.EtapaEstado" alias="etapaEstado"/>
+        <typeAlias type="gob.dp.sid.registro.entity.GestionEtapa" alias="gestionEtapa"/>
         
         <typeAlias type="gob.dp.sid.reporte.entity.Reporte" alias="reporte"/>
     </typeAliases>
@@ -65,7 +66,7 @@
         <mapper resource="gob/dp/sid/registro/dao/xml/ExpedienteEntidad.xml" />
         <mapper resource="gob/dp/sid/registro/dao/xml/ExpedienteGestion.xml" />
         <mapper resource="gob/dp/sid/registro/dao/xml/EtapaEstado.xml" />
-        
+        <mapper resource="gob/dp/sid/registro/dao/xml/GestionEtapa.xml" />
     </mappers>
     
 </configuration>

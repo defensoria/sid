@@ -4,7 +4,6 @@
     
     <resultMap id="expedienteGestionMap" type="expedienteGestion">
         <id property="id" column="N_ID_GESTION" />
-        <result property="idExpediente" column="N_IDEXPEDIENTE"/>
         <result property="tipo" column="C_TIPO"/>
         <result property="fecha" column="D_FECHA"/>
         <result property="descripcion" column="C_DESCRIPCION"/>
@@ -40,9 +39,6 @@
     <insert id="expedienteGestionInsertar" parameterType="expedienteGestion">
         INSERT INTO SID_REG_GESTION
         (
-        <if test="idExpediente != null">
-            N_IDEXPEDIENTE,
-        </if>
         <if test="tipo != null">
             C_TIPO,
         </if>
@@ -125,9 +121,6 @@
         )
         VALUES 
         (
-        <if test="idExpediente != null">
-            #{idExpediente},
-        </if>
         <if test="tipo != null">
             #{tipo},
         </if>

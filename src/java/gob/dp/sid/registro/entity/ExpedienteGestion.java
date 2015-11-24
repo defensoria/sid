@@ -16,8 +16,6 @@ public class ExpedienteGestion implements Serializable{
     
     private Long id;
     
-    private Long idExpediente;
-    
     private String tipo;
     
     private Date fecha;
@@ -90,15 +88,7 @@ public class ExpedienteGestion implements Serializable{
     public void setId(Long id) {
         this.id = id;
     }
-
-    public Long getIdExpediente() {
-        return idExpediente;
-    }
-
-    public void setIdExpediente(Long idExpediente) {
-        this.idExpediente = idExpediente;
-    }
-
+    
     public String getTipo() {
         return tipo;
     }

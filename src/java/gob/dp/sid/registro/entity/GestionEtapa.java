@@ -11,18 +11,22 @@ package gob.dp.sid.registro.entity;
  */
 public class GestionEtapa {
     
-    private Long id;
+    private Long idGestion;
+    
+    private Long idExpediente;
     
     private Integer idEtapa;
     
     private String numeroExpediente;
 
-    public Long getId() {
-        return id;
+    public GestionEtapa() {
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public GestionEtapa(Long idGestion, Long idExpediente, Integer idEtapa, String numeroExpediente) {
+        this.idGestion = idGestion;
+        this.idExpediente = idExpediente;
+        this.idEtapa = idEtapa;
+        this.numeroExpediente = numeroExpediente;
     }
 
     public Integer getIdEtapa() {
@@ -39,6 +43,22 @@ public class GestionEtapa {
 
     public void setNumeroExpediente(String numeroExpediente) {
         this.numeroExpediente = numeroExpediente;
+    }
+
+    public Long getIdGestion() {
+        return idGestion;
+    }
+
+    public void setIdGestion(Long idGestion) {
+        this.idGestion = idGestion;
+    }
+
+    public Long getIdExpediente() {
+        return idExpediente;
+    }
+
+    public void setIdExpediente(Long idExpediente) {
+        this.idExpediente = idExpediente;
     }
 
 }

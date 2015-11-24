@@ -12,7 +12,10 @@
         <result property="fechaIngreso" column="D_FECHAINGRESO"/>
         <result property="sumilla" column="C_SUMILLA"/>
         <result property="observacion" column="C_OBSERVACIONES"/>
-        <result property="admision" column="C_ADMISION"/>
+        <result property="estadoCalificacion" column="C_ESTADOCALIFICACION"/>
+        <result property="estadoInvestigacion" column="C_ESTADOINVESTIGACION"/>
+        <result property="estadoPersuacion" column="C_ESTADOPERSUACION"/>
+        <result property="estadoSeguimiento" column="C_ESTADOSEGUIMIENTO"/>
         <result property="calificacion" column="N_CALIFICACION"/>
         <result property="usuarioRegistro" column="C_USUREGISTRO"/>
         <result property="estado" column="C_ESTADO"/>
@@ -55,8 +58,17 @@
         <if test="observacion != null">
             C_OBSERVACIONES,
         </if>
-        <if test="admision != null">
-            C_ADMISION,
+        <if test="estadoCalificacion != null">
+            C_ESTADOCALIFICACION,
+        </if>
+        <if test="estadoInvestigacion != null">
+            C_ESTADOINVESTIGACION,
+        </if>
+        <if test="estadoPersuacion != null">
+            C_ESTADOPERSUACION,
+        </if>
+        <if test="estadoSeguimiento != null">
+            C_ESTADOSEGUIMIENTO,
         </if>
         <if test="calificacion != null">
             N_CALIFICACION,
@@ -105,8 +117,17 @@
         <if test="observacion != null">
             #{observacion},
         </if>
-        <if test="admision != null">
-            #{admision},
+        <if test="estadoCalificacion != null">
+            #{estadoCalificacion},
+        </if>
+        <if test="estadoInvestigacion != null">
+            #{estadoInvestigacion},
+        </if>
+        <if test="estadoPersuacion != null">
+            #{estadoPersuacion},
+        </if>
+        <if test="estadoSeguimiento != null">
+            #{estadoSeguimiento},
         </if>
         <if test="calificacion != null">
             #{calificacion},
@@ -162,8 +183,17 @@
             <if test="observacion != null">
                 C_OBSERVACIONES = #{observacion},
             </if>
-            <if test="admision != null">
-                C_ADMISION  = #{admision},
+            <if test="estadoCalificacion != null">
+                C_ESTADOCALIFICACION  = #{estadoCalificacion},
+            </if>
+            <if test="estadoInvestigacion != null">
+                C_ESTADOINVESTIGACION  = #{estadoInvestigacion},
+            </if>
+            <if test="estadoPersuacion != null">
+                C_ESTADOPERSUACION  = #{estadoPersuacion},
+            </if>
+            <if test="estadoSeguimiento != null">
+                C_ESTADOSEGUIMIENTO  = #{estadoSeguimiento},
             </if>
             <if test="calificacion != null">
                 N_CALIFICACION = #{calificacion},

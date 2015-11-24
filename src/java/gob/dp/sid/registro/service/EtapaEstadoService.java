@@ -15,4 +15,8 @@ public interface EtapaEstadoService {
     
     public void etapaEstadoInsertar(EtapaEstado etapaEstado);
     
+    public void etapaEstadoUpdate(EtapaEstado etapaEstado);
+    
+    public EtapaEstado etapaEstadoVigente(long idExpediente);
+    
 }

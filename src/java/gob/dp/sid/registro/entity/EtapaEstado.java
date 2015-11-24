@@ -17,11 +17,17 @@ public class EtapaEstado {
     
     private Integer idEtapa;
     
-    private Integer idExpediente;
+    private Long idExpediente;
     
     private String detalle;
     
     private String numeroExpediente;
+    
+    private String indicador;
+    
+    private String indicadorEtapa;
+    
+    private Integer verEtapa;
 
     public Long getId() {
         return id;
@@ -62,5 +68,39 @@ public class EtapaEstado {
     public void setNumeroExpediente(String numeroExpediente) {
         this.numeroExpediente = numeroExpediente;
     }
+
+    public Long getIdExpediente() {
+        return idExpediente;
+    }
+
+    public void setIdExpediente(Long idExpediente) {
+        this.idExpediente = idExpediente;
+    }
+
+    public String getIndicador() {
+        return indicador;
+    }
+
+    public void setIndicador(String indicador) {
+        this.indicador = indicador;
+    }
+
+    public String getIndicadorEtapa() {
+        return indicadorEtapa;
+    }
+
+    public void setIndicadorEtapa(String indicadorEtapa) {
+        this.indicadorEtapa = indicadorEtapa;
+    }
+
+    public Integer getVerEtapa() {
+        return verEtapa;
+    }
+
+    public void setVerEtapa(Integer verEtapa) {
+        this.verEtapa = verEtapa;
+    }
     
+    
+
 }

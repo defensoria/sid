@@ -20,7 +20,7 @@
                     }
                 </script>
                 <gc:confirmSubmit classGC="confirmacion2" bean="#{registroController.guardarVersion()}" mensaje="Esta seguro que desea generar una nueva version del expediente?"/>
-                <gc:confirmSubmit classGC="confirmacion3" bean="#{registroController.concluirExpediente()}" mensaje="Esta seguro que desea concluir el expediente?"/>
+                <gc:confirmSubmit classGC="confirmacion3" bean="#{registroController.concluir()}" mensaje="Esta seguro que desea concluir el expediente?"/>
                 <gc:confirmSubmit bean="#{registroController.guardarBorrador()}" />
                 <table style="width: 100%">
                     <tr>
@@ -32,7 +32,7 @@
                                             <td colspan="2">
                                                 <span style="font-size: 2em" class="text-resalt-primary">Expediente: #{registroController.expediente.numero}</span>
                                             </td>
-                                            </tr>
+                                        </tr>
                                         <tr>
                                             <td colspan="2">
                                                 <br/>
@@ -43,16 +43,16 @@
                                                         </td>
                                                         <td>
                                                             <div class="btn-group btn-group-justified" role="group" aria-label="...">
-  <div class="btn-group" role="group">
-      <button type="button" class="btn btn-warning">Left</button>
-  </div>
-  <div class="btn-group" role="group">
-    <button type="button" class="btn btn-default">Middle</button>
-  </div>
-  <div class="btn-group" role="group">
-    <button type="button" class="btn btn-default">Right</button>
-  </div>
-</div>
+                                                                <div class="btn-group" role="group">
+                                                                    <button type="button" class="btn btn-warning">Left</button>
+                                                                </div>
+                                                                <div class="btn-group" role="group">
+                                                                    <button type="button" class="btn btn-default">Middle</button>
+                                                                </div>
+                                                                <div class="btn-group" role="group">
+                                                                    <button type="button" class="btn btn-default">Right</button>
+                                                                </div>
+                                                            </div>
                                                         </td>
                                                     </tr>
                                                 </table>
@@ -60,137 +60,148 @@
                                         </tr>
                                         <tr>
                                             <table style="width: 90%">
-                                                    <tr>
-                                                        <td style="width: 10%">
-                                                            <span class="text-primary" style="font-size: 1.5em">Estado:</span>
-                                                        </td>
-                                                        <td>
-                                                            <div class="panel-body">
-                                    <h:selectOneRadio  value="#{registroController.expediente.admision}">
-                                        <f:selectItem itemValue="AD" itemLabel="Admitida&#160;&#160;&#160;" />
-                                        <f:selectItem itemValue="AN" itemLabel="No admitida" />
-                                    </h:selectOneRadio>
-                                </div>
-                                                        </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                
-                                                <input type="hidden" id="idTipoClasificacion" jsf:value="#{registroController.expediente.tipoClasificion}" />
-                                    <span style="font-size: 2.5em" class="text-resalt-primary">Atención de Casos</span><br/>
-                                    <span id="idTextTipoClasificacion" class="text-resalt-comun" style="font-weight: bold;font-size: 1.5em">SELECCIONE</span>
-                                    <a href="#" class="trigger2">
-                                    <span style="color:#3183b9;font-size:large;vertical-align: top" class="glyphicon glyphicon-chevron-down trigger2"></span>
-                                </a>
-                                <div class="popover-markup" style="float:right">
-                                    <div class="head hide"><b class="text-primary">Seleccione</b></div>
-                                    <div class="content hide">
-                                        <div style="width:100%">
-                                            <c:forEach var="x" items="#{listasComunesController.buscarExpedienteTipoClasificacion(false,false,false)}">
-                                                <a class="alink" onclick="asignarTipo('${x.valorParametro}')">
-                                                <div class="alert fade in alert-danger" role="alert" style="padding-bottom:5px;padding-top:5px;margin-bottom:3px">
-                                                    <strong>
-                                                        <h:outputText value="${x.nombreParametro}" class="cTipoRegistro" style="cursor:pointer"/>
-                                                    </strong>
-                                                </div>
-                                            </a>
-                                            </c:forEach>
-                                            
-                                           
-                                        </div>
-                                    </div>
-                                </div>
-                                <style>.alink:hover{text-decoration:none}.alink:link{text-decoration:none}.alink:active{text-decoration:none}</style>
-                                <script>$('.trigger2').popover({html: true, placement: 'bottom', tabindex: '0', trigger: 'focus', title: function () {
-                                            return $(this).parent().find('.head').html();
-                                        }, content: function () {
-                                            return $(this).parent().find('.content').html();
-                                        }});
-                                    function asignarTipo(tipo) {
-                                        $("#idTipoClasificacion").val(tipo);
-                                        $("#idTextTipoClasificacion").css("color", "#3071A9");
-                                        if (tipo === "01") {
-                                            $("#idTextTipoClasificacion").text("QUEJA");
-                                            
-                                        }
-                                        if (tipo === "02") {
-                                            $("#idTextTipoClasificacion").text("CONSULTA");
-                                            
-                                        }
-                                        if (tipo === "03") {
-                                            $("#idTextTipoClasificacion").text("PETITORIO");
-                                            
-                                        }
-                                        if (tipo === "04") {
-                                            $("#idTextTipoClasificacion").text("SIN CLASIFICACION");
-                                            
-                                        }
-                                    }
-                                    if ($("#idTipoRegistro").val() !== "") {
-                                        if ($("#idTipoClasificacion").val() === "01") {
-                                            $("#idTextTipoClasificacion").text("QUEJA");
-                                            
-                                        }
-                                        if ($("#idTipoClasificacion").val() === "02") {
-                                            $("#idTextTipoClasificacion").text("CONSULTA");
-                                            
-                                        }
-                                        if ($("#idTipoClasificacion").val() === "03") {
-                                            $("#idTextTipoClasificacion").text("PETITORIO");
-                                            
-                                        }
-                                        if ($("#idTipoClasificacion").val() === "04") {
-                                            $("#idTextTipoClasificacion").text("SIN CLASIFICACION");
-                                            
-                                        }
-                                        $("#idTextTipoClasificacion").css("color", "#3071A9");
-                                    }
-                                    $(document).ready(function () {
-                                        if ($("#idTipoRegistro").val() !== "") {
-                                            if ($("#idTipoClasificacion").val() === "01") {
-                                            $("#idTextTipoClasificacion").text("QUEJA");
-                                            
-                                        }
-                                        if ($("#idTipoClasificacion").val() === "02") {
-                                            $("#idTextTipoClasificacion").text("CONSULTA");
-                                            
-                                        }
-                                        if ($("#idTipoClasificacion").val() === "03") {
-                                            $("#idTextTipoClasificacion").text("PETITORIO");
-                                            
-                                        }
-                                        if ($("#idTipoClasificacion").val() === "04") {
-                                            $("#idTextTipoClasificacion").text("SIN CLASIFICACION");
-                                            
-                                        }
-                                        $("#idTextTipoClasificacion").css("color", "#3071A9");
-        }
-    });</script>
-                                            </td>
-                                            <td style="text-align: right">
-                                                <h:panelGroup  id="idPanel3" rendered="#{registroController.expediente.id == null || registroController.expediente.version == 0}">
-                                <a class="btn btn-info" onclick="confirmar()">
-                                    <span class="glyphicon glyphicon-floppy-disk" />Borrador
-                                </a>
-                            </h:panelGroup>
-                            &#160;&#160;
-                            <h:panelGroup rendered="#{registroController.expediente.general != 'C'}">
-                                <a class="btn btn-primary" onclick="confirmar2()">
-                                <span class="glyphicon glyphicon-floppy-disk" />Guardar
-                            </a>
-                            </h:panelGroup>
-                            &#160;&#160;
-                            <h:panelGroup id="idPanel2" rendered="#{registroController.expediente.id != null and registroController.expediente.version > 0 and registroController.expediente.general != 'C'}">
-                            <a class="btn btn-warning" onclick="confirmar3()">
-                                <span class="glyphicon glyphicon-floppy-save" />Concluir
-                            </a>
-                                </h:panelGroup>
-                                            </td>
+                                                <tr>
+                                                    <td style="width: 25%">
+                                                        <h:outputText rendered="#{registroController.etapaEstado.verEtapa != 0 and registroController.etapaEstado.verEtapa != null}" value="Estado:" class="text-primary" style="font-size: 1.5em"/>
+                                                    </td>
+                                                    <td>
+                                                        <div class="panel-body">
+                                                            <h:selectOneRadio rendered="#{registroController.etapaEstado.verEtapa == 1}"  value="#{registroController.expediente.estadoCalificacion}">
+                                                                <f:selectItems value="#{registroController.listaEstadoCalificacion}"  />
+                                                            </h:selectOneRadio>
+                                                            
+                                                            <h:selectOneRadio rendered="#{registroController.etapaEstado.verEtapa == 2}"  value="#{registroController.expediente.estadoInvestigacion}">
+                                                                <f:selectItems value="#{registroController.listaEstadoInvestigacion}"  />
+                                                            </h:selectOneRadio>
+                                                            
+                                                            <h:selectOneRadio rendered="#{registroController.etapaEstado.verEtapa == 3}"  value="#{registroController.expediente.estadoPersuacion}">
+                                                                <f:selectItems value="#{registroController.listaEstadoPersuacion}"  />
+                                                            </h:selectOneRadio>
+                                                            
+                                                            <h:selectOneRadio rendered="#{registroController.etapaEstado.verEtapa == 4}"  value="#{registroController.expediente.estadoSeguimiento}">
+                                                                <f:selectItems value="#{registroController.listaEstadoSeguimiento}"  />
+                                                            </h:selectOneRadio>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+
+                                                        <input type="hidden" id="idTipoClasificacion" jsf:value="#{registroController.expediente.tipoClasificion}" />
+                                                        <span style="font-size: 2.5em" class="text-resalt-primary">Atención de Casos</span><br/>
+                                                        <span id="idTextTipoClasificacion" class="text-resalt-comun" style="font-weight: bold;font-size: 1.5em">SELECCIONE</span>
+                                                        <a href="#" class="trigger2">
+                                                            <span style="color:#3183b9;font-size:large;vertical-align: top" class="glyphicon glyphicon-chevron-down trigger2"></span>
+                                                        </a>
+                                                        <div class="popover-markup" style="float:right">
+                                                            <div class="head hide"><b class="text-primary">Seleccione</b></div>
+                                                            <div class="content hide">
+                                                                <div style="width:100%">
+                                                                    <c:forEach var="x" items="#{listasComunesController.buscarExpedienteTipoClasificacion(false,false,false)}">
+                                                                        <a class="alink" onclick="asignarTipo('${x.valorParametro}')">
+                                                                            <div class="alert fade in alert-danger" role="alert" style="padding-bottom:5px;padding-top:5px;margin-bottom:3px">
+                                                                                <strong>
+                                                                                    <h:outputText value="${x.nombreParametro}" class="cTipoRegistro" style="cursor:pointer"/>
+                                                                                </strong>
+                                                                            </div>
+                                                                        </a>
+                                                                    </c:forEach>
+
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <style>.alink:hover{text-decoration:none}.alink:link{text-decoration:none}.alink:active{text-decoration:none}</style>
+                                                        <script>$('.trigger2').popover({html: true, placement: 'bottom', tabindex: '0', trigger: 'focus', title: function () {
+                                                                    return $(this).parent().find('.head').html();
+                                                                }, content: function () {
+                                                                    return $(this).parent().find('.content').html();
+                                                                }});
+                                                            function asignarTipo(tipo) {
+                                                                $("#idTipoClasificacion").val(tipo);
+                                                                $("#idTextTipoClasificacion").css("color", "#3071A9");
+                                                                if (tipo === "01") {
+                                                                    $("#idTextTipoClasificacion").text("QUEJA");
+
+                                                                }
+                                                                if (tipo === "02") {
+                                                                    $("#idTextTipoClasificacion").text("CONSULTA");
+
+                                                                }
+                                                                if (tipo === "03") {
+                                                                    $("#idTextTipoClasificacion").text("PETITORIO");
+
+                                                                }
+                                                                if (tipo === "04") {
+                                                                    $("#idTextTipoClasificacion").text("SIN CLASIFICACION");
+
+                                                                }
+                                                            }
+                                                            if ($("#idTipoRegistro").val() !== "") {
+                                                                if ($("#idTipoClasificacion").val() === "01") {
+                                                                    $("#idTextTipoClasificacion").text("QUEJA");
+
+                                                                }
+                                                                if ($("#idTipoClasificacion").val() === "02") {
+                                                                    $("#idTextTipoClasificacion").text("CONSULTA");
+
+                                                                }
+                                                                if ($("#idTipoClasificacion").val() === "03") {
+                                                                    $("#idTextTipoClasificacion").text("PETITORIO");
+
+                                                                }
+                                                                if ($("#idTipoClasificacion").val() === "04") {
+                                                                    $("#idTextTipoClasificacion").text("SIN CLASIFICACION");
+
+                                                                }
+                                                                $("#idTextTipoClasificacion").css("color", "#3071A9");
+                                                            }
+                                                            $(document).ready(function () {
+                                                                if ($("#idTipoRegistro").val() !== "") {
+                                                                    if ($("#idTipoClasificacion").val() === "01") {
+                                                                        $("#idTextTipoClasificacion").text("QUEJA");
+
+                                                                    }
+                                                                    if ($("#idTipoClasificacion").val() === "02") {
+                                                                        $("#idTextTipoClasificacion").text("CONSULTA");
+
+                                                                    }
+                                                                    if ($("#idTipoClasificacion").val() === "03") {
+                                                                        $("#idTextTipoClasificacion").text("PETITORIO");
+
+                                                                    }
+                                                                    if ($("#idTipoClasificacion").val() === "04") {
+                                                                        $("#idTextTipoClasificacion").text("SIN CLASIFICACION");
+
+                                                                    }
+                                                                    $("#idTextTipoClasificacion").css("color", "#3071A9");
+                                                                }
+                                                            });</script>
+                                                    </td>
+                                                    <td style="text-align: right">
+                                                        <h:panelGroup  id="idPanel3" rendered="#{registroController.expediente.id == null || registroController.expediente.version == 0}">
+                                                            <a class="btn btn-info" onclick="confirmar()">
+                                                                <span class="glyphicon glyphicon-floppy-disk" />Borrador
+                                                            </a>
+                                                        </h:panelGroup>
+                                                        &#160;&#160;
+                                                        <h:panelGroup rendered="#{registroController.expediente.general != 'C'}">
+                                                            <a class="btn btn-primary" onclick="confirmar2()">
+                                                                <span class="glyphicon glyphicon-floppy-disk" />Guardar
+                                                            </a>
+                                                        </h:panelGroup>
+                                                        &#160;&#160;
+                                                        <h:panelGroup id="idPanel2" rendered="#{registroController.expediente.id != null and registroController.expediente.version > 0 and registroController.expediente.general != 'C'}">
+                                                            <a class="btn btn-warning" onclick="confirmar3()">
+                                                                <span class="glyphicon glyphicon-floppy-save" />Concluir Etapa
+                                                            </a>
+                                                        </h:panelGroup>
+                                                    </td>
+                                                </tr>
+                                            </table>
                                         </tr>
                                     </table>
-                                        </tr>
-                                    </table>
-                                    
+
                                 </div>
                             </div>
                         </td>
@@ -459,7 +470,7 @@
                                                             }
                                                         </script>
                                                         <gc:confirmAjax bean="#{registroController.removePersona(persona)}" classGC="confirmacion4#{item.rowIndex+1}" mensaje="Esta seguro de desvincular a la Persona?" />
-                                                        
+
                                                         <a onclick="confirmar4#{item.rowIndex+1}()">
                                                             <span style="font-size: large; color: red" class="glyphicon glyphicon-remove"></span>
                                                         </a>
@@ -624,7 +635,7 @@
                     </tr>
                     <tr>
                         <td colspan="2" style="text-align: center">
-                           
+
                         </td>
                     </tr>
                 </table>

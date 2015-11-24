@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD iBatis Mapper 3.0 //EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="gob.dp.sid.registro.dao.GestionEtapaDAO">
+    
+    <resultMap id="gestionEtapaMap" type="gestionEtapa">
+        <result property="idGestion" column="N_ID_GESTION" />
+        <result property="idExpediente" column="N_IDEXPEDIENTE"/>
+        <result property="idEtapa" column="N_ID_ETAPA"/>
+        <result property="numeroExpediente" column="C_NUMEROEXPEDIENTE"/>
+    </resultMap> 
+    
+    
+    <insert id="gestionEtapaInsertar" parameterType="gestionEtapa">
+        INSERT INTO SID_REG_GESTION_ETAPA
+        (
+        N_ID_GESTION,
+        N_IDEXPEDIENTE,
+        N_ID_ETAPA,
+        C_NUMEROEXPEDIENTE
+        )
+        VALUES 
+        (
+        #{idGestion},
+        #{idExpediente},
+        #{idEtapa},
+        #{numeroExpediente}
+        )
+    </insert>
+    
+</mapper>

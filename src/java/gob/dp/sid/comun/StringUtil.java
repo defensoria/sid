@@ -15,4 +15,8 @@ public class StringUtil {
         return cadena == null || cadena.isEmpty();
     }
     
+    public boolean isNotNullOrCero(Integer numero){
+        return numero != null && numero != 0;
+    }
+    
 }

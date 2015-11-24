@@ -8,13 +8,14 @@
         <result property="idEstado" column="N_ID_ESTADO"/>
         <result property="idExpediente" column="N_ID_EXPEDIENTE"/>
         <result property="detalle" column="C_DETALLE"/>
-        <result property="expedienteNumero" column="C_NUMEROEXPEDIENTE"/>
-        
+        <result property="numeroExpediente" column="C_NUMEROEXPEDIENTE"/>
+        <result property="indicador" column="C_INDICADOR"/>
+        <result property="indicadorEtapa" column="C_INDICADORETAPA"/>
     </resultMap> 
     
     
     <insert id="etapaEstadoInsertar" parameterType="etapaEstado">
-        INSERT INTO SID_REG_ENTIDAD
+        INSERT INTO SID_REG_ETAPA_ESTADO
         (
         <if test="idEtapa != null">
             N_ID_ETAPA,
@@ -28,8 +29,14 @@
         <if test="idExpediente != null">
             N_ID_EXPEDIENTE,
         </if>
-        <if test="expedienteNumero != null">
+        <if test="numeroExpediente != null">
             C_NUMEROEXPEDIENTE,
+        </if>
+        <if test="indicador != null">
+            C_INDICADOR,
+        </if>
+        <if test="indicadorEtapa != null">
+            C_INDICADORETAPA,
         </if>
         N_ID_ETAPAESTADO
         )
@@ -47,8 +54,14 @@
         <if test="idExpediente != null">
             #{idExpediente},
         </if>
-        <if test="expedienteNumero != null">
-            #{expedienteNumero},
+        <if test="numeroExpediente != null">
+            #{numeroExpediente},
+        </if>
+        <if test="indicador != null">
+            #{indicador},
+        </if>
+        <if test="indicadorEtapa != null">
+            #{indicadorEtapa},
         </if>
         SEQ_SID_REG_ETAPAESTADO.NextVal
         )
@@ -56,6 +69,27 @@
             SELECT SEQ_SID_REG_ETAPAESTADO.CURRVAL FROM DUAL
         </selectKey>
     </insert>
+    
+    
+    <update id="etapaEstadoUpdate" parameterType="etapaEstado">
+        UPDATE SID_REG_ETAPA_ESTADO
+        <set>
+        <if test="indicadorEtapa != null">
+            C_INDICADORETAPA = #{indicadorEtapa},
+        </if>
+        <if test="indicador != null">
+            C_INDICADOR = #{indicador}
+        </if>
+        </set>
+        <where>
+            N_ID_EXPEDIENTE = #{idExpediente}
+        </where>
+    </update>
+    
+    
+    <select id="etapaEstadoVigente" resultMap="etapaEstadoMap" parameterType="Long">
+        SELECT * FROM SID_REG_ETAPA_ESTADO WHERE N_ID_EXPEDIENTE = #{id}
+    </select>
     
     
 </mapper>

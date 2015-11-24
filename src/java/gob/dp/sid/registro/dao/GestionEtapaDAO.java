@@ -5,17 +5,14 @@
  */
 package gob.dp.sid.registro.dao;
 
-import gob.dp.sid.registro.entity.EtapaEstado;
+import gob.dp.sid.registro.entity.GestionEtapa;
 
 /**
  *
  * @author carlos
  */
-public interface EtapaEstadoDAO {
+public interface GestionEtapaDAO {
     
-    public void etapaEstadoInsertar(EtapaEstado etapaEstado);
+    public void gestionEtapaInsertar(GestionEtapa gestionEtapa);
     
-    public void etapaEstadoUpdate(EtapaEstado etapaEstado);
-    
-    public EtapaEstado etapaEstadoVigente(long idExpediente);
 }

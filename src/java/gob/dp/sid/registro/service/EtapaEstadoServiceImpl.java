@@ -24,5 +24,15 @@ public class EtapaEstadoServiceImpl implements EtapaEstadoService{
     public void etapaEstadoInsertar(EtapaEstado etapaEstado) {
         etapaEstadoDAO.etapaEstadoInsertar(etapaEstado);
     }
+
+    @Override
+    public void etapaEstadoUpdate(EtapaEstado etapaEstado) {
+        etapaEstadoDAO.etapaEstadoUpdate(etapaEstado);
+    }
+
+    @Override
+    public EtapaEstado etapaEstadoVigente(long idExpediente) {
+        return etapaEstadoDAO.etapaEstadoVigente(idExpediente);
+    }
     
 }
