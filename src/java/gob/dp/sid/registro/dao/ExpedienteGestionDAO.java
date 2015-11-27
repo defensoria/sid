@@ -6,6 +6,7 @@
 package gob.dp.sid.registro.dao;
 
 import gob.dp.sid.registro.entity.ExpedienteGestion;
+import java.util.List;
 
 /**
  *
@@ -16,6 +17,8 @@ public interface ExpedienteGestionDAO {
     public void expedienteGestionInsertar(ExpedienteGestion expedienteGestion);
             
     public void expedienteGestionUpdate(ExpedienteGestion expedienteGestion);
+    
+    public List<ExpedienteGestion> expedienteGestionLista(Long idExpediente);
             
-    public ExpedienteGestion expedienteGestionBuscarOne();
+    public ExpedienteGestion expedienteGestionBuscarOne(Long id);
 }

@@ -6,6 +6,7 @@
 package gob.dp.sid.registro.dao;
 
 import gob.dp.sid.registro.entity.EtapaEstado;
+import java.util.List;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Repository;
 
@@ -29,6 +30,11 @@ public class EtapaEstadoDAOImpl extends SqlSessionDaoSupport implements EtapaEst
     @Override
     public EtapaEstado etapaEstadoVigente(long idExpediente) {
         return getSqlSession().selectOne("gob.dp.sid.registro.dao.EtapaEstadoDAO.etapaEstadoVigente", idExpediente);
+    }
+
+    @Override
+    public List<EtapaEstado> etapaEstadoxExpediente(String numeroExpediente) {
+        return getSqlSession().selectList("gob.dp.sid.registro.dao.EtapaEstadoDAO.etapaEstadoxExpediente", numeroExpediente);
     }
 
 }

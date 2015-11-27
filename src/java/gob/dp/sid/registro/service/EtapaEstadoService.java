@@ -6,6 +6,7 @@
 package gob.dp.sid.registro.service;
 
 import gob.dp.sid.registro.entity.EtapaEstado;
+import java.util.List;
 
 /**
  *
@@ -18,5 +19,7 @@ public interface EtapaEstadoService {
     public void etapaEstadoUpdate(EtapaEstado etapaEstado);
     
     public EtapaEstado etapaEstadoVigente(long idExpediente);
+    
+    public List<EtapaEstado> etapaEstadoxExpediente(String numeroExpediente);
     
 }

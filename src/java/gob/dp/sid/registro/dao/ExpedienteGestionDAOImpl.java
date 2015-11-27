@@ -6,6 +6,7 @@
 package gob.dp.sid.registro.dao;
 
 import gob.dp.sid.registro.entity.ExpedienteGestion;
+import java.util.List;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Repository;
 
@@ -27,8 +28,13 @@ public class ExpedienteGestionDAOImpl extends SqlSessionDaoSupport implements  E
     }
 
     @Override
-    public ExpedienteGestion expedienteGestionBuscarOne() {
-        return getSqlSession().selectOne("gob.dp.sid.registro.dao.ExpedienteGestionDAO.expedienteGestionBuscarOne");
+    public List<ExpedienteGestion> expedienteGestionLista(Long idExpediente) {
+        return getSqlSession().selectList("gob.dp.sid.registro.dao.ExpedienteGestionDAO.expedienteGestionLista", idExpediente);
+    }
+
+    @Override
+    public ExpedienteGestion expedienteGestionBuscarOne(Long id) {
+        return getSqlSession().selectOne("gob.dp.sid.registro.dao.ExpedienteGestionDAO.expedienteGestionBuscarOne", id);
     }
     
 }

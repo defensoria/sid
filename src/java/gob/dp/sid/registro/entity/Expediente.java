@@ -81,6 +81,8 @@ public class Expediente implements Serializable{
     private String mes;
     
     private String usuarioCompleto;
+    
+    private Integer idEtapa;
 
     public Long getId() {
         return id;
@@ -346,6 +348,14 @@ public class Expediente implements Serializable{
 
     public void setEstadoSeguimiento(Integer estadoSeguimiento) {
         this.estadoSeguimiento = estadoSeguimiento;
+    }
+
+    public Integer getIdEtapa() {
+        return idEtapa;
+    }
+
+    public void setIdEtapa(Integer idEtapa) {
+        this.idEtapa = idEtapa;
     }
     
 }

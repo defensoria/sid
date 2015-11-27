@@ -4,6 +4,7 @@
     
     <resultMap id="expedienteGestionMap" type="expedienteGestion">
         <id property="id" column="N_ID_GESTION" />
+        <result property="nombreGestion" column="C_NOMBREGESTION"/>
         <result property="tipo" column="C_TIPO"/>
         <result property="fecha" column="D_FECHA"/>
         <result property="descripcion" column="C_DESCRIPCION"/>
@@ -33,6 +34,9 @@
         <result property="detalleRespuesta" column="C_DESCRIPCIONRESPUESTA"/>
         <result property="observacionRespuesta" column="C_OBSERVACIONES"/>
         
+        <!--adionales-->
+        <result property="nombreParametroTipo" column="NOMBRE_PARAMETRO"/>
+        
     </resultMap> 
     
     
@@ -41,6 +45,9 @@
         (
         <if test="tipo != null">
             C_TIPO,
+        </if>
+        <if test="nombreGestion != null">
+            C_NOMBREGESTION,
         </if>
         <if test="descripcion != null">
             C_DESCRIPCION,
@@ -123,6 +130,9 @@
         (
         <if test="tipo != null">
             #{tipo},
+        </if>
+        <if test="nombreGestion != null">
+            #{nombreGestion},
         </if>
         <if test="descripcion != null">
             #{descripcion},
@@ -208,27 +218,102 @@
     
     
     <update id="expedienteGestionUpdate" parameterType="expedienteGestion">
-        UPDATE SID_REG_ENTIDAD
+        UPDATE SID_REG_GESTION
         <set>
-        <if test="ruc != null">
-            C_RUC = #{ruc},
+        <if test="tipo != null">
+            C_TIPO = #{tipo},
         </if>
-        <if test="fechaRegistro != null">
-            D_FECHAREGISTRO = #{fechaRegistro},
+        <if test="descripcion != null">
+            C_DESCRIPCION = #{tipo},
         </if>
-        <if test="usuarioRegistro != null">
-            C_USU_REGISTRO = #{usuarioRegistro},
+        <if test="indEntidadQuejada != null">
+            C_INDENTQUEJADA = #{tipo},
         </if>
-        C_NOMBRE = UPPER(#{nombre})
+        <if test="nombre != null">
+            C_NOMBREFUNC = #{tipo},
+        </if>
+        <if test="apellidoPaterno != null">
+            C_APEPATFUNC = #{tipo},
+        </if>
+        <if test="apellidoMaterno != null">
+            C_APEMATFUNC = #{tipo},
+        </if>
+        <if test="indAlertar != null">
+            C_INDALERTAR = #{tipo},
+        </if>
+        <if test="inicioSeguimiento != null">
+            D_FECINISEGUIMIENTO = #{tipo},
+        </if>
+        <if test="finSeguimiento != null">
+            D_FECFINSEGUIMIENTO = #{tipo},
+        </if>
+        <if test="tipoTiempoIni != null">
+            C_INDTIPOTIEMPOINI = #{tipo},
+        </if>
+        <if test="tipoTiempoFin != null">
+            C_INDTIPOTIEMPOFIN = #{tipo},
+        </if>
+        <if test="numeroInicial != null">
+            N_NUMEROTIEMPOINI = #{tipo},
+        </if>
+        <if test="numeroFinal != null">
+            N_NUMEROTIEMPOFIN = #{tipo},
+        </if>
+        <if test="indicadorAntesDespuesIni != null">
+            C_INDANTESDESPUESINI = #{tipo},
+        </if>
+        <if test="indicadorAntesDespuesFin != null">
+            C_INDANTESDESPUESFIN = #{tipo},
+        </if>
+        <if test="inicioDefinitivo != null">
+            D_FECINISEGUIMIENTOFINAL = #{tipo},
+        </if>
+        <if test="finDefinitivo != null">
+            D_FECFINSEGUIMIENTOFINAL = #{tipo},
+        </if>
+        <if test="indiceRepeticion != null">
+            C_INDREPETICION = #{tipo},
+        </if>
+        <if test="indicadorSeleccionHoraIni != null">
+            C_INDSELECCIONHORAINI = #{tipo},
+        </if>
+        <if test="indicadorSeleccionHoraFin != null">
+            C_INDSELECCIONHORAFIN = #{tipo},
+        </if>
+        <if test="nota != null">
+            C_NOTA = #{tipo},
+        </if>
+        <if test="respuesta != null">
+            C_RESPUESTA = #{tipo},
+        </if>
+        <if test="fechaRespuesta != null">
+            D_FECHARESPUESTA = #{tipo},
+        </if>
+        <if test="tipoCalidad != null">
+            C_CALIDADRESPUESTA = #{tipo},
+        </if>
+        <if test="detalleRespuesta != null">
+            C_DESCRIPCIONRESPUESTA = #{tipo},
+        </if>
+        <if test="observacionRespuesta != null">
+            C_OBSERVACIONES = #{tipo},
+        </if>
+        C_NOMBREGESTION = #{nombreGestion}
         </set>
         <where>
-            N_IDENTIDAD = #{id}
+            N_ID_GESTION = #{id}
         </where>
     </update>
     
-    <select id="expedienteGestionBuscarOne" resultMap="expedienteGestionMap" parameterType="String" >
-        SELECT * FROM SID_REG_ENTIDAD
-        WHERE UPPER(C_NOMBRE||C_RUC) LIKE '%'||UPPER(#{value})||'%'
+    <select id="expedienteGestionLista" resultMap="expedienteGestionMap" parameterType="Long" >
+        SELECT A.*, C.NOMBRE_PARAMETRO FROM SID_REG_GESTION A
+        INNER JOIN SID_REG_GESTION_ETAPA B ON A.N_ID_GESTION = B.N_ID_GESTION
+        LEFT JOIN SID_PARAMETRO C ON TRIM(A.C_TIPO) = TRIM(C.VALOR_PARAMETRO) AND C.PADRE_PARAMETRO = 70
+        WHERE B.N_IDEXPEDIENTE = #{id}
+    </select>
+    
+    <select id="expedienteGestionOne" resultMap="expedienteGestionMap" parameterType="Long" >
+        SELECT * FROM SID_REG_GESTION WHERE N_ID_GESTION = #{id}
     </select>
     
 </mapper>

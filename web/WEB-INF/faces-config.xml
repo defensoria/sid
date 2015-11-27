@@ -159,7 +159,7 @@
   <navigation-rule>
         <navigation-case>
                 <from-outcome>expedienteEdit</from-outcome>
-                <to-view-id>/pages/registro/expedienteEdit.xhtml</to-view-id>
+                <to-view-id>/pages/registro/expedienteNuevo.xhtml</to-view-id>
         </navigation-case>
   </navigation-rule>
   
@@ -181,6 +181,13 @@
         <navigation-case>
                 <from-outcome>expedienteGestion</from-outcome>
                 <to-view-id>/pages/registro/expedienteGestion.xhtml</to-view-id>
+        </navigation-case>
+  </navigation-rule>
+  
+  <navigation-rule>
+        <navigation-case>
+                <from-outcome>expedienteGestionLista</from-outcome>
+                <to-view-id>/pages/registro/expedienteGestionLista.xhtml</to-view-id>
         </navigation-case>
   </navigation-rule>
   

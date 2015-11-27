@@ -33,5 +33,9 @@ public interface ExpedienteService {
     public List<Expediente> expedientexPersona(long idPersona); 
     
     public List<Expediente> expedienteBuscarUsuarios(Expediente expediente);
+    
+    public Expediente expedienteBuscarActivo(Expediente expediente);
+            
+    public Expediente expedienteBuscarActivoEtapa(Expediente expediente);
 
 }

@@ -16,7 +16,11 @@ public class ExpedienteGestion implements Serializable{
     
     private Long id;
     
+    private String nombreGestion;
+    
     private String tipo;
+    
+    private String nombreParametroTipo;
     
     private Date fecha;
     
@@ -335,6 +339,22 @@ public class ExpedienteGestion implements Serializable{
 
     public void setFechaRespuesta(Date fechaRespuesta) {
         this.fechaRespuesta = fechaRespuesta;
+    }
+
+    public String getNombreGestion() {
+        return nombreGestion;
+    }
+
+    public void setNombreGestion(String nombreGestion) {
+        this.nombreGestion = nombreGestion;
+    }
+
+    public String getNombreParametroTipo() {
+        return nombreParametroTipo;
+    }
+
+    public void setNombreParametroTipo(String nombreParametroTipo) {
+        this.nombreParametroTipo = nombreParametroTipo;
     }
     
 }

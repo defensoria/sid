@@ -7,6 +7,7 @@ package gob.dp.sid.registro.service;
 
 import gob.dp.sid.registro.dao.ExpedienteGestionDAO;
 import gob.dp.sid.registro.entity.ExpedienteGestion;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,8 +32,13 @@ public class ExpedienteGestionServiceImpl implements ExpedienteGestionService{
     }
 
     @Override
-    public ExpedienteGestion expedienteGestionBuscarOne() {
-        return expedienteGestionDAO.expedienteGestionBuscarOne();
+    public List<ExpedienteGestion> expedienteGestionLista(Long idExpediente) {
+        return expedienteGestionDAO.expedienteGestionLista(idExpediente);
+    }
+
+    @Override
+    public ExpedienteGestion expedienteGestionBuscarOne(Long id) {
+        return expedienteGestionDAO.expedienteGestionBuscarOne(id);
     }
     
 }

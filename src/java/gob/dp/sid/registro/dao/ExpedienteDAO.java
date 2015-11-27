@@ -32,4 +32,7 @@ public interface ExpedienteDAO {
     
     public List<Expediente> expedienteBuscarUsuarios(Expediente expediente); 
     
+    public Expediente expedienteBuscarActivo(Expediente expediente);
+            
+    public Expediente expedienteBuscarActivoEtapa(Expediente expediente);
 }

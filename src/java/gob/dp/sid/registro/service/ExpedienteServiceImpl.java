@@ -93,5 +93,15 @@ public class ExpedienteServiceImpl implements ExpedienteService{
     public List<Expediente> expedienteBuscarUsuarios(Expediente expediente) {
         return expedienteDAO.expedienteBuscarUsuarios(expediente);
     }
+
+    @Override
+    public Expediente expedienteBuscarActivo(Expediente expediente) {
+        return expedienteDAO.expedienteBuscarActivo(expediente);
+    }
+
+    @Override
+    public Expediente expedienteBuscarActivoEtapa(Expediente expediente) {
+        return expedienteDAO.expedienteBuscarActivoEtapa(expediente);
+    }
     
 }

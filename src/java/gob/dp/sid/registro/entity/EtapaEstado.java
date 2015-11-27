@@ -28,6 +28,9 @@ public class EtapaEstado {
     private String indicadorEtapa;
     
     private Integer verEtapa;
+    
+    /**TEMPORALES*/
+    private String ultimaEtapa;
 
     public Long getId() {
         return id;
@@ -100,7 +103,13 @@ public class EtapaEstado {
     public void setVerEtapa(Integer verEtapa) {
         this.verEtapa = verEtapa;
     }
-    
-    
+
+    public String getUltimaEtapa() {
+        return ultimaEtapa;
+    }
+
+    public void setUltimaEtapa(String ultimaEtapa) {
+        this.ultimaEtapa = ultimaEtapa;
+    }
 
 }

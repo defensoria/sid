@@ -7,6 +7,7 @@ package gob.dp.sid.registro.service;
 
 import gob.dp.sid.registro.dao.EtapaEstadoDAO;
 import gob.dp.sid.registro.entity.EtapaEstado;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +34,11 @@ public class EtapaEstadoServiceImpl implements EtapaEstadoService{
     @Override
     public EtapaEstado etapaEstadoVigente(long idExpediente) {
         return etapaEstadoDAO.etapaEstadoVigente(idExpediente);
+    }
+
+    @Override
+    public List<EtapaEstado> etapaEstadoxExpediente(String numeroExpediente) {
+        return etapaEstadoDAO.etapaEstadoxExpediente(numeroExpediente);
     }
     
 }
