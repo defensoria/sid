@@ -20,5 +20,7 @@ public interface EtapaEstadoDAO {
     
     public EtapaEstado etapaEstadoVigente(long idExpediente);
     
+    public EtapaEstado etapaEstadoInicial(long idExpediente);
+    
     public List<EtapaEstado> etapaEstadoxExpediente(String numeroExpediente);
 }

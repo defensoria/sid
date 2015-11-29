@@ -94,9 +94,19 @@ INNER JOIN SID_REG_ETAPA B ON B.N_ID_ETAPA = A.N_ID_ETAPA
 WHERE A.N_ID_EXPEDIENTE = #{id}
     </select>
     
+    <select id="etapaEstadoInicial" resultMap="etapaEstadoMap" parameterType="Long">
+        SELECT * FROM SID_REG_ETAPA_ESTADO 
+        WHERE N_ID_EXPEDIENTE = #{id}
+    </select>
+    
     <select id="etapaEstadoxExpediente" resultMap="etapaEstadoMap" parameterType="String">
-        SELECT * FROM SID_REG_ETAPA_ESTADO
+        SELECT DISTINCT  * FROM (SELECT * FROM SID_REG_ETAPA_ESTADO
 WHERE C_INDICADORETAPA = 'VIG'
 AND C_NUMEROEXPEDIENTE = #{value}
+        UNION
+        SELECT * FROM SID_REG_ETAPA_ESTADO
+WHERE C_INDICADOR = 'ACT'
+AND C_NUMEROEXPEDIENTE = #{value}
+        )
     </select>
 </mapper>

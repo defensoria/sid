@@ -21,4 +21,6 @@ public interface ExpedienteGestionDAO {
     public List<ExpedienteGestion> expedienteGestionLista(Long idExpediente);
             
     public ExpedienteGestion expedienteGestionBuscarOne(Long id);
+    
+    public List<ExpedienteGestion> expedienteGestionListaXexpediente(String numeroExpediente);
 }

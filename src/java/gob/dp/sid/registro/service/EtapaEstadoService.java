@@ -22,4 +22,6 @@ public interface EtapaEstadoService {
     
     public List<EtapaEstado> etapaEstadoxExpediente(String numeroExpediente);
     
+    public EtapaEstado etapaEstadoInicial(long idExpediente);
+    
 }

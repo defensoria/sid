@@ -284,42 +284,7 @@
                             </div>
                         </td>
                         <td style="vertical-align: top">
-                            <div class="panel-featured-top-primary">
-                                <div>
-                                    <span class="text-resalt-primary">Listado de gestiones</span>
-                                    <br/>
-                                    <h:dataTable value="#{registroController.listaExpedienteGestion}" var="item" binding="#{row}" class="table table-hover">
-                                        <h:column>
-                                            <f:facet name="header">N°</f:facet>
-                                            <h:outputText value="#{row.rowIndex+1}" />
-                                        </h:column>
-                                        
-                                        <h:column>
-                                            <f:facet name="header">Nombre</f:facet>
-                                            <h:outputText value="#{item.nombre}" />
-                                        </h:column>
-                                        
-                                        <h:column>
-                                            <f:facet name="header">Acción</f:facet>
-                                            <h:outputText value="#{item.nombreParametroTipo}" />
-                                        </h:column>
-                                        
-                                        <h:column>
-                                            <f:facet name="header">Fecha</f:facet>
-                                            <h:outputText value="#{item.fecha}">
-                                                <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
-                                            </h:outputText>
-                                        </h:column>
-                                        
-                                        <h:column>
-                                            <f:facet name="header">Editar</f:facet>
-                                            <a jsf:action="#{registroController.setExpedienteGestion(item)}">
-                                                <span class="glyphicon glyphicon-pencil" />
-                                            </a>
-                                        </h:column>
-                                    </h:dataTable>
-                                </div>
-                            </div>
+                            
                         </td>
                     </tr>
                 </table>

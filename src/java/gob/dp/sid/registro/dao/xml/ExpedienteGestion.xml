@@ -36,6 +36,7 @@
         
         <!--adionales-->
         <result property="nombreParametroTipo" column="NOMBRE_PARAMETRO"/>
+        <result property="idEtapa" column="N_ID_ETAPA"/>
         
     </resultMap> 
     
@@ -315,5 +316,13 @@
     <select id="expedienteGestionOne" resultMap="expedienteGestionMap" parameterType="Long" >
         SELECT * FROM SID_REG_GESTION WHERE N_ID_GESTION = #{id}
     </select>
+    
+    
+    <select id="expedienteGestionListaXexpediente" resultMap="expedienteGestionMap" parameterType="String" >
+        SELECT * FROM SID_REG_GESTION A
+INNER JOIN SID_REG_GESTION_ETAPA B ON A.N_ID_GESTION = B.N_ID_GESTION 
+WHERE B.C_NUMEROEXPEDIENTE = #{value}
+    </select>
+    
     
 </mapper>

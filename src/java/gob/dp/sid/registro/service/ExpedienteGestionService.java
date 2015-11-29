@@ -22,4 +22,6 @@ public interface ExpedienteGestionService {
             
     public ExpedienteGestion expedienteGestionBuscarOne(Long id);   
     
+    public List<ExpedienteGestion> expedienteGestionListaXexpediente(String numeroExpediente);
+    
 }

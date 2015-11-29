@@ -112,13 +112,13 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     private List<Expediente> listaExpedienteXPersona;
 
     private List<Persona> listaPersonaGeneral;
-    
+
     private List<ExpedienteGestion> listaExpedientesCalificacion;
-    
+
     private List<ExpedienteGestion> listaExpedientesInvestigacion;
-    
+
     private List<ExpedienteGestion> listaExpedientesPersuacion;
-    
+
     private List<ExpedienteGestion> listaExpedientesSeguimiento;
 
     private boolean indSeleccion;
@@ -140,14 +140,14 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     private List<SelectItem> listaEstadoCalificacion;
 
     private List<SelectItem> listaEstadoInvestigacion;
-    
+
     private List<SelectItem> listaEstadoPersuacion;
-    
+
     private List<SelectItem> listaEstadoSeguimiento;
 
     private EtapaEstado etapaEstado;
-    
-    private List<ExpedienteGestion> listaExpedienteGestion; 
+
+    private List<ExpedienteGestion> listaExpedienteGestion;
 
     @Autowired
     private ExpedienteService expedienteService;
@@ -178,7 +178,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
 
     @Autowired
     private EtapaEstadoService etapaEstadoService;
-    
+
     @Autowired
     private GestionEtapaService gestionEtapaService;
 
@@ -216,33 +216,37 @@ public class RegistroController extends AbstractManagedBean implements Serializa
 
     public String cargarExpedienteGestion() {
         expedienteGestion = new ExpedienteGestion();
-        listaExpedienteGestion = expedienteGestionService.expedienteGestionLista(expediente.getId());
+        //listaExpedienteGestion = expedienteGestionService.expedienteGestionLista(expediente.getId());
         return "expedienteGestion";
     }
-    
+
     public String cargarExpedienteGestionLista() {
-        List<EtapaEstado> list = etapaEstadoService.etapaEstadoxExpediente(expediente.getNumero());
-        for(EtapaEstado ee : list){
-            if(Objects.equals(ee.getIdEtapa(), EtapaType.CALIFICACION.getKey())){
-                listaExpedientesCalificacion = expedienteGestionService.expedienteGestionLista(ee.getIdExpediente());
+        listaExpedientesCalificacion = new ArrayList<>();
+        listaExpedientesInvestigacion = new ArrayList<>();
+        listaExpedientesPersuacion = new ArrayList<>();
+        listaExpedientesSeguimiento = new ArrayList<>();
+        List<ExpedienteGestion> list = expedienteGestionService.expedienteGestionListaXexpediente(expediente.getNumero());
+        for (ExpedienteGestion ee : list) {
+            if (Objects.equals(ee.getIdEtapa(), EtapaType.CALIFICACION.getKey())) {
+                listaExpedientesCalificacion.add(ee);
             }
-            if(Objects.equals(ee.getIdEtapa(), EtapaType.INVESTIGACION.getKey())){
-                listaExpedientesInvestigacion = expedienteGestionService.expedienteGestionLista(ee.getIdExpediente());
+            if (Objects.equals(ee.getIdEtapa(), EtapaType.INVESTIGACION.getKey())) {
+                listaExpedientesInvestigacion.add(ee);
             }
-            if(Objects.equals(ee.getIdEtapa(), EtapaType.PERSUACION.getKey())){
-                listaExpedientesPersuacion = expedienteGestionService.expedienteGestionLista(ee.getIdExpediente());
+            if (Objects.equals(ee.getIdEtapa(), EtapaType.PERSUACION.getKey())) {
+                listaExpedientesPersuacion.add(ee);
             }
-            if(Objects.equals(ee.getIdEtapa(), EtapaType.SEGUIMIENTO.getKey())){
-                listaExpedientesSeguimiento = expedienteGestionService.expedienteGestionLista(ee.getIdExpediente());
+            if (Objects.equals(ee.getIdEtapa(), EtapaType.SEGUIMIENTO.getKey())) {
+                listaExpedientesSeguimiento.add(ee);
             }
         }
         return "expedienteGestionLista";
     }
-    
-    public void cargarExpedienteEtapa(int etapa){
-        if(etapaEstado.getVerEtapa() == etapa){
+
+    public void cargarExpedienteEtapa(int etapa) {
+        if (etapaEstado.getVerEtapa() == etapa) {
             expediente = expedienteService.expedienteBuscarActivo(expediente);
-        }else{
+        } else {
             expediente.setIdEtapa(etapa);
             expediente = expedienteService.expedienteBuscarActivoEtapa(expediente);
         }
@@ -257,14 +261,14 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         cargarGraficos002();
         cargarGraficos003();
     }
-    
-    public void registarExpedienteGestion() { 
+
+    public void registarExpedienteGestion() {
         //expedienteGestion.setIdExpediente(expediente.getId());
         expedienteGestionService.expedienteGestionInsertar(expedienteGestion);
         guardarGestionEtapa();
     }
-    
-    private void guardarGestionEtapa(){
+
+    private void guardarGestionEtapa() {
         GestionEtapa ge = new GestionEtapa(expedienteGestion.getId(), expediente.getId(), etapaEstado.getIdEtapa(), expediente.getNumero());
         gestionEtapaService.gestionEtapaInsertar(ge);
     }
@@ -414,13 +418,14 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         cargarSubTemas();
         cargarEtiquetas();
         cargarPersonasEntidades();
-        if(expediente.getVersion() == 0)
+        if (expediente.getVersion() == 0) {
             inicializarEtapaEstado(0);
-        else
+        } else {
             inicializarEtapaEstado(1);
+        }
         return "expedienteEdit";
     }
-    
+
     public void setearExpediente(Expediente e) {
         FacesContext context = FacesContext.getCurrentInstance();
         MenuController menuController = (MenuController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "menuController");
@@ -430,10 +435,11 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         cargarSubTemas();
         cargarEtiquetas();
         cargarPersonasEntidades();
-        if(expediente.getVersion() == 0)
+        if (expediente.getVersion() == 0) {
             inicializarEtapaEstado(0);
-        else
+        } else {
             inicializarEtapaEstado(1);
+        }
     }
 
     private void cargarPersonasEntidades() {
@@ -565,14 +571,18 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             etapaEstado.setVerEtapa(0);
         } else {
             etapaEstado = etapaEstadoService.etapaEstadoVigente(expediente.getId());
+            if (etapaEstado == null) {
+                etapaEstado = etapaEstadoService.etapaEstadoInicial(expediente.getId());
+            }
             if (etapaEstado.getIdEtapa() == null) {
                 etapaEstado.setVerEtapa(EtapaType.CALIFICACION.getKey());
             }
             if (Objects.equals(etapaEstado.getIdEtapa(), EtapaType.CALIFICACION.getKey())) {
                 if (StringUtils.equals(etapaEstado.getIndicadorEtapa(), "VIG")) {
                     etapaEstado.setVerEtapa(EtapaType.INVESTIGACION.getKey());
-                    if(StringUtils.equals(expediente.getGeneral(), "C"))
+                    if (StringUtils.equals(expediente.getGeneral(), "C")) {
                         etapaEstado.setVerEtapa(EtapaType.CALIFICACION.getKey());
+                    }
                 } else {
                     etapaEstado.setVerEtapa(EtapaType.CALIFICACION.getKey());
                 }
@@ -580,8 +590,9 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             if (Objects.equals(etapaEstado.getIdEtapa(), EtapaType.INVESTIGACION.getKey())) {
                 if (StringUtils.equals(etapaEstado.getIndicadorEtapa(), "VIG")) {
                     etapaEstado.setVerEtapa(EtapaType.PERSUACION.getKey());
-                    if(StringUtils.equals(expediente.getGeneral(), "C"))
+                    if (StringUtils.equals(expediente.getGeneral(), "C")) {
                         etapaEstado.setVerEtapa(EtapaType.INVESTIGACION.getKey());
+                    }
                 } else {
                     etapaEstado.setVerEtapa(EtapaType.INVESTIGACION.getKey());
                 }
@@ -589,8 +600,9 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             if (Objects.equals(etapaEstado.getIdEtapa(), EtapaType.PERSUACION.getKey())) {
                 if (StringUtils.equals(etapaEstado.getIndicadorEtapa(), "VIG")) {
                     etapaEstado.setVerEtapa(EtapaType.SEGUIMIENTO.getKey());
-                    if(StringUtils.equals(expediente.getGeneral(), "C"))
+                    if (StringUtils.equals(expediente.getGeneral(), "C")) {
                         etapaEstado.setVerEtapa(EtapaType.PERSUACION.getKey());
+                    }
                 } else {
                     etapaEstado.setVerEtapa(EtapaType.PERSUACION.getKey());
                 }
@@ -598,6 +610,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             if (Objects.equals(etapaEstado.getIdEtapa(), EtapaType.SEGUIMIENTO.getKey())) {
                 etapaEstado.setVerEtapa(EtapaType.SEGUIMIENTO.getKey());
             }
+
         }
     }
 
@@ -626,6 +639,10 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         guardarEtapaEstado(idExpedienteOld);
         inicializarEtapaEstado(1);
         msg.messageInfo("Se genero la version " + expediente.getVersion() + " del Expediente", null);
+    }
+    
+    private void guardarListaGestiones(){
+        
     }
 
     private void guardar() {
@@ -694,7 +711,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         if (idExpedienteOld != null) {
             actualizarEtapaEstado(idExpedienteOld);
             if (etapaEstado != null) {
-                if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION.getKey())) {
+                if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION.getKey()) || etapaEstado.getVerEtapa() == 0) {
                     etapaEstado1.setIdEtapa(EtapaType.CALIFICACION.getKey());
                     etapaEstado1.setIdEstado(expediente.getEstadoCalificacion());
                 }
@@ -711,7 +728,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                     etapaEstado1.setIdEtapa(EtapaType.SEGUIMIENTO.getKey());
                     etapaEstado1.setIdEstado(expediente.getEstadoSeguimiento());
                     etapaEstado1.setIndicadorEtapa("VIG");
-                    if(Objects.equals(etapaOld, EtapaType.SEGUIMIENTO.getKey())){
+                    if (Objects.equals(etapaOld, EtapaType.SEGUIMIENTO.getKey())) {
                         actualizarEtapaEstadosSeguimiento(idExpedienteOld);
                     }
                 }
@@ -735,20 +752,23 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION.getKey())) {
                     etapaEstado1.setIdEtapa(EtapaType.CALIFICACION.getKey());
                     etapaEstado1.setIdEstado(expediente.getEstadoCalificacion());
-                    if(expediente.getEstadoCalificacion() == EstadoExpedienteType.CALIFICACION_NO_ADMITIDA.getKey())
+                    if (expediente.getEstadoCalificacion() == EstadoExpedienteType.CALIFICACION_NO_ADMITIDA.getKey()) {
                         expedienteService.expedienteConcluir(expediente.getId());
-                }    
+                    }
+                }
                 if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.INVESTIGACION.getKey())) {
                     etapaEstado1.setIdEtapa(EtapaType.INVESTIGACION.getKey());
                     etapaEstado1.setIdEstado(expediente.getEstadoInvestigacion());
-                    if(expediente.getEstadoInvestigacion() == EstadoExpedienteType.INVESTIGACION_INFUNDADO.getKey())
+                    if (expediente.getEstadoInvestigacion() == EstadoExpedienteType.INVESTIGACION_INFUNDADO.getKey()) {
                         expedienteService.expedienteConcluir(expediente.getId());
+                    }
                 }
                 if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.PERSUACION.getKey())) {
                     etapaEstado1.setIdEtapa(EtapaType.PERSUACION.getKey());
                     etapaEstado1.setIdEstado(expediente.getEstadoPersuacion());
-                    if(expediente.getEstadoPersuacion() == EstadoExpedienteType.PERSUACION_ACOGIDO.getKey())
+                    if (expediente.getEstadoPersuacion() == EstadoExpedienteType.PERSUACION_ACOGIDO.getKey()) {
                         expedienteService.expedienteConcluir(expediente.getId());
+                    }
                 }
                 if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.SEGUIMIENTO.getKey())) {
                     etapaEstado1.setIdEtapa(EtapaType.SEGUIMIENTO.getKey());
@@ -797,7 +817,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         ee.setIdExpediente(idExpediente);
         etapaEstadoService.etapaEstadoUpdate(ee);
     }
-    
+
     private void actualizarEtapaEstadosSeguimiento(long idExpediente) {
         EtapaEstado ee = new EtapaEstado();
         ee.setIndicadorEtapa("");

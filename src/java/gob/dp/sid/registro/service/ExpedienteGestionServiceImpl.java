@@ -40,5 +40,10 @@ public class ExpedienteGestionServiceImpl implements ExpedienteGestionService{
     public ExpedienteGestion expedienteGestionBuscarOne(Long id) {
         return expedienteGestionDAO.expedienteGestionBuscarOne(id);
     }
+
+    @Override
+    public List<ExpedienteGestion> expedienteGestionListaXexpediente(String numeroExpediente) {
+        return expedienteGestionDAO.expedienteGestionListaXexpediente(numeroExpediente);
+    }
     
 }

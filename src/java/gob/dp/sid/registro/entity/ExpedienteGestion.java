@@ -84,6 +84,9 @@ public class ExpedienteGestion implements Serializable{
     private String tipoCalidad;
     
     private Date fechaRespuesta;
+    
+    /*AGREGADOS*/
+    private Integer idEtapa;
 
     public Long getId() {
         return id;
@@ -355,6 +358,14 @@ public class ExpedienteGestion implements Serializable{
 
     public void setNombreParametroTipo(String nombreParametroTipo) {
         this.nombreParametroTipo = nombreParametroTipo;
+    }
+
+    public Integer getIdEtapa() {
+        return idEtapa;
+    }
+
+    public void setIdEtapa(Integer idEtapa) {
+        this.idEtapa = idEtapa;
     }
     
 }

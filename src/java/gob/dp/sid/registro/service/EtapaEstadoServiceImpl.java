@@ -40,5 +40,10 @@ public class EtapaEstadoServiceImpl implements EtapaEstadoService{
     public List<EtapaEstado> etapaEstadoxExpediente(String numeroExpediente) {
         return etapaEstadoDAO.etapaEstadoxExpediente(numeroExpediente);
     }
+
+    @Override
+    public EtapaEstado etapaEstadoInicial(long idExpediente) {
+        return etapaEstadoDAO.etapaEstadoInicial(idExpediente);
+    }
     
 }
