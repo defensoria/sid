@@ -197,6 +197,8 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     }
 
     public String iniciarExpedienteNuevo() {
+        persona = new Persona();
+        entidad = new Entidad();
         cargarNuevoExpediente();
         ExpedientePersona ep = new ExpedientePersona();
         expediente.setTipoClasificion(personaSeleccionada.getTipoExpediente());
