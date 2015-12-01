@@ -17,17 +17,17 @@
                                 <td style="width: 95%">
                                     <table style="width: 100%">
                                         <tr>
-                                            <td style="width: 35%; vertical-align: top">
-                                                <span class="text-resalt-primary">Busqueda</span>
+                                            <td style="width: 30%; vertical-align: top">
+                                                <span class="text-resalt-primary">Búsqueda de personas</span>
                                                 <table>
                                                     <tr>
                                                         <td colspan="2" style="padding-bottom: 5px">
-                                                            <input jsf:value="#{registroController.personaBusqueda.dni}" maxlength="8" type="text" placeholder="Documento" />
+                                                            <input jsf:value="#{registroController.personaBusqueda.dni}" onkeypress="return soloNumbero(event)" autocomplete="off" maxlength="8" type="text" placeholder="Documento" />
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                         <td colspan="2" style="padding-bottom: 5px">
-                                                            <input jsf:value="#{registroController.personaBusqueda.idExpediente}" maxlength="20" type="text" placeholder="Expediente" />
+                                                            <input jsf:value="#{registroController.personaBusqueda.numeroExpediente}" maxlength="20" type="text" placeholder="Expediente" />
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -45,16 +45,17 @@
                                                     </tr>
                                                     <tr>
                                                         <td colspan="2" style="padding-bottom: 5px">
-                                                            <a class="btn btn-primary" jsf:action="#{registroController.buscarPersonaGeneral()}">
+                                                            <a class="btn btn-primary" jsf:action="#{registroController.buscarPersonaGeneral(1)}" jsf:onclick="loadingModal()">
                                                                 <span class="glyphicon glyphicon-search" />Buscar
+                                                                <f:ajax render="idPanelListaPersonas" execute="@form" onevent="closeModal"/>
                                                             </a>
                                                         </td>
                                                     </tr>
                                                 </table>
                                             </td>
-                                            <td  style="width: 35%; vertical-align: top; padding-left: 5px; text-align: right">
+                                            <td  style="width: 40%; vertical-align: top; padding-left: 5px; text-align: right">
                                                 <a style="text-decoration:none" class="btn btn-primary" jsf:rendered="#{registroController.indSeleccion}" jsf:action="#{registroController.cargarModalActor()}" jsf:onclick="loadingModal()">
-                                                    <span class="glyphicon glyphicon-plus"/>Nueva Persona
+                                                    <span class="glyphicon glyphicon-user"/>Nueva Persona
                                                     <f:ajax render=":idForm" onevent="openModalNuevaPersona"/>
                                                 </a>
                                                 <script>
@@ -169,11 +170,11 @@
                                                 </div>
 
 
-                                                <h:panelGroup rendered="#{registroController.indSeleccion}" style="text-align: left">
+                                                <h:panelGroup id="idPanelListaPersonas" rendered="#{registroController.indSeleccion}" style="text-align: left">
                                                     <h:dataTable value="#{registroController.listaPersonaGeneral}" var="per" binding="#{row}" class="table table-hover" rendered="#{registroController.listaPersonaGeneral.size() > 0}">
                                                         <h:column>
                                                             <f:facet name="header">Nro</f:facet>
-                                                            <h:outputText value="#{rowIndex.row+1}" />
+                                                            <h:outputText value="#{row.rowIndex+1+(registroController.nroPaginaPersona -1)*10}" />
                                                         </h:column>
                                                         <h:column>
                                                             <f:facet name="header">Nombre completo</f:facet>
@@ -189,6 +190,17 @@
                                                             </a>
                                                         </h:column>
                                                     </h:dataTable>
+                                                    <ul class="pager">
+                                                        <li><a jsf:rendered="#{registroController.listaPersonaGeneral.size()>0}" jsf:action="#{registroController.buscarPersonaGeneral(registroController.nroPaginaPersona -1)}" jsf:onclick="loadingModal()">Anterior
+                                                                <f:ajax render="idPanelListaPersonas" execute="@form" onevent="closeModal"/>
+                                                                        </a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a jsf:rendered="#{registroController.listaPersonaGeneral.size()>0}" jsf:action="#{registroController.buscarPersonaGeneral(registroController.nroPaginaPersona +1)}" jsf:onclick="loadingModal()">Siguiente
+                                                                            <f:ajax render="idPanelListaPersonas" execute="@form" onevent="closeModal"/>
+                                                                        </a>
+                                                                    </li>
+                                                                </ul>
                                                 </h:panelGroup>
                                                 <h:panelGroup rendered="#{!registroController.indSeleccion}">
                                                     <table style="width: 100%">
@@ -212,16 +224,11 @@
                                                         <tr>
                                                             <td>
                                                                 <span class="text-resalt-primary">Direccion: </span><span class="text-resalt-comun">#{registroController.personaSeleccionada.direccion}</span><br/>
-                                                                <span class="text-resalt-primary">Departamento: </span><span class="text-resalt-comun">#{registroController.personaSeleccionada.nombreDepartamento}</span><br/>
-                                                                <span class="text-resalt-primary">Provincia: </span><span class="text-resalt-comun">#{registroController.personaSeleccionada.nombreProvincia}</span><br/>
-                                                                <span class="text-resalt-primary">Distrito: </span><span class="text-resalt-comun">#{registroController.personaSeleccionada.nombreDistrito}</span><br/>
+                                                                <span class="text-resalt-primary">Ubigeo: </span><span class="text-resalt-comun">#{registroController.personaSeleccionada.nombreDepartamento} / #{registroController.personaSeleccionada.nombreProvincia} / #{registroController.personaSeleccionada.nombreDistrito}</span><br/>
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td><span class="text-resalt-primary">Telefono 1: </span><span class="text-resalt-comun">#{registroController.personaSeleccionada.telefono1}</span></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td><span class="text-resalt-primary">Telefono 2: </span><span class="text-resalt-comun">#{registroController.personaSeleccionada.telefono1}</span></td>
+                                                            <td><span class="text-resalt-primary">Telefono: </span><span class="text-resalt-comun">#{registroController.personaSeleccionada.telefono1}</span></td>
                                                         </tr>
                                                         <tr>
                                                             <td><span class="text-resalt-primary">Correo electronico: </span><span class="text-resalt-comun">#{registroController.personaSeleccionada.email}</span></td>
@@ -237,8 +244,8 @@
                                             <td style="padding-left: 5px">
                                                 <h:panelGroup rendered="#{!registroController.indSeleccion}">
                                                     <span class="text-resalt-primary">Tipo de registro: </span>
-                                                    <h:selectOneMenu class="selectRadio" value="#{registroController.personaSeleccionada.tipoExpediente}">
-                                                        <f:selectItem itemLabel="SELECCIONE" itemValue="0" /> 
+                                                    <h:selectOneMenu value="#{registroController.personaSeleccionada.tipoExpediente}">
+                                                        <f:selectItem itemLabel="Seleccione" itemValue="0" /> 
                                                         <f:selectItems value="#{listasComunesController.buscarExpedienteTipoClasificacion(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
                                                     </h:selectOneMenu>
                                                 </h:panelGroup>

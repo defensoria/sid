@@ -31,6 +31,8 @@ public class EtapaEstado {
     
     /**TEMPORALES*/
     private String ultimaEtapa;
+    
+    private String estadoDetalle;
 
     public Long getId() {
         return id;
@@ -110,6 +112,14 @@ public class EtapaEstado {
 
     public void setUltimaEtapa(String ultimaEtapa) {
         this.ultimaEtapa = ultimaEtapa;
+    }
+
+    public String getEstadoDetalle() {
+        return estadoDetalle;
+    }
+
+    public void setEstadoDetalle(String estadoDetalle) {
+        this.estadoDetalle = estadoDetalle;
     }
 
 }

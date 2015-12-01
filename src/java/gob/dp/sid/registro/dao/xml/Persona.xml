@@ -182,13 +182,21 @@
         </where>
     </update>
     
-    <select id="personaBuscarCadena" resultMap="personaMap" parameterType="String" >
+    <select id="personaBuscarCadena" resultMap="personaMap" parameterType="persona" >
+        SELECT B.* FROM (
+        SELECT A.*,ROWNUM numfila FROM (
         SELECT * FROM SID_REG_PERSONA
-        WHERE UPPER(C_NOMBRE||C_APELLIDOPAT||C_APELLIDOMAT||C_DNI) LIKE '%'||UPPER(#{value})||'%'
+        WHERE UPPER(C_NOMBRE||C_APELLIDOPAT||C_APELLIDOMAT||C_DNI) LIKE '%'||UPPER(#{cadenaPersona})||'%'
+        ) A
+        ) B
+        WHERE 1 = 1
+        and B.numfila BETWEEN #{ini} AND #{fin}
     </select>
     
     <select id="personaBusarGeneral" resultMap="personaMap" parameterType="persona" >
-        SELECT DISTINCT A.* FROM SID_REG_PERSONA A
+        SELECT B.* FROM (
+SELECT A.*,ROWNUM numfila FROM (
+SELECT DISTINCT A.* FROM SID_REG_PERSONA A
         LEFT JOIN SID_REG_EXPEDE_PERSONA B ON 
         A.N_IDPERSONA = B.N_IDPERSONA
         LEFT JOIN SID_REG_EXPEDIENTE C
@@ -203,13 +211,23 @@
         <if test="apellidoMat != null">
             AND UPPER(A.C_APELLIDOMAT) LIKE '%'||UPPER(#{apellidoMat})||'%'
         </if>
-        <if test="idExpediente != null">
-            AND C.C_NUMEROEXPEDIENTE = #{idExpediente}
+        <if test="numeroExpediente != null">
+            AND C.C_NUMEROEXPEDIENTE = #{numeroExpediente}
         </if>
         <if test="dni != null">
-            AND C.C_DNI = #{dni}
+            AND A.C_DNI LIKE '%'||#{dni}||'%'
         </if>
-        AND 1 = 1
+        ORDER BY A.N_IDPERSONA
+) A
+
+        ) B
+        WHERE 1 = 1
+        and B.numfila BETWEEN #{ini} AND #{fin}
+    </select>
+    
+    
+    <select id="personaValidaDNI" resultType="Long" parameterType="String" >
+        SELECT COUNT(*) FROM SID_REG_PERSONA WHERE C_DNI =  #{value}
     </select>
     
 </mapper>

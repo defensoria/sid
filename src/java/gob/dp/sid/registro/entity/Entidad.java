@@ -23,7 +23,13 @@ public class Entidad implements Serializable{
     private Date fechaRegistro;
     
     private String usuarioRegistro;
-
+    
+    private String cadenaEntidad;
+    
+    private Long ini;
+    
+    private Long fin;
+    
     public Long getId() {
         return id;
     }
@@ -62,6 +68,30 @@ public class Entidad implements Serializable{
 
     public void setUsuarioRegistro(String usuarioRegistro) {
         this.usuarioRegistro = usuarioRegistro;
+    }
+
+    public String getCadenaEntidad() {
+        return cadenaEntidad;
+    }
+
+    public void setCadenaEntidad(String cadenaEntidad) {
+        this.cadenaEntidad = cadenaEntidad;
+    }
+
+    public Long getIni() {
+        return ini;
+    }
+
+    public void setIni(Long ini) {
+        this.ini = ini;
+    }
+
+    public Long getFin() {
+        return fin;
+    }
+
+    public void setFin(Long fin) {
+        this.fin = fin;
     }
 
 }

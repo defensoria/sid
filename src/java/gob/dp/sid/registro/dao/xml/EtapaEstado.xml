@@ -11,7 +11,9 @@
         <result property="numeroExpediente" column="C_NUMEROEXPEDIENTE"/>
         <result property="indicador" column="C_INDICADOR"/>
         <result property="indicadorEtapa" column="C_INDICADORETAPA"/>
+        
         <result property="ultimaEtapa" column="C_VALOR"/>
+        <result property="estadoDetalle" column="ESTADO_DETALLE"/>
     </resultMap> 
     
     
@@ -89,8 +91,9 @@
     
     
     <select id="etapaEstadoVigente" resultMap="etapaEstadoMap" parameterType="Long">
-        SELECT A.*, B.C_VALOR FROM SID_REG_ETAPA_ESTADO A
+SELECT A.*, B.C_VALOR, C.C_NOMBRE ESTADO_DETALLE FROM SID_REG_ETAPA_ESTADO A
 INNER JOIN SID_REG_ETAPA B ON B.N_ID_ETAPA = A.N_ID_ETAPA 
+LEFT JOIN SID_REG_ESTADO C ON A.N_ID_ESTADO = C.N_ID_ESTADO
 WHERE A.N_ID_EXPEDIENTE = #{id}
     </select>
     

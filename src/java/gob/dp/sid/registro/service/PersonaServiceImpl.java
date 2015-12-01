@@ -22,8 +22,13 @@ public class PersonaServiceImpl implements PersonaService{
     private PersonaDAO personaDAO;
 
     @Override
-    public void personaInsertar(Persona persona) {
+    public boolean personaInsertar(Persona persona) {
+        Long valid = personaValidaDNI(persona.getDni());
+        if(valid > 0){
+            return false;
+        }
         personaDAO.personaInsertar(persona);
+        return true;
     }
 
     @Override
@@ -32,13 +37,18 @@ public class PersonaServiceImpl implements PersonaService{
     }
 
     @Override
-    public List<Persona> personaBuscarCadena(String cadena) {
-        return personaDAO.personaBuscarCadena(cadena);
+    public List<Persona> personaBuscarCadena(Persona persona) {
+        return personaDAO.personaBuscarCadena(persona);
     }
 
     @Override
     public List<Persona> personaBusarGeneral(Persona persona) {
         return personaDAO.personaBusarGeneral(persona);
+    }
+
+    @Override
+    public Long personaValidaDNI(String dni) {
+        return personaDAO.personaValidaDNI(dni);
     }
     
 }

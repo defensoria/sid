@@ -12,14 +12,252 @@
             <h:form id="idForm" class="form-horizontal">
                 <h:messages />
                 <gc:confirmSubmit bean="#{registroController.registarExpedienteGestion()}" mensaje="Esta seguro de registrar la gestión?" />
-                <table style="width: 100%">
+                                <table style="width: 100%">
                     <tr>
-                        <td style="width: 50%; vertical-align: top">
-                            <div class="panel-featured-top-primary">
-                                <div class="panel-body">
-                                    <span class="text-resalt-primary">Gestión</span>
-
+                        <td colspan="2">
+                            <div class="panel panel-featured-top-primary">
+                                <div class="panel-body" >
                                     <table style="width: 100%">
+                                        <tr>
+                                            <td colspan="2">
+                                                <span style="font-size: 2em" class="text-resalt-primary">Expediente: #{registroController.expediente.numero}</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">
+                                                <h:outputText rendered="#{registroController.etapaEstado.verEtapa != 0 and registroController.etapaEstado.verEtapa != null}" value="Estado: #{registroController.etapaEstado.estadoDetalle}" style="font-size: 2em" class="text-resalt-primary"/>
+                                            </td>
+                                        </tr>    
+                                        <tr>
+                                            <td colspan="2">
+                                                <br/>
+                                                <table style="width: 90%">
+                                                    <tr>
+                                                        <td style="width: 10%">
+                                                            <span style="font-size: 2em" class="text-resalt-primary">Etapa:</span>
+                                                        </td>
+                                                        <td>
+                                                            <div class="btn-group btn-group-justified" role="group" style="width: 72%">
+                                                                <div class="btn-group" role="group">
+                                                                    <a style="cursor: auto" onclick="return false" jsf:action="#{registroController.cargarExpedienteEtapa(1)}" class="btn #{registroController.etapaEstado.verEtapa == 1? 'btn-warning' : 'btn-default'}">
+                                                                        <c:choose>
+                                                                            <c:when test="${registroController.etapaEstado.verEtapa == 1}">
+                                                                                <span class="glyphicon glyphicon-paperclip" style="font-size: large; color: black"/>&#160;&#160;&#160;&#160;Calificación
+                                                                            </c:when>
+                                                                            <c:otherwise>
+                                                                                Calificación
+                                                                            </c:otherwise>
+                                                                        </c:choose>
+
+                                                                    </a>
+                                                                </div>
+                                                                <div class="btn-group" role="group">
+                                                                    <a style="cursor: auto" onclick="return false" jsf:action="#{registroController.cargarExpedienteEtapa(2)}" type="button" class="btn #{registroController.etapaEstado.verEtapa == 2? 'btn-warning' : 'btn-default'}">
+                                                                        <c:choose>
+                                                                            <c:when test="${registroController.etapaEstado.verEtapa == 2}">
+                                                                                <span class="glyphicon glyphicon-paperclip" style="font-size: large; color: black"/>&#160;&#160;&#160;&#160;Investigación
+                                                                            </c:when>
+                                                                            <c:otherwise>
+                                                                                Investigación
+                                                                            </c:otherwise>
+                                                                        </c:choose>
+                                                                    </a>
+                                                                </div>
+                                                                <div class="btn-group" role="group">
+                                                                    <a style="cursor: auto" onclick="return false" jsf:action="#{registroController.cargarExpedienteEtapa(3)}" type="button" class="btn #{registroController.etapaEstado.verEtapa == 3? 'btn-warning' : 'btn-default'}">
+                                                                        <c:choose>
+                                                                            <c:when test="${registroController.etapaEstado.verEtapa == 3}">
+                                                                                <span class="glyphicon glyphicon-paperclip" style="font-size: large; color: black"/>&#160;&#160;&#160;&#160;Persuación
+                                                                            </c:when>
+                                                                            <c:otherwise>
+                                                                                Persuación
+                                                                            </c:otherwise>
+                                                                        </c:choose>
+                                                                    </a>
+                                                                </div>
+                                                                <div class="btn-group" role="group">
+                                                                    <a style="cursor: auto" onclick="return false" jsf:action="#{registroController.cargarExpedienteEtapa(1)}" type="button" class="btn #{registroController.etapaEstado.verEtapa == 4? 'btn-warning' : 'btn-default'}">
+                                                                        <c:choose>
+                                                                            <c:when test="${registroController.etapaEstado.verEtapa == 4}">
+                                                                                <span class="glyphicon glyphicon-paperclip" style="font-size: large; color: black"/>&#160;&#160;&#160;&#160;Seguimiento
+                                                                            </c:when>
+                                                                            <c:otherwise>
+                                                                                Seguimiento
+                                                                            </c:otherwise>
+                                                                        </c:choose>
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">
+                                            <table style="width: 90%">
+                                                <tr>
+                                                    <td style="width: 25%">
+                                                        <h:outputText rendered="#{registroController.etapaEstado.verEtapa != 0 and registroController.etapaEstado.verEtapa != null}" value="Asignar estado:" class="text-primary" style="font-size: 1.5em"/>
+                                                    </td>
+                                                    <td>
+                                                        <div class="panel-body">
+                                                            <h:selectOneRadio rendered="#{registroController.etapaEstado.verEtapa == 1}"  value="#{registroController.expediente.estadoCalificacion}">
+                                                                <f:selectItems value="#{registroController.listaEstadoCalificacion}"  />
+                                                            </h:selectOneRadio>
+
+                                                            <h:selectOneRadio rendered="#{registroController.etapaEstado.verEtapa == 2}"  value="#{registroController.expediente.estadoInvestigacion}">
+                                                                <f:selectItems value="#{registroController.listaEstadoInvestigacion}"  />
+                                                            </h:selectOneRadio>
+
+                                                            <h:selectOneRadio rendered="#{registroController.etapaEstado.verEtapa == 3}"  value="#{registroController.expediente.estadoPersuacion}">
+                                                                <f:selectItems value="#{registroController.listaEstadoPersuacion}"  />
+                                                            </h:selectOneRadio>
+
+                                                            <h:selectOneRadio rendered="#{registroController.etapaEstado.verEtapa == 4}"  value="#{registroController.expediente.estadoSeguimiento}">
+                                                                <f:selectItems value="#{registroController.listaEstadoSeguimiento}"  />
+                                                            </h:selectOneRadio>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        
+                                                        <div  class="alert fade in" role="alert" style="width: 100%;text-align:right;border:solid silver 1px;background:white;color:silver;padding-bottom:5px;padding-top:5px;margin-bottom:3px">
+                                                        <input type="hidden" id="idTipoClasificacion" jsf:value="#{registroController.expediente.tipoClasificion}" />
+                                                        
+                                                        <span id="idTextTipoClasificacion" class="text-primary" style="float: left; font-weight: bold;">Seleccione</span>
+                                                        <a href="#" class="trigger2">
+                                                            <span style="color:#3183b9;font-size:large;vertical-align: top" class="glyphicon glyphicon-chevron-down trigger2"></span>
+                                                        </a>
+                                                        <div class="popover-markup" style="float:left">
+                                                            <div class="head hide"><b class="text-primary">Seleccione</b></div>
+                                                            <div class="content hide">
+                                                                <div style="width:100%">
+                                                                    <c:forEach var="x" items="#{listasComunesController.buscarExpedienteTipoClasificacion(false,false,false)}">
+                                                                        <a class="alink" onclick="asignarTipo('${x.valorParametro}')">
+                                                                            <div class="alert fade in alert-warning" role="alert" style="padding-bottom:5px;padding-top:5px;margin-bottom:3px">
+                                                                                
+                                                                                    <h:outputText value="${x.nombreParametro}" style="cursor:pointer"/>
+                                                                                
+                                                                            </div>
+                                                                        </a>
+                                                                    </c:forEach>
+
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <style>.alink:hover{text-decoration:none}.alink:link{text-decoration:none}.alink:active{text-decoration:none}</style>
+                                                        <script>$('.trigger2').popover({html: true, placement: 'bottom', tabindex: '0', trigger: 'focus', title: function () {
+                                                                    return $(this).parent().find('.head').html();
+                                                                }, content: function () {
+                                                                    return $(this).parent().find('.content').html();
+                                                                }});
+                                                            function asignarTipo(tipo) {
+                                                                $("#idTipoClasificacion").val(tipo);
+                                                                $("#idTextTipoClasificacion").css("color", "#3071A9");
+                                                                if (tipo === "01") {
+                                                                    $("#idTextTipoClasificacion").text("QUEJA");
+
+                                                                }
+                                                                if (tipo === "02") {
+                                                                    $("#idTextTipoClasificacion").text("CONSULTA");
+
+                                                                }
+                                                                if (tipo === "03") {
+                                                                    $("#idTextTipoClasificacion").text("PETITORIO");
+
+                                                                }
+                                                                if (tipo === "04") {
+                                                                    $("#idTextTipoClasificacion").text("SIN CLASIFICACION");
+
+                                                                }
+                                                            }
+                                                            if ($("#idTipoRegistro").val() !== "") {
+                                                                if ($("#idTipoClasificacion").val() === "01") {
+                                                                    $("#idTextTipoClasificacion").text("QUEJA");
+
+                                                                }
+                                                                if ($("#idTipoClasificacion").val() === "02") {
+                                                                    $("#idTextTipoClasificacion").text("CONSULTA");
+
+                                                                }
+                                                                if ($("#idTipoClasificacion").val() === "03") {
+                                                                    $("#idTextTipoClasificacion").text("PETITORIO");
+
+                                                                }
+                                                                if ($("#idTipoClasificacion").val() === "04") {
+                                                                    $("#idTextTipoClasificacion").text("SIN CLASIFICACION");
+
+                                                                }
+                                                                $("#idTextTipoClasificacion").css("color", "#3071A9");
+                                                            }
+                                                            $(document).ready(function () {
+                                                                if ($("#idTipoRegistro").val() !== "") {
+                                                                    if ($("#idTipoClasificacion").val() === "01") {
+                                                                        $("#idTextTipoClasificacion").text("QUEJA");
+
+                                                                    }
+                                                                    if ($("#idTipoClasificacion").val() === "02") {
+                                                                        $("#idTextTipoClasificacion").text("CONSULTA");
+
+                                                                    }
+                                                                    if ($("#idTipoClasificacion").val() === "03") {
+                                                                        $("#idTextTipoClasificacion").text("PETITORIO");
+
+                                                                    }
+                                                                    if ($("#idTipoClasificacion").val() === "04") {
+                                                                        $("#idTextTipoClasificacion").text("SIN CLASIFICACION");
+
+                                                                    }
+                                                                    $("#idTextTipoClasificacion").css("color", "#3071A9");
+                                                                }
+                                                            });</script>
+                                                                </div>
+                                                    </td>
+                                                    <td style="text-align: right">
+                                                       
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                                </td>
+                                        </tr>
+                                    </table>
+
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <ul class="nav nav-tabs">
+                    <li role="presentation" ><a style="cursor: pointer" jsf:rendered="true" jsf:action="expedienteNuevo">Expediente</a></li>
+                    <li role="presentation"><a style="cursor: pointer" jsf:rendered="#{registroController.etapaEstado.idEtapa > 0}" jsf:action="#{registroController.cargarExpedienteGestionLista()}">Gestiones</a></li>
+                    <li role="presentation" class="active"><a style="cursor: pointer">Nueva gestión</a></li>
+</ul>
+                <div class="panel panel-default">
+                    <center>
+                        <br/>
+                    <table style="width: 90%">
+                        <tr>
+                            <td></td>
+                            <td style="width: 50%; text-align: right">
+                                <a class="btn btn-info" onclick="confirmar()">
+                                                <span class="glyphicon glyphicon-floppy-disk" />Guardar
+                                            </a>
+                            </td>
+                        </tr>
+                    </table>
+                        </center>
+                    <div class="panel-body">
+                        <table style="width: 100%">
+                            <tr>
+                                <td style="width: 50%; vertical-align: top; padding-right: 2px">
+                                    <div class="panel panel-featured-top-silver">
+                                        <div class="panel-body">
+                                            <span class="text-resalt-primary">Datos generales</span>
+                                            <br/><br/>
+                                            <table style="width: 100%">
                                         <tr>
                                             <td style="width: 60%; padding-right: 5px;padding-bottom: 10px">
                                                 <label>Tipo Acción:</label>
@@ -56,17 +294,93 @@
                                                             <input type="text" jsf:value="#{registroController.expedienteGestion.nombre}" placeholder="Nombre"/>
                                                         </td>
                                                         <td style="width: 34%;padding-right: 10px">
-                                                            <label>Apellido Paterno:</label>
+                                                            <label>Apellido paterno:</label>
                                                             <input type="text" jsf:value="#{registroController.expedienteGestion.apellidoPaterno}" placeholder="Apellido paterno"/>
                                                         </td>
                                                         <td>
-                                                            <label>Apellido Materno:</label>
+                                                            <label>Apellido materno:</label>
                                                             <input type="text" jsf:value="#{registroController.expedienteGestion.apellidoMaterno}" placeholder="Apellido Materno"/>
                                                         </td>
                                                     </tr> 
                                                 </table>
                                             </td>
                                         </tr>
+                                    </table>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td style="vertical-align: top;  padding-left: 2px;">
+                                    <div class="panel panel-featured-top-silver">
+                                        <div class="panel-body">
+                                            <span class="text-resalt-primary">Información de respuesta</span>
+                                            <br/><br/>
+                                            <table style="width: 100%">
+                                                            <tr>
+                                                                <td colspan="3">
+                                                                    <textarea rows="6" jsf:value="#{registroController.expedienteGestion.nota}" style="width: 100%; height: 170px" placeholder="Notas"/>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="3">
+                                                                    <span class="text-resalt-primary">Respuesta</span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="width: 34%">
+                                                                    <span>Hubo respuesta?</span>
+                                                                    <h:selectOneRadio value="#{registroController.expedienteGestion.respuesta}">
+                                                                        <f:selectItem itemValue="SI" itemLabel="Si" />
+                                                                        <f:selectItem itemValue="NO" itemLabel="No" />
+                                                                    </h:selectOneRadio>
+                                                                </td>
+                                                                <td style="width: 34%">
+                                                                    <span>Fecha respuesta</span>
+                                                                    <gc:calendar value="#{registroController.expedienteGestion.fechaRespuesta}" />
+                                                                </td>
+                                                                <td>
+                                                                    <span>De darse la respuesta despues de los 30 dias de entregado el documento, se considerará fuera de plazo automaticamente.</span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <label>Calidad Respuesta</label>
+                                                                    <h:selectOneMenu value="#{registroController.expedienteGestion.tipoCalidad}">
+                                                                        <f:selectItems value="#{listasComunesController.buscarGestionTipoCalidadRespuesta(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
+                                                                    </h:selectOneMenu>
+                                                                </td>
+                                                                <td colspan="2"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="2">
+                                                                    <label>Descripción respuesta</label>
+                                                                    <textarea rows="6" jsf:value="#{registroController.expedienteGestion.detalleRespuesta}" style="width: 100%; height: 170px" placeholder="Descripción respuesta"/>
+                                                                </td>
+                                                                <td></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="2">
+                                                                    <label>Observaciones</label>
+                                                                    <textarea rows="6" jsf:value="#{registroController.expedienteGestion.observacionRespuesta}" style="width: 100%; height: 170px" placeholder="Observaciones"/>
+                                                                </td>
+                                                                <td></td>
+                                                            </tr>
+                                                        </table>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <table style="width: 100%">
+                    <tr>
+                        <td style="width: 50%; vertical-align: top">
+                            <div class="panel-featured-top-primary">
+                                <div class="panel-body">
+                                    <span class="text-resalt-primary">Gestión</span>
+
+                                    
+                                    <table>
                                         <tr>
                                             <td colspan="2">
 
@@ -219,65 +533,13 @@
                                                 <br/>
                                                 <div class="panel panel-featured-top-primary">
                                                     <div class="panel-body">
-                                                        <table style="width: 100%">
-                                                            <tr>
-                                                                <td colspan="3">
-                                                                    <textarea rows="6" jsf:value="#{registroController.expedienteGestion.nota}" style="width: 100%; height: 170px" placeholder="Notas"/>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td colspan="3">
-                                                                    <span class="text-resalt-primary">Respuesta</span>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td style="width: 34%">
-                                                                    <span>Hubo respuesta?</span>
-                                                                    <h:selectOneRadio value="#{registroController.expedienteGestion.respuesta}">
-                                                                        <f:selectItem itemValue="SI" itemLabel="Si" />
-                                                                        <f:selectItem itemValue="NO" itemLabel="No" />
-                                                                    </h:selectOneRadio>
-                                                                </td>
-                                                                <td style="width: 34%">
-                                                                    <span>Fecha respuesta</span>
-                                                                    <gc:calendar value="#{registroController.expedienteGestion.fechaRespuesta}" />
-                                                                </td>
-                                                                <td>
-                                                                    <span>De darse la respuesta despues de los 30 dias de entregado el documento, se considerará fuera de plazo automaticamente.</span>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>
-                                                                    <label>Calidad Respuesta</label>
-                                                                    <h:selectOneMenu value="#{registroController.expedienteGestion.tipoCalidad}">
-                                                                        <f:selectItems value="#{listasComunesController.buscarGestionTipoCalidadRespuesta(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
-                                                                    </h:selectOneMenu>
-                                                                </td>
-                                                                <td colspan="2"></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td colspan="2">
-                                                                    <label>Descripción respuesta</label>
-                                                                    <textarea rows="6" jsf:value="#{registroController.expedienteGestion.detalleRespuesta}" style="width: 100%; height: 170px" placeholder="Descripción respuesta"/>
-                                                                </td>
-                                                                <td></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td colspan="2">
-                                                                    <label>Observaciones</label>
-                                                                    <textarea rows="6" jsf:value="#{registroController.expedienteGestion.observacionRespuesta}" style="width: 100%; height: 170px" placeholder="Observaciones"/>
-                                                                </td>
-                                                                <td></td>
-                                                            </tr>
-                                                        </table>
+                                                        
                                                     </div>
                                                 </div>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <a class="btn btn-info" onclick="confirmar()">
-                                                <span class="glyphicon glyphicon-floppy-disk" />Guardar
-                                            </a>
+                                            
                                         </tr>
                                     </table>
                                 </div>

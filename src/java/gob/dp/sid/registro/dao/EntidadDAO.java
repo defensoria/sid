@@ -18,5 +18,5 @@ public interface EntidadDAO {
     
     public void entidadUpdate(Entidad entidad);
     
-    public List<Entidad> entidadBuscarCadena(String cadena);
+    public List<Entidad> entidadBuscarCadena(Entidad entidad);
 }

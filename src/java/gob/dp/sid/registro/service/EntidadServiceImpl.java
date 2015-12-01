@@ -32,8 +32,8 @@ public class EntidadServiceImpl implements EntidadService{
     }
 
     @Override
-    public List<Entidad> entidadBuscarCadena(String cadena) {
-        return entidadDAO.entidadBuscarCadena(cadena);
+    public List<Entidad> entidadBuscarCadena(Entidad entidad) {
+        return entidadDAO.entidadBuscarCadena(entidad);
     }
     
     

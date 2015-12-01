@@ -48,7 +48,7 @@ public class Persona implements Serializable{
             
     private Date fechaModificacion;        
     /*temporales*/
-    private String idExpediente;
+    private String numeroExpediente;
     
     private String tipoExpediente;
     
@@ -57,6 +57,12 @@ public class Persona implements Serializable{
     private String nombreProvincia;
     
     private String nombreDistrito;
+    
+    private Long ini;
+    
+    private Long fin;
+    
+    private String cadenaPersona;
 
     public Long getId() {
         return id;
@@ -106,12 +112,12 @@ public class Persona implements Serializable{
         this.ruc = ruc;
     }
 
-    public String getIdExpediente() {
-        return idExpediente;
+    public String getNumeroExpediente() {
+        return numeroExpediente;
     }
 
-    public void setIdExpediente(String idExpediente) {
-        this.idExpediente = idExpediente;
+    public void setNumeroExpediente(String numeroExpediente) {
+        this.numeroExpediente = numeroExpediente;
     }
 
     public String getDireccion() {
@@ -232,6 +238,30 @@ public class Persona implements Serializable{
 
     public void setFechaModificacion(Date fechaModificacion) {
         this.fechaModificacion = fechaModificacion;
+    }
+
+    public Long getIni() {
+        return ini;
+    }
+
+    public void setIni(Long ini) {
+        this.ini = ini;
+    }
+
+    public Long getFin() {
+        return fin;
+    }
+
+    public void setFin(Long fin) {
+        this.fin = fin;
+    }
+
+    public String getCadenaPersona() {
+        return cadenaPersona;
+    }
+
+    public void setCadenaPersona(String cadenaPersona) {
+        this.cadenaPersona = cadenaPersona;
     }
     
     

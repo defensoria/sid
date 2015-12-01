@@ -31,6 +31,9 @@
         <result property="mes" column="MES"/>
         <result property="usuarioCompleto" column="USUARIOCOMPLETO"/>
         
+        <result property="etapaDetalle" column="C_VALOR"/>
+        <result property="indicadorEtapa" column="C_INDICADORETAPA"/>
+        <result property="idEtapa" column="N_ID_ETAPA"/>
     </resultMap> 
     
     
@@ -312,6 +315,7 @@
         AND B.PADRE_PARAMETRO = 10
 INNER JOIN SID_REG_EXPEDE_PERSONA C ON A.N_IDEXPEDIENTE = C.N_IDEXPEDIENTE
 WHERE C.N_IDPERSONA = #{id} AND A.C_ESTADO = 'A'
+        ORDER BY A.N_IDEXPEDIENTE DESC
     </select>
     
     
@@ -322,11 +326,12 @@ WHERE C.N_IDPERSONA = #{id} AND A.C_ESTADO = 'A'
         B.*,
         ROWNUM numfila
         FROM (
-        SELECT A.*, B.NOMBRE_PARAMETRO AS TIPOCLASIFICACION FROM SID_REG_EXPEDIENTE A
-        INNER JOIN SID_PARAMETRO B ON A.C_TIPOCLASIFICACION = B.VALOR_PARAMETRO
-        AND B.PADRE_PARAMETRO = 10
+        SELECT A.*, B.NOMBRE_PARAMETRO AS TIPOCLASIFICACION, C.C_INDICADORETAPA, C.N_ID_ETAPA FROM SID_REG_EXPEDIENTE A
+        INNER JOIN SID_PARAMETRO B ON A.C_TIPOCLASIFICACION = B.VALOR_PARAMETRO AND B.PADRE_PARAMETRO = 10
+        LEFT JOIN SID_REG_ETAPA_ESTADO C ON A.N_IDEXPEDIENTE = C.N_ID_EXPEDIENTE
         WHERE A.C_USUREGISTRO  = #{usuarioRegistro}
         AND A.C_ESTADO = 'A'
+        ORDER BY A.N_IDEXPEDIENTE DESC
         ) B
         ) A WHERE a.numfila BETWEEN #{ini} AND #{fin}
     </select>

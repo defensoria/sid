@@ -18,7 +18,9 @@ public interface PersonaDAO {
     
     public void personaUpdate(Persona persona);
     
-    public List<Persona> personaBuscarCadena(String cadena);
+    public List<Persona> personaBuscarCadena(Persona persona);
     
     public List<Persona> personaBusarGeneral(Persona persona);
+    
+    public Long personaValidaDNI(String dni);
 }

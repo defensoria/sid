@@ -14,12 +14,14 @@ import java.util.List;
  */
 public interface PersonaService {
     
-    public void personaInsertar(Persona persona);
+    public boolean personaInsertar(Persona persona);
     
     public void personaUpdate(Persona persona);
     
-    public List<Persona> personaBuscarCadena(String cadena);
+    public List<Persona> personaBuscarCadena(Persona persona);
     
     public List<Persona> personaBusarGeneral(Persona persona);
+    
+    public Long personaValidaDNI(String dni);
     
 }

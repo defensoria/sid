@@ -78,7 +78,7 @@ public class BusquedaUsuarioController implements Serializable {
 
     public void listarPaginado(Long pagina) {
         if(pagina > 0){
-            int paginado = ConstantesUtil.PAGINADO_ACTORES_5;
+            int paginado = ConstantesUtil.PAGINADO_5;
             Long ini = paginado * (pagina - 1) + 1;
             Long fin = paginado * pagina;
             if (pagina == 0) {
@@ -102,7 +102,7 @@ public class BusquedaUsuarioController implements Serializable {
     
     public void listarPaginado2(FiltroUsuario filtroUsuario, Long pagina) {
         if(pagina > 0){
-            int paginado = ConstantesUtil.PAGINADO_ACTORES_5;
+            int paginado = ConstantesUtil.PAGINADO_5;
             Long ini = paginado * (pagina - 1) + 1;
             Long fin = paginado * pagina;
             if (pagina == 0) {

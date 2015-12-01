@@ -28,8 +28,8 @@ public class EntidadDAOImpl extends SqlSessionDaoSupport implements EntidadDAO {
     }
 
     @Override
-    public List<Entidad> entidadBuscarCadena(String cadena) {
-        return getSqlSession().selectList("gob.dp.sid.registro.dao.EntidadDAO.entidadBuscarCadena", cadena);
+    public List<Entidad> entidadBuscarCadena(Entidad entidad) {
+        return getSqlSession().selectList("gob.dp.sid.registro.dao.EntidadDAO.entidadBuscarCadena", entidad);
     }
     
 }

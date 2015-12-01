@@ -14,7 +14,7 @@ public class ConstantesUtil {
     
     public static final String REGISTRO_ACTIVIDAD_NOMBRE_DEFAULT="SIN NOMBRE";
     
-    public static final int PAGINADO_ACTORES_5=5;
+    public static final int PAGINADO_5=5;
     
     public static final int PAGINADO_10=10;
     

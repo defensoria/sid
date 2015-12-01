@@ -50,8 +50,12 @@
                                                     </h:outputText>
                                                 </h:column>
                                                 <h:column>
-                                                    <f:facet name="header">Estado</f:facet>
-                                                    <h:outputText value="#{exped.general == 'A'? 'Activo' : 'Concluido' }" />
+                                                    <f:facet name="header">Etapa</f:facet>
+                                                    <h:outputText value="#{exped.etapaDetalle}" />
+                                                </h:column>
+                                                <h:column>
+                                                    <f:facet name="header">Versión</f:facet>
+                                                    <h:outputText value="#{exped.version == 0? 'Borrador' : exped.version }" />
                                                 </h:column>
                                                 <h:column>
                                                     <a jsf:action="#{registroController.cargarExpedienteEdit(exped)}">

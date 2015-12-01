@@ -83,6 +83,10 @@ public class Expediente implements Serializable{
     private String usuarioCompleto;
     
     private Integer idEtapa;
+    
+    private String etapaDetalle;
+    
+    private String indicadorEtapa;
 
     public Long getId() {
         return id;
@@ -356,6 +360,22 @@ public class Expediente implements Serializable{
 
     public void setIdEtapa(Integer idEtapa) {
         this.idEtapa = idEtapa;
+    }
+
+    public String getEtapaDetalle() {
+        return etapaDetalle;
+    }
+
+    public void setEtapaDetalle(String etapaDetalle) {
+        this.etapaDetalle = etapaDetalle;
+    }
+
+    public String getIndicadorEtapa() {
+        return indicadorEtapa;
+    }
+
+    public void setIndicadorEtapa(String indicadorEtapa) {
+        this.indicadorEtapa = indicadorEtapa;
     }
     
 }

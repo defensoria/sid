@@ -149,6 +149,8 @@ public class RegistroController extends AbstractManagedBean implements Serializa
 
     private List<ExpedienteGestion> listaExpedienteGestion;
 
+    private Long nroPaginaPersona = 1L;
+
     @Autowired
     private ExpedienteService expedienteService;
 
@@ -289,10 +291,64 @@ public class RegistroController extends AbstractManagedBean implements Serializa
 
             List<Expediente> list = expedienteService.expedienteBuscarUsuarioPaginado(e);
             if (list.size() > 0) {
+                for (Expediente e1 : list) {
+                    e1.setEtapaDetalle(devolverEstado(e1));
+                }
                 listaExpedienteXUsuarioPaginado = list;
                 nroPagina = pagina;
             }
         }
+    }
+
+    private String devolverEstado(Expediente e) {
+        String detalleEtapa = null;
+        if (e.getIdEtapa() != null) {
+            if (e.getIdEtapa() > 0) {
+                if (StringUtils.equals(e.getIndicadorEtapa(), "VIG")) {
+                    if (StringUtils.equals(e.getEstado(), "C")) {
+                        if (Objects.equals(e.getIdEtapa(), EtapaType.CALIFICACION.getKey())) {
+                            detalleEtapa = EtapaType.CALIFICACION.getValue();
+                        }
+                        if (Objects.equals(e.getIdEtapa(), EtapaType.INVESTIGACION.getKey())) {
+                            detalleEtapa = EtapaType.INVESTIGACION.getValue();
+                        }
+                        if (Objects.equals(e.getIdEtapa(), EtapaType.PERSUACION.getKey())) {
+                            detalleEtapa = EtapaType.PERSUACION.getValue();
+                        }
+                        if (Objects.equals(e.getIdEtapa(), EtapaType.SEGUIMIENTO.getKey())) {
+                            detalleEtapa = EtapaType.SEGUIMIENTO.getValue();
+                        }
+                    } else {
+                        if (Objects.equals(e.getIdEtapa(), EtapaType.CALIFICACION.getKey())) {
+                            detalleEtapa = EtapaType.INVESTIGACION.getValue();
+                        }
+                        if (Objects.equals(e.getIdEtapa(), EtapaType.INVESTIGACION.getKey())) {
+                            detalleEtapa = EtapaType.PERSUACION.getValue();
+                        }
+                        if (Objects.equals(e.getIdEtapa(), EtapaType.PERSUACION.getKey())) {
+                            detalleEtapa = EtapaType.SEGUIMIENTO.getValue();
+                        }
+                        if (Objects.equals(e.getIdEtapa(), EtapaType.SEGUIMIENTO.getKey())) {
+                            detalleEtapa = EtapaType.SEGUIMIENTO.getValue();
+                        }
+                    }
+                } else {
+                    if (Objects.equals(e.getIdEtapa(), EtapaType.CALIFICACION.getKey())) {
+                        detalleEtapa = EtapaType.CALIFICACION.getValue();
+                    }
+                    if (Objects.equals(e.getIdEtapa(), EtapaType.INVESTIGACION.getKey())) {
+                        detalleEtapa = EtapaType.INVESTIGACION.getValue();
+                    }
+                    if (Objects.equals(e.getIdEtapa(), EtapaType.PERSUACION.getKey())) {
+                        detalleEtapa = EtapaType.PERSUACION.getValue();
+                    }
+                    if (Objects.equals(e.getIdEtapa(), EtapaType.SEGUIMIENTO.getKey())) {
+                        detalleEtapa = EtapaType.SEGUIMIENTO.getValue();
+                    }
+                }
+            }
+        }
+        return detalleEtapa;
     }
 
     private void cargarGraficos001() {
@@ -410,6 +466,8 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     }
 
     public String cargarExpedienteEdit(Expediente e) {
+        persona = new Persona();
+        entidad = new Entidad();
         FacesContext context = FacesContext.getCurrentInstance();
         MenuController menuController = (MenuController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "menuController");
         menuController.cargarPagina(1);
@@ -452,7 +510,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         System.out.println("care");
     }
 
-    public boolean buscarPersonaGeneral() {
+    public boolean buscarPersonaGeneral(Long pagina) {
         int i = 0;
         if (stringUtil.isBlank(personaBusqueda.getDni())) {
             personaBusqueda.setDni(null);
@@ -470,15 +528,37 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             personaBusqueda.setNombre(null);
             i++;
         }
-        if (stringUtil.isBlank(personaBusqueda.getIdExpediente())) {
-            personaBusqueda.setIdExpediente(null);
+        if (stringUtil.isBlank(personaBusqueda.getNumeroExpediente())) {
+            personaBusqueda.setNumeroExpediente(null);
             i++;
         }
         if (i == 5) {
             msg.messageAlert("Debe de ingresar almenos un criterio de busqueda", null);
             return false;
         } else {
-            listaPersonaGeneral = personaService.personaBusarGeneral(personaBusqueda);
+            if (pagina > 0) {
+                int paginado = ConstantesUtil.PAGINADO_5;
+                Long ini = paginado * (pagina - 1) + 1;
+                Long fin = paginado * pagina;
+                if (pagina == 0) {
+                    ini = 1L;
+                    fin = 5L;
+                }
+
+                personaBusqueda.setIni(ini);
+                personaBusqueda.setFin(fin);
+                try {
+                    List<Persona> list = personaService.personaBusarGeneral(personaBusqueda);
+                    if (list.size() > 0) {
+                        listaPersonaGeneral = list;
+                        nroPaginaPersona = pagina;
+                    }
+                } catch (Exception e) {
+                    log.error("ERROR : BusquedaUsuarioController.listarPaginado: " + e.getMessage());
+                }
+            }
+
+            //listaPersonaGeneral = personaService.personaBusarGeneral(personaBusqueda);
         }
         if (listaPersonaGeneral.isEmpty()) {
             msg.messageAlert("No se han encontrado Personas", null);
@@ -511,12 +591,71 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         usuarioSession = loginController.getUsuarioSesion();
     }
 
-    public void cargarPopoverPersona() {
-        personasPopover = personaService.personaBuscarCadena(cadenaPersonaPopover);
+    public boolean cargarPopoverPersona(Long pagina) {
+        if(pagina == 1)
+            nroPaginaPersona = 1L;
+        if (pagina > 0) {
+                int paginado = ConstantesUtil.PAGINADO_5;
+                Long ini = paginado * (pagina - 1) + 1;
+                Long fin = paginado * pagina;
+                if (pagina == 0) {
+                    ini = 1L;
+                    fin = 5L;
+                }
+
+                persona.setIni(ini);
+                persona.setFin(fin);
+                try {
+                    List<Persona> list = personaService.personaBuscarCadena(persona);
+                    if (list.size() > 0) {
+                        personasPopover = list;
+                        nroPaginaPersona = pagina;
+                    }
+                } catch (Exception e) {
+                    log.error("ERROR : BusquedaUsuarioController.listarPaginado: " + e.getMessage());
+                }
+            }
+
+            //listaPersonaGeneral = personaService.personaBusarGeneral(personaBusqueda);
+       
+        if (personasPopover.isEmpty()) {
+            msg.messageAlert("No se han encontrado Personas", null);
+        }
+        return true;
+        
     }
 
-    public void cargarPopoverEntidad() {
-        entidadPopover = entidadService.entidadBuscarCadena(cadenaEntidadPopover);
+    public boolean cargarPopoverEntidad(Long pagina) {
+        if(pagina == 1)
+            nroPaginaPersona = 1L;
+        if (pagina > 0) {
+                int paginado = ConstantesUtil.PAGINADO_5;
+                Long ini = paginado * (pagina - 1) + 1;
+                Long fin = paginado * pagina;
+                if (pagina == 0) {
+                    ini = 1L;
+                    fin = 5L;
+                }
+
+                entidad.setIni(ini);
+                entidad.setFin(fin);
+                try {
+                    List<Entidad> list = entidadService.entidadBuscarCadena(entidad);
+                    if (list.size() > 0) {
+                        entidadPopover = list;
+                        nroPaginaPersona = pagina;
+                    }
+                } catch (Exception e) {
+                    log.error("ERROR : BusquedaUsuarioController.listarPaginado: " + e.getMessage());
+                }
+            }
+
+            //listaPersonaGeneral = personaService.personaBusarGeneral(personaBusqueda);
+       
+        if (entidadPopover.isEmpty()) {
+            msg.messageAlert("No se han encontrado Personas", null);
+        }
+        return true;
     }
 
     public boolean addPersona(Persona p) {
@@ -618,6 +757,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         expediente.setVersion(0);
         expediente.setEstado("A");
         expediente.setEtiqueta(encadenarEtiquetas());
+        expediente.setUsuarioRegistro(usuarioSession.getCodigo());
         if (expediente.getId() == null) {
             expedienteService.expedienteInsertar(expediente);
             insertUpdateListasPersonaEntidad();
@@ -640,15 +780,15 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         inicializarEtapaEstado(1);
         msg.messageInfo("Se genero la version " + expediente.getVersion() + " del Expediente", null);
     }
-    
-    private void guardarListaGestiones(){
-        
-    }
 
     private void guardar() {
         try {
             expediente.setEtiqueta(encadenarEtiquetas());
             if (expediente.getId() == null || expediente.getVersion() == 0) {
+                if (expediente.getId() != null) {
+                    expediente.setEstado("I");
+                    expedienteService.expedienteUpdate(expediente);
+                }
                 expediente.setUsuarioRegistro(usuarioSession.getCodigo());
                 expediente.setVersion(1);
                 DateFormat format = new SimpleDateFormat("yyMMddHHmmss");
@@ -830,14 +970,43 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         msg.messageInfo("Se registro la Persona", null);
     }
 
-    public void guardarVincularPersona() {
+    public boolean guardarVincularPersona() {
         persona.setUsuRegistro(usuarioSession.getCodigo());
         persona.setFechaRegistro(new Date());
         persona.setFechaModificacion(new Date());
         persona.setUsuModificacion(usuarioSession.getCodigo());
-        personaService.personaInsertar(persona);
+        boolean valid = personaService.personaInsertar(persona);
+        if(!valid){
+            msg.messageAlert("El DNI ya se encuentra registrado", null);
+            return false;
+        }
         setearPersonaSeleccionada(persona);
         msg.messageInfo("Se registro la Persona", null);
+        return true;
+    }
+    
+    public boolean guardarVincularListaPersona() {
+        if(StringUtils.isBlank(persona.getDni())){
+            msg.messageAlert("Debe ingresar un DNI", null);
+            return false;
+        }else{
+            if(persona.getDni().length() != 8){
+                msg.messageAlert("El número de DNI debe contar con 8 caracteres", null);
+                return false;
+            }
+        }
+        persona.setUsuRegistro(usuarioSession.getCodigo());
+        persona.setFechaRegistro(new Date());
+        persona.setFechaModificacion(new Date());
+        persona.setUsuModificacion(usuarioSession.getCodigo());
+        boolean valid = personaService.personaInsertar(persona);
+        if(!valid){
+            msg.messageAlert("El DNI ya se encuentra registrado", null);
+            return false;
+        }
+        addPersona(persona);
+        msg.messageInfo("Se registro la Persona", null);
+        return true;
     }
 
     public void guardarEntidad() {
@@ -900,7 +1069,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     }
 
     public void cargarSubTemas() {
-        if (!expediente.getTipoTema().equals("0 ")) {
+        if (!expediente.getTipoTema().trim().equals("0")) {
             listaSubTemas = cacheService.buscarExpedienteSubTema(codigoParamentro(30));
         }
     }
@@ -1331,6 +1500,14 @@ public class RegistroController extends AbstractManagedBean implements Serializa
 
     public void setListaExpedientesSeguimiento(List<ExpedienteGestion> listaExpedientesSeguimiento) {
         this.listaExpedientesSeguimiento = listaExpedientesSeguimiento;
+    }
+
+    public Long getNroPaginaPersona() {
+        return nroPaginaPersona;
+    }
+
+    public void setNroPaginaPersona(Long nroPaginaPersona) {
+        this.nroPaginaPersona = nroPaginaPersona;
     }
 
 }

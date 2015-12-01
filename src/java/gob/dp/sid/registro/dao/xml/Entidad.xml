@@ -70,9 +70,16 @@
         </where>
     </update>
     
-    <select id="entidadBuscarCadena" resultMap="entidadMap" parameterType="String" >
+    <select id="entidadBuscarCadena" resultMap="entidadMap" parameterType="entidad" >
+        SELECT B.* FROM (
+        SELECT A.*,ROWNUM numfila FROM (
         SELECT * FROM SID_REG_ENTIDAD
-        WHERE UPPER(C_NOMBRE||C_RUC) LIKE '%'||UPPER(#{value})||'%'
+        WHERE UPPER(C_NOMBRE||C_RUC) LIKE '%'||UPPER(#{cadenaEntidad})||'%'
+        ) A
+        ) B
+        WHERE 1 = 1
+        and B.numfila BETWEEN #{ini} AND #{fin}
+        
     </select>
     
 </mapper>
