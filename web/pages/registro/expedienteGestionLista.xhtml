@@ -25,6 +25,7 @@
                         <td colspan="2">
                             <div class="panel panel-featured-top-primary">
                                 <div class="panel-body" >
+
                                     <table style="width: 100%">
                                         <tr>
                                             <td colspan="2">
@@ -33,7 +34,7 @@
                                         </tr>
                                         <tr>
                                             <td colspan="2">
-                                                <h:outputText rendered="#{registroController.etapaEstado.verEtapa != 0 and registroController.etapaEstado.verEtapa != null}" value="Estado: #{registroController.etapaEstado.ultimaEtapa}" class="text-primary" style="font-size: 1.5em"/>
+                                                <h:outputText rendered="#{registroController.etapaEstado.verEtapa != 0 and registroController.etapaEstado.verEtapa != null}" value="Estado: #{registroController.etapaEstado.estadoDetalle}" style="font-size: 2em" class="text-resalt-primary"/>
                                             </td>
                                         </tr>    
                                         <tr>
@@ -42,10 +43,10 @@
                                                 <table style="width: 90%">
                                                     <tr>
                                                         <td style="width: 10%">
-                                                            <span class="text-primary" style="font-size: 1.5em">Etapa:</span>
+                                                            <span style="font-size: 2em" class="text-resalt-primary">Etapa:</span>
                                                         </td>
                                                         <td>
-                                                            <div class="btn-group btn-group-justified" role="group" style="width: 50%">
+                                                            <div class="btn-group btn-group-justified" role="group" style="width: 72%">
                                                                 <div class="btn-group" role="group">
                                                                     <a style="cursor: auto" onclick="return false" jsf:action="#{registroController.cargarExpedienteEtapa(1)}" class="btn #{registroController.etapaEstado.verEtapa == 1? 'btn-warning' : 'btn-default'}">
                                                                         <c:choose>
@@ -131,76 +132,38 @@
                                                     <tr>
                                                         <td>
 
-                                                            <input type="hidden" id="idTipoClasificacion" jsf:value="#{registroController.expediente.tipoClasificion}" />
-                                                            <span style="font-size: 2.5em" class="text-resalt-primary">Atención de Casos</span><br/>
-                                                            <span id="idTextTipoClasificacion" class="text-resalt-comun" style="font-weight: bold;font-size: 1.5em">SELECCIONE</span>
-                                                            <a href="#" class="trigger2">
-                                                                <span style="color:#3183b9;font-size:large;vertical-align: top" class="glyphicon glyphicon-chevron-down trigger2"></span>
-                                                            </a>
-                                                            <div class="popover-markup" style="float:right">
-                                                                <div class="head hide"><b class="text-primary">Seleccione</b></div>
-                                                                <div class="content hide">
-                                                                    <div style="width:100%">
-                                                                        <c:forEach var="x" items="#{listasComunesController.buscarExpedienteTipoClasificacion(false,false,false)}">
-                                                                            <a class="alink" onclick="asignarTipo('${x.valorParametro}')">
-                                                                                <div class="alert fade in alert-danger" role="alert" style="padding-bottom:5px;padding-top:5px;margin-bottom:3px">
-                                                                                    <strong>
-                                                                                        <h:outputText value="${x.nombreParametro}" class="cTipoRegistro" style="cursor:pointer"/>
-                                                                                    </strong>
-                                                                                </div>
-                                                                            </a>
-                                                                        </c:forEach>
+                                                            <div  class="alert fade in" role="alert" style="width: 100%;text-align:right;border:solid silver 1px;background:white;color:silver;padding-bottom:5px;padding-top:5px;margin-bottom:3px">
+                                                                <input type="hidden" id="idTipoClasificacion" jsf:value="#{registroController.expediente.tipoClasificion}" />
+
+                                                                <span id="idTextTipoClasificacion" class="text-primary" style="float: left; font-weight: bold;">Seleccione</span>
+                                                                <a class="trigger2">
+                                                                    <span style="color:#3183b9;font-size:large;vertical-align: top" class="glyphicon glyphicon-chevron-down trigger2"></span>
+                                                                </a>
+                                                                <div class="popover-markup" style="float:left">
+                                                                    <div class="head hide"><b class="text-primary">Seleccione</b></div>
+                                                                    <div class="content hide">
+                                                                        <div style="width:100%">
+                                                                            <c:forEach var="x" items="#{listasComunesController.buscarExpedienteTipoClasificacion(false,false,false)}">
+                                                                                <a class="alink">
+                                                                                    <div class="alert fade in alert-warning" role="alert" style="padding-bottom:5px;padding-top:5px;margin-bottom:3px">
+
+                                                                                        <h:outputText value="${x.nombreParametro}" style="cursor:pointer"/>
+
+                                                                                    </div>
+                                                                                </a>
+                                                                            </c:forEach>
 
 
+                                                                        </div>
                                                                     </div>
                                                                 </div>
-                                                            </div>
-                                                            <style>.alink:hover{text-decoration:none}.alink:link{text-decoration:none}.alink:active{text-decoration:none}</style>
-                                                            <script>$('.trigger2').popover({html: true, placement: 'bottom', tabindex: '0', trigger: 'focus', title: function () {
-                                                                        return $(this).parent().find('.head').html();
-                                                                    }, content: function () {
-                                                                        return $(this).parent().find('.content').html();
-                                                                    }});
-                                                                function asignarTipo(tipo) {
-                                                                    $("#idTipoClasificacion").val(tipo);
-                                                                    $("#idTextTipoClasificacion").css("color", "#3071A9");
-                                                                    if (tipo === "01") {
-                                                                        $("#idTextTipoClasificacion").text("QUEJA");
+                                                                <style>.alink:hover{text-decoration:none}.alink:link{text-decoration:none}.alink:active{text-decoration:none}</style>
+                                                                <script>$('.trigger2').popover({html: true, placement: 'bottom', tabindex: '0', trigger: 'focus', title: function () {
+                                                                            return $(this).parent().find('.head').html();
+                                                                        }, content: function () {
+                                                                            return $(this).parent().find('.content').html();
+                                                                        }});
 
-                                                                    }
-                                                                    if (tipo === "02") {
-                                                                        $("#idTextTipoClasificacion").text("CONSULTA");
-
-                                                                    }
-                                                                    if (tipo === "03") {
-                                                                        $("#idTextTipoClasificacion").text("PETITORIO");
-
-                                                                    }
-                                                                    if (tipo === "04") {
-                                                                        $("#idTextTipoClasificacion").text("SIN CLASIFICACION");
-
-                                                                    }
-                                                                }
-                                                                if ($("#idTipoRegistro").val() !== "") {
-                                                                    if ($("#idTipoClasificacion").val() === "01") {
-                                                                        $("#idTextTipoClasificacion").text("QUEJA");
-
-                                                                    }
-                                                                    if ($("#idTipoClasificacion").val() === "02") {
-                                                                        $("#idTextTipoClasificacion").text("CONSULTA");
-
-                                                                    }
-                                                                    if ($("#idTipoClasificacion").val() === "03") {
-                                                                        $("#idTextTipoClasificacion").text("PETITORIO");
-
-                                                                    }
-                                                                    if ($("#idTipoClasificacion").val() === "04") {
-                                                                        $("#idTextTipoClasificacion").text("SIN CLASIFICACION");
-
-                                                                    }
-                                                                    $("#idTextTipoClasificacion").css("color", "#3071A9");
-                                                                }
-                                                                $(document).ready(function () {
                                                                     if ($("#idTipoRegistro").val() !== "") {
                                                                         if ($("#idTipoClasificacion").val() === "01") {
                                                                             $("#idTextTipoClasificacion").text("QUEJA");
@@ -220,26 +183,64 @@
                                                                         }
                                                                         $("#idTextTipoClasificacion").css("color", "#3071A9");
                                                                     }
-                                                                });</script>
-                                                        </td>
+                                                                    $(document).ready(function () {
+                                                                        if ($("#idTipoRegistro").val() !== "") {
+                                                                            if ($("#idTipoClasificacion").val() === "01") {
+                                                                                $("#idTextTipoClasificacion").text("QUEJA");
 
+                                                                            }
+                                                                            if ($("#idTipoClasificacion").val() === "02") {
+                                                                                $("#idTextTipoClasificacion").text("CONSULTA");
+
+                                                                            }
+                                                                            if ($("#idTipoClasificacion").val() === "03") {
+                                                                                $("#idTextTipoClasificacion").text("PETITORIO");
+
+                                                                            }
+                                                                            if ($("#idTipoClasificacion").val() === "04") {
+                                                                                $("#idTextTipoClasificacion").text("SIN CLASIFICACION");
+
+                                                                            }
+                                                                            $("#idTextTipoClasificacion").css("color", "#3071A9");
+                                                                        }
+                                                                    });</script>
+                                                            </div>
+                                                        </td>
+                                                        <td style="text-align: right">
+                                                            <script>
+                                                                function confirmarBorrador() {
+                                                                    if ($("#idTipoClasificacion").val() === "0") {
+                                                                        alertar("Debe de ingresar el tipo de expediente!");
+                                                                        return false;
+                                                                    } else {
+                                                                        confirmar();
+                                                                    }
+                                                                }
+                                                            </script>
+                                                        </td>
                                                     </tr>
                                                 </table>
                                             </td>
                                         </tr>
                                     </table>
-
                                 </div>
                             </div>
                         </td>
                     </tr>
                 </table>
 
-                <ul class="nav nav-tabs">
-                    <li role="presentation" ><a style="cursor: pointer" jsf:rendered="true" jsf:action="expedienteNuevo">Expediente</a></li>
-                    <li role="presentation" class="active"><a style="cursor: pointer" jsf:action="#{registroController.cargarExpedienteGestionLista()}">Gestiones</a></li>
+                
+                    <ul class="nav nav-tabs">
+                    <li role="presentation" >
+                        <a style="cursor: pointer" jsf:rendered="true" jsf:action="expedienteNuevo">
+                            <span style="font-size: medium; color: purple;" class="glyphicon glyphicon-list-alt" > Expediente</span>
+                        </a>
+                    </li>
+                    <li role="presentation" class="active"><a style="cursor: pointer" jsf:action="#{registroController.cargarExpedienteGestionLista()}">
+                            <span style="font-size: large; color: #007ACC; font-weight: bold" class="glyphicon glyphicon-list-alt" > Gestiones</span>
+                        </a></li>
                 </ul>
-
+                
                 <div class="panel panel-default">
 
                     <div class="panel-body">
@@ -273,154 +274,234 @@
                                 <td>
                                     <span class="glyphicon glyphicon-folder-open" style="font-size:medium"></span>
                                     <span class="text-resalt-comun">&#160;&#160;Persuación&#160;(#{registroController.listaExpedientesPersuacion.size()})</span>
-                                    <a id="addInvestigacion">
-                                        <span id="spanAddInvestigacion" class="glyphicon glyphicon-plus" style="font-size:medium;cursor:pointer"></span>
+                                    <a id="addPersuacion">
+                                        <span id="spanAddPersuacion" class="glyphicon glyphicon-plus" style="font-size:medium;cursor:pointer"></span>
                                     </a>
                                 </td>
                                 <td>
                                     <span class="glyphicon glyphicon-folder-open" style="font-size:medium"></span>
                                     <span class="text-resalt-comun">&#160;&#160;Seguimiento&#160;(#{registroController.listaExpedientesSeguimiento.size()})</span>
-                                    <a id="addInvestigacion">
-                                        <span id="spanAddInvestigacion" class="glyphicon glyphicon-plus" style="font-size:medium;cursor:pointer"></span>
+                                    <a id="addSeguimiento">
+                                        <span id="spanAddSeguimiento" class="glyphicon glyphicon-plus" style="font-size:medium;cursor:pointer"></span>
                                     </a>
                                 </td>
                             </tr>
                         </table>
-
-                        <div id="idPanelBodyCalificacion" class="panel panel-default">
+                        <br/>
+                        <br/>
+                        
+                        <div id="idPanelBodyCalificacion" class="panel panel-warning">
+                            <div class="panel-heading">
+                                <span style="font-size: 1.5em">Gestiones registradas en la etapa de Calificiación:</span>
+                            </div>
                             <div  class="panel-body">
-                                <h:dataTable value="#{registroController.listaExpedientesCalificacion}" var="calificacion" binding="#{rowx1}">
+                                <h:dataTable value="#{registroController.listaExpedientesCalificacion}" var="calificacion" binding="#{rowx1}" class="table table-hover">
                                     <h:column>
                                         <f:facet name="header">N°</f:facet>
                                         <h:outputText value="#{rowx1.rowIndex+1}" />
                                     </h:column>
                                     <h:column>
-                                        <f:facet name="header">Nombre</f:facet>
-                                        <h:outputText value="#{calificacion.nombre}" />
+                                        <f:facet name="header">Codigo de gestión</f:facet>
+                                        <h:outputText value="#{calificacion.codigoGestion}" />
                                     </h:column>
                                     <h:column>
-                                        <f:facet name="header">Acción</f:facet>
-                                        <h:outputText value="#{calificacion.nombreParametroTipo}" />
+                                        <f:facet name="header">Tipo de acción</f:facet>
+                                        <h:outputText value="#{calificacion.detalleTipo}" />
                                     </h:column>
                                     <h:column>
-                                        <f:facet name="header">Fecha</f:facet>
-                                        <h:outputText value="#{calificacion.fecha}">
+                                        <f:facet name="header">Fecha registro</f:facet>
+                                        <h:outputText value="#{calificacion.fechaRegistro}" >
                                             <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
                                         </h:outputText>
                                     </h:column>
                                     <h:column>
-                                        <f:facet name="header">Editar</f:facet>
-                                        <a jsf:action="#{registroController.setExpedienteGestion(calificacion)}">
+                                        <f:facet name="header">Fecha modificación</f:facet>
+                                        <h:outputText value="#{calificacion.fechaModificacion}" >
+                                            <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
+                                        </h:outputText>
+                                    </h:column>
+                                    <h:column>
+                                        <f:facet name="header">Hubo respuesta</f:facet>
+                                        <h:outputText value="#{calificacion.respuesta}" />
+                                    </h:column>
+                                    <h:column>
+                                        <f:facet name="header">Se programo alerta</f:facet>
+                                        <h:outputText value="#{calificacion.indAlertar? 'NO' : 'SI'}" />
+                                    </h:column>
+                                    <h:column rendered="#{registroController.etapaEstado.verEtapa == 1}">
+                                        <f:facet  name="header">Editar</f:facet>
+                                        <a jsf:action="#{registroController.setearExpedienteGestion(calificacion)}">
                                             <span class="glyphicon glyphicon-pencil" />
+                                        </a>
+                                    </h:column>
+                                    <h:column rendered="#{registroController.etapaEstado.verEtapa != 1}">
+                                        <f:facet  name="header">Ver</f:facet>
+                                        <a jsf:action="#{registroController.setearExpedienteGestion(calificacion)}">
+                                            <span class="glyphicon glyphicon-search" />
                                         </a>
                                     </h:column>
                                 </h:dataTable>
                             </div>
                         </div>
-                        <div id="idPanelBodyInvestigacion" class="panel panel-default">
+                        <div id="idPanelBodyInvestigacion" class="panel panel-info">
+                            <div class="panel-heading">
+                                <span style="font-size: 1.5em">Gestiones registradas en la etapa de Investigación:</span>
+                            </div>
                             <div  class="panel-body">
-                                <h:dataTable value="#{registroController.listaExpedientesInvestigacion}" var="investigacion" binding="#{rowx2}">
+                                <h:dataTable value="#{registroController.listaExpedientesInvestigacion}" var="investigacion" binding="#{rowx2}" class="table table-hover">
                                     <h:column>
                                         <f:facet name="header">N°</f:facet>
                                         <h:outputText value="#{rowx2.rowIndex+1}" />
                                     </h:column>
-
                                     <h:column>
-                                        <f:facet name="header">Nombre</f:facet>
-                                        <h:outputText value="#{investigacion.nombre}" />
+                                        <f:facet name="header">Codigo de gestión</f:facet>
+                                        <h:outputText value="#{investigacion.codigoGestion}" />
                                     </h:column>
-
                                     <h:column>
-                                        <f:facet name="header">Acción</f:facet>
-                                        <h:outputText value="#{investigacion.nombreParametroTipo}" />
+                                        <f:facet name="header">Tipo de acción</f:facet>
+                                        <h:outputText value="#{investigacion.detalleTipo}" />
                                     </h:column>
-
                                     <h:column>
-                                        <f:facet name="header">Fecha</f:facet>
-                                        <h:outputText value="#{investigacion.fecha}">
+                                        <f:facet name="header">Fecha registro</f:facet>
+                                        <h:outputText value="#{investigacion.fechaRegistro}" >
                                             <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
                                         </h:outputText>
                                     </h:column>
-
                                     <h:column>
+                                        <f:facet name="header">Fecha modificación</f:facet>
+                                        <h:outputText value="#{investigacion.fechaModificacion}" >
+                                            <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
+                                        </h:outputText>
+                                    </h:column>
+                                    <h:column>
+                                        <f:facet name="header">Hubo respuesta</f:facet>
+                                        <h:outputText value="#{investigacion.respuesta}" />
+                                    </h:column>
+                                    <h:column>
+                                        <f:facet name="header">Se programo alerta</f:facet>
+                                        <h:outputText value="#{investigacion.indAlertar? 'NO' : 'SI'}" />
+                                    </h:column>
+                                    <h:column rendered="#{registroController.etapaEstado.verEtapa == 2}">
                                         <f:facet name="header">Editar</f:facet>
-                                        <a jsf:action="#{registroController.setExpedienteGestion(investigacion)}">
+                                        <a jsf:action="#{registroController.setearExpedienteGestion(investigacion)}">
                                             <span class="glyphicon glyphicon-pencil" />
+                                        </a>
+                                    </h:column>
+                                    <h:column rendered="#{registroController.etapaEstado.verEtapa != 2}">
+                                        <f:facet  name="header">Ver</f:facet>
+                                        <a jsf:action="#{registroController.setearExpedienteGestion(investigacion)}">
+                                            <span class="glyphicon glyphicon-search" />
                                         </a>
                                     </h:column>
                                 </h:dataTable>
                             </div>
                         </div>
                         <div id="idPanelBodyPersuacion" class="panel panel-default">
+                            <div class="panel-heading">
+                                <span style="font-size: 1.5em">Gestiones registradas en la etapa de Persuación:</span>
+                            </div>
                             <div  class="panel-body">
-                                <h:dataTable value="#{registroController.listaExpedientesPersuacion}" var="persuacion" binding="#{rowx3}">
+                                <h:dataTable value="#{registroController.listaExpedientesPersuacion}" var="persuacion" binding="#{rowx3}" class="table table-hover">
                                     <h:column>
                                         <f:facet name="header">N°</f:facet>
                                         <h:outputText value="#{rowx3.rowIndex+1}" />
                                     </h:column>
-
                                     <h:column>
-                                        <f:facet name="header">Nombre</f:facet>
-                                        <h:outputText value="#{persuacion.nombre}" />
+                                        <f:facet name="header">Codigo de gestión</f:facet>
+                                        <h:outputText value="#{persuacion.codigoGestion}" />
                                     </h:column>
-
                                     <h:column>
-                                        <f:facet name="header">Acción</f:facet>
-                                        <h:outputText value="#{persuacion.nombreParametroTipo}" />
+                                        <f:facet name="header">Tipo de acción</f:facet>
+                                        <h:outputText value="#{persuacion.detalleTipo}" />
                                     </h:column>
-
                                     <h:column>
-                                        <f:facet name="header">Fecha</f:facet>
-                                        <h:outputText value="#{persuacion.fecha}">
+                                        <f:facet name="header">Fecha registro</f:facet>
+                                        <h:outputText value="#{persuacion.fechaRegistro}" >
                                             <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
                                         </h:outputText>
                                     </h:column>
-
                                     <h:column>
+                                        <f:facet name="header">Fecha modificación</f:facet>
+                                        <h:outputText value="#{persuacion.fechaModificacion}" >
+                                            <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
+                                        </h:outputText>
+                                    </h:column>
+                                    <h:column>
+                                        <f:facet name="header">Hubo respuesta</f:facet>
+                                        <h:outputText value="#{persuacion.respuesta}" />
+                                    </h:column>
+                                    <h:column>
+                                        <f:facet name="header">Se programo alerta</f:facet>
+                                        <h:outputText value="#{persuacion.indAlertar? 'NO' : 'SI'}" />
+                                    </h:column>
+                                    <h:column rendered="#{registroController.etapaEstado.verEtapa == 3}">
                                         <f:facet name="header">Editar</f:facet>
-                                        <a jsf:action="#{registroController.setExpedienteGestion(persuacion)}">
+                                        <a jsf:action="#{registroController.setearExpedienteGestion(persuacion)}">
                                             <span class="glyphicon glyphicon-pencil" />
+                                        </a>
+                                    </h:column>
+                                    <h:column rendered="#{registroController.etapaEstado.verEtapa != 3}">
+                                        <f:facet  name="header">Ver</f:facet>
+                                        <a jsf:action="#{registroController.setearExpedienteGestion(persuacion)}">
+                                            <span class="glyphicon glyphicon-search" />
                                         </a>
                                     </h:column>
                                 </h:dataTable>
                             </div>
                         </div>
 
-                        <div id="idPanelBodySeguimiento" class="panel panel-default">
+                        <div id="idPanelBodySeguimiento" class="panel panel-primary">
+                            <div class="panel-heading">
+                                <span style="font-size: 1.5em">Gestiones registradas en la etapa de Seguimiento:</span>
+                            </div>
                             <div  class="panel-body">
-                                <h:dataTable value="#{registroController.listaExpedientesSeguimiento}" var="seguimiento" binding="#{rowx4}">
+                                <h:dataTable value="#{registroController.listaExpedientesSeguimiento}" var="seguimiento" binding="#{rowx4}" class="table table-hover">
                                     <h:column>
                                         <f:facet name="header">N°</f:facet>
                                         <h:outputText value="#{rowx4.rowIndex+1}" />
                                     </h:column>
-
                                     <h:column>
-                                        <f:facet name="header">Nombre</f:facet>
-                                        <h:outputText value="#{seguimiento.nombre}" />
+                                        <f:facet name="header">Codigo de gestión</f:facet>
+                                        <h:outputText value="#{seguimiento.codigoGestion}" />
                                     </h:column>
-
                                     <h:column>
-                                        <f:facet name="header">Acción</f:facet>
-                                        <h:outputText value="#{seguimiento.nombreParametroTipo}" />
+                                        <f:facet name="header">Tipo de acción</f:facet>
+                                        <h:outputText value="#{seguimiento.detalleTipo}" />
                                     </h:column>
-
                                     <h:column>
-                                        <f:facet name="header">Fecha</f:facet>
-                                        <h:outputText value="#{seguimiento.fecha}">
+                                        <f:facet name="header">Fecha registro</f:facet>
+                                        <h:outputText value="#{seguimiento.fechaRegistro}" >
                                             <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
                                         </h:outputText>
                                     </h:column>
-
                                     <h:column>
+                                        <f:facet name="header">Fecha modificación</f:facet>
+                                        <h:outputText value="#{seguimiento.fechaModificacion}" >
+                                            <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
+                                        </h:outputText>
+                                    </h:column>
+                                    <h:column>
+                                        <f:facet name="header">Hubo respuesta</f:facet>
+                                        <h:outputText value="#{seguimiento.respuesta}" />
+                                    </h:column>
+                                    <h:column>
+                                        <f:facet name="header">Se programo alerta</f:facet>
+                                        <h:outputText value="#{seguimiento.indAlertar? 'NO' : 'SI'}" />
+                                    </h:column>
+                                    <h:column rendered="#{registroController.etapaEstado.verEtapa == 4}">
                                         <f:facet name="header">Editar</f:facet>
-                                        <a jsf:action="#{registroController.setExpedienteGestion(seguimiento)}">
+                                        <a jsf:action="#{registroController.setearExpedienteGestion(seguimiento)}">
                                             <span class="glyphicon glyphicon-pencil" />
+                                        </a>
+                                    </h:column>
+                                    <h:column rendered="#{registroController.etapaEstado.verEtapa != 4}">
+                                        <f:facet  name="header">Ver</f:facet>
+                                        <a jsf:action="#{registroController.setearExpedienteGestion(seguimiento)}">
+                                            <span class="glyphicon glyphicon-search" />
                                         </a>
                                     </h:column>
                                 </h:dataTable>
                             </div>
-
-
                         </div>
 
 

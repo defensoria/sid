@@ -266,10 +266,33 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         cargarGraficos003();
     }
 
-    public void registarExpedienteGestion() {
-        //expedienteGestion.setIdExpediente(expediente.getId());
-        expedienteGestionService.expedienteGestionInsertar(expedienteGestion);
-        guardarGestionEtapa();
+    public String registarExpedienteGestion() {
+        if(StringUtils.isBlank(expedienteGestion.getCodigoGestion())){
+            DateFormat format = new SimpleDateFormat("yyMMddHHmmss");
+            String formato = format.format(new Date());
+            expedienteGestion.setUsuarioRegistro(usuarioSession.getCodigo());
+            expedienteGestion.setFechaRegistro(new Date());
+            expedienteGestion.setCodigoGestion("GES" + formato);
+            expedienteGestionService.expedienteGestionInsertar(expedienteGestion);
+            guardarGestionEtapa();
+            msg.messageInfo("Se registro una nueva gestión", null);
+        }else{
+            expedienteGestion.setUsuarioModificacion(usuarioSession.getCodigo());
+            expedienteGestion.setFechaModificacion(new Date());
+            expedienteGestionService.expedienteGestionUpdate(expedienteGestion);
+            msg.messageInfo("Se actualizo la gestión", null);
+        }
+        return cargarExpedienteGestionLista();
+    }
+    
+    public String setearExpedienteGestion(ExpedienteGestion eg){
+        setExpedienteGestion(eg);
+        return "expedienteGestion";
+    }
+    
+    public String verExpedienteGestion(ExpedienteGestion eg){
+        setExpedienteGestion(eg);
+        return "expedienteGestionVer";
     }
 
     private void guardarGestionEtapa() {
@@ -895,6 +918,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                     etapaEstado1.setIdEtapa(EtapaType.CALIFICACION.getKey());
                     etapaEstado1.setIdEstado(expediente.getEstadoCalificacion());
                     if (expediente.getEstadoCalificacion() == EstadoExpedienteType.CALIFICACION_NO_ADMITIDA.getKey()) {
+                        expediente.setGeneral("C");
                         expedienteService.expedienteConcluir(expediente.getId());
                     }
                 }
@@ -902,6 +926,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                     etapaEstado1.setIdEtapa(EtapaType.INVESTIGACION.getKey());
                     etapaEstado1.setIdEstado(expediente.getEstadoInvestigacion());
                     if (expediente.getEstadoInvestigacion() == EstadoExpedienteType.INVESTIGACION_INFUNDADO.getKey()) {
+                        expediente.setGeneral("C");
                         expedienteService.expedienteConcluir(expediente.getId());
                     }
                 }
@@ -909,12 +934,14 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                     etapaEstado1.setIdEtapa(EtapaType.PERSUACION.getKey());
                     etapaEstado1.setIdEstado(expediente.getEstadoPersuacion());
                     if (expediente.getEstadoPersuacion() == EstadoExpedienteType.PERSUACION_ACOGIDO.getKey()) {
+                        expediente.setGeneral("C");
                         expedienteService.expedienteConcluir(expediente.getId());
                     }
                 }
                 if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.SEGUIMIENTO.getKey())) {
                     etapaEstado1.setIdEtapa(EtapaType.SEGUIMIENTO.getKey());
                     etapaEstado1.setIdEstado(expediente.getEstadoSeguimiento());
+                    expediente.setGeneral("C");
                     expedienteService.expedienteConcluir(expediente.getId());
                 }
                 etapaEstado1.setIndicadorEtapa("VIG");
@@ -1288,7 +1315,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         }
         return listaDepartamento;
     }
-
+    
     public void setListaDepartamento(List<SelectItem> listaDepartamento) {
         this.listaDepartamento = listaDepartamento;
     }

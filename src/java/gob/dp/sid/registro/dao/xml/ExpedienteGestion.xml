@@ -4,7 +4,7 @@
     
     <resultMap id="expedienteGestionMap" type="expedienteGestion">
         <id property="id" column="N_ID_GESTION" />
-        <result property="nombreGestion" column="C_NOMBREGESTION"/>
+        <result property="codigoGestion" column="C_CODIGOGESTION"/>
         <result property="tipo" column="C_TIPO"/>
         <result property="fecha" column="D_FECHA"/>
         <result property="descripcion" column="C_DESCRIPCION"/>
@@ -33,10 +33,15 @@
         <result property="tipoCalidad" column="C_CALIDADRESPUESTA"/>
         <result property="detalleRespuesta" column="C_DESCRIPCIONRESPUESTA"/>
         <result property="observacionRespuesta" column="C_OBSERVACIONES"/>
+        <result property="usuarioRegistro" column="C_USUREGISTRO"/>
+        <result property="usuarioModificacion" column="C_USUMODIFICACION"/>
+        <result property="fechaRegistro" column="D_FECHAREGISTRO"/>
+        <result property="fechaModificacion" column="D_FECHAMODIFICACION"/>
         
         <!--adionales-->
         <result property="nombreParametroTipo" column="NOMBRE_PARAMETRO"/>
         <result property="idEtapa" column="N_ID_ETAPA"/>
+        <result property="detalleTipo" column="GESTION_TIPO"/>
         
     </resultMap> 
     
@@ -47,8 +52,11 @@
         <if test="tipo != null">
             C_TIPO,
         </if>
-        <if test="nombreGestion != null">
-            C_NOMBREGESTION,
+        <if test="fecha != null">
+            D_FECHA,
+        </if>
+        <if test="codigoGestion != null">
+            C_CODIGOGESTION,
         </if>
         <if test="descripcion != null">
             C_DESCRIPCION,
@@ -125,6 +133,12 @@
         <if test="observacionRespuesta != null">
             C_OBSERVACIONES,
         </if>
+        <if test="usuarioRegistro != null">
+            C_USUREGISTRO,
+        </if>
+        <if test="fechaRegistro != null">
+            D_FECHAREGISTRO,
+        </if>
         N_ID_GESTION
         )
         VALUES 
@@ -132,8 +146,11 @@
         <if test="tipo != null">
             #{tipo},
         </if>
-        <if test="nombreGestion != null">
-            #{nombreGestion},
+        <if test="fecha != null">
+            #{fecha},
+        </if>
+        <if test="codigoGestion != null">
+            #{codigoGestion},
         </if>
         <if test="descripcion != null">
             #{descripcion},
@@ -210,6 +227,12 @@
         <if test="observacionRespuesta != null">
             #{observacionRespuesta},
         </if>
+        <if test="usuarioRegistro != null">
+            #{usuarioRegistro},
+        </if>
+        <if test="fechaRegistro != null">
+            #{fechaRegistro},
+        </if>
         SEQ_SID_REG_GESTION.NextVal
         )
         <selectKey keyProperty="id" resultType="Long">
@@ -225,81 +248,82 @@
             C_TIPO = #{tipo},
         </if>
         <if test="descripcion != null">
-            C_DESCRIPCION = #{tipo},
+            C_DESCRIPCION = #{descripcion},
         </if>
         <if test="indEntidadQuejada != null">
-            C_INDENTQUEJADA = #{tipo},
+            C_INDENTQUEJADA = #{indEntidadQuejada},
         </if>
         <if test="nombre != null">
-            C_NOMBREFUNC = #{tipo},
+            C_NOMBREFUNC = #{nombre},
         </if>
         <if test="apellidoPaterno != null">
-            C_APEPATFUNC = #{tipo},
+            C_APEPATFUNC = #{apellidoPaterno},
         </if>
         <if test="apellidoMaterno != null">
-            C_APEMATFUNC = #{tipo},
+            C_APEMATFUNC = #{apellidoMaterno},
         </if>
         <if test="indAlertar != null">
-            C_INDALERTAR = #{tipo},
+            C_INDALERTAR = #{indAlertar},
         </if>
         <if test="inicioSeguimiento != null">
-            D_FECINISEGUIMIENTO = #{tipo},
+            D_FECINISEGUIMIENTO = #{inicioSeguimiento},
         </if>
         <if test="finSeguimiento != null">
-            D_FECFINSEGUIMIENTO = #{tipo},
+            D_FECFINSEGUIMIENTO = #{finSeguimiento},
         </if>
         <if test="tipoTiempoIni != null">
-            C_INDTIPOTIEMPOINI = #{tipo},
+            C_INDTIPOTIEMPOINI = #{tipoTiempoIni},
         </if>
         <if test="tipoTiempoFin != null">
-            C_INDTIPOTIEMPOFIN = #{tipo},
+            C_INDTIPOTIEMPOFIN = #{tipoTiempoFin},
         </if>
         <if test="numeroInicial != null">
-            N_NUMEROTIEMPOINI = #{tipo},
+            N_NUMEROTIEMPOINI = #{numeroInicial},
         </if>
         <if test="numeroFinal != null">
-            N_NUMEROTIEMPOFIN = #{tipo},
+            N_NUMEROTIEMPOFIN = #{numeroFinal},
         </if>
         <if test="indicadorAntesDespuesIni != null">
-            C_INDANTESDESPUESINI = #{tipo},
+            C_INDANTESDESPUESINI = #{indicadorAntesDespuesIni},
         </if>
         <if test="indicadorAntesDespuesFin != null">
-            C_INDANTESDESPUESFIN = #{tipo},
+            C_INDANTESDESPUESFIN = #{indicadorAntesDespuesFin},
         </if>
         <if test="inicioDefinitivo != null">
-            D_FECINISEGUIMIENTOFINAL = #{tipo},
+            D_FECINISEGUIMIENTOFINAL = #{inicioDefinitivo},
         </if>
         <if test="finDefinitivo != null">
-            D_FECFINSEGUIMIENTOFINAL = #{tipo},
+            D_FECFINSEGUIMIENTOFINAL = #{finDefinitivo},
         </if>
         <if test="indiceRepeticion != null">
-            C_INDREPETICION = #{tipo},
+            C_INDREPETICION = #{indiceRepeticion},
         </if>
         <if test="indicadorSeleccionHoraIni != null">
-            C_INDSELECCIONHORAINI = #{tipo},
+            C_INDSELECCIONHORAINI = #{indicadorSeleccionHoraIni},
         </if>
         <if test="indicadorSeleccionHoraFin != null">
-            C_INDSELECCIONHORAFIN = #{tipo},
+            C_INDSELECCIONHORAFIN = #{indicadorSeleccionHoraFin},
         </if>
         <if test="nota != null">
-            C_NOTA = #{tipo},
+            C_NOTA = #{nota},
         </if>
         <if test="respuesta != null">
-            C_RESPUESTA = #{tipo},
+            C_RESPUESTA = #{respuesta},
         </if>
         <if test="fechaRespuesta != null">
-            D_FECHARESPUESTA = #{tipo},
+            D_FECHARESPUESTA = #{fechaRespuesta},
         </if>
         <if test="tipoCalidad != null">
-            C_CALIDADRESPUESTA = #{tipo},
+            C_CALIDADRESPUESTA = #{tipoCalidad},
         </if>
         <if test="detalleRespuesta != null">
-            C_DESCRIPCIONRESPUESTA = #{tipo},
+            C_DESCRIPCIONRESPUESTA = #{detalleRespuesta},
         </if>
         <if test="observacionRespuesta != null">
-            C_OBSERVACIONES = #{tipo},
+            C_OBSERVACIONES = #{observacionRespuesta},
         </if>
-        C_NOMBREGESTION = #{nombreGestion}
+        C_USUMODIFICACION = #{usuarioModificacion},
+        D_FECHAMODIFICACION = #{fechaModificacion}
         </set>
         <where>
             N_ID_GESTION = #{id}
@@ -319,8 +343,10 @@
     
     
     <select id="expedienteGestionListaXexpediente" resultMap="expedienteGestionMap" parameterType="String" >
-        SELECT * FROM SID_REG_GESTION A
+        SELECT A.*,B.N_ID_ETAPA, C.NOMBRE_PARAMETRO AS GESTION_TIPO FROM SID_REG_GESTION A
 INNER JOIN SID_REG_GESTION_ETAPA B ON A.N_ID_GESTION = B.N_ID_GESTION 
+LEFT JOIN SID_PARAMETRO C ON TRIM(A.C_TIPO) = TRIM(C.VALOR_PARAMETRO) 
+AND C.PADRE_PARAMETRO = 70 
 WHERE B.C_NUMEROEXPEDIENTE = #{value}
     </select>
     

@@ -11,7 +11,7 @@
         <ui:define name="content">
             <h:form id="idForm" class="form-horizontal">
                 <h:messages />
-                <gc:confirmSubmit bean="#{registroController.registarExpedienteGestion()}" mensaje="Esta seguro de registrar la gestión?" />
+                
                 <table style="width: 100%">
                     <tr>
                         <td colspan="2">
@@ -231,20 +231,10 @@
                     </tr>
                 </table>
                 <ul class="nav nav-tabs">
-                    <li role="presentation">
-                        <a style="cursor: pointer" jsf:rendered="true" jsf:action="expedienteNuevo">
-                            <span style="font-size: medium; color: purple;" class="glyphicon glyphicon-list-alt" > Expediente</span>
-                        </a>
-                    </li>
-                    <li role="presentation"><a style="cursor: pointer" jsf:action="#{registroController.cargarExpedienteGestionLista()}">
-                            <span style="font-size: medium; color: purple;" class="glyphicon glyphicon-list-alt" > Gestiones</span>
-                        </a>
-                    </li>
-                    <li role="presentation" class="active"><a style="cursor: pointer">
-                            <span style="font-size: large; color: #007ACC;font-weight: bold" class="glyphicon glyphicon-list-alt" > Nueva gestión</span>
-                        </a></li>
+                    <li role="presentation" ><a style="cursor: pointer" jsf:rendered="true" jsf:action="expedienteNuevo">Expediente</a></li>
+                    <li role="presentation"><a style="cursor: pointer" jsf:rendered="#{registroController.etapaEstado.idEtapa > 0}" jsf:action="#{registroController.cargarExpedienteGestionLista()}">Gestiones</a></li>
+                    <li role="presentation" class="active"><a style="cursor: pointer">Nueva gestión</a></li>
                 </ul>
-                
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <table style="width: 100%">
@@ -253,9 +243,7 @@
                                         <span style="font-size: 2em" class="text-resalt-primary">N° Gestión: #{registroController.expedienteGestion.codigoGestion}</span>
                                 </td>
                                 <td style="width: 50%; text-align: right">
-                                    <a class="btn btn-primary" onclick="confirmar()">
-                                        <span class="glyphicon glyphicon-floppy-disk" />Guardar gestión
-                                    </a>
+                                    
                                 </td>
                             </tr>
                         </table>

@@ -24,7 +24,7 @@
                     <div class="panel-body">
                         <table style="width: 100%" class="table">
                             <tr>
-                                <td style="width: 50%; padding-right: 2px;">
+                                <td colspan="2" style="width: 50%; padding-right: 2px;">
                                     <div class="panel panel-primary">
                                         <div class="panel-heading">
                                             <span >Lista de Expedientes</span>
@@ -54,6 +54,14 @@
                                                     <h:outputText value="#{exped.etapaDetalle}" />
                                                 </h:column>
                                                 <h:column>
+                                                    <f:facet name="header">Estado expediente</f:facet>
+                                                    <h:outputText value="#{exped.estadoDetalle}" />
+                                                </h:column>
+                                                <h:column>
+                                                    <f:facet name="header">Estado general</f:facet>
+                                                    <h:outputText value="#{exped.general == 'A'? 'Activo': 'Concluido'}" />
+                                                </h:column>
+                                                <h:column>
                                                     <f:facet name="header">Versión</f:facet>
                                                     <h:outputText value="#{exped.version == 0? 'Borrador' : exped.version }" />
                                                 </h:column>
@@ -78,7 +86,11 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td style="padding-left: 2px">
+                            </tr>
+                        </table>
+                        <table style="width: 100%">
+                            <tr>
+                                <td style="padding-right: 2px; width: 50%; vertical-align: top">
                                     <div class="panel panel-primary">
                                         <div class="panel-heading">
                                             <span >Atenciones</span>
@@ -132,6 +144,8 @@
 
                                         </div>
                                     </div>
+                                </td>
+                                <td style="padding-left: 2px; vertical-align: top">
                                     <div class="panel panel-primary">
                                         <div class="panel-heading">
                                             <span >Gestión de Casos</span>
@@ -141,7 +155,10 @@
                                         </div>
 
                                     </div>
-
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
                                     <div class="panel panel-primary">
                                         <div class="panel-heading">
                                             <span >Otros Graficos</span>

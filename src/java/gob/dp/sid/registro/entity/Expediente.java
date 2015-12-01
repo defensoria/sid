@@ -87,6 +87,8 @@ public class Expediente implements Serializable{
     private String etapaDetalle;
     
     private String indicadorEtapa;
+    
+    private String estadoDetalle;
 
     public Long getId() {
         return id;
@@ -376,6 +378,14 @@ public class Expediente implements Serializable{
 
     public void setIndicadorEtapa(String indicadorEtapa) {
         this.indicadorEtapa = indicadorEtapa;
+    }
+
+    public String getEstadoDetalle() {
+        return estadoDetalle;
+    }
+
+    public void setEstadoDetalle(String estadoDetalle) {
+        this.estadoDetalle = estadoDetalle;
     }
     
 }

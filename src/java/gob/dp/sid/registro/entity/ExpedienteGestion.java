@@ -16,7 +16,7 @@ public class ExpedienteGestion implements Serializable{
     
     private Long id;
     
-    private String nombreGestion;
+    private String codigoGestion;
     
     private String tipo;
     
@@ -35,6 +35,14 @@ public class ExpedienteGestion implements Serializable{
     private String apellidoMaterno;
     
     private Boolean indEntidadQuejada;
+    
+    private String usuarioRegistro;
+    
+    private String usuarioModificacion;
+    
+    private Date fechaRegistro;
+    
+    private Date fechaModificacion;
     
     /**SEGUIMIENTO*/
     
@@ -87,6 +95,9 @@ public class ExpedienteGestion implements Serializable{
     
     /*AGREGADOS*/
     private Integer idEtapa;
+    
+    private String detalleTipo;
+    
 
     public Long getId() {
         return id;
@@ -344,12 +355,12 @@ public class ExpedienteGestion implements Serializable{
         this.fechaRespuesta = fechaRespuesta;
     }
 
-    public String getNombreGestion() {
-        return nombreGestion;
+    public String getCodigoGestion() {
+        return codigoGestion;
     }
 
-    public void setNombreGestion(String nombreGestion) {
-        this.nombreGestion = nombreGestion;
+    public void setCodigoGestion(String codigoGestion) {
+        this.codigoGestion = codigoGestion;
     }
 
     public String getNombreParametroTipo() {
@@ -366,6 +377,46 @@ public class ExpedienteGestion implements Serializable{
 
     public void setIdEtapa(Integer idEtapa) {
         this.idEtapa = idEtapa;
+    }
+
+    public String getUsuarioRegistro() {
+        return usuarioRegistro;
+    }
+
+    public void setUsuarioRegistro(String usuarioRegistro) {
+        this.usuarioRegistro = usuarioRegistro;
+    }
+
+    public String getUsuarioModificacion() {
+        return usuarioModificacion;
+    }
+
+    public void setUsuarioModificacion(String usuarioModificacion) {
+        this.usuarioModificacion = usuarioModificacion;
+    }
+
+    public Date getFechaRegistro() {
+        return fechaRegistro;
+    }
+
+    public void setFechaRegistro(Date fechaRegistro) {
+        this.fechaRegistro = fechaRegistro;
+    }
+
+    public Date getFechaModificacion() {
+        return fechaModificacion;
+    }
+
+    public void setFechaModificacion(Date fechaModificacion) {
+        this.fechaModificacion = fechaModificacion;
+    }
+
+    public String getDetalleTipo() {
+        return detalleTipo;
+    }
+
+    public void setDetalleTipo(String detalleTipo) {
+        this.detalleTipo = detalleTipo;
     }
     
 }
