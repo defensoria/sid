@@ -9,21 +9,37 @@ import javax.faces.model.SelectItem;
 
 public enum EstadoExpedienteType {
 
-	CALIFICACION_ADMITIDA(1, "Admitida", 1),
+	CALIFICACION_ADMITIDA_QUEJA(1, "Admitida", 1),
 
-	CALIFICACION_NO_ADMITIDA(2, "No Admitida", 1),
+	CALIFICACION_NO_ADMITIDA_QUEJA(2, "No Admitida", 1),
 	
-	INVESTIGACION_FUNDADO(3, "Fundado", 2),
+	INVESTIGACION_FUNDADO_QUEJA(3, "Fundado", 2),
 	
-	INVESTIGACION_INFUNDADO(4, "Infundado", 2),
+	INVESTIGACION_INFUNDADO_QUEJA(4, "Infundado", 2),
         
-        PERSUACION_ACOGIDO(5, "Acogido", 3),
+        PERSUACION_ACOGIDO_QUEJA(5, "Acogido", 3),
         
-        PERSUACION_NO_ACOGIDO(6, "No Acogido", 3),
+        PERSUACION_NO_ACOGIDO_QUEJA(6, "No Acogido", 3),
         
-        SEGUIMIENTO_ACOGIDO(7, "Acogido", 4),
+        SEGUIMIENTO_ACOGIDO_QUEJA(7, "Acogido", 4),
         
-        SEGUIMIENTO_NO_ACOGIDO(8, "No Acogido", 4);
+        SEGUIMIENTO_NO_ACOGIDO_QUEJA(8, "No Acogido", 4),
+        
+        CALIFICACION_ADMITIDA_PETITORIO(9, "Admitida", 5),
+
+	CALIFICACION_NO_ADMITIDA_PETITORIO(10, "No Admitida", 5),
+	
+	GESTION_SOLUCIONADO_PETITORIO(11, "Solucionado", 6),
+	
+	GESTION_NO_SOLUCIONADO_PETITORIO(12, "No solucionado", 6),
+        
+        GESTION_CONCLUIDO_PETITORIO(13, "Concluido por desestimiento", 6),
+        
+        PERSUACION_DEVIENEN_PETITORIO(14, "Devienen en solucionados", 7),
+        
+        PERSUACION_NEGATIVA_PETITORIO(15, "Por negativa expresa", 7),
+        
+        PERSUACION_FALTA_RESPUESTA_PETITORIO(16, "Falta de respuesta", 7);
 	
 	
 	/** La Constante list. */

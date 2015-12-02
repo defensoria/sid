@@ -22,6 +22,7 @@ import gob.dp.sid.comun.service.UbigeoService;
 import gob.dp.sid.comun.type.AntesDespuesType;
 import gob.dp.sid.comun.type.EstadoExpedienteType;
 import gob.dp.sid.comun.type.EtapaType;
+import gob.dp.sid.comun.type.ExpedienteType;
 import gob.dp.sid.comun.type.RepeticionType;
 import gob.dp.sid.comun.type.TiempoType;
 import gob.dp.sid.registro.entity.Entidad;
@@ -137,13 +138,19 @@ public class RegistroController extends AbstractManagedBean implements Serializa
 
     private List<SelectItem> listaRepeticion;
 
-    private List<SelectItem> listaEstadoCalificacion;
+    private List<SelectItem> listaEstadoCalificacionQueja;
 
-    private List<SelectItem> listaEstadoInvestigacion;
+    private List<SelectItem> listaEstadoInvestigacionQueja;
 
-    private List<SelectItem> listaEstadoPersuacion;
+    private List<SelectItem> listaEstadoPersuacionQueja;
 
-    private List<SelectItem> listaEstadoSeguimiento;
+    private List<SelectItem> listaEstadoSeguimientoQueja;
+
+    private List<SelectItem> listaEstadoCalificacionPetitorio;
+
+    private List<SelectItem> listaEstadoGestionPetitorio;
+
+    private List<SelectItem> listaEstadoPersuacionPetitorio;
 
     private EtapaEstado etapaEstado;
 
@@ -231,16 +238,16 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         listaExpedientesSeguimiento = new ArrayList<>();
         List<ExpedienteGestion> list = expedienteGestionService.expedienteGestionListaXexpediente(expediente.getNumero());
         for (ExpedienteGestion ee : list) {
-            if (Objects.equals(ee.getIdEtapa(), EtapaType.CALIFICACION.getKey())) {
+            if (Objects.equals(ee.getIdEtapa(), EtapaType.CALIFICACION_QUEJA.getKey())) {
                 listaExpedientesCalificacion.add(ee);
             }
-            if (Objects.equals(ee.getIdEtapa(), EtapaType.INVESTIGACION.getKey())) {
+            if (Objects.equals(ee.getIdEtapa(), EtapaType.INVESTIGACION_QUEJA.getKey())) {
                 listaExpedientesInvestigacion.add(ee);
             }
-            if (Objects.equals(ee.getIdEtapa(), EtapaType.PERSUACION.getKey())) {
+            if (Objects.equals(ee.getIdEtapa(), EtapaType.PERSUACION_QUEJA.getKey())) {
                 listaExpedientesPersuacion.add(ee);
             }
-            if (Objects.equals(ee.getIdEtapa(), EtapaType.SEGUIMIENTO.getKey())) {
+            if (Objects.equals(ee.getIdEtapa(), EtapaType.SEGUIMIENTO_QUEJA.getKey())) {
                 listaExpedientesSeguimiento.add(ee);
             }
         }
@@ -267,7 +274,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     }
 
     public String registarExpedienteGestion() {
-        if(StringUtils.isBlank(expedienteGestion.getCodigoGestion())){
+        if (StringUtils.isBlank(expedienteGestion.getCodigoGestion())) {
             DateFormat format = new SimpleDateFormat("yyMMddHHmmss");
             String formato = format.format(new Date());
             expedienteGestion.setUsuarioRegistro(usuarioSession.getCodigo());
@@ -276,7 +283,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             expedienteGestionService.expedienteGestionInsertar(expedienteGestion);
             guardarGestionEtapa();
             msg.messageInfo("Se registro una nueva gestión", null);
-        }else{
+        } else {
             expedienteGestion.setUsuarioModificacion(usuarioSession.getCodigo());
             expedienteGestion.setFechaModificacion(new Date());
             expedienteGestionService.expedienteGestionUpdate(expedienteGestion);
@@ -284,13 +291,13 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         }
         return cargarExpedienteGestionLista();
     }
-    
-    public String setearExpedienteGestion(ExpedienteGestion eg){
+
+    public String setearExpedienteGestion(ExpedienteGestion eg) {
         setExpedienteGestion(eg);
         return "expedienteGestion";
     }
-    
-    public String verExpedienteGestion(ExpedienteGestion eg){
+
+    public String verExpedienteGestion(ExpedienteGestion eg) {
         setExpedienteGestion(eg);
         return "expedienteGestionVer";
     }
@@ -331,44 +338,44 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             if (e.getIdEtapa() > 0) {
                 if (StringUtils.equals(e.getIndicadorEtapa(), "VIG")) {
                     if (StringUtils.equals(e.getEstado(), "C")) {
-                        if (Objects.equals(e.getIdEtapa(), EtapaType.CALIFICACION.getKey())) {
-                            detalleEtapa = EtapaType.CALIFICACION.getValue();
+                        if (Objects.equals(e.getIdEtapa(), EtapaType.CALIFICACION_QUEJA.getKey())) {
+                            detalleEtapa = EtapaType.CALIFICACION_QUEJA.getValue();
                         }
-                        if (Objects.equals(e.getIdEtapa(), EtapaType.INVESTIGACION.getKey())) {
-                            detalleEtapa = EtapaType.INVESTIGACION.getValue();
+                        if (Objects.equals(e.getIdEtapa(), EtapaType.INVESTIGACION_QUEJA.getKey())) {
+                            detalleEtapa = EtapaType.INVESTIGACION_QUEJA.getValue();
                         }
-                        if (Objects.equals(e.getIdEtapa(), EtapaType.PERSUACION.getKey())) {
-                            detalleEtapa = EtapaType.PERSUACION.getValue();
+                        if (Objects.equals(e.getIdEtapa(), EtapaType.PERSUACION_QUEJA.getKey())) {
+                            detalleEtapa = EtapaType.PERSUACION_QUEJA.getValue();
                         }
-                        if (Objects.equals(e.getIdEtapa(), EtapaType.SEGUIMIENTO.getKey())) {
-                            detalleEtapa = EtapaType.SEGUIMIENTO.getValue();
+                        if (Objects.equals(e.getIdEtapa(), EtapaType.SEGUIMIENTO_QUEJA.getKey())) {
+                            detalleEtapa = EtapaType.SEGUIMIENTO_QUEJA.getValue();
                         }
                     } else {
-                        if (Objects.equals(e.getIdEtapa(), EtapaType.CALIFICACION.getKey())) {
-                            detalleEtapa = EtapaType.INVESTIGACION.getValue();
+                        if (Objects.equals(e.getIdEtapa(), EtapaType.CALIFICACION_QUEJA.getKey())) {
+                            detalleEtapa = EtapaType.INVESTIGACION_QUEJA.getValue();
                         }
-                        if (Objects.equals(e.getIdEtapa(), EtapaType.INVESTIGACION.getKey())) {
-                            detalleEtapa = EtapaType.PERSUACION.getValue();
+                        if (Objects.equals(e.getIdEtapa(), EtapaType.INVESTIGACION_QUEJA.getKey())) {
+                            detalleEtapa = EtapaType.PERSUACION_QUEJA.getValue();
                         }
-                        if (Objects.equals(e.getIdEtapa(), EtapaType.PERSUACION.getKey())) {
-                            detalleEtapa = EtapaType.SEGUIMIENTO.getValue();
+                        if (Objects.equals(e.getIdEtapa(), EtapaType.PERSUACION_QUEJA.getKey())) {
+                            detalleEtapa = EtapaType.SEGUIMIENTO_QUEJA.getValue();
                         }
-                        if (Objects.equals(e.getIdEtapa(), EtapaType.SEGUIMIENTO.getKey())) {
-                            detalleEtapa = EtapaType.SEGUIMIENTO.getValue();
+                        if (Objects.equals(e.getIdEtapa(), EtapaType.SEGUIMIENTO_QUEJA.getKey())) {
+                            detalleEtapa = EtapaType.SEGUIMIENTO_QUEJA.getValue();
                         }
                     }
                 } else {
-                    if (Objects.equals(e.getIdEtapa(), EtapaType.CALIFICACION.getKey())) {
-                        detalleEtapa = EtapaType.CALIFICACION.getValue();
+                    if (Objects.equals(e.getIdEtapa(), EtapaType.CALIFICACION_QUEJA.getKey())) {
+                        detalleEtapa = EtapaType.CALIFICACION_QUEJA.getValue();
                     }
-                    if (Objects.equals(e.getIdEtapa(), EtapaType.INVESTIGACION.getKey())) {
-                        detalleEtapa = EtapaType.INVESTIGACION.getValue();
+                    if (Objects.equals(e.getIdEtapa(), EtapaType.INVESTIGACION_QUEJA.getKey())) {
+                        detalleEtapa = EtapaType.INVESTIGACION_QUEJA.getValue();
                     }
-                    if (Objects.equals(e.getIdEtapa(), EtapaType.PERSUACION.getKey())) {
-                        detalleEtapa = EtapaType.PERSUACION.getValue();
+                    if (Objects.equals(e.getIdEtapa(), EtapaType.PERSUACION_QUEJA.getKey())) {
+                        detalleEtapa = EtapaType.PERSUACION_QUEJA.getValue();
                     }
-                    if (Objects.equals(e.getIdEtapa(), EtapaType.SEGUIMIENTO.getKey())) {
-                        detalleEtapa = EtapaType.SEGUIMIENTO.getValue();
+                    if (Objects.equals(e.getIdEtapa(), EtapaType.SEGUIMIENTO_QUEJA.getKey())) {
+                        detalleEtapa = EtapaType.SEGUIMIENTO_QUEJA.getValue();
                     }
                 }
             }
@@ -471,8 +478,8 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         setPersonaSeleccionada(perso);
         indSeleccion = false;
     }
-    
-    public void pintar(){
+
+    public void pintar() {
         System.out.println("pinta");
     }
 
@@ -621,66 +628,66 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     }
 
     public boolean cargarPopoverPersona(Long pagina) {
-        if(pagina == 1)
+        if (pagina == 1) {
             nroPaginaPersona = 1L;
+        }
         if (pagina > 0) {
-                int paginado = ConstantesUtil.PAGINADO_5;
-                Long ini = paginado * (pagina - 1) + 1;
-                Long fin = paginado * pagina;
-                if (pagina == 0) {
-                    ini = 1L;
-                    fin = 5L;
-                }
-
-                persona.setIni(ini);
-                persona.setFin(fin);
-                try {
-                    List<Persona> list = personaService.personaBuscarCadena(persona);
-                    if (list.size() > 0) {
-                        personasPopover = list;
-                        nroPaginaPersona = pagina;
-                    }
-                } catch (Exception e) {
-                    log.error("ERROR : BusquedaUsuarioController.listarPaginado: " + e.getMessage());
-                }
+            int paginado = ConstantesUtil.PAGINADO_5;
+            Long ini = paginado * (pagina - 1) + 1;
+            Long fin = paginado * pagina;
+            if (pagina == 0) {
+                ini = 1L;
+                fin = 5L;
             }
 
+            persona.setIni(ini);
+            persona.setFin(fin);
+            try {
+                List<Persona> list = personaService.personaBuscarCadena(persona);
+                if (list.size() > 0) {
+                    personasPopover = list;
+                    nroPaginaPersona = pagina;
+                }
+            } catch (Exception e) {
+                log.error("ERROR : BusquedaUsuarioController.listarPaginado: " + e.getMessage());
+            }
+        }
+
             //listaPersonaGeneral = personaService.personaBusarGeneral(personaBusqueda);
-       
         if (personasPopover.isEmpty()) {
             msg.messageAlert("No se han encontrado Personas", null);
         }
         return true;
-        
+
     }
 
     public boolean cargarPopoverEntidad(Long pagina) {
-        if(pagina == 1)
+        if (pagina == 1) {
             nroPaginaPersona = 1L;
+        }
         if (pagina > 0) {
-                int paginado = ConstantesUtil.PAGINADO_5;
-                Long ini = paginado * (pagina - 1) + 1;
-                Long fin = paginado * pagina;
-                if (pagina == 0) {
-                    ini = 1L;
-                    fin = 5L;
-                }
-
-                entidad.setIni(ini);
-                entidad.setFin(fin);
-                try {
-                    List<Entidad> list = entidadService.entidadBuscarCadena(entidad);
-                    if (list.size() > 0) {
-                        entidadPopover = list;
-                        nroPaginaPersona = pagina;
-                    }
-                } catch (Exception e) {
-                    log.error("ERROR : BusquedaUsuarioController.listarPaginado: " + e.getMessage());
-                }
+            int paginado = ConstantesUtil.PAGINADO_5;
+            Long ini = paginado * (pagina - 1) + 1;
+            Long fin = paginado * pagina;
+            if (pagina == 0) {
+                ini = 1L;
+                fin = 5L;
             }
 
+            entidad.setIni(ini);
+            entidad.setFin(fin);
+            try {
+                List<Entidad> list = entidadService.entidadBuscarCadena(entidad);
+                if (list.size() > 0) {
+                    entidadPopover = list;
+                    nroPaginaPersona = pagina;
+                }
+            } catch (Exception e) {
+                log.error("ERROR : BusquedaUsuarioController.listarPaginado: " + e.getMessage());
+            }
+        }
+
             //listaPersonaGeneral = personaService.personaBusarGeneral(personaBusqueda);
-       
         if (entidadPopover.isEmpty()) {
             msg.messageAlert("No se han encontrado Personas", null);
         }
@@ -742,41 +749,77 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             if (etapaEstado == null) {
                 etapaEstado = etapaEstadoService.etapaEstadoInicial(expediente.getId());
             }
-            if (etapaEstado.getIdEtapa() == null) {
-                etapaEstado.setVerEtapa(EtapaType.CALIFICACION.getKey());
-            }
-            if (Objects.equals(etapaEstado.getIdEtapa(), EtapaType.CALIFICACION.getKey())) {
-                if (StringUtils.equals(etapaEstado.getIndicadorEtapa(), "VIG")) {
-                    etapaEstado.setVerEtapa(EtapaType.INVESTIGACION.getKey());
-                    if (StringUtils.equals(expediente.getGeneral(), "C")) {
-                        etapaEstado.setVerEtapa(EtapaType.CALIFICACION.getKey());
+            /**
+             * QUEJA
+             */
+            if (StringUtils.equals(expediente.getTipoClasificion(), ExpedienteType.QUEJA.getKey())) {
+                if (etapaEstado.getIdEtapa() == null) {
+                    etapaEstado.setVerEtapa(EtapaType.CALIFICACION_QUEJA.getKey());
+                }
+                if (Objects.equals(etapaEstado.getIdEtapa(), EtapaType.CALIFICACION_QUEJA.getKey())) {
+                    if (StringUtils.equals(etapaEstado.getIndicadorEtapa(), "VIG")) {
+                        etapaEstado.setVerEtapa(EtapaType.INVESTIGACION_QUEJA.getKey());
+                        if (StringUtils.equals(expediente.getGeneral(), "C")) {
+                            etapaEstado.setVerEtapa(EtapaType.CALIFICACION_QUEJA.getKey());
+                        }
+                    } else {
+                        etapaEstado.setVerEtapa(EtapaType.CALIFICACION_QUEJA.getKey());
                     }
-                } else {
-                    etapaEstado.setVerEtapa(EtapaType.CALIFICACION.getKey());
+                }
+                if (Objects.equals(etapaEstado.getIdEtapa(), EtapaType.INVESTIGACION_QUEJA.getKey())) {
+                    if (StringUtils.equals(etapaEstado.getIndicadorEtapa(), "VIG")) {
+                        etapaEstado.setVerEtapa(EtapaType.PERSUACION_QUEJA.getKey());
+                        if (StringUtils.equals(expediente.getGeneral(), "C")) {
+                            etapaEstado.setVerEtapa(EtapaType.INVESTIGACION_QUEJA.getKey());
+                        }
+                    } else {
+                        etapaEstado.setVerEtapa(EtapaType.INVESTIGACION_QUEJA.getKey());
+                    }
+                }
+                if (Objects.equals(etapaEstado.getIdEtapa(), EtapaType.PERSUACION_QUEJA.getKey())) {
+                    if (StringUtils.equals(etapaEstado.getIndicadorEtapa(), "VIG")) {
+                        etapaEstado.setVerEtapa(EtapaType.SEGUIMIENTO_QUEJA.getKey());
+                        if (StringUtils.equals(expediente.getGeneral(), "C")) {
+                            etapaEstado.setVerEtapa(EtapaType.PERSUACION_QUEJA.getKey());
+                        }
+                    } else {
+                        etapaEstado.setVerEtapa(EtapaType.PERSUACION_QUEJA.getKey());
+                    }
+                }
+                if (Objects.equals(etapaEstado.getIdEtapa(), EtapaType.SEGUIMIENTO_QUEJA.getKey())) {
+                    etapaEstado.setVerEtapa(EtapaType.SEGUIMIENTO_QUEJA.getKey());
                 }
             }
-            if (Objects.equals(etapaEstado.getIdEtapa(), EtapaType.INVESTIGACION.getKey())) {
-                if (StringUtils.equals(etapaEstado.getIndicadorEtapa(), "VIG")) {
-                    etapaEstado.setVerEtapa(EtapaType.PERSUACION.getKey());
-                    if (StringUtils.equals(expediente.getGeneral(), "C")) {
-                        etapaEstado.setVerEtapa(EtapaType.INVESTIGACION.getKey());
-                    }
-                } else {
-                    etapaEstado.setVerEtapa(EtapaType.INVESTIGACION.getKey());
+            /**
+             * PETITORIO
+             */
+            if (StringUtils.equals(expediente.getTipoClasificion(), ExpedienteType.PETITORIO.getKey())) {
+                if (etapaEstado.getIdEtapa() == null) {
+                    etapaEstado.setVerEtapa(EtapaType.CALIFICACION_PETITORIO.getKey());
                 }
-            }
-            if (Objects.equals(etapaEstado.getIdEtapa(), EtapaType.PERSUACION.getKey())) {
-                if (StringUtils.equals(etapaEstado.getIndicadorEtapa(), "VIG")) {
-                    etapaEstado.setVerEtapa(EtapaType.SEGUIMIENTO.getKey());
-                    if (StringUtils.equals(expediente.getGeneral(), "C")) {
-                        etapaEstado.setVerEtapa(EtapaType.PERSUACION.getKey());
+                if (Objects.equals(etapaEstado.getIdEtapa(), EtapaType.CALIFICACION_PETITORIO.getKey())) {
+                    if (StringUtils.equals(etapaEstado.getIndicadorEtapa(), "VIG")) {
+                        etapaEstado.setVerEtapa(EtapaType.GESTION_PETITORIO.getKey());
+                        if (StringUtils.equals(expediente.getGeneral(), "C")) {
+                            etapaEstado.setVerEtapa(EtapaType.CALIFICACION_PETITORIO.getKey());
+                        }
+                    } else {
+                        etapaEstado.setVerEtapa(EtapaType.CALIFICACION_PETITORIO.getKey());
                     }
-                } else {
-                    etapaEstado.setVerEtapa(EtapaType.PERSUACION.getKey());
                 }
-            }
-            if (Objects.equals(etapaEstado.getIdEtapa(), EtapaType.SEGUIMIENTO.getKey())) {
-                etapaEstado.setVerEtapa(EtapaType.SEGUIMIENTO.getKey());
+                if (Objects.equals(etapaEstado.getIdEtapa(), EtapaType.GESTION_PETITORIO.getKey())) {
+                    if (StringUtils.equals(etapaEstado.getIndicadorEtapa(), "VIG")) {
+                        etapaEstado.setVerEtapa(EtapaType.PERSUASION_PETITORIO.getKey());
+                        if (StringUtils.equals(expediente.getGeneral(), "C")) {
+                            etapaEstado.setVerEtapa(EtapaType.GESTION_PETITORIO.getKey());
+                        }
+                    } else {
+                        etapaEstado.setVerEtapa(EtapaType.GESTION_PETITORIO.getKey());
+                    }
+                }
+                if (Objects.equals(etapaEstado.getIdEtapa(), EtapaType.PERSUASION_PETITORIO.getKey())) {
+                    etapaEstado.setVerEtapa(EtapaType.PERSUASION_PETITORIO.getKey());
+                }
             }
 
         }
@@ -839,35 +882,69 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         }
     }
 
+    private void generarFlujo() {
+
+    }
+
     public boolean concluir() {
         Long idExpedienteOld = expediente.getId();
         if (idExpedienteOld == null) {
             return false;
         }
-        if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION.getKey())) {
-            if (expediente.getEstadoCalificacion() == null) {
-                msg.messageAlert("El expediente no cuenta con ningun estado, por favor seleccione si esta admitido o no admitido", null);
-                return false;
+        /**
+         * QUEJA
+         */
+        if (StringUtils.equals(expediente.getTipoClasificion(), ExpedienteType.QUEJA.getKey())) {
+            if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_QUEJA.getKey())) {
+                if (expediente.getEstadoCalificacion() == null) {
+                    msg.messageAlert("El expediente no cuenta con ningun estado, por favor seleccione si esta admitido o no admitido", null);
+                    return false;
+                }
+            }
+            if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.INVESTIGACION_QUEJA.getKey())) {
+                if (expediente.getEstadoInvestigacion() == null) {
+                    msg.messageAlert("El expediente no cuenta con ningun estado, por favor seleccione si esta fundado o infundado", null);
+                    return false;
+                }
+            }
+            if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.PERSUACION_QUEJA.getKey())) {
+                if (expediente.getEstadoPersuacion() == null) {
+                    msg.messageAlert("El expediente no cuenta con ningun estado, por favor seleccione si esta acogido o no acogido", null);
+                    return false;
+                }
+            }
+            if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.SEGUIMIENTO_QUEJA.getKey())) {
+                if (expediente.getEstadoSeguimiento() == null) {
+                    msg.messageAlert("El expediente no cuenta con ningun estado, por favor seleccione si esta acogido o no acogido", null);
+                    return false;
+                }
             }
         }
-        if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.INVESTIGACION.getKey())) {
-            if (expediente.getEstadoInvestigacion() == null) {
-                msg.messageAlert("El expediente no cuenta con ningun estado, por favor seleccione si esta fundado o infundado", null);
-                return false;
+
+        /**
+         * PETITORIO
+         */
+        if (StringUtils.equals(expediente.getTipoClasificion(), ExpedienteType.PETITORIO.getKey())) {
+            if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_PETITORIO.getKey())) {
+                if (expediente.getEstadoCalificacion() == null) {
+                    msg.messageAlert("El expediente no cuenta con ningun estado, por favor seleccione si esta admitido o no admitido", null);
+                    return false;
+                }
+            }
+            if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.GESTION_PETITORIO.getKey())) {
+                if (expediente.getEstadoGestion() == null) {
+                    msg.messageAlert("El expediente no cuenta con ningun estado, por favor seleccione si esta solucionado, no solucionado o concluido por desestimiento", null);
+                    return false;
+                }
+            }
+            if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.PERSUASION_PETITORIO.getKey())) {
+                if (expediente.getEstadoPersuacion() == null) {
+                    msg.messageAlert("El expediente no cuenta con ningun estado, por favor seleccione si devienen en solucionados, por negativa expresa o falta de respuesta", null);
+                    return false;
+                }
             }
         }
-        if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.PERSUACION.getKey())) {
-            if (expediente.getEstadoPersuacion() == null) {
-                msg.messageAlert("El expediente no cuenta con ningun estado, por favor seleccione si esta acogido o no acogido", null);
-                return false;
-            }
-        }
-        if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.SEGUIMIENTO.getKey())) {
-            if (expediente.getEstadoSeguimiento() == null) {
-                msg.messageAlert("El expediente no cuenta con ningun estado, por favor seleccione si esta acogido o no acogido", null);
-                return false;
-            }
-        }
+
         guardar();
         guardarEtapaEstadoConcluir(idExpedienteOld);
         inicializarEtapaEstado(1);
@@ -877,36 +954,73 @@ public class RegistroController extends AbstractManagedBean implements Serializa
 
     private void guardarEtapaEstado(Long idExpedienteOld) {
         EtapaEstado etapaEstado1 = new EtapaEstado();
-        if (idExpedienteOld != null) {
-            actualizarEtapaEstado(idExpedienteOld);
-            if (etapaEstado != null) {
-                if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION.getKey()) || etapaEstado.getVerEtapa() == 0) {
-                    etapaEstado1.setIdEtapa(EtapaType.CALIFICACION.getKey());
-                    etapaEstado1.setIdEstado(expediente.getEstadoCalificacion());
-                }
-                if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.INVESTIGACION.getKey())) {
-                    etapaEstado1.setIdEtapa(EtapaType.INVESTIGACION.getKey());
-                    etapaEstado1.setIdEstado(expediente.getEstadoInvestigacion());
-                }
-                if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.PERSUACION.getKey())) {
-                    etapaEstado1.setIdEtapa(EtapaType.PERSUACION.getKey());
-                    etapaEstado1.setIdEstado(expediente.getEstadoPersuacion());
-                }
-                if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.SEGUIMIENTO.getKey())) {
-                    Integer etapaOld = etapaEstado.getIdEtapa();
-                    etapaEstado1.setIdEtapa(EtapaType.SEGUIMIENTO.getKey());
-                    etapaEstado1.setIdEstado(expediente.getEstadoSeguimiento());
-                    etapaEstado1.setIndicadorEtapa("VIG");
-                    if (Objects.equals(etapaOld, EtapaType.SEGUIMIENTO.getKey())) {
-                        actualizarEtapaEstadosSeguimiento(idExpedienteOld);
+        /**
+         * QUEJA
+         */
+        if (StringUtils.equals(expediente.getTipoClasificion(), ExpedienteType.QUEJA.getKey())) {
+            if (idExpedienteOld != null) {
+                actualizarEtapaEstado(idExpedienteOld);
+                if (etapaEstado != null) {
+                    if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_QUEJA.getKey()) || etapaEstado.getVerEtapa() == 0) {
+                        etapaEstado1.setIdEtapa(EtapaType.CALIFICACION_QUEJA.getKey());
+                        etapaEstado1.setIdEstado(expediente.getEstadoCalificacion());
                     }
+                    if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.INVESTIGACION_QUEJA.getKey())) {
+                        etapaEstado1.setIdEtapa(EtapaType.INVESTIGACION_QUEJA.getKey());
+                        etapaEstado1.setIdEstado(expediente.getEstadoInvestigacion());
+                    }
+                    if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.PERSUACION_QUEJA.getKey())) {
+                        etapaEstado1.setIdEtapa(EtapaType.PERSUACION_QUEJA.getKey());
+                        etapaEstado1.setIdEstado(expediente.getEstadoPersuacion());
+                    }
+                    if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.SEGUIMIENTO_QUEJA.getKey())) {
+                        Integer etapaOld = etapaEstado.getIdEtapa();
+                        etapaEstado1.setIdEtapa(EtapaType.SEGUIMIENTO_QUEJA.getKey());
+                        etapaEstado1.setIdEstado(expediente.getEstadoSeguimiento());
+                        etapaEstado1.setIndicadorEtapa("VIG");
+                        if (Objects.equals(etapaOld, EtapaType.SEGUIMIENTO_QUEJA.getKey())) {
+                            actualizarEtapaEstadosSeguimiento(idExpedienteOld);
+                        }
+                    }
+                } else {
+                    etapaEstado1.setIdEtapa(EtapaType.CALIFICACION_QUEJA.getKey());
                 }
             } else {
-                etapaEstado1.setIdEtapa(EtapaType.CALIFICACION.getKey());
+                etapaEstado1.setIdEtapa(EtapaType.CALIFICACION_QUEJA.getKey());
             }
-        } else {
-            etapaEstado1.setIdEtapa(EtapaType.CALIFICACION.getKey());
         }
+        /**
+         * PETITORIO
+         */
+        if (StringUtils.equals(expediente.getTipoClasificion(), ExpedienteType.PETITORIO.getKey())) {
+            if (idExpedienteOld != null) {
+                actualizarEtapaEstado(idExpedienteOld);
+                if (etapaEstado != null) {
+                    if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_PETITORIO.getKey()) || etapaEstado.getVerEtapa() == 0) {
+                        etapaEstado1.setIdEtapa(EtapaType.CALIFICACION_PETITORIO.getKey());
+                        etapaEstado1.setIdEstado(expediente.getEstadoCalificacion());
+                    }
+                    if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.GESTION_PETITORIO.getKey())) {
+                        etapaEstado1.setIdEtapa(EtapaType.GESTION_PETITORIO.getKey());
+                        etapaEstado1.setIdEstado(expediente.getEstadoInvestigacion());
+                    }
+                    if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.PERSUASION_PETITORIO.getKey())) {
+                        Integer etapaOld = etapaEstado.getIdEtapa();
+                        etapaEstado1.setIdEtapa(EtapaType.PERSUASION_PETITORIO.getKey());
+                        etapaEstado1.setIdEstado(expediente.getEstadoSeguimiento());
+                        etapaEstado1.setIndicadorEtapa("VIG");
+                        if (Objects.equals(etapaOld, EtapaType.PERSUASION_PETITORIO.getKey())) {
+                            actualizarEtapaEstadosSeguimiento(idExpedienteOld);
+                        }
+                    }
+                } else {
+                    etapaEstado1.setIdEtapa(EtapaType.CALIFICACION_PETITORIO.getKey());
+                }
+            } else {
+                etapaEstado1.setIdEtapa(EtapaType.CALIFICACION_PETITORIO.getKey());
+            }
+        }
+
         etapaEstado1.setIdExpediente(expediente.getId());
         etapaEstado1.setNumeroExpediente(expediente.getNumero());
         etapaEstado1.setIndicador("ACT");
@@ -915,46 +1029,90 @@ public class RegistroController extends AbstractManagedBean implements Serializa
 
     private void guardarEtapaEstadoConcluir(Long idExpedienteOld) {
         EtapaEstado etapaEstado1 = new EtapaEstado();
-        if (idExpedienteOld != null) {
+        /**QUEJA*/
+        if(StringUtils.equals(expediente.getTipoClasificion(), ExpedienteType.QUEJA.getKey())){
+            if (idExpedienteOld != null) {
             actualizarEtapaEstado(idExpedienteOld);
             if (etapaEstado != null) {
-                if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION.getKey())) {
-                    etapaEstado1.setIdEtapa(EtapaType.CALIFICACION.getKey());
+                if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_QUEJA.getKey())) {
+                    etapaEstado1.setIdEtapa(EtapaType.CALIFICACION_QUEJA.getKey());
                     etapaEstado1.setIdEstado(expediente.getEstadoCalificacion());
-                    if (expediente.getEstadoCalificacion() == EstadoExpedienteType.CALIFICACION_NO_ADMITIDA.getKey()) {
+                    if (expediente.getEstadoCalificacion() == EstadoExpedienteType.CALIFICACION_NO_ADMITIDA_QUEJA.getKey()) {
                         expediente.setGeneral("C");
                         expedienteService.expedienteConcluir(expediente.getId());
                     }
                 }
-                if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.INVESTIGACION.getKey())) {
-                    etapaEstado1.setIdEtapa(EtapaType.INVESTIGACION.getKey());
+                if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.INVESTIGACION_QUEJA.getKey())) {
+                    etapaEstado1.setIdEtapa(EtapaType.INVESTIGACION_QUEJA.getKey());
                     etapaEstado1.setIdEstado(expediente.getEstadoInvestigacion());
-                    if (expediente.getEstadoInvestigacion() == EstadoExpedienteType.INVESTIGACION_INFUNDADO.getKey()) {
+                    if (expediente.getEstadoInvestigacion() == EstadoExpedienteType.INVESTIGACION_INFUNDADO_QUEJA.getKey()) {
                         expediente.setGeneral("C");
                         expedienteService.expedienteConcluir(expediente.getId());
                     }
                 }
-                if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.PERSUACION.getKey())) {
-                    etapaEstado1.setIdEtapa(EtapaType.PERSUACION.getKey());
+                if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.PERSUACION_QUEJA.getKey())) {
+                    etapaEstado1.setIdEtapa(EtapaType.PERSUACION_QUEJA.getKey());
                     etapaEstado1.setIdEstado(expediente.getEstadoPersuacion());
-                    if (expediente.getEstadoPersuacion() == EstadoExpedienteType.PERSUACION_ACOGIDO.getKey()) {
+                    if (expediente.getEstadoPersuacion() == EstadoExpedienteType.PERSUACION_ACOGIDO_QUEJA.getKey()) {
                         expediente.setGeneral("C");
                         expedienteService.expedienteConcluir(expediente.getId());
                     }
                 }
-                if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.SEGUIMIENTO.getKey())) {
-                    etapaEstado1.setIdEtapa(EtapaType.SEGUIMIENTO.getKey());
+                if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.SEGUIMIENTO_QUEJA.getKey())) {
+                    etapaEstado1.setIdEtapa(EtapaType.SEGUIMIENTO_QUEJA.getKey());
                     etapaEstado1.setIdEstado(expediente.getEstadoSeguimiento());
                     expediente.setGeneral("C");
                     expedienteService.expedienteConcluir(expediente.getId());
                 }
                 etapaEstado1.setIndicadorEtapa("VIG");
             } else {
-                etapaEstado1.setIdEtapa(EtapaType.CALIFICACION.getKey());
+                etapaEstado1.setIdEtapa(EtapaType.CALIFICACION_QUEJA.getKey());
             }
         } else {
-            etapaEstado1.setIdEtapa(EtapaType.CALIFICACION.getKey());
+            etapaEstado1.setIdEtapa(EtapaType.CALIFICACION_QUEJA.getKey());
         }
+        }
+        
+        /**PETITORIO*/
+        if(StringUtils.equals(expediente.getTipoClasificion(), ExpedienteType.PETITORIO.getKey())){
+            if (idExpedienteOld != null) {
+            actualizarEtapaEstado(idExpedienteOld);
+            if (etapaEstado != null) {
+                if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_PETITORIO.getKey())) {
+                    etapaEstado1.setIdEtapa(EtapaType.CALIFICACION_PETITORIO.getKey());
+                    etapaEstado1.setIdEstado(expediente.getEstadoCalificacion());
+                    if (expediente.getEstadoCalificacion() == EstadoExpedienteType.CALIFICACION_NO_ADMITIDA_PETITORIO.getKey()) {
+                        expediente.setGeneral("C");
+                        expedienteService.expedienteConcluir(expediente.getId());
+                    }
+                }
+                if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.GESTION_PETITORIO.getKey())) {
+                    etapaEstado1.setIdEtapa(EtapaType.GESTION_PETITORIO.getKey());
+                    etapaEstado1.setIdEstado(expediente.getEstadoGestion());
+                    if (expediente.getEstadoGestion() == EstadoExpedienteType.GESTION_CONCLUIDO_PETITORIO.getKey()) {
+                        expediente.setGeneral("C");
+                        expedienteService.expedienteConcluir(expediente.getId());
+                    }
+                    if (expediente.getEstadoGestion() == EstadoExpedienteType.GESTION_SOLUCIONADO_PETITORIO.getKey()) {
+                        expediente.setGeneral("C");
+                        expedienteService.expedienteConcluir(expediente.getId());
+                    }
+                }
+                if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.PERSUASION_PETITORIO.getKey())) {
+                    etapaEstado1.setIdEtapa(EtapaType.PERSUASION_PETITORIO.getKey());
+                    etapaEstado1.setIdEstado(expediente.getEstadoPersuacion());
+                        expediente.setGeneral("C");
+                        expedienteService.expedienteConcluir(expediente.getId());
+                }
+                etapaEstado1.setIndicadorEtapa("VIG");
+            } else {
+                etapaEstado1.setIdEtapa(EtapaType.CALIFICACION_PETITORIO.getKey());
+            }
+        } else {
+            etapaEstado1.setIdEtapa(EtapaType.CALIFICACION_PETITORIO.getKey());
+        }
+        }
+        
         etapaEstado1.setIdExpediente(expediente.getId());
         etapaEstado1.setNumeroExpediente(expediente.getNumero());
         etapaEstado1.setIndicador("ACT");
@@ -1009,7 +1167,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         persona.setFechaModificacion(new Date());
         persona.setUsuModificacion(usuarioSession.getCodigo());
         boolean valid = personaService.personaInsertar(persona);
-        if(!valid){
+        if (!valid) {
             msg.messageAlert("El DNI ya se encuentra registrado", null);
             return false;
         }
@@ -1017,13 +1175,13 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         msg.messageInfo("Se registro la Persona", null);
         return true;
     }
-    
+
     public boolean guardarVincularListaPersona() {
-        if(StringUtils.isBlank(persona.getDni())){
+        if (StringUtils.isBlank(persona.getDni())) {
             msg.messageAlert("Debe ingresar un DNI", null);
             return false;
-        }else{
-            if(persona.getDni().length() != 8){
+        } else {
+            if (persona.getDni().length() != 8) {
                 msg.messageAlert("El número de DNI debe contar con 8 caracteres", null);
                 return false;
             }
@@ -1033,7 +1191,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         persona.setFechaModificacion(new Date());
         persona.setUsuModificacion(usuarioSession.getCodigo());
         boolean valid = personaService.personaInsertar(persona);
-        if(!valid){
+        if (!valid) {
             msg.messageAlert("El DNI ya se encuentra registrado", null);
             return false;
         }
@@ -1319,7 +1477,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         }
         return listaDepartamento;
     }
-    
+
     public void setListaDepartamento(List<SelectItem> listaDepartamento) {
         this.listaDepartamento = listaDepartamento;
     }
@@ -1467,14 +1625,14 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         this.listaRepeticion = listaRepeticion;
     }
 
-    public List<SelectItem> getListaEstadoCalificacion() {
-        listaEstadoCalificacion = EstadoExpedienteType.getListEstado(1);
-        return listaEstadoCalificacion;
+    public List<SelectItem> getListaEstadoCalificacionQueja() {
+        listaEstadoCalificacionQueja = EstadoExpedienteType.getListEstado(1);
+        return listaEstadoCalificacionQueja;
     }
 
-    public List<SelectItem> getListaEstadoInvestigacion() {
-        listaEstadoInvestigacion = EstadoExpedienteType.getListEstado(2);
-        return listaEstadoInvestigacion;
+    public List<SelectItem> getListaEstadoInvestigacionQueja() {
+        listaEstadoInvestigacionQueja = EstadoExpedienteType.getListEstado(2);
+        return listaEstadoInvestigacionQueja;
     }
 
     public EtapaEstado getEtapaEstado() {
@@ -1485,14 +1643,14 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         this.etapaEstado = etapaEstado;
     }
 
-    public List<SelectItem> getListaEstadoPersuacion() {
-        listaEstadoPersuacion = EstadoExpedienteType.getListEstado(3);
-        return listaEstadoPersuacion;
+    public List<SelectItem> getListaEstadoPersuacionQueja() {
+        listaEstadoPersuacionQueja = EstadoExpedienteType.getListEstado(3);
+        return listaEstadoPersuacionQueja;
     }
 
-    public List<SelectItem> getListaEstadoSeguimiento() {
-        listaEstadoSeguimiento = EstadoExpedienteType.getListEstado(4);
-        return listaEstadoSeguimiento;
+    public List<SelectItem> getListaEstadoSeguimientoQueja() {
+        listaEstadoSeguimientoQueja = EstadoExpedienteType.getListEstado(4);
+        return listaEstadoSeguimientoQueja;
     }
 
     public List<ExpedienteGestion> getListaExpedienteGestion() {
@@ -1541,6 +1699,21 @@ public class RegistroController extends AbstractManagedBean implements Serializa
 
     public void setNroPaginaPersona(Long nroPaginaPersona) {
         this.nroPaginaPersona = nroPaginaPersona;
+    }
+
+    public List<SelectItem> getListaEstadoCalificacionPetitorio() {
+        listaEstadoCalificacionPetitorio = EstadoExpedienteType.getListEstado(5);
+        return listaEstadoCalificacionPetitorio;
+    }
+
+    public List<SelectItem> getListaEstadoGestionPetitorio() {
+        listaEstadoGestionPetitorio = EstadoExpedienteType.getListEstado(6);
+        return listaEstadoGestionPetitorio;
+    }
+
+    public List<SelectItem> getListaEstadoPersuacionPetitorio() {
+        listaEstadoPersuacionPetitorio = EstadoExpedienteType.getListEstado(7);
+        return listaEstadoPersuacionPetitorio;
     }
 
 }

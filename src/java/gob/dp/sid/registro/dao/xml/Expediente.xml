@@ -16,6 +16,7 @@
         <result property="estadoInvestigacion" column="C_ESTADOINVESTIGACION"/>
         <result property="estadoPersuacion" column="C_ESTADOPERSUACION"/>
         <result property="estadoSeguimiento" column="C_ESTADOSEGUIMIENTO"/>
+        <result property="estadoGestion" column="C_ESTADOGESTION"/>
         <result property="calificacion" column="N_CALIFICACION"/>
         <result property="usuarioRegistro" column="C_USUREGISTRO"/>
         <result property="estado" column="C_ESTADO"/>
@@ -73,6 +74,9 @@
         </if>
         <if test="estadoSeguimiento != null">
             C_ESTADOSEGUIMIENTO,
+        </if>
+        <if test="estadoGestion != null">
+            C_ESTADOGESTION,
         </if>
         <if test="calificacion != null">
             N_CALIFICACION,
@@ -132,6 +136,9 @@
         </if>
         <if test="estadoSeguimiento != null">
             #{estadoSeguimiento},
+        </if>
+        <if test="estadoGestion != null">
+            #{estadoGestion},
         </if>
         <if test="calificacion != null">
             #{calificacion},
@@ -198,6 +205,9 @@
             </if>
             <if test="estadoSeguimiento != null">
                 C_ESTADOSEGUIMIENTO  = #{estadoSeguimiento},
+            </if>
+            <if test="estadoGestion != null">
+                C_ESTADOGESTION  = #{estadoGestion},
             </if>
             <if test="calificacion != null">
                 N_CALIFICACION = #{calificacion},
@@ -337,8 +347,6 @@ WHERE C.N_IDPERSONA = #{id} AND A.C_ESTADO = 'A'
         ) B
         ) A WHERE a.numfila BETWEEN #{ini} AND #{fin}
     </select>
-    
-    
     
     <select id="expedienteBuscarUsuarios" resultMap="expedienteMap" parameterType="expediente">
         SELECT DISTINCT A.C_USUREGISTRO, B.NOM_USUARIO||' '||B.APE_PATERNO||' '||B.APE_MATERNO  USUARIOCOMPLETO FROM SID_REG_EXPEDIENTE A 

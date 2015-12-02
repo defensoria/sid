@@ -40,6 +40,8 @@ public class Expediente implements Serializable{
     
     private Integer estadoSeguimiento;
     
+    private Integer estadoGestion;
+    
     private Boolean calificacion;
     
     private String usuarioRegistro;
@@ -386,6 +388,14 @@ public class Expediente implements Serializable{
 
     public void setEstadoDetalle(String estadoDetalle) {
         this.estadoDetalle = estadoDetalle;
+    }
+
+    public Integer getEstadoGestion() {
+        return estadoGestion;
+    }
+
+    public void setEstadoGestion(Integer estadoGestion) {
+        this.estadoGestion = estadoGestion;
     }
     
 }

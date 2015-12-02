@@ -17,13 +17,19 @@ import java.util.Map;
 
 public enum EtapaType {
 
-	CALIFICACION(1, "Calificación"),
+	CALIFICACION_QUEJA(1, "Calificación", "01"),
 
-        INVESTIGACION(2, "Investigación"),   
+        INVESTIGACION_QUEJA(2, "Investigación", "01"),   
         
-        PERSUACION(3, "Persuación"),
+        PERSUACION_QUEJA(3, "Persuasión", "01"),
         
-        SEGUIMIENTO(4, "Seguimiento");
+        SEGUIMIENTO_QUEJA(4, "Seguimiento", "01"),
+        
+        CALIFICACION_PETITORIO(5, "Calificación", "03"),
+        
+        GESTION_PETITORIO(6, "Gestión", "03"),
+        
+        PERSUASION_PETITORIO(7, "Persuasión", "03");
 	
 	/** La Constante list. */
 	private static final List<EtapaType> list = new ArrayList<>();
@@ -45,12 +51,14 @@ public enum EtapaType {
 	/** El value. */
 	private final String value;
         
-        
+        /** El tipo. */
+	private final String tipo;
 
 	
-	private EtapaType(Integer key, String value) {
+	private EtapaType(Integer key, String value, String tipo) {
 		this.key = key;
 		this.value = value;
+                this.tipo = tipo;
 	}
 
 	public Integer getKey() {
@@ -59,6 +67,10 @@ public enum EtapaType {
 
 	public String getValue() {
 		return value;
+	}
+        
+        public String getTipo() {
+		return tipo;
 	}
 
 	public static EtapaType get(String key) {
