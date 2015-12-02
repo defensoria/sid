@@ -471,6 +471,10 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         setPersonaSeleccionada(perso);
         indSeleccion = false;
     }
+    
+    public void pintar(){
+        System.out.println("pinta");
+    }
 
     private void listarExpedientexPersona(long idPersona) {
         listaExpedienteXPersona = expedienteService.expedientexPersona(idPersona);

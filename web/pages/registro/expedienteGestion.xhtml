@@ -37,7 +37,7 @@
                                                             <span style="font-size: 2em" class="text-resalt-primary">Etapa:</span>
                                                         </td>
                                                         <td>
-                                                            <div class="btn-group btn-group-justified" role="group" style="width: 72%">
+                                                            <div class="btn-group btn-group-justified" role="group" style="width: 80%">
                                                                 <div class="btn-group" role="group">
                                                                     <a style="cursor: auto" onclick="return false" jsf:action="#{registroController.cargarExpedienteEtapa(1)}" class="btn #{registroController.etapaEstado.verEtapa == 1? 'btn-warning' : 'btn-default'}">
                                                                         <c:choose>
@@ -48,7 +48,6 @@
                                                                                 Calificación
                                                                             </c:otherwise>
                                                                         </c:choose>
-
                                                                     </a>
                                                                 </div>
                                                                 <div class="btn-group" role="group">
@@ -67,10 +66,10 @@
                                                                     <a style="cursor: auto" onclick="return false" jsf:action="#{registroController.cargarExpedienteEtapa(3)}" type="button" class="btn #{registroController.etapaEstado.verEtapa == 3? 'btn-warning' : 'btn-default'}">
                                                                         <c:choose>
                                                                             <c:when test="${registroController.etapaEstado.verEtapa == 3}">
-                                                                                <span class="glyphicon glyphicon-paperclip" style="font-size: large; color: black"/>&#160;&#160;&#160;&#160;Persuación
+                                                                                <span class="glyphicon glyphicon-paperclip" style="font-size: large; color: black"/>&#160;&#160;&#160;&#160;Persuasión
                                                                             </c:when>
                                                                             <c:otherwise>
-                                                                                Persuación
+                                                                                Persuasión
                                                                             </c:otherwise>
                                                                         </c:choose>
                                                                     </a>
@@ -88,6 +87,22 @@
                                                                     </a>
                                                                 </div>
                                                             </div>
+                                                            <table style="width: 80%">
+                                                                <tr>
+                                                                    <td style="width: 25%">
+                                                                        <h:outputText rendered="#{registroController.etapaEstado.verEtapa == 1}" style="color: #878787" value="Quedan 4 días para culminar la etapa de Calificación"/>
+                                                                    </td>
+                                                                    <td style="width: 25%">
+                                                                        <h:outputText rendered="#{registroController.etapaEstado.verEtapa == 2}" style="color: #878787" value="Quedan 80 días para culminar la etapa de Investigación"/>
+                                                                    </td>
+                                                                    <td style="width: 25%">
+                                                                        <h:outputText rendered="#{registroController.etapaEstado.verEtapa == 3}" style="color: #878787" value="Quedan 40 días para culminar la etapa de Persuasión"/>
+                                                                    </td>
+                                                                    <td style="width: 25%">
+                                                                        <h:outputText rendered="#{registroController.etapaEstado.verEtapa == 4}" style="color: #878787" value="Quedan 60 días para culminar la etapa de Seguimiento"/>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
                                                         </td>
                                                     </tr>
                                                 </table>
@@ -314,7 +329,14 @@
                                                                     <label>Apellido materno:</label>
                                                                     <input type="text" jsf:value="#{registroController.expedienteGestion.apellidoMaterno}" placeholder="Apellido Materno"/>
                                                                 </td>
-                                                            </tr> 
+                                                            </tr>
+                                                                <tr>
+                                                                    <td colspan="2" style="padding-top: 10px">
+                                                                <label>Documento de la gestión:</label>
+                                                                    <input type="text" placeholder="Documento de la gestión"/>
+                                                                    </td>
+                                                                    <td></td>
+                                                            </tr>
                                                         </table>
                                                     </td>
                                                 </tr>
