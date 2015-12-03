@@ -136,10 +136,41 @@ public enum EstadoExpedienteType {
 		return lookup.get(key);
 	}
 	
-	public static String getValues(String keys){
-		String val ="";
-		
-		
-		return val;
+	public static String getValues(int keys){
+		String valorRetorno = "";
+            if(keys == CALIFICACION_ADMITIDA_QUEJA.getKey())
+                valorRetorno = CALIFICACION_ADMITIDA_QUEJA.getValue();
+            if(keys == CALIFICACION_NO_ADMITIDA_QUEJA.getKey())
+                valorRetorno = CALIFICACION_NO_ADMITIDA_QUEJA.getValue();
+            if(keys == INVESTIGACION_FUNDADO_QUEJA.getKey())
+                valorRetorno = INVESTIGACION_FUNDADO_QUEJA.getValue();
+            if(keys == INVESTIGACION_INFUNDADO_QUEJA.getKey())
+                valorRetorno = INVESTIGACION_INFUNDADO_QUEJA.getValue();
+            if(keys == PERSUACION_ACOGIDO_QUEJA.getKey())
+                valorRetorno = PERSUACION_ACOGIDO_QUEJA.getValue();
+            if(keys == PERSUACION_NO_ACOGIDO_QUEJA.getKey())
+                valorRetorno = PERSUACION_NO_ACOGIDO_QUEJA.getValue();
+            if(keys == SEGUIMIENTO_ACOGIDO_QUEJA.getKey())
+                valorRetorno = SEGUIMIENTO_ACOGIDO_QUEJA.getValue();
+            if(keys == SEGUIMIENTO_NO_ACOGIDO_QUEJA.getKey())
+                valorRetorno = SEGUIMIENTO_NO_ACOGIDO_QUEJA.getValue();
+            if(keys == CALIFICACION_ADMITIDA_PETITORIO.getKey())
+                valorRetorno = CALIFICACION_ADMITIDA_PETITORIO.getValue();
+            if(keys == CALIFICACION_NO_ADMITIDA_PETITORIO.getKey())
+                valorRetorno = CALIFICACION_NO_ADMITIDA_PETITORIO.getValue();
+            if(keys == GESTION_CONCLUIDO_PETITORIO.getKey())
+                valorRetorno = GESTION_CONCLUIDO_PETITORIO.getValue();
+            if(keys == GESTION_NO_SOLUCIONADO_PETITORIO.getKey())
+                valorRetorno = GESTION_NO_SOLUCIONADO_PETITORIO.getValue();
+            if(keys == GESTION_SOLUCIONADO_PETITORIO.getKey())
+                valorRetorno = GESTION_SOLUCIONADO_PETITORIO.getValue();
+            if(keys == PERSUACION_DEVIENEN_PETITORIO.getKey())
+                valorRetorno = PERSUACION_DEVIENEN_PETITORIO.getValue();
+            if(keys == PERSUACION_FALTA_RESPUESTA_PETITORIO.getKey())
+                valorRetorno = PERSUACION_FALTA_RESPUESTA_PETITORIO.getValue();
+            if(keys == PERSUACION_NEGATIVA_PETITORIO.getKey())
+                valorRetorno = PERSUACION_NEGATIVA_PETITORIO.getValue();
+            return valorRetorno;
 	}
+        
 }

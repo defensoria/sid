@@ -19,8 +19,8 @@
                         $(".confirmacion3").modal('show');
                     }
                 </script>
-                <gc:confirmSubmit classGC="confirmacion2" bean="#{registroController.guardarVersion()}" mensaje="Esta seguro que desea generar una nueva version del expediente?"/>
-                <gc:confirmSubmit classGC="confirmacion3" bean="#{registroController.concluir()}" mensaje="Esta seguro que desea concluir el expediente?"/>
+                <gc:confirmSubmit classGC="confirmacion2" bean="#{registroController.guardarVersion()}" mensaje="Está seguro que desea generar una nueva version del expediente?"/>
+                <gc:confirmSubmit classGC="confirmacion3" bean="#{registroController.concluir()}" mensaje="Está seguro que desea concluir la etapa?"/>
                 <gc:confirmSubmit bean="#{registroController.guardarBorrador()}" />
                 <table style="width: 100%">
                     <tr>
@@ -72,10 +72,10 @@
                                                                     <a jsf:action="#{registroController.cargarExpedienteEtapa(3)}" type="button" class="btn #{registroController.etapaEstado.verEtapa == 3? 'btn-warning' : 'btn-default'}">
                                                                         <c:choose>
                                                                             <c:when test="${registroController.etapaEstado.verEtapa == 3}">
-                                                                                <span class="glyphicon glyphicon-paperclip" style="font-size: large; color: black"/>&#160;&#160;&#160;&#160;Persuación
+                                                                                <span class="glyphicon glyphicon-paperclip" style="font-size: large; color: black"/>&#160;&#160;&#160;&#160;Persuasión
                                                                             </c:when>
                                                                             <c:otherwise>
-                                                                                Persuación
+                                                                                Persuasión
                                                                             </c:otherwise>
                                                                         </c:choose>
                                                                     </a>

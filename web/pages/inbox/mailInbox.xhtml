@@ -1,0 +1,61 @@
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:h="http://xmlns.jcp.org/jsf/html" 
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:gc="http://xmlns.jcp.org/jsf/composite/gc">
+
+    <ui:composition template="../template/template.xhtml">
+
+        <ui:define name="content">
+            <h:form id="idForm" class="form-horizontal">
+                <div class="panel panel-default">
+                    <center>
+                    <table style="width: 95%;">
+                        <tr>
+                            <td style="padding-bottom: 20px;text-align: left">
+                                <h2>Inbox (16)</h2>
+                            </td>
+                            <td style="text-align: right;padding-bottom: 20px">
+                                <div class="form-group" style="width: 50%; ">
+    
+    <div class="input-group">
+      
+        <input type="text" class="form-control" style="border: solid 1px #18A689" id="exampleInputAmount" placeholder="Email"/>
+      <div class="input-group-addon" style="color: white; background: #18A689">Buscar</div>
+    </div>
+  </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <a class="btn btn-default">
+                                    <span class="glyphicon glyphicon-refresh" />Actualizar
+                                </a>
+                                <a class="btn btn-default">
+                                    <span class="glyphicon glyphicon-eye-open" />
+                                </a>
+                                <a class="btn btn-default">
+                                    <span class="glyphicon glyphicon-info-sign" />
+                                </a>
+                                <a class="btn btn-default">
+                                    <span class="glyphicon glyphicon-trash" />
+                                </a>
+                            </td>
+                            <td style="text-align: right">
+                               <a class="btn btn-default">
+                                    <span class="glyphicon glyphicon-arrow-left" />
+                                </a>
+                                <a class="btn btn-default">
+                                    <span class="glyphicon glyphicon-arrow-right" />
+                                </a>
+                            </td>
+                        </tr>
+                    </table>
+                    </center>
+                </div>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

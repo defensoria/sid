@@ -25,152 +25,152 @@
                                         </tr>
                                         <tr>
                                             <td colspan="2">
-                                                <h:outputText rendered="#{registroController.etapaEstado.verEtapa != 0 and registroController.etapaEstado.verEtapa != null}" value="Estado: #{registroController.etapaEstado.estadoDetalle}" style="font-size: 2em" class="text-resalt-primary"/>
+                                                <h:outputText rendered="#{registroController.etapaEstado.ultimoEstado != null}" value="Estado: #{registroController.etapaEstado.ultimoEstado}" style="font-size: 2em" class="text-resalt-primary"/>
                                             </td>
                                         </tr>    
                                         <tr>
                                             <td colspan="2">
                                                 <br/>
                                                 <h:panelGroup rendered="#{registroController.expediente.tipoClasificion == '01'}">
-                                                <table style="width: 90%">
-                                                    <tr>
-                                                        <td style="width: 10%">
-                                                            <span style="font-size: 2em" class="text-resalt-primary">Etapa:</span>
-                                                        </td>
-                                                        <td>
-                                                            <div class="btn-group btn-group-justified" role="group" style="width: 80%">
-                                                                <div class="btn-group" role="group">
-                                                                    <a style="cursor: auto" onclick="return false" jsf:action="#{registroController.cargarExpedienteEtapa(1)}" class="btn #{registroController.etapaEstado.verEtapa == 1? 'btn-warning' : 'btn-default'}">
-                                                                        <c:choose>
-                                                                            <c:when test="${registroController.etapaEstado.verEtapa == 1}">
-                                                                                <span class="glyphicon glyphicon-paperclip" style="font-size: large; color: black"/>&#160;&#160;&#160;&#160;Calificación
-                                                                            </c:when>
-                                                                            <c:otherwise>
-                                                                                Calificación
-                                                                            </c:otherwise>
-                                                                        </c:choose>
-                                                                    </a>
+                                                    <table style="width: 90%">
+                                                        <tr>
+                                                            <td style="width: 10%">
+                                                                <span style="font-size: 2em" class="text-resalt-primary">Etapa:</span>
+                                                            </td>
+                                                            <td>
+                                                                <div class="btn-group btn-group-justified" role="group" style="width: 80%">
+                                                                    <div class="btn-group" role="group">
+                                                                        <a style="cursor: auto" onclick="return false" jsf:action="#{registroController.cargarExpedienteEtapa(1)}" class="btn #{registroController.etapaEstado.verEtapa == 1? 'btn-warning' : 'btn-default'}">
+                                                                            <c:choose>
+                                                                                <c:when test="${registroController.etapaEstado.verEtapa == 1}">
+                                                                                    <span class="glyphicon glyphicon-paperclip" style="font-size: large; color: black"/>&#160;&#160;&#160;&#160;Calificación
+                                                                                </c:when>
+                                                                                <c:otherwise>
+                                                                                    Calificación
+                                                                                </c:otherwise>
+                                                                            </c:choose>
+                                                                        </a>
+                                                                    </div>
+                                                                    <div class="btn-group" role="group">
+                                                                        <a style="cursor: auto" onclick="return false" jsf:action="#{registroController.cargarExpedienteEtapa(2)}" type="button" class="btn #{registroController.etapaEstado.verEtapa == 2? 'btn-warning' : 'btn-default'}">
+                                                                            <c:choose>
+                                                                                <c:when test="${registroController.etapaEstado.verEtapa == 2}">
+                                                                                    <span class="glyphicon glyphicon-paperclip" style="font-size: large; color: black"/>&#160;&#160;&#160;&#160;Investigación
+                                                                                </c:when>
+                                                                                <c:otherwise>
+                                                                                    Investigación
+                                                                                </c:otherwise>
+                                                                            </c:choose>
+                                                                        </a>
+                                                                    </div>
+                                                                    <div class="btn-group" role="group">
+                                                                        <a style="cursor: auto" onclick="return false" jsf:action="#{registroController.cargarExpedienteEtapa(3)}" type="button" class="btn #{registroController.etapaEstado.verEtapa == 3? 'btn-warning' : 'btn-default'}">
+                                                                            <c:choose>
+                                                                                <c:when test="${registroController.etapaEstado.verEtapa == 3}">
+                                                                                    <span class="glyphicon glyphicon-paperclip" style="font-size: large; color: black"/>&#160;&#160;&#160;&#160;Persuasión
+                                                                                </c:when>
+                                                                                <c:otherwise>
+                                                                                    Persuasión
+                                                                                </c:otherwise>
+                                                                            </c:choose>
+                                                                        </a>
+                                                                    </div>
+                                                                    <div class="btn-group" role="group">
+                                                                        <a style="cursor: auto" onclick="return false" jsf:action="#{registroController.cargarExpedienteEtapa(1)}" type="button" class="btn #{registroController.etapaEstado.verEtapa == 4? 'btn-warning' : 'btn-default'}">
+                                                                            <c:choose>
+                                                                                <c:when test="${registroController.etapaEstado.verEtapa == 4}">
+                                                                                    <span class="glyphicon glyphicon-paperclip" style="font-size: large; color: black"/>&#160;&#160;&#160;&#160;Seguimiento
+                                                                                </c:when>
+                                                                                <c:otherwise>
+                                                                                    Seguimiento
+                                                                                </c:otherwise>
+                                                                            </c:choose>
+                                                                        </a>
+                                                                    </div>
                                                                 </div>
-                                                                <div class="btn-group" role="group">
-                                                                    <a style="cursor: auto" onclick="return false" jsf:action="#{registroController.cargarExpedienteEtapa(2)}" type="button" class="btn #{registroController.etapaEstado.verEtapa == 2? 'btn-warning' : 'btn-default'}">
-                                                                        <c:choose>
-                                                                            <c:when test="${registroController.etapaEstado.verEtapa == 2}">
-                                                                                <span class="glyphicon glyphicon-paperclip" style="font-size: large; color: black"/>&#160;&#160;&#160;&#160;Investigación
-                                                                            </c:when>
-                                                                            <c:otherwise>
-                                                                                Investigación
-                                                                            </c:otherwise>
-                                                                        </c:choose>
-                                                                    </a>
-                                                                </div>
-                                                                <div class="btn-group" role="group">
-                                                                    <a style="cursor: auto" onclick="return false" jsf:action="#{registroController.cargarExpedienteEtapa(3)}" type="button" class="btn #{registroController.etapaEstado.verEtapa == 3? 'btn-warning' : 'btn-default'}">
-                                                                        <c:choose>
-                                                                            <c:when test="${registroController.etapaEstado.verEtapa == 3}">
-                                                                                <span class="glyphicon glyphicon-paperclip" style="font-size: large; color: black"/>&#160;&#160;&#160;&#160;Persuasión
-                                                                            </c:when>
-                                                                            <c:otherwise>
-                                                                                Persuasión
-                                                                            </c:otherwise>
-                                                                        </c:choose>
-                                                                    </a>
-                                                                </div>
-                                                                <div class="btn-group" role="group">
-                                                                    <a style="cursor: auto" onclick="return false" jsf:action="#{registroController.cargarExpedienteEtapa(1)}" type="button" class="btn #{registroController.etapaEstado.verEtapa == 4? 'btn-warning' : 'btn-default'}">
-                                                                        <c:choose>
-                                                                            <c:when test="${registroController.etapaEstado.verEtapa == 4}">
-                                                                                <span class="glyphicon glyphicon-paperclip" style="font-size: large; color: black"/>&#160;&#160;&#160;&#160;Seguimiento
-                                                                            </c:when>
-                                                                            <c:otherwise>
-                                                                                Seguimiento
-                                                                            </c:otherwise>
-                                                                        </c:choose>
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                            <table style="width: 80%">
-                                                                <tr>
-                                                                    <td style="width: 25%">
-                                                                        <h:outputText rendered="#{registroController.etapaEstado.verEtapa == 1}" style="color: #878787" value="Quedan 4 días para culminar la etapa de Calificación"/>
-                                                                    </td>
-                                                                    <td style="width: 25%">
-                                                                        <h:outputText rendered="#{registroController.etapaEstado.verEtapa == 2}" style="color: #878787" value="Quedan 80 días para culminar la etapa de Investigación"/>
-                                                                    </td>
-                                                                    <td style="width: 25%">
-                                                                        <h:outputText rendered="#{registroController.etapaEstado.verEtapa == 3}" style="color: #878787" value="Quedan 40 días para culminar la etapa de Persuasión"/>
-                                                                    </td>
-                                                                    <td style="width: 25%">
-                                                                        <h:outputText rendered="#{registroController.etapaEstado.verEtapa == 4}" style="color: #878787" value="Quedan 60 días para culminar la etapa de Seguimiento"/>
-                                                                    </td>
-                                                                </tr>
-                                                            </table>
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                                    </h:panelGroup>
-                                                
+                                                                <table style="width: 80%">
+                                                                    <tr>
+                                                                        <td style="width: 25%">
+                                                                            <h:outputText rendered="#{registroController.etapaEstado.verEtapa == 1}" style="color: #878787" value="Quedan 4 días para culminar la etapa de Calificación"/>
+                                                                        </td>
+                                                                        <td style="width: 25%">
+                                                                            <h:outputText rendered="#{registroController.etapaEstado.verEtapa == 2}" style="color: #878787" value="Quedan 80 días para culminar la etapa de Investigación"/>
+                                                                        </td>
+                                                                        <td style="width: 25%">
+                                                                            <h:outputText rendered="#{registroController.etapaEstado.verEtapa == 3}" style="color: #878787" value="Quedan 40 días para culminar la etapa de Persuasión"/>
+                                                                        </td>
+                                                                        <td style="width: 25%">
+                                                                            <h:outputText rendered="#{registroController.etapaEstado.verEtapa == 4}" style="color: #878787" value="Quedan 60 días para culminar la etapa de Seguimiento"/>
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </h:panelGroup>
+
                                                 <h:panelGroup rendered="#{registroController.expediente.tipoClasificion == '03'}">
-                                                <table style="width: 90%">
-                                                    <tr>
-                                                        <td style="width: 10%">
-                                                            <span style="font-size: 2em" class="text-resalt-primary">Etapa:</span>
-                                                        </td>
-                                                        <td>
-                                                            <div class="btn-group btn-group-justified" role="group" style="width: 80%">
-                                                                <div class="btn-group" role="group">
-                                                                    <a style="cursor: auto" onclick="return false" jsf:action="#{registroController.cargarExpedienteEtapa(1)}" class="btn #{registroController.etapaEstado.verEtapa == 5? 'btn-warning' : 'btn-default'}">
-                                                                        <c:choose>
-                                                                            <c:when test="${registroController.etapaEstado.verEtapa == 1}">
-                                                                                <span class="glyphicon glyphicon-paperclip" style="font-size: large; color: black"/>&#160;&#160;&#160;&#160;Calificación
-                                                                            </c:when>
-                                                                            <c:otherwise>
-                                                                                Calificación
-                                                                            </c:otherwise>
-                                                                        </c:choose>
-                                                                    </a>
+                                                    <table style="width: 90%">
+                                                        <tr>
+                                                            <td style="width: 10%">
+                                                                <span style="font-size: 2em" class="text-resalt-primary">Etapa:</span>
+                                                            </td>
+                                                            <td>
+                                                                <div class="btn-group btn-group-justified" role="group" style="width: 80%">
+                                                                    <div class="btn-group" role="group">
+                                                                        <a style="cursor: auto" onclick="return false" jsf:action="#{registroController.cargarExpedienteEtapa(1)}" class="btn #{registroController.etapaEstado.verEtapa == 5? 'btn-warning' : 'btn-default'}">
+                                                                            <c:choose>
+                                                                                <c:when test="${registroController.etapaEstado.verEtapa == 1}">
+                                                                                    <span class="glyphicon glyphicon-paperclip" style="font-size: large; color: black"/>&#160;&#160;&#160;&#160;Calificación
+                                                                                </c:when>
+                                                                                <c:otherwise>
+                                                                                    Calificación
+                                                                                </c:otherwise>
+                                                                            </c:choose>
+                                                                        </a>
+                                                                    </div>
+                                                                    <div class="btn-group" role="group">
+                                                                        <a style="cursor: auto" onclick="return false" jsf:action="#{registroController.cargarExpedienteEtapa(2)}" type="button" class="btn #{registroController.etapaEstado.verEtapa == 6? 'btn-warning' : 'btn-default'}">
+                                                                            <c:choose>
+                                                                                <c:when test="${registroController.etapaEstado.verEtapa == 2}">
+                                                                                    <span class="glyphicon glyphicon-paperclip" style="font-size: large; color: black"/>&#160;&#160;&#160;&#160;Gestión
+                                                                                </c:when>
+                                                                                <c:otherwise>
+                                                                                    Gestión
+                                                                                </c:otherwise>
+                                                                            </c:choose>
+                                                                        </a>
+                                                                    </div>
+                                                                    <div class="btn-group" role="group">
+                                                                        <a style="cursor: auto" onclick="return false" jsf:action="#{registroController.cargarExpedienteEtapa(3)}" type="button" class="btn #{registroController.etapaEstado.verEtapa == 7? 'btn-warning' : 'btn-default'}">
+                                                                            <c:choose>
+                                                                                <c:when test="${registroController.etapaEstado.verEtapa == 3}">
+                                                                                    <span class="glyphicon glyphicon-paperclip" style="font-size: large; color: black"/>&#160;&#160;&#160;&#160;Persuasión
+                                                                                </c:when>
+                                                                                <c:otherwise>
+                                                                                    Persuasión
+                                                                                </c:otherwise>
+                                                                            </c:choose>
+                                                                        </a>
+                                                                    </div>
                                                                 </div>
-                                                                <div class="btn-group" role="group">
-                                                                    <a style="cursor: auto" onclick="return false" jsf:action="#{registroController.cargarExpedienteEtapa(2)}" type="button" class="btn #{registroController.etapaEstado.verEtapa == 6? 'btn-warning' : 'btn-default'}">
-                                                                        <c:choose>
-                                                                            <c:when test="${registroController.etapaEstado.verEtapa == 2}">
-                                                                                <span class="glyphicon glyphicon-paperclip" style="font-size: large; color: black"/>&#160;&#160;&#160;&#160;Gestión
-                                                                            </c:when>
-                                                                            <c:otherwise>
-                                                                                Gestión
-                                                                            </c:otherwise>
-                                                                        </c:choose>
-                                                                    </a>
-                                                                </div>
-                                                                <div class="btn-group" role="group">
-                                                                    <a style="cursor: auto" onclick="return false" jsf:action="#{registroController.cargarExpedienteEtapa(3)}" type="button" class="btn #{registroController.etapaEstado.verEtapa == 7? 'btn-warning' : 'btn-default'}">
-                                                                        <c:choose>
-                                                                            <c:when test="${registroController.etapaEstado.verEtapa == 3}">
-                                                                                <span class="glyphicon glyphicon-paperclip" style="font-size: large; color: black"/>&#160;&#160;&#160;&#160;Persuasión
-                                                                            </c:when>
-                                                                            <c:otherwise>
-                                                                                Persuasión
-                                                                            </c:otherwise>
-                                                                        </c:choose>
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                            <table style="width: 80%">
-                                                                <tr>
-                                                                    <td style="width: 33%">
-                                                                        <h:outputText rendered="#{registroController.etapaEstado.verEtapa == 5}" style="color: #878787" value="Quedan 4 días para culminar la etapa de Calificación"/>
-                                                                    </td>
-                                                                    <td style="width: 33%">
-                                                                        <h:outputText rendered="#{registroController.etapaEstado.verEtapa == 6}" style="color: #878787" value="Quedan 30 días para culminar la etapa de Gestión"/>
-                                                                    </td>
-                                                                    <td style="width: 33%">
-                                                                        <h:outputText rendered="#{registroController.etapaEstado.verEtapa == 7}" style="color: #878787" value="Quedan 30 días para culminar la etapa de Persuasión"/>
-                                                                    </td>
-                                                                </tr>
-                                                            </table>
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                                    </h:panelGroup>
+                                                                <table style="width: 80%">
+                                                                    <tr>
+                                                                        <td style="width: 33%">
+                                                                            <h:outputText rendered="#{registroController.etapaEstado.verEtapa == 5}" style="color: #878787" value="Quedan 4 días para culminar la etapa de Calificación"/>
+                                                                        </td>
+                                                                        <td style="width: 33%">
+                                                                            <h:outputText rendered="#{registroController.etapaEstado.verEtapa == 6}" style="color: #878787" value="Quedan 30 días para culminar la etapa de Gestión"/>
+                                                                        </td>
+                                                                        <td style="width: 33%">
+                                                                            <h:outputText rendered="#{registroController.etapaEstado.verEtapa == 7}" style="color: #878787" value="Quedan 30 días para culminar la etapa de Persuasión"/>
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </h:panelGroup>
                                             </td>
                                         </tr>
                                         <tr>
@@ -183,55 +183,55 @@
                                                         <td>
                                                             <div class="panel-body">
                                                                 <h:panelGroup id="idPanelEstado">
-                                                                <table style="width: 90%">
-                                                                    <tr>
-                                                                        <td style="padding-right: 10px; width: 70%;">
-                                                                            <h:selectOneRadio rendered="#{registroController.etapaEstado.verEtapa == 1}"  value="#{registroController.expediente.estadoCalificacion}">
-                                                                    <f:selectItems value="#{registroController.listaEstadoCalificacionQueja}"  />
-                                                                    <f:ajax listener="#{registroController.pintar()}" render="idPanelEstado" execute="@form"/>
-                                                                </h:selectOneRadio>
+                                                                    <table style="width: 90%">
+                                                                        <tr>
+                                                                            <td style="padding-right: 10px; width: 70%;">
+                                                                                <h:selectOneRadio rendered="#{registroController.etapaEstado.verEtapa == 1}"  value="#{registroController.expediente.estadoCalificacion}">
+                                                                                    <f:selectItems value="#{registroController.listaEstadoCalificacionQueja}"  />
+                                                                                    <f:ajax listener="#{registroController.pintar()}" render="idPanelEstado" execute="@form"/>
+                                                                                </h:selectOneRadio>
 
-                                                                <h:selectOneRadio rendered="#{registroController.etapaEstado.verEtapa == 2}"  value="#{registroController.expediente.estadoInvestigacion}">
-                                                                    <f:selectItems value="#{registroController.listaEstadoInvestigacionQueja}"  />
-                                                                    <f:ajax listener="#{registroController.pintar()}" render="idPanelEstado" execute="@form"/>
-                                                                </h:selectOneRadio>
+                                                                                <h:selectOneRadio rendered="#{registroController.etapaEstado.verEtapa == 2}"  value="#{registroController.expediente.estadoInvestigacion}">
+                                                                                    <f:selectItems value="#{registroController.listaEstadoInvestigacionQueja}"  />
+                                                                                    <f:ajax listener="#{registroController.pintar()}" render="idPanelEstado" execute="@form"/>
+                                                                                </h:selectOneRadio>
 
-                                                                <h:selectOneRadio rendered="#{registroController.etapaEstado.verEtapa == 3}"  value="#{registroController.expediente.estadoPersuacion}">
-                                                                    <f:selectItems value="#{registroController.listaEstadoPersuacionQueja}"  />
-                                                                    <f:ajax listener="#{registroController.pintar()}" render="idPanelEstado" execute="@form"/>
-                                                                </h:selectOneRadio>
+                                                                                <h:selectOneRadio rendered="#{registroController.etapaEstado.verEtapa == 3}"  value="#{registroController.expediente.estadoPersuacion}">
+                                                                                    <f:selectItems value="#{registroController.listaEstadoPersuacionQueja}"  />
+                                                                                    <f:ajax listener="#{registroController.pintar()}" render="idPanelEstado" execute="@form"/>
+                                                                                </h:selectOneRadio>
 
-                                                                <h:selectOneRadio rendered="#{registroController.etapaEstado.verEtapa == 4}"  value="#{registroController.expediente.estadoSeguimiento}">
-                                                                    <f:selectItems value="#{registroController.listaEstadoSeguimientoQueja}"  />
-                                                                    <f:ajax listener="#{registroController.pintar()}" render="idPanelEstado" execute="@form"/>
-                                                                </h:selectOneRadio>
-                                                                            <h:selectOneRadio rendered="#{registroController.etapaEstado.verEtapa == 5}"  value="#{registroController.expediente.estadoCalificacion}">
-                                                                    <f:selectItems value="#{registroController.listaEstadoCalificacionPetitorio}"  />
-                                                                    <f:ajax listener="#{registroController.pintar()}" render="idPanelEstado" execute="@form"/>
-                                                                </h:selectOneRadio>
-                                                                            
-                                                                            <h:selectOneRadio rendered="#{registroController.etapaEstado.verEtapa == 6}"  value="#{registroController.expediente.estadoGestion}">
-                                                                    <f:selectItems value="#{registroController.listaEstadoGestionPetitorio}"  />
-                                                                    <f:ajax listener="#{registroController.pintar()}" render="idPanelEstado" execute="@form"/>
-                                                                </h:selectOneRadio>            
-                                                                            
-                                                                            <h:selectOneRadio rendered="#{registroController.etapaEstado.verEtapa == 7}"  value="#{registroController.expediente.estadoPersuacion}">
-                                                                    <f:selectItems value="#{registroController.listaEstadoPersuacionPetitorio}"  />
-                                                                    <f:ajax listener="#{registroController.pintar()}" render="idPanelEstado" execute="@form"/>
-                                                                </h:selectOneRadio>            
-                                                                            
-                                                                            
-                                                                            
-                                                                        </td>
-                                                                        <td style="vertical-align: top">
-                                                                            <textarea rows="3" jsf:rendered="#{registroController.expediente.estadoCalificacion != null and registroController.etapaEstado.verEtapa == 1}" style="width: 100%" placeholder="Justificación"/>
-                                                                            <textarea rows="3" jsf:rendered="#{registroController.expediente.estadoInvestigacion != null and registroController.etapaEstado.verEtapa == 2}" style="width: 100%" placeholder="Justificación"/>
-                                                                                      <textarea rows="3" jsf:rendered="#{registroController.expediente.estadoPersuacion != null and registroController.etapaEstado.verEtapa == 3}" style="width: 100%" placeholder="Justificación"/>
-                                                                                      <textarea rows="3" jsf:rendered="#{registroController.expediente.estadoSeguimiento != null and registroController.etapaEstado.verEtapa == 4}" style="width: 100%" placeholder="Justificación"/>
-                                                                        </td>
-                                                                    </tr>
-                                                                </table>
-                                                                    </h:panelGroup>
+                                                                                <h:selectOneRadio rendered="#{registroController.etapaEstado.verEtapa == 4}"  value="#{registroController.expediente.estadoSeguimiento}">
+                                                                                    <f:selectItems value="#{registroController.listaEstadoSeguimientoQueja}"  />
+                                                                                    <f:ajax listener="#{registroController.pintar()}" render="idPanelEstado" execute="@form"/>
+                                                                                </h:selectOneRadio>
+                                                                                <h:selectOneRadio rendered="#{registroController.etapaEstado.verEtapa == 5}"  value="#{registroController.expediente.estadoCalificacion}">
+                                                                                    <f:selectItems value="#{registroController.listaEstadoCalificacionPetitorio}"  />
+                                                                                    <f:ajax listener="#{registroController.pintar()}" render="idPanelEstado" execute="@form"/>
+                                                                                </h:selectOneRadio>
+
+                                                                                <h:selectOneRadio rendered="#{registroController.etapaEstado.verEtapa == 6}"  value="#{registroController.expediente.estadoGestion}">
+                                                                                    <f:selectItems value="#{registroController.listaEstadoGestionPetitorio}"  />
+                                                                                    <f:ajax listener="#{registroController.pintar()}" render="idPanelEstado" execute="@form"/>
+                                                                                </h:selectOneRadio>            
+
+                                                                                <h:selectOneRadio rendered="#{registroController.etapaEstado.verEtapa == 7}"  value="#{registroController.expediente.estadoPersuacion}">
+                                                                                    <f:selectItems value="#{registroController.listaEstadoPersuacionPetitorio}"  />
+                                                                                    <f:ajax listener="#{registroController.pintar()}" render="idPanelEstado" execute="@form"/>
+                                                                                </h:selectOneRadio>            
+
+
+
+                                                                            </td>
+                                                                            <td style="vertical-align: top">
+                                                                                <textarea rows="3" jsf:rendered="#{registroController.expediente.estadoCalificacion != null and registroController.etapaEstado.verEtapa == 1}" style="width: 100%" placeholder="Justificación"/>
+                                                                                <textarea rows="3" jsf:rendered="#{registroController.expediente.estadoInvestigacion != null and registroController.etapaEstado.verEtapa == 2}" style="width: 100%" placeholder="Justificación"/>
+                                                                                <textarea rows="3" jsf:rendered="#{registroController.expediente.estadoPersuacion != null and registroController.etapaEstado.verEtapa == 3}" style="width: 100%" placeholder="Justificación"/>
+                                                                                <textarea rows="3" jsf:rendered="#{registroController.expediente.estadoSeguimiento != null and registroController.etapaEstado.verEtapa == 4}" style="width: 100%" placeholder="Justificación"/>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </h:panelGroup>
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -342,23 +342,7 @@
                                                                     }
                                                                 }
                                                             </script>
-                                                            <h:panelGroup  id="idPanel3" rendered="#{registroController.expediente.id == null || registroController.expediente.version == 0}">
-                                                                <a class="btn btn-info" onclick="confirmarBorrador()">
-                                                                    <span class="glyphicon glyphicon-floppy-disk" />Borrador
-                                                                </a>
-                                                            </h:panelGroup>
-                                                            &#160;&#160;
-                                                            <h:panelGroup rendered="#{registroController.expediente.general != 'C'}">
-                                                                <a class="btn btn-primary" onclick="confirmar2()">
-                                                                    <span class="glyphicon glyphicon-floppy-disk" />Guardar
-                                                                </a>
-                                                            </h:panelGroup>
-                                                            &#160;&#160;
-                                                            <h:panelGroup id="idPanel2" rendered="#{registroController.expediente.id != null and registroController.expediente.version > 0 and registroController.expediente.general != 'C'}">
-                                                                <a class="btn btn-warning" onclick="confirmar3()">
-                                                                    <span class="glyphicon glyphicon-floppy-save" />Concluir Etapa
-                                                                </a>
-                                                            </h:panelGroup>
+                                                            
                                                         </td>
                                                     </tr>
                                                 </table>

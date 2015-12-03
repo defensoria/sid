@@ -73,6 +73,9 @@
         <if test="apellidoMaterno != null">
             C_APEMATFUNC,
         </if>
+        <if test="institucion != null">
+            C_INSTITUCION,
+        </if>
         <if test="indAlertar != null">
             C_INDALERTAR,
         </if>
@@ -166,6 +169,9 @@
         </if>
         <if test="apellidoMaterno != null">
             #{apellidoMaterno},
+        </if>
+        <if test="institucion != null">
+            #{institucion},
         </if>
         <if test="indAlertar != null">
             #{indAlertar},
@@ -261,6 +267,9 @@
         </if>
         <if test="apellidoMaterno != null">
             C_APEMATFUNC = #{apellidoMaterno},
+        </if>
+        <if test="institucion != null">
+            C_INSTITUCION = #{institucion},
         </if>
         <if test="indAlertar != null">
             C_INDALERTAR = #{indAlertar},

@@ -5,6 +5,7 @@
  */
 package gob.dp.sid.registro.service;
 
+import gob.dp.sid.comun.type.EstadoExpedienteType;
 import gob.dp.sid.registro.dao.EtapaEstadoDAO;
 import gob.dp.sid.registro.entity.EtapaEstado;
 import java.util.List;
@@ -44,6 +45,15 @@ public class EtapaEstadoServiceImpl implements EtapaEstadoService{
     @Override
     public EtapaEstado etapaEstadoInicial(long idExpediente) {
         return etapaEstadoDAO.etapaEstadoInicial(idExpediente);
+    }
+
+    @Override
+    public String etapaEstadoUltimoEstado(String numeroExpediente) {
+        Long codigoEstado = etapaEstadoDAO.etapaEstadoUltimoEstado(numeroExpediente);
+        if(codigoEstado != null){
+            return EstadoExpedienteType.getValues(codigoEstado.intValue());
+        }
+        return null;
     }
     
 }

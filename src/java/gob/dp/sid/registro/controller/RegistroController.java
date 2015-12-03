@@ -242,6 +242,9 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         listaExpedientesInvestigacionQueja = new ArrayList<>();
         listaExpedientesPersuacionQueja = new ArrayList<>();
         listaExpedientesSeguimientoQueja = new ArrayList<>();
+        listaExpedientesCalificacionPetitorio = new ArrayList<>();
+        listaExpedientesGestionPetitorio = new ArrayList<>();
+        listaExpedientesPersuacionPetitorio = new ArrayList<>();
         List<ExpedienteGestion> list = expedienteGestionService.expedienteGestionListaXexpediente(expediente.getNumero());
         for (ExpedienteGestion ee : list) {
             if (Objects.equals(ee.getIdEtapa(), EtapaType.CALIFICACION_QUEJA.getKey())) {
@@ -306,6 +309,11 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         }
         return cargarExpedienteGestionLista();
     }
+    
+    private String detalleUltimoEstado(String numeroExpediente){
+        String retornaDetalle = etapaEstadoService.etapaEstadoUltimoEstado(numeroExpediente);
+        return retornaDetalle;
+    }
 
     public String setearExpedienteGestion(ExpedienteGestion eg) {
         setExpedienteGestion(eg);
@@ -339,7 +347,9 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             List<Expediente> list = expedienteService.expedienteBuscarUsuarioPaginado(e);
             if (list.size() > 0) {
                 for (Expediente e1 : list) {
-                    e1.setEtapaDetalle(devolverEstado(e1));
+                    e1.setEtapaDetalle(devolverEtapa(e1));
+                    if(StringUtils.isNoneBlank(e1.getNumero()))
+                       e1.setEstadoDetalle(detalleUltimoEstado(e1.getNumero()));
                 }
                 listaExpedienteXUsuarioPaginado = list;
                 nroPagina = pagina;
@@ -347,7 +357,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         }
     }
 
-    private String devolverEstado(Expediente e) {
+    private String devolverEtapa(Expediente e) {
         String detalleEtapa = null;
         if (e.getIdEtapa() != null) {
             if (e.getIdEtapa() > 0) {
@@ -365,6 +375,15 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                         if (Objects.equals(e.getIdEtapa(), EtapaType.SEGUIMIENTO_QUEJA.getKey())) {
                             detalleEtapa = EtapaType.SEGUIMIENTO_QUEJA.getValue();
                         }
+                        if (Objects.equals(e.getIdEtapa(), EtapaType.CALIFICACION_PETITORIO.getKey())) {
+                            detalleEtapa = EtapaType.CALIFICACION_PETITORIO.getValue();
+                        }
+                        if (Objects.equals(e.getIdEtapa(), EtapaType.GESTION_PETITORIO.getKey())) {
+                            detalleEtapa = EtapaType.GESTION_PETITORIO.getValue();
+                        }
+                        if (Objects.equals(e.getIdEtapa(), EtapaType.PERSUASION_PETITORIO.getKey())) {
+                            detalleEtapa = EtapaType.PERSUASION_PETITORIO.getValue();
+                        }
                     } else {
                         if (Objects.equals(e.getIdEtapa(), EtapaType.CALIFICACION_QUEJA.getKey())) {
                             detalleEtapa = EtapaType.INVESTIGACION_QUEJA.getValue();
@@ -377,6 +396,15 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                         }
                         if (Objects.equals(e.getIdEtapa(), EtapaType.SEGUIMIENTO_QUEJA.getKey())) {
                             detalleEtapa = EtapaType.SEGUIMIENTO_QUEJA.getValue();
+                        }
+                        if (Objects.equals(e.getIdEtapa(), EtapaType.CALIFICACION_PETITORIO.getKey())) {
+                            detalleEtapa = EtapaType.GESTION_PETITORIO.getValue();
+                        }
+                        if (Objects.equals(e.getIdEtapa(), EtapaType.GESTION_PETITORIO.getKey())) {
+                            detalleEtapa = EtapaType.PERSUASION_PETITORIO.getValue();
+                        }
+                        if (Objects.equals(e.getIdEtapa(), EtapaType.PERSUASION_PETITORIO.getKey())) {
+                            detalleEtapa = EtapaType.PERSUASION_PETITORIO.getValue();
                         }
                     }
                 } else {
@@ -391,6 +419,15 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                     }
                     if (Objects.equals(e.getIdEtapa(), EtapaType.SEGUIMIENTO_QUEJA.getKey())) {
                         detalleEtapa = EtapaType.SEGUIMIENTO_QUEJA.getValue();
+                    }
+                    if (Objects.equals(e.getIdEtapa(), EtapaType.CALIFICACION_PETITORIO.getKey())) {
+                        detalleEtapa = EtapaType.CALIFICACION_PETITORIO.getValue();
+                    }
+                    if (Objects.equals(e.getIdEtapa(), EtapaType.GESTION_PETITORIO.getKey())) {
+                        detalleEtapa = EtapaType.GESTION_PETITORIO.getValue();
+                    }
+                    if (Objects.equals(e.getIdEtapa(), EtapaType.PERSUASION_PETITORIO.getKey())) {
+                        detalleEtapa = EtapaType.PERSUASION_PETITORIO.getValue();
                     }
                 }
             }
@@ -524,7 +561,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         menuController.cargarPagina(1);
         listaEtiquetasSeleccionadas = new ArrayList<>();
         setExpediente(e);
-        cargarSubTemas();
+        //cargarSubTemas();
         cargarEtiquetas();
         cargarPersonasEntidades();
         if (expediente.getVersion() == 0) {
@@ -541,7 +578,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         menuController.cargarPagina(1);
         listaEtiquetasSeleccionadas = new ArrayList<>();
         setExpediente(e);
-        cargarSubTemas();
+        //cargarSubTemas();
         cargarEtiquetas();
         cargarPersonasEntidades();
         if (expediente.getVersion() == 0) {
@@ -836,7 +873,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                     etapaEstado.setVerEtapa(EtapaType.PERSUASION_PETITORIO.getKey());
                 }
             }
-
+            etapaEstado.setUltimoEstado(detalleUltimoEstado(expediente.getNumero()));
         }
     }
 
@@ -865,7 +902,17 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         guardar();
         guardarEtapaEstado(idExpedienteOld);
         inicializarEtapaEstado(1);
-        msg.messageInfo("Se genero la version " + expediente.getVersion() + " del Expediente", null);
+        msg.messageInfo("Se genero una nueva version del Expediente", null);
+    }
+    
+    public void guardarVersion2() {
+        Long idExpedienteOld = null;
+        if (expediente.getId() != null) {
+            idExpedienteOld = expediente.getId();
+        }
+        guardar();
+        guardarEtapaEstado(idExpedienteOld);
+        inicializarEtapaEstado(1);
     }
 
     private void guardar() {
@@ -963,7 +1010,10 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         guardar();
         guardarEtapaEstadoConcluir(idExpedienteOld);
         inicializarEtapaEstado(1);
-        msg.messageInfo("Se concluyo el expediente: " + expediente.getNumero(), null);
+        guardarVersion2();
+        /**GENERAR NUEVO ESTADO*/
+        
+        msg.messageInfo("Se concluyó la etapa", null);
         return true;
     }
 
@@ -1017,15 +1067,15 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                     }
                     if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.GESTION_PETITORIO.getKey())) {
                         etapaEstado1.setIdEtapa(EtapaType.GESTION_PETITORIO.getKey());
-                        etapaEstado1.setIdEstado(expediente.getEstadoInvestigacion());
+                        etapaEstado1.setIdEstado(expediente.getEstadoGestion());
                     }
                     if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.PERSUASION_PETITORIO.getKey())) {
                         Integer etapaOld = etapaEstado.getIdEtapa();
                         etapaEstado1.setIdEtapa(EtapaType.PERSUASION_PETITORIO.getKey());
-                        etapaEstado1.setIdEstado(expediente.getEstadoSeguimiento());
+                        etapaEstado1.setIdEstado(expediente.getEstadoPersuacion());
                         etapaEstado1.setIndicadorEtapa("VIG");
                         if (Objects.equals(etapaOld, EtapaType.PERSUASION_PETITORIO.getKey())) {
-                            actualizarEtapaEstadosSeguimiento(idExpedienteOld);
+                            actualizarEtapaEstadosPersuacion(idExpedienteOld);
                         }
                     }
                 } else {
@@ -1165,6 +1215,13 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     }
 
     private void actualizarEtapaEstadosSeguimiento(long idExpediente) {
+        EtapaEstado ee = new EtapaEstado();
+        ee.setIndicadorEtapa("");
+        ee.setIdExpediente(idExpediente);
+        etapaEstadoService.etapaEstadoUpdate(ee);
+    }
+    
+    private void actualizarEtapaEstadosPersuacion(long idExpediente) {
         EtapaEstado ee = new EtapaEstado();
         ee.setIndicadorEtapa("");
         ee.setIdExpediente(idExpediente);

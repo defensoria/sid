@@ -59,11 +59,11 @@
                                                 </h:column>
                                                 <h:column>
                                                     <f:facet name="header">Estado general</f:facet>
-                                                    <h:outputText value="#{exped.general == 'A'? 'Activo': 'Concluido'}" />
+                                                    <h:outputText value="#{exped.general == 'A'? 'Trámite': 'Concluido'}" />
                                                 </h:column>
                                                 <h:column>
-                                                    <f:facet name="header">Versión</f:facet>
-                                                    <h:outputText value="#{exped.version == 0? 'Borrador' : exped.version }" />
+                                                    <f:facet name="header">Estado registro</f:facet>
+                                                    <h:outputText value="#{exped.version == 0? 'Borrador' : 'En registro' }" />
                                                 </h:column>
                                                 <h:column>
                                                     <a jsf:action="#{registroController.cargarExpedienteEdit(exped)}">

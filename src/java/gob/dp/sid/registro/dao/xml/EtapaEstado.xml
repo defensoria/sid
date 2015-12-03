@@ -112,4 +112,17 @@ WHERE C_INDICADOR = 'ACT'
 AND C_NUMEROEXPEDIENTE = #{value}
         )
     </select>
+    
+    
+    <select id="etapaEstadoUltimoEstado" resultType="Long" parameterType="String">
+        SELECT A.N_ID_ESTADO FROM SID_REG_ETAPA_ESTADO A
+INNER JOIN SID_REG_ESTADO B ON A.N_ID_ESTADO = B.N_ID_ESTADO
+AND A.C_NUMEROEXPEDIENTE = #{value} AND A.N_ID_EXPEDIENTE = 
+(
+SELECT MAX(A.N_ID_EXPEDIENTE) FROM SID_REG_ETAPA_ESTADO A
+INNER JOIN SID_REG_ESTADO B ON A.N_ID_ESTADO = B.N_ID_ESTADO
+AND A.C_NUMEROEXPEDIENTE = #{value}
+)
+    </select>
+    
 </mapper>

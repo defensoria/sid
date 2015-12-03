@@ -42,4 +42,9 @@ public class EtapaEstadoDAOImpl extends SqlSessionDaoSupport implements EtapaEst
         return getSqlSession().selectOne("gob.dp.sid.registro.dao.EtapaEstadoDAO.etapaEstadoInicial", idExpediente);
     }
 
+    @Override
+    public Long etapaEstadoUltimoEstado(String numeroExpediente) {
+        return getSqlSession().selectOne("gob.dp.sid.registro.dao.EtapaEstadoDAO.etapaEstadoUltimoEstado", numeroExpediente);
+    }
+
 }

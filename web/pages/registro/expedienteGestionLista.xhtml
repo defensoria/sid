@@ -33,152 +33,152 @@
                                         </tr>
                                         <tr>
                                             <td colspan="2">
-                                                <h:outputText rendered="#{registroController.etapaEstado.verEtapa != 0 and registroController.etapaEstado.verEtapa != null}" value="Estado: #{registroController.etapaEstado.estadoDetalle}" style="font-size: 2em" class="text-resalt-primary"/>
+                                                <h:outputText rendered="#{registroController.etapaEstado.ultimoEstado != null}" value="Estado: #{registroController.etapaEstado.ultimoEstado}" style="font-size: 2em" class="text-resalt-primary"/>
                                             </td>
                                         </tr>    
                                         <tr>
                                             <td colspan="2">
                                                 <br/>
                                                 <h:panelGroup rendered="#{registroController.expediente.tipoClasificion == '01'}">
-                                                <table style="width: 90%">
-                                                    <tr>
-                                                        <td style="width: 10%">
-                                                            <span style="font-size: 2em" class="text-resalt-primary">Etapa:</span>
-                                                        </td>
-                                                        <td>
-                                                            <div class="btn-group btn-group-justified" role="group" style="width: 80%">
-                                                                <div class="btn-group" role="group">
-                                                                    <a style="cursor: auto" onclick="return false" jsf:action="#{registroController.cargarExpedienteEtapa(1)}" class="btn #{registroController.etapaEstado.verEtapa == 1? 'btn-warning' : 'btn-default'}">
-                                                                        <c:choose>
-                                                                            <c:when test="${registroController.etapaEstado.verEtapa == 1}">
-                                                                                <span class="glyphicon glyphicon-paperclip" style="font-size: large; color: black"/>&#160;&#160;&#160;&#160;Calificación
-                                                                            </c:when>
-                                                                            <c:otherwise>
-                                                                                Calificación
-                                                                            </c:otherwise>
-                                                                        </c:choose>
-                                                                    </a>
+                                                    <table style="width: 90%">
+                                                        <tr>
+                                                            <td style="width: 10%">
+                                                                <span style="font-size: 2em" class="text-resalt-primary">Etapa:</span>
+                                                            </td>
+                                                            <td>
+                                                                <div class="btn-group btn-group-justified" role="group" style="width: 80%">
+                                                                    <div class="btn-group" role="group">
+                                                                        <a style="cursor: auto" onclick="return false" jsf:action="#{registroController.cargarExpedienteEtapa(1)}" class="btn #{registroController.etapaEstado.verEtapa == 1? 'btn-warning' : 'btn-default'}">
+                                                                            <c:choose>
+                                                                                <c:when test="${registroController.etapaEstado.verEtapa == 1}">
+                                                                                    <span class="glyphicon glyphicon-paperclip" style="font-size: large; color: black"/>&#160;&#160;&#160;&#160;Calificación
+                                                                                </c:when>
+                                                                                <c:otherwise>
+                                                                                    Calificación
+                                                                                </c:otherwise>
+                                                                            </c:choose>
+                                                                        </a>
+                                                                    </div>
+                                                                    <div class="btn-group" role="group">
+                                                                        <a style="cursor: auto" onclick="return false" jsf:action="#{registroController.cargarExpedienteEtapa(2)}" type="button" class="btn #{registroController.etapaEstado.verEtapa == 2? 'btn-warning' : 'btn-default'}">
+                                                                            <c:choose>
+                                                                                <c:when test="${registroController.etapaEstado.verEtapa == 2}">
+                                                                                    <span class="glyphicon glyphicon-paperclip" style="font-size: large; color: black"/>&#160;&#160;&#160;&#160;Investigación
+                                                                                </c:when>
+                                                                                <c:otherwise>
+                                                                                    Investigación
+                                                                                </c:otherwise>
+                                                                            </c:choose>
+                                                                        </a>
+                                                                    </div>
+                                                                    <div class="btn-group" role="group">
+                                                                        <a style="cursor: auto" onclick="return false" jsf:action="#{registroController.cargarExpedienteEtapa(3)}" type="button" class="btn #{registroController.etapaEstado.verEtapa == 3? 'btn-warning' : 'btn-default'}">
+                                                                            <c:choose>
+                                                                                <c:when test="${registroController.etapaEstado.verEtapa == 3}">
+                                                                                    <span class="glyphicon glyphicon-paperclip" style="font-size: large; color: black"/>&#160;&#160;&#160;&#160;Persuasión
+                                                                                </c:when>
+                                                                                <c:otherwise>
+                                                                                    Persuasión
+                                                                                </c:otherwise>
+                                                                            </c:choose>
+                                                                        </a>
+                                                                    </div>
+                                                                    <div class="btn-group" role="group">
+                                                                        <a style="cursor: auto" onclick="return false" jsf:action="#{registroController.cargarExpedienteEtapa(1)}" type="button" class="btn #{registroController.etapaEstado.verEtapa == 4? 'btn-warning' : 'btn-default'}">
+                                                                            <c:choose>
+                                                                                <c:when test="${registroController.etapaEstado.verEtapa == 4}">
+                                                                                    <span class="glyphicon glyphicon-paperclip" style="font-size: large; color: black"/>&#160;&#160;&#160;&#160;Seguimiento
+                                                                                </c:when>
+                                                                                <c:otherwise>
+                                                                                    Seguimiento
+                                                                                </c:otherwise>
+                                                                            </c:choose>
+                                                                        </a>
+                                                                    </div>
                                                                 </div>
-                                                                <div class="btn-group" role="group">
-                                                                    <a style="cursor: auto" onclick="return false" jsf:action="#{registroController.cargarExpedienteEtapa(2)}" type="button" class="btn #{registroController.etapaEstado.verEtapa == 2? 'btn-warning' : 'btn-default'}">
-                                                                        <c:choose>
-                                                                            <c:when test="${registroController.etapaEstado.verEtapa == 2}">
-                                                                                <span class="glyphicon glyphicon-paperclip" style="font-size: large; color: black"/>&#160;&#160;&#160;&#160;Investigación
-                                                                            </c:when>
-                                                                            <c:otherwise>
-                                                                                Investigación
-                                                                            </c:otherwise>
-                                                                        </c:choose>
-                                                                    </a>
-                                                                </div>
-                                                                <div class="btn-group" role="group">
-                                                                    <a style="cursor: auto" onclick="return false" jsf:action="#{registroController.cargarExpedienteEtapa(3)}" type="button" class="btn #{registroController.etapaEstado.verEtapa == 3? 'btn-warning' : 'btn-default'}">
-                                                                        <c:choose>
-                                                                            <c:when test="${registroController.etapaEstado.verEtapa == 3}">
-                                                                                <span class="glyphicon glyphicon-paperclip" style="font-size: large; color: black"/>&#160;&#160;&#160;&#160;Persuasión
-                                                                            </c:when>
-                                                                            <c:otherwise>
-                                                                                Persuasión
-                                                                            </c:otherwise>
-                                                                        </c:choose>
-                                                                    </a>
-                                                                </div>
-                                                                <div class="btn-group" role="group">
-                                                                    <a style="cursor: auto" onclick="return false" jsf:action="#{registroController.cargarExpedienteEtapa(1)}" type="button" class="btn #{registroController.etapaEstado.verEtapa == 4? 'btn-warning' : 'btn-default'}">
-                                                                        <c:choose>
-                                                                            <c:when test="${registroController.etapaEstado.verEtapa == 4}">
-                                                                                <span class="glyphicon glyphicon-paperclip" style="font-size: large; color: black"/>&#160;&#160;&#160;&#160;Seguimiento
-                                                                            </c:when>
-                                                                            <c:otherwise>
-                                                                                Seguimiento
-                                                                            </c:otherwise>
-                                                                        </c:choose>
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                            <table style="width: 80%">
-                                                                <tr>
-                                                                    <td style="width: 25%">
-                                                                        <h:outputText rendered="#{registroController.etapaEstado.verEtapa == 1}" style="color: #878787" value="Quedan 4 días para culminar la etapa de Calificación"/>
-                                                                    </td>
-                                                                    <td style="width: 25%">
-                                                                        <h:outputText rendered="#{registroController.etapaEstado.verEtapa == 2}" style="color: #878787" value="Quedan 80 días para culminar la etapa de Investigación"/>
-                                                                    </td>
-                                                                    <td style="width: 25%">
-                                                                        <h:outputText rendered="#{registroController.etapaEstado.verEtapa == 3}" style="color: #878787" value="Quedan 40 días para culminar la etapa de Persuasión"/>
-                                                                    </td>
-                                                                    <td style="width: 25%">
-                                                                        <h:outputText rendered="#{registroController.etapaEstado.verEtapa == 4}" style="color: #878787" value="Quedan 60 días para culminar la etapa de Seguimiento"/>
-                                                                    </td>
-                                                                </tr>
-                                                            </table>
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                                    </h:panelGroup>
-                                                
+                                                                <table style="width: 80%">
+                                                                    <tr>
+                                                                        <td style="width: 25%">
+                                                                            <h:outputText rendered="#{registroController.etapaEstado.verEtapa == 1}" style="color: #878787" value="Quedan 4 días para culminar la etapa de Calificación"/>
+                                                                        </td>
+                                                                        <td style="width: 25%">
+                                                                            <h:outputText rendered="#{registroController.etapaEstado.verEtapa == 2}" style="color: #878787" value="Quedan 80 días para culminar la etapa de Investigación"/>
+                                                                        </td>
+                                                                        <td style="width: 25%">
+                                                                            <h:outputText rendered="#{registroController.etapaEstado.verEtapa == 3}" style="color: #878787" value="Quedan 40 días para culminar la etapa de Persuasión"/>
+                                                                        </td>
+                                                                        <td style="width: 25%">
+                                                                            <h:outputText rendered="#{registroController.etapaEstado.verEtapa == 4}" style="color: #878787" value="Quedan 60 días para culminar la etapa de Seguimiento"/>
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </h:panelGroup>
+
                                                 <h:panelGroup rendered="#{registroController.expediente.tipoClasificion == '03'}">
-                                                <table style="width: 90%">
-                                                    <tr>
-                                                        <td style="width: 10%">
-                                                            <span style="font-size: 2em" class="text-resalt-primary">Etapa:</span>
-                                                        </td>
-                                                        <td>
-                                                            <div class="btn-group btn-group-justified" role="group" style="width: 80%">
-                                                                <div class="btn-group" role="group">
-                                                                    <a style="cursor: auto" onclick="return false" jsf:action="#{registroController.cargarExpedienteEtapa(1)}" class="btn #{registroController.etapaEstado.verEtapa == 5? 'btn-warning' : 'btn-default'}">
-                                                                        <c:choose>
-                                                                            <c:when test="${registroController.etapaEstado.verEtapa == 1}">
-                                                                                <span class="glyphicon glyphicon-paperclip" style="font-size: large; color: black"/>&#160;&#160;&#160;&#160;Calificación
-                                                                            </c:when>
-                                                                            <c:otherwise>
-                                                                                Calificación
-                                                                            </c:otherwise>
-                                                                        </c:choose>
-                                                                    </a>
+                                                    <table style="width: 90%">
+                                                        <tr>
+                                                            <td style="width: 10%">
+                                                                <span style="font-size: 2em" class="text-resalt-primary">Etapa:</span>
+                                                            </td>
+                                                            <td>
+                                                                <div class="btn-group btn-group-justified" role="group" style="width: 80%">
+                                                                    <div class="btn-group" role="group">
+                                                                        <a style="cursor: auto" onclick="return false" jsf:action="#{registroController.cargarExpedienteEtapa(1)}" class="btn #{registroController.etapaEstado.verEtapa == 5? 'btn-warning' : 'btn-default'}">
+                                                                            <c:choose>
+                                                                                <c:when test="${registroController.etapaEstado.verEtapa == 1}">
+                                                                                    <span class="glyphicon glyphicon-paperclip" style="font-size: large; color: black"/>&#160;&#160;&#160;&#160;Calificación
+                                                                                </c:when>
+                                                                                <c:otherwise>
+                                                                                    Calificación
+                                                                                </c:otherwise>
+                                                                            </c:choose>
+                                                                        </a>
+                                                                    </div>
+                                                                    <div class="btn-group" role="group">
+                                                                        <a style="cursor: auto" onclick="return false" jsf:action="#{registroController.cargarExpedienteEtapa(2)}" type="button" class="btn #{registroController.etapaEstado.verEtapa == 6? 'btn-warning' : 'btn-default'}">
+                                                                            <c:choose>
+                                                                                <c:when test="${registroController.etapaEstado.verEtapa == 2}">
+                                                                                    <span class="glyphicon glyphicon-paperclip" style="font-size: large; color: black"/>&#160;&#160;&#160;&#160;Gestión
+                                                                                </c:when>
+                                                                                <c:otherwise>
+                                                                                    Gestión
+                                                                                </c:otherwise>
+                                                                            </c:choose>
+                                                                        </a>
+                                                                    </div>
+                                                                    <div class="btn-group" role="group">
+                                                                        <a style="cursor: auto" onclick="return false" jsf:action="#{registroController.cargarExpedienteEtapa(3)}" type="button" class="btn #{registroController.etapaEstado.verEtapa == 7? 'btn-warning' : 'btn-default'}">
+                                                                            <c:choose>
+                                                                                <c:when test="${registroController.etapaEstado.verEtapa == 3}">
+                                                                                    <span class="glyphicon glyphicon-paperclip" style="font-size: large; color: black"/>&#160;&#160;&#160;&#160;Persuasión
+                                                                                </c:when>
+                                                                                <c:otherwise>
+                                                                                    Persuasión
+                                                                                </c:otherwise>
+                                                                            </c:choose>
+                                                                        </a>
+                                                                    </div>
                                                                 </div>
-                                                                <div class="btn-group" role="group">
-                                                                    <a style="cursor: auto" onclick="return false" jsf:action="#{registroController.cargarExpedienteEtapa(2)}" type="button" class="btn #{registroController.etapaEstado.verEtapa == 6? 'btn-warning' : 'btn-default'}">
-                                                                        <c:choose>
-                                                                            <c:when test="${registroController.etapaEstado.verEtapa == 2}">
-                                                                                <span class="glyphicon glyphicon-paperclip" style="font-size: large; color: black"/>&#160;&#160;&#160;&#160;Gestión
-                                                                            </c:when>
-                                                                            <c:otherwise>
-                                                                                Gestión
-                                                                            </c:otherwise>
-                                                                        </c:choose>
-                                                                    </a>
-                                                                </div>
-                                                                <div class="btn-group" role="group">
-                                                                    <a style="cursor: auto" onclick="return false" jsf:action="#{registroController.cargarExpedienteEtapa(3)}" type="button" class="btn #{registroController.etapaEstado.verEtapa == 7? 'btn-warning' : 'btn-default'}">
-                                                                        <c:choose>
-                                                                            <c:when test="${registroController.etapaEstado.verEtapa == 3}">
-                                                                                <span class="glyphicon glyphicon-paperclip" style="font-size: large; color: black"/>&#160;&#160;&#160;&#160;Persuasión
-                                                                            </c:when>
-                                                                            <c:otherwise>
-                                                                                Persuasión
-                                                                            </c:otherwise>
-                                                                        </c:choose>
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                            <table style="width: 80%">
-                                                                <tr>
-                                                                    <td style="width: 33%">
-                                                                        <h:outputText rendered="#{registroController.etapaEstado.verEtapa == 5}" style="color: #878787" value="Quedan 4 días para culminar la etapa de Calificación"/>
-                                                                    </td>
-                                                                    <td style="width: 33%">
-                                                                        <h:outputText rendered="#{registroController.etapaEstado.verEtapa == 6}" style="color: #878787" value="Quedan 30 días para culminar la etapa de Gestión"/>
-                                                                    </td>
-                                                                    <td style="width: 33%">
-                                                                        <h:outputText rendered="#{registroController.etapaEstado.verEtapa == 7}" style="color: #878787" value="Quedan 30 días para culminar la etapa de Persuasión"/>
-                                                                    </td>
-                                                                </tr>
-                                                            </table>
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                                    </h:panelGroup>
+                                                                <table style="width: 80%">
+                                                                    <tr>
+                                                                        <td style="width: 33%">
+                                                                            <h:outputText rendered="#{registroController.etapaEstado.verEtapa == 5}" style="color: #878787" value="Quedan 4 días para culminar la etapa de Calificación"/>
+                                                                        </td>
+                                                                        <td style="width: 33%">
+                                                                            <h:outputText rendered="#{registroController.etapaEstado.verEtapa == 6}" style="color: #878787" value="Quedan 30 días para culminar la etapa de Gestión"/>
+                                                                        </td>
+                                                                        <td style="width: 33%">
+                                                                            <h:outputText rendered="#{registroController.etapaEstado.verEtapa == 7}" style="color: #878787" value="Quedan 30 días para culminar la etapa de Persuasión"/>
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </h:panelGroup>
                                             </td>
                                         </tr>
                                         <tr>
@@ -191,55 +191,55 @@
                                                         <td>
                                                             <div class="panel-body">
                                                                 <h:panelGroup id="idPanelEstado">
-                                                                <table style="width: 90%">
-                                                                    <tr>
-                                                                        <td style="padding-right: 10px; width: 70%;">
-                                                                            <h:selectOneRadio rendered="#{registroController.etapaEstado.verEtapa == 1}"  value="#{registroController.expediente.estadoCalificacion}">
-                                                                    <f:selectItems value="#{registroController.listaEstadoCalificacionQueja}"  />
-                                                                    <f:ajax listener="#{registroController.pintar()}" render="idPanelEstado" execute="@form"/>
-                                                                </h:selectOneRadio>
+                                                                    <table style="width: 90%">
+                                                                        <tr>
+                                                                            <td style="padding-right: 10px; width: 70%;">
+                                                                                <h:selectOneRadio rendered="#{registroController.etapaEstado.verEtapa == 1}"  value="#{registroController.expediente.estadoCalificacion}">
+                                                                                    <f:selectItems value="#{registroController.listaEstadoCalificacionQueja}"  />
+                                                                                    <f:ajax listener="#{registroController.pintar()}" render="idPanelEstado" execute="@form"/>
+                                                                                </h:selectOneRadio>
 
-                                                                <h:selectOneRadio rendered="#{registroController.etapaEstado.verEtapa == 2}"  value="#{registroController.expediente.estadoInvestigacion}">
-                                                                    <f:selectItems value="#{registroController.listaEstadoInvestigacionQueja}"  />
-                                                                    <f:ajax listener="#{registroController.pintar()}" render="idPanelEstado" execute="@form"/>
-                                                                </h:selectOneRadio>
+                                                                                <h:selectOneRadio rendered="#{registroController.etapaEstado.verEtapa == 2}"  value="#{registroController.expediente.estadoInvestigacion}">
+                                                                                    <f:selectItems value="#{registroController.listaEstadoInvestigacionQueja}"  />
+                                                                                    <f:ajax listener="#{registroController.pintar()}" render="idPanelEstado" execute="@form"/>
+                                                                                </h:selectOneRadio>
 
-                                                                <h:selectOneRadio rendered="#{registroController.etapaEstado.verEtapa == 3}"  value="#{registroController.expediente.estadoPersuacion}">
-                                                                    <f:selectItems value="#{registroController.listaEstadoPersuacionQueja}"  />
-                                                                    <f:ajax listener="#{registroController.pintar()}" render="idPanelEstado" execute="@form"/>
-                                                                </h:selectOneRadio>
+                                                                                <h:selectOneRadio rendered="#{registroController.etapaEstado.verEtapa == 3}"  value="#{registroController.expediente.estadoPersuacion}">
+                                                                                    <f:selectItems value="#{registroController.listaEstadoPersuacionQueja}"  />
+                                                                                    <f:ajax listener="#{registroController.pintar()}" render="idPanelEstado" execute="@form"/>
+                                                                                </h:selectOneRadio>
 
-                                                                <h:selectOneRadio rendered="#{registroController.etapaEstado.verEtapa == 4}"  value="#{registroController.expediente.estadoSeguimiento}">
-                                                                    <f:selectItems value="#{registroController.listaEstadoSeguimientoQueja}"  />
-                                                                    <f:ajax listener="#{registroController.pintar()}" render="idPanelEstado" execute="@form"/>
-                                                                </h:selectOneRadio>
-                                                                            <h:selectOneRadio rendered="#{registroController.etapaEstado.verEtapa == 5}"  value="#{registroController.expediente.estadoCalificacion}">
-                                                                    <f:selectItems value="#{registroController.listaEstadoCalificacionPetitorio}"  />
-                                                                    <f:ajax listener="#{registroController.pintar()}" render="idPanelEstado" execute="@form"/>
-                                                                </h:selectOneRadio>
-                                                                            
-                                                                            <h:selectOneRadio rendered="#{registroController.etapaEstado.verEtapa == 6}"  value="#{registroController.expediente.estadoGestion}">
-                                                                    <f:selectItems value="#{registroController.listaEstadoGestionPetitorio}"  />
-                                                                    <f:ajax listener="#{registroController.pintar()}" render="idPanelEstado" execute="@form"/>
-                                                                </h:selectOneRadio>            
-                                                                            
-                                                                            <h:selectOneRadio rendered="#{registroController.etapaEstado.verEtapa == 7}"  value="#{registroController.expediente.estadoPersuacion}">
-                                                                    <f:selectItems value="#{registroController.listaEstadoPersuacionPetitorio}"  />
-                                                                    <f:ajax listener="#{registroController.pintar()}" render="idPanelEstado" execute="@form"/>
-                                                                </h:selectOneRadio>            
-                                                                            
-                                                                            
-                                                                            
-                                                                        </td>
-                                                                        <td style="vertical-align: top">
-                                                                            <textarea rows="3" jsf:rendered="#{registroController.expediente.estadoCalificacion != null and registroController.etapaEstado.verEtapa == 1}" style="width: 100%" placeholder="Justificación"/>
-                                                                            <textarea rows="3" jsf:rendered="#{registroController.expediente.estadoInvestigacion != null and registroController.etapaEstado.verEtapa == 2}" style="width: 100%" placeholder="Justificación"/>
-                                                                                      <textarea rows="3" jsf:rendered="#{registroController.expediente.estadoPersuacion != null and registroController.etapaEstado.verEtapa == 3}" style="width: 100%" placeholder="Justificación"/>
-                                                                                      <textarea rows="3" jsf:rendered="#{registroController.expediente.estadoSeguimiento != null and registroController.etapaEstado.verEtapa == 4}" style="width: 100%" placeholder="Justificación"/>
-                                                                        </td>
-                                                                    </tr>
-                                                                </table>
-                                                                    </h:panelGroup>
+                                                                                <h:selectOneRadio rendered="#{registroController.etapaEstado.verEtapa == 4}"  value="#{registroController.expediente.estadoSeguimiento}">
+                                                                                    <f:selectItems value="#{registroController.listaEstadoSeguimientoQueja}"  />
+                                                                                    <f:ajax listener="#{registroController.pintar()}" render="idPanelEstado" execute="@form"/>
+                                                                                </h:selectOneRadio>
+                                                                                <h:selectOneRadio rendered="#{registroController.etapaEstado.verEtapa == 5}"  value="#{registroController.expediente.estadoCalificacion}">
+                                                                                    <f:selectItems value="#{registroController.listaEstadoCalificacionPetitorio}"  />
+                                                                                    <f:ajax listener="#{registroController.pintar()}" render="idPanelEstado" execute="@form"/>
+                                                                                </h:selectOneRadio>
+
+                                                                                <h:selectOneRadio rendered="#{registroController.etapaEstado.verEtapa == 6}"  value="#{registroController.expediente.estadoGestion}">
+                                                                                    <f:selectItems value="#{registroController.listaEstadoGestionPetitorio}"  />
+                                                                                    <f:ajax listener="#{registroController.pintar()}" render="idPanelEstado" execute="@form"/>
+                                                                                </h:selectOneRadio>            
+
+                                                                                <h:selectOneRadio rendered="#{registroController.etapaEstado.verEtapa == 7}"  value="#{registroController.expediente.estadoPersuacion}">
+                                                                                    <f:selectItems value="#{registroController.listaEstadoPersuacionPetitorio}"  />
+                                                                                    <f:ajax listener="#{registroController.pintar()}" render="idPanelEstado" execute="@form"/>
+                                                                                </h:selectOneRadio>            
+
+
+
+                                                                            </td>
+                                                                            <td style="vertical-align: top">
+                                                                                <textarea rows="3" jsf:rendered="#{registroController.expediente.estadoCalificacion != null and registroController.etapaEstado.verEtapa == 1}" style="width: 100%" placeholder="Justificación"/>
+                                                                                <textarea rows="3" jsf:rendered="#{registroController.expediente.estadoInvestigacion != null and registroController.etapaEstado.verEtapa == 2}" style="width: 100%" placeholder="Justificación"/>
+                                                                                <textarea rows="3" jsf:rendered="#{registroController.expediente.estadoPersuacion != null and registroController.etapaEstado.verEtapa == 3}" style="width: 100%" placeholder="Justificación"/>
+                                                                                <textarea rows="3" jsf:rendered="#{registroController.expediente.estadoSeguimiento != null and registroController.etapaEstado.verEtapa == 4}" style="width: 100%" placeholder="Justificación"/>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </h:panelGroup>
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -350,23 +350,7 @@
                                                                     }
                                                                 }
                                                             </script>
-                                                            <h:panelGroup  id="idPanel3" rendered="#{registroController.expediente.id == null || registroController.expediente.version == 0}">
-                                                                <a class="btn btn-info" onclick="confirmarBorrador()">
-                                                                    <span class="glyphicon glyphicon-floppy-disk" />Borrador
-                                                                </a>
-                                                            </h:panelGroup>
-                                                            &#160;&#160;
-                                                            <h:panelGroup rendered="#{registroController.expediente.general != 'C'}">
-                                                                <a class="btn btn-primary" onclick="confirmar2()">
-                                                                    <span class="glyphicon glyphicon-floppy-disk" />Guardar
-                                                                </a>
-                                                            </h:panelGroup>
-                                                            &#160;&#160;
-                                                            <h:panelGroup id="idPanel2" rendered="#{registroController.expediente.id != null and registroController.expediente.version > 0 and registroController.expediente.general != 'C'}">
-                                                                <a class="btn btn-warning" onclick="confirmar3()">
-                                                                    <span class="glyphicon glyphicon-floppy-save" />Concluir Etapa
-                                                                </a>
-                                                            </h:panelGroup>
+                                                            
                                                         </td>
                                                     </tr>
                                                 </table>
@@ -380,8 +364,8 @@
                     </tr>
                 </table>
 
-                
-                    <ul class="nav nav-tabs">
+
+                <ul class="nav nav-tabs">
                     <li role="presentation" >
                         <a style="cursor: pointer" jsf:rendered="true" jsf:action="expedienteNuevo">
                             <span style="font-size: medium; color: purple;" class="glyphicon glyphicon-list-alt" > Expediente</span>
@@ -391,7 +375,7 @@
                             <span style="font-size: large; color: #007ACC; font-weight: bold" class="glyphicon glyphicon-list-alt" > Gestiones</span>
                         </a></li>
                 </ul>
-                
+
                 <div class="panel panel-default">
 
                     <div class="panel-body">
@@ -409,446 +393,446 @@
                             </tr>
                         </table>
                         <h:panelGroup rendered="#{registroController.expediente.tipoClasificion == '01'}">
-                        <table style="width:100%">    
-                            <tr>
-                                <td>
-                                    <span class="glyphicon glyphicon-folder-open" style="font-size:medium"></span>
-                                    <span class="text-resalt-comun">&#160;&#160;Calificación&#160;(#{registroController.listaExpedientesCalificacionQueja.size()})</span>
-                                    <a id="addCalificacion">
-                                        <span id="spanAddCalificacion" class="glyphicon glyphicon-plus" style="font-size:medium;cursor:pointer"></span>
-                                    </a>
-                                </td>
-                                <td>
-                                    <span class="glyphicon glyphicon-folder-open" style="font-size:medium"></span>
-                                    <span class="text-resalt-comun">&#160;&#160;Investigación&#160;(#{registroController.listaExpedientesInvestigacionQueja.size()})</span>
-                                    <a id="addInvestigacion">
-                                        <span id="spanAddInvestigacion" class="glyphicon glyphicon-plus" style="font-size:medium;cursor:pointer"></span>
-                                    </a>
-                                </td>
-                                <td>
-                                    <span class="glyphicon glyphicon-folder-open" style="font-size:medium"></span>
-                                    <span class="text-resalt-comun">&#160;&#160;Persuación&#160;(#{registroController.listaExpedientesPersuacionQueja.size()})</span>
-                                    <a id="addPersuacion">
-                                        <span id="spanAddPersuacion" class="glyphicon glyphicon-plus" style="font-size:medium;cursor:pointer"></span>
-                                    </a>
-                                </td>
-                                <td>
-                                    <span class="glyphicon glyphicon-folder-open" style="font-size:medium"></span>
-                                    <span class="text-resalt-comun">&#160;&#160;Seguimiento&#160;(#{registroController.listaExpedientesSeguimientoQueja.size()})</span>
-                                    <a id="addSeguimiento">
-                                        <span id="spanAddSeguimiento" class="glyphicon glyphicon-plus" style="font-size:medium;cursor:pointer"></span>
-                                    </a>
-                                </td>
-                            </tr>
-                        </table>
-                            </h:panelGroup>
+                            <table style="width:100%">    
+                                <tr>
+                                    <td>
+                                        <span class="glyphicon glyphicon-folder-open" style="font-size:medium"></span>
+                                        <span class="text-resalt-comun">&#160;&#160;Calificación&#160;(#{registroController.listaExpedientesCalificacionQueja.size()})</span>
+                                        <a id="addCalificacion">
+                                            <span id="spanAddCalificacion" class="glyphicon glyphicon-plus" style="font-size:medium;cursor:pointer"></span>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <span class="glyphicon glyphicon-folder-open" style="font-size:medium"></span>
+                                        <span class="text-resalt-comun">&#160;&#160;Investigación&#160;(#{registroController.listaExpedientesInvestigacionQueja.size()})</span>
+                                        <a id="addInvestigacion">
+                                            <span id="spanAddInvestigacion" class="glyphicon glyphicon-plus" style="font-size:medium;cursor:pointer"></span>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <span class="glyphicon glyphicon-folder-open" style="font-size:medium"></span>
+                                        <span class="text-resalt-comun">&#160;&#160;Persuasión&#160;(#{registroController.listaExpedientesPersuacionQueja.size()})</span>
+                                        <a id="addPersuacion">
+                                            <span id="spanAddPersuacion" class="glyphicon glyphicon-plus" style="font-size:medium;cursor:pointer"></span>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <span class="glyphicon glyphicon-folder-open" style="font-size:medium"></span>
+                                        <span class="text-resalt-comun">&#160;&#160;Seguimiento&#160;(#{registroController.listaExpedientesSeguimientoQueja.size()})</span>
+                                        <a id="addSeguimiento">
+                                            <span id="spanAddSeguimiento" class="glyphicon glyphicon-plus" style="font-size:medium;cursor:pointer"></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </h:panelGroup>
                         <h:panelGroup rendered="#{registroController.expediente.tipoClasificion == '03'}">
-                        <table style="width:100%">    
-                            <tr>
-                                <td>
-                                    <span class="glyphicon glyphicon-folder-open" style="font-size:medium"></span>
-                                    <span class="text-resalt-comun">&#160;&#160;Calificación&#160;(#{registroController.listaExpedientesCalificacionPetitorio.size()})</span>
-                                    <a id="addCalificacion">
-                                        <span id="spanAddCalificacion" class="glyphicon glyphicon-plus" style="font-size:medium;cursor:pointer"></span>
-                                    </a>
-                                </td>
-                                <td>
-                                    <span class="glyphicon glyphicon-folder-open" style="font-size:medium"></span>
-                                    <span class="text-resalt-comun">&#160;&#160;Gestión&#160;(#{registroController.listaExpedientesGestionPetitorio.size()})</span>
-                                    <a id="addInvestigacion">
-                                        <span id="spanAddInvestigacion" class="glyphicon glyphicon-plus" style="font-size:medium;cursor:pointer"></span>
-                                    </a>
-                                </td>
-                                <td>
-                                    <span class="glyphicon glyphicon-folder-open" style="font-size:medium"></span>
-                                    <span class="text-resalt-comun">&#160;&#160;Persuación&#160;(#{registroController.listaExpedientesPersuacionPetitorio.size()})</span>
-                                    <a id="addPersuacion">
-                                        <span id="spanAddPersuacion" class="glyphicon glyphicon-plus" style="font-size:medium;cursor:pointer"></span>
-                                    </a>
-                                </td>
-                            </tr>
-                        </table>
-                            </h:panelGroup>
+                            <table style="width:100%">    
+                                <tr>
+                                    <td>
+                                        <span class="glyphicon glyphicon-folder-open" style="font-size:medium"></span>
+                                        <span class="text-resalt-comun">&#160;&#160;Calificación&#160;(#{registroController.listaExpedientesCalificacionPetitorio.size()})</span>
+                                        <a id="addCalificacion">
+                                            <span id="spanAddCalificacion" class="glyphicon glyphicon-plus" style="font-size:medium;cursor:pointer"></span>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <span class="glyphicon glyphicon-folder-open" style="font-size:medium"></span>
+                                        <span class="text-resalt-comun">&#160;&#160;Gestión&#160;(#{registroController.listaExpedientesGestionPetitorio.size()})</span>
+                                        <a id="addInvestigacion">
+                                            <span id="spanAddInvestigacion" class="glyphicon glyphicon-plus" style="font-size:medium;cursor:pointer"></span>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <span class="glyphicon glyphicon-folder-open" style="font-size:medium"></span>
+                                        <span class="text-resalt-comun">&#160;&#160;Persuasión&#160;(#{registroController.listaExpedientesPersuacionPetitorio.size()})</span>
+                                        <a id="addPersuacion">
+                                            <span id="spanAddPersuacion" class="glyphicon glyphicon-plus" style="font-size:medium;cursor:pointer"></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </h:panelGroup>
                         <br/>
                         <br/>
                         <h:panelGroup rendered="#{registroController.expediente.tipoClasificion == '01'}">
-                        <div id="idPanelBodyCalificacion" class="panel panel-warning">
-                            <div class="panel-heading">
-                                <span style="font-size: 1.5em">Gestiones registradas en la etapa de Calificiación:</span>
+                            <div id="idPanelBodyCalificacion" class="panel panel-warning">
+                                <div class="panel-heading">
+                                    <span style="font-size: 1.5em">Gestiones registradas en la etapa de Calificiación:</span>
+                                </div>
+                                <div  class="panel-body">
+                                    <h:dataTable value="#{registroController.listaExpedientesCalificacionQueja}" var="calificacion" binding="#{rowx1}" class="table table-hover">
+                                        <h:column>
+                                            <f:facet name="header">N°</f:facet>
+                                            <h:outputText value="#{rowx1.rowIndex+1}" />
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Codigo de gestión</f:facet>
+                                            <h:outputText value="#{calificacion.codigoGestion}" />
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Tipo de acción</f:facet>
+                                            <h:outputText value="#{calificacion.detalleTipo}" />
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Fecha registro</f:facet>
+                                            <h:outputText value="#{calificacion.fechaRegistro}" >
+                                                <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
+                                            </h:outputText>
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Fecha modificación</f:facet>
+                                            <h:outputText value="#{calificacion.fechaModificacion}" >
+                                                <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
+                                            </h:outputText>
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Hubo respuesta</f:facet>
+                                            <h:outputText value="#{calificacion.respuesta}" />
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Se programo alerta</f:facet>
+                                            <h:outputText value="#{calificacion.indAlertar? 'NO' : 'SI'}" />
+                                        </h:column>
+                                        <h:column rendered="#{registroController.etapaEstado.verEtapa == 1}">
+                                            <f:facet  name="header">Editar</f:facet>
+                                            <a jsf:action="#{registroController.setearExpedienteGestion(calificacion)}">
+                                                <span class="glyphicon glyphicon-pencil" />
+                                            </a>
+                                        </h:column>
+                                        <h:column rendered="#{registroController.etapaEstado.verEtapa != 1}">
+                                            <f:facet  name="header">Ver</f:facet>
+                                            <a jsf:action="#{registroController.verExpedienteGestion(calificacion)}">
+                                                <span class="glyphicon glyphicon-search" />
+                                            </a>
+                                        </h:column>
+                                    </h:dataTable>
+                                </div>
                             </div>
-                            <div  class="panel-body">
-                                <h:dataTable value="#{registroController.listaExpedientesCalificacionQueja}" var="calificacion" binding="#{rowx1}" class="table table-hover">
-                                    <h:column>
-                                        <f:facet name="header">N°</f:facet>
-                                        <h:outputText value="#{rowx1.rowIndex+1}" />
-                                    </h:column>
-                                    <h:column>
-                                        <f:facet name="header">Codigo de gestión</f:facet>
-                                        <h:outputText value="#{calificacion.codigoGestion}" />
-                                    </h:column>
-                                    <h:column>
-                                        <f:facet name="header">Tipo de acción</f:facet>
-                                        <h:outputText value="#{calificacion.detalleTipo}" />
-                                    </h:column>
-                                    <h:column>
-                                        <f:facet name="header">Fecha registro</f:facet>
-                                        <h:outputText value="#{calificacion.fechaRegistro}" >
-                                            <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
-                                        </h:outputText>
-                                    </h:column>
-                                    <h:column>
-                                        <f:facet name="header">Fecha modificación</f:facet>
-                                        <h:outputText value="#{calificacion.fechaModificacion}" >
-                                            <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
-                                        </h:outputText>
-                                    </h:column>
-                                    <h:column>
-                                        <f:facet name="header">Hubo respuesta</f:facet>
-                                        <h:outputText value="#{calificacion.respuesta}" />
-                                    </h:column>
-                                    <h:column>
-                                        <f:facet name="header">Se programo alerta</f:facet>
-                                        <h:outputText value="#{calificacion.indAlertar? 'NO' : 'SI'}" />
-                                    </h:column>
-                                    <h:column rendered="#{registroController.etapaEstado.verEtapa == 1}">
-                                        <f:facet  name="header">Editar</f:facet>
-                                        <a jsf:action="#{registroController.setearExpedienteGestion(calificacion)}">
-                                            <span class="glyphicon glyphicon-pencil" />
-                                        </a>
-                                    </h:column>
-                                    <h:column rendered="#{registroController.etapaEstado.verEtapa != 1}">
-                                        <f:facet  name="header">Ver</f:facet>
-                                        <a jsf:action="#{registroController.setearExpedienteGestion(calificacion)}">
-                                            <span class="glyphicon glyphicon-search" />
-                                        </a>
-                                    </h:column>
-                                </h:dataTable>
+                            <div id="idPanelBodyInvestigacion" class="panel panel-info">
+                                <div class="panel-heading">
+                                    <span style="font-size: 1.5em">Gestiones registradas en la etapa de Investigación:</span>
+                                </div>
+                                <div  class="panel-body">
+                                    <h:dataTable value="#{registroController.listaExpedientesInvestigacionQueja}" var="investigacion" binding="#{rowx2}" class="table table-hover">
+                                        <h:column>
+                                            <f:facet name="header">N°</f:facet>
+                                            <h:outputText value="#{rowx2.rowIndex+1}" />
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Codigo de gestión</f:facet>
+                                            <h:outputText value="#{investigacion.codigoGestion}" />
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Tipo de acción</f:facet>
+                                            <h:outputText value="#{investigacion.detalleTipo}" />
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Fecha registro</f:facet>
+                                            <h:outputText value="#{investigacion.fechaRegistro}" >
+                                                <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
+                                            </h:outputText>
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Fecha modificación</f:facet>
+                                            <h:outputText value="#{investigacion.fechaModificacion}" >
+                                                <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
+                                            </h:outputText>
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Hubo respuesta</f:facet>
+                                            <h:outputText value="#{investigacion.respuesta}" />
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Se programo alerta</f:facet>
+                                            <h:outputText value="#{investigacion.indAlertar? 'NO' : 'SI'}" />
+                                        </h:column>
+                                        <h:column rendered="#{registroController.etapaEstado.verEtapa == 2}">
+                                            <f:facet name="header">Editar</f:facet>
+                                            <a jsf:action="#{registroController.setearExpedienteGestion(investigacion)}">
+                                                <span class="glyphicon glyphicon-pencil" />
+                                            </a>
+                                        </h:column>
+                                        <h:column rendered="#{registroController.etapaEstado.verEtapa != 2}">
+                                            <f:facet  name="header">Ver</f:facet>
+                                            <a jsf:action="#{registroController.verExpedienteGestion(investigacion)}">
+                                                <span class="glyphicon glyphicon-search" />
+                                            </a>
+                                        </h:column>
+                                    </h:dataTable>
+                                </div>
                             </div>
-                        </div>
-                        <div id="idPanelBodyInvestigacion" class="panel panel-info">
-                            <div class="panel-heading">
-                                <span style="font-size: 1.5em">Gestiones registradas en la etapa de Investigación:</span>
+                            <div id="idPanelBodyPersuacion" class="panel panel-default">
+                                <div class="panel-heading">
+                                    <span style="font-size: 1.5em">Gestiones registradas en la etapa de Persuasión:</span>
+                                </div>
+                                <div  class="panel-body">
+                                    <h:dataTable value="#{registroController.listaExpedientesPersuacionQueja}" var="persuacion" binding="#{rowx3}" class="table table-hover">
+                                        <h:column>
+                                            <f:facet name="header">N°</f:facet>
+                                            <h:outputText value="#{rowx3.rowIndex+1}" />
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Codigo de gestión</f:facet>
+                                            <h:outputText value="#{persuacion.codigoGestion}" />
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Tipo de acción</f:facet>
+                                            <h:outputText value="#{persuacion.detalleTipo}" />
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Fecha registro</f:facet>
+                                            <h:outputText value="#{persuacion.fechaRegistro}" >
+                                                <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
+                                            </h:outputText>
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Fecha modificación</f:facet>
+                                            <h:outputText value="#{persuacion.fechaModificacion}" >
+                                                <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
+                                            </h:outputText>
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Hubo respuesta</f:facet>
+                                            <h:outputText value="#{persuacion.respuesta}" />
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Se programo alerta</f:facet>
+                                            <h:outputText value="#{persuacion.indAlertar? 'NO' : 'SI'}" />
+                                        </h:column>
+                                        <h:column rendered="#{registroController.etapaEstado.verEtapa == 3}">
+                                            <f:facet name="header">Editar</f:facet>
+                                            <a jsf:action="#{registroController.setearExpedienteGestion(persuacion)}">
+                                                <span class="glyphicon glyphicon-pencil" />
+                                            </a>
+                                        </h:column>
+                                        <h:column rendered="#{registroController.etapaEstado.verEtapa != 3}">
+                                            <f:facet  name="header">Ver</f:facet>
+                                            <a jsf:action="#{registroController.verExpedienteGestion(persuacion)}">
+                                                <span class="glyphicon glyphicon-search" />
+                                            </a>
+                                        </h:column>
+                                    </h:dataTable>
+                                </div>
                             </div>
-                            <div  class="panel-body">
-                                <h:dataTable value="#{registroController.listaExpedientesInvestigacionQueja}" var="investigacion" binding="#{rowx2}" class="table table-hover">
-                                    <h:column>
-                                        <f:facet name="header">N°</f:facet>
-                                        <h:outputText value="#{rowx2.rowIndex+1}" />
-                                    </h:column>
-                                    <h:column>
-                                        <f:facet name="header">Codigo de gestión</f:facet>
-                                        <h:outputText value="#{investigacion.codigoGestion}" />
-                                    </h:column>
-                                    <h:column>
-                                        <f:facet name="header">Tipo de acción</f:facet>
-                                        <h:outputText value="#{investigacion.detalleTipo}" />
-                                    </h:column>
-                                    <h:column>
-                                        <f:facet name="header">Fecha registro</f:facet>
-                                        <h:outputText value="#{investigacion.fechaRegistro}" >
-                                            <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
-                                        </h:outputText>
-                                    </h:column>
-                                    <h:column>
-                                        <f:facet name="header">Fecha modificación</f:facet>
-                                        <h:outputText value="#{investigacion.fechaModificacion}" >
-                                            <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
-                                        </h:outputText>
-                                    </h:column>
-                                    <h:column>
-                                        <f:facet name="header">Hubo respuesta</f:facet>
-                                        <h:outputText value="#{investigacion.respuesta}" />
-                                    </h:column>
-                                    <h:column>
-                                        <f:facet name="header">Se programo alerta</f:facet>
-                                        <h:outputText value="#{investigacion.indAlertar? 'NO' : 'SI'}" />
-                                    </h:column>
-                                    <h:column rendered="#{registroController.etapaEstado.verEtapa == 2}">
-                                        <f:facet name="header">Editar</f:facet>
-                                        <a jsf:action="#{registroController.setearExpedienteGestion(investigacion)}">
-                                            <span class="glyphicon glyphicon-pencil" />
-                                        </a>
-                                    </h:column>
-                                    <h:column rendered="#{registroController.etapaEstado.verEtapa != 2}">
-                                        <f:facet  name="header">Ver</f:facet>
-                                        <a jsf:action="#{registroController.setearExpedienteGestion(investigacion)}">
-                                            <span class="glyphicon glyphicon-search" />
-                                        </a>
-                                    </h:column>
-                                </h:dataTable>
-                            </div>
-                        </div>
-                        <div id="idPanelBodyPersuacion" class="panel panel-default">
-                            <div class="panel-heading">
-                                <span style="font-size: 1.5em">Gestiones registradas en la etapa de Persuación:</span>
-                            </div>
-                            <div  class="panel-body">
-                                <h:dataTable value="#{registroController.listaExpedientesPersuacionQueja}" var="persuacion" binding="#{rowx3}" class="table table-hover">
-                                    <h:column>
-                                        <f:facet name="header">N°</f:facet>
-                                        <h:outputText value="#{rowx3.rowIndex+1}" />
-                                    </h:column>
-                                    <h:column>
-                                        <f:facet name="header">Codigo de gestión</f:facet>
-                                        <h:outputText value="#{persuacion.codigoGestion}" />
-                                    </h:column>
-                                    <h:column>
-                                        <f:facet name="header">Tipo de acción</f:facet>
-                                        <h:outputText value="#{persuacion.detalleTipo}" />
-                                    </h:column>
-                                    <h:column>
-                                        <f:facet name="header">Fecha registro</f:facet>
-                                        <h:outputText value="#{persuacion.fechaRegistro}" >
-                                            <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
-                                        </h:outputText>
-                                    </h:column>
-                                    <h:column>
-                                        <f:facet name="header">Fecha modificación</f:facet>
-                                        <h:outputText value="#{persuacion.fechaModificacion}" >
-                                            <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
-                                        </h:outputText>
-                                    </h:column>
-                                    <h:column>
-                                        <f:facet name="header">Hubo respuesta</f:facet>
-                                        <h:outputText value="#{persuacion.respuesta}" />
-                                    </h:column>
-                                    <h:column>
-                                        <f:facet name="header">Se programo alerta</f:facet>
-                                        <h:outputText value="#{persuacion.indAlertar? 'NO' : 'SI'}" />
-                                    </h:column>
-                                    <h:column rendered="#{registroController.etapaEstado.verEtapa == 3}">
-                                        <f:facet name="header">Editar</f:facet>
-                                        <a jsf:action="#{registroController.setearExpedienteGestion(persuacion)}">
-                                            <span class="glyphicon glyphicon-pencil" />
-                                        </a>
-                                    </h:column>
-                                    <h:column rendered="#{registroController.etapaEstado.verEtapa != 3}">
-                                        <f:facet  name="header">Ver</f:facet>
-                                        <a jsf:action="#{registroController.setearExpedienteGestion(persuacion)}">
-                                            <span class="glyphicon glyphicon-search" />
-                                        </a>
-                                    </h:column>
-                                </h:dataTable>
-                            </div>
-                        </div>
 
-                        <div id="idPanelBodySeguimiento" class="panel panel-primary">
-                            <div class="panel-heading">
-                                <span style="font-size: 1.5em">Gestiones registradas en la etapa de Seguimiento:</span>
+                            <div id="idPanelBodySeguimiento" class="panel panel-primary">
+                                <div class="panel-heading">
+                                    <span style="font-size: 1.5em">Gestiones registradas en la etapa de Seguimiento:</span>
+                                </div>
+                                <div  class="panel-body">
+                                    <h:dataTable value="#{registroController.listaExpedientesSeguimientoQueja}" var="seguimiento" binding="#{rowx4}" class="table table-hover">
+                                        <h:column>
+                                            <f:facet name="header">N°</f:facet>
+                                            <h:outputText value="#{rowx4.rowIndex+1}" />
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Codigo de gestión</f:facet>
+                                            <h:outputText value="#{seguimiento.codigoGestion}" />
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Tipo de acción</f:facet>
+                                            <h:outputText value="#{seguimiento.detalleTipo}" />
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Fecha registro</f:facet>
+                                            <h:outputText value="#{seguimiento.fechaRegistro}" >
+                                                <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
+                                            </h:outputText>
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Fecha modificación</f:facet>
+                                            <h:outputText value="#{seguimiento.fechaModificacion}" >
+                                                <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
+                                            </h:outputText>
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Hubo respuesta</f:facet>
+                                            <h:outputText value="#{seguimiento.respuesta}" />
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Se programo alerta</f:facet>
+                                            <h:outputText value="#{seguimiento.indAlertar? 'NO' : 'SI'}" />
+                                        </h:column>
+                                        <h:column rendered="#{registroController.etapaEstado.verEtapa == 4}">
+                                            <f:facet name="header">Editar</f:facet>
+                                            <a jsf:action="#{registroController.setearExpedienteGestion(seguimiento)}">
+                                                <span class="glyphicon glyphicon-pencil" />
+                                            </a>
+                                        </h:column>
+                                        <h:column rendered="#{registroController.etapaEstado.verEtapa != 4}">
+                                            <f:facet  name="header">Ver</f:facet>
+                                            <a jsf:action="#{registroController.verExpedienteGestion(seguimiento)}">
+                                                <span class="glyphicon glyphicon-search" />
+                                            </a>
+                                        </h:column>
+                                    </h:dataTable>
+                                </div>
                             </div>
-                            <div  class="panel-body">
-                                <h:dataTable value="#{registroController.listaExpedientesSeguimientoQueja}" var="seguimiento" binding="#{rowx4}" class="table table-hover">
-                                    <h:column>
-                                        <f:facet name="header">N°</f:facet>
-                                        <h:outputText value="#{rowx4.rowIndex+1}" />
-                                    </h:column>
-                                    <h:column>
-                                        <f:facet name="header">Codigo de gestión</f:facet>
-                                        <h:outputText value="#{seguimiento.codigoGestion}" />
-                                    </h:column>
-                                    <h:column>
-                                        <f:facet name="header">Tipo de acción</f:facet>
-                                        <h:outputText value="#{seguimiento.detalleTipo}" />
-                                    </h:column>
-                                    <h:column>
-                                        <f:facet name="header">Fecha registro</f:facet>
-                                        <h:outputText value="#{seguimiento.fechaRegistro}" >
-                                            <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
-                                        </h:outputText>
-                                    </h:column>
-                                    <h:column>
-                                        <f:facet name="header">Fecha modificación</f:facet>
-                                        <h:outputText value="#{seguimiento.fechaModificacion}" >
-                                            <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
-                                        </h:outputText>
-                                    </h:column>
-                                    <h:column>
-                                        <f:facet name="header">Hubo respuesta</f:facet>
-                                        <h:outputText value="#{seguimiento.respuesta}" />
-                                    </h:column>
-                                    <h:column>
-                                        <f:facet name="header">Se programo alerta</f:facet>
-                                        <h:outputText value="#{seguimiento.indAlertar? 'NO' : 'SI'}" />
-                                    </h:column>
-                                    <h:column rendered="#{registroController.etapaEstado.verEtapa == 4}">
-                                        <f:facet name="header">Editar</f:facet>
-                                        <a jsf:action="#{registroController.setearExpedienteGestion(seguimiento)}">
-                                            <span class="glyphicon glyphicon-pencil" />
-                                        </a>
-                                    </h:column>
-                                    <h:column rendered="#{registroController.etapaEstado.verEtapa != 4}">
-                                        <f:facet  name="header">Ver</f:facet>
-                                        <a jsf:action="#{registroController.setearExpedienteGestion(seguimiento)}">
-                                            <span class="glyphicon glyphicon-search" />
-                                        </a>
-                                    </h:column>
-                                </h:dataTable>
-                            </div>
-                        </div>
-</h:panelGroup>
+                        </h:panelGroup>
                         <h:panelGroup rendered="#{registroController.expediente.tipoClasificion == '03'}">
-                        <div id="idPanelBodyCalificacion" class="panel panel-warning">
-                            <div class="panel-heading">
-                                <span style="font-size: 1.5em">Gestiones registradas en la etapa de Calificiación:</span>
+                            <div id="idPanelBodyCalificacion" class="panel panel-warning">
+                                <div class="panel-heading">
+                                    <span style="font-size: 1.5em">Gestiones registradas en la etapa de Calificiación:</span>
+                                </div>
+                                <div  class="panel-body">
+                                    <h:dataTable value="#{registroController.listaExpedientesCalificacionPetitorio}" var="calificacion" binding="#{rowx5}" class="table table-hover">
+                                        <h:column>
+                                            <f:facet name="header">N°</f:facet>
+                                            <h:outputText value="#{rowx5.rowIndex+1}" />
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Codigo de gestión</f:facet>
+                                            <h:outputText value="#{calificacion.codigoGestion}" />
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Tipo de acción</f:facet>
+                                            <h:outputText value="#{calificacion.detalleTipo}" />
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Fecha registro</f:facet>
+                                            <h:outputText value="#{calificacion.fechaRegistro}" >
+                                                <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
+                                            </h:outputText>
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Fecha modificación</f:facet>
+                                            <h:outputText value="#{calificacion.fechaModificacion}" >
+                                                <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
+                                            </h:outputText>
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Hubo respuesta</f:facet>
+                                            <h:outputText value="#{calificacion.respuesta}" />
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Se programo alerta</f:facet>
+                                            <h:outputText value="#{calificacion.indAlertar? 'NO' : 'SI'}" />
+                                        </h:column>
+                                        <h:column rendered="#{registroController.etapaEstado.verEtapa == 5}">
+                                            <f:facet  name="header">Editar</f:facet>
+                                            <a jsf:action="#{registroController.setearExpedienteGestion(calificacion)}">
+                                                <span class="glyphicon glyphicon-pencil" />
+                                            </a>
+                                        </h:column>
+                                        <h:column rendered="#{registroController.etapaEstado.verEtapa != 5}">
+                                            <f:facet  name="header">Ver</f:facet>
+                                            <a jsf:action="#{registroController.verExpedienteGestion(calificacion)}">
+                                                <span class="glyphicon glyphicon-search" />
+                                            </a>
+                                        </h:column>
+                                    </h:dataTable>
+                                </div>
                             </div>
-                            <div  class="panel-body">
-                                <h:dataTable value="#{registroController.listaExpedientesCalificacionPetitorio}" var="calificacion" binding="#{rowx5}" class="table table-hover">
-                                    <h:column>
-                                        <f:facet name="header">N°</f:facet>
-                                        <h:outputText value="#{rowx5.rowIndex+1}" />
-                                    </h:column>
-                                    <h:column>
-                                        <f:facet name="header">Codigo de gestión</f:facet>
-                                        <h:outputText value="#{calificacion.codigoGestion}" />
-                                    </h:column>
-                                    <h:column>
-                                        <f:facet name="header">Tipo de acción</f:facet>
-                                        <h:outputText value="#{calificacion.detalleTipo}" />
-                                    </h:column>
-                                    <h:column>
-                                        <f:facet name="header">Fecha registro</f:facet>
-                                        <h:outputText value="#{calificacion.fechaRegistro}" >
-                                            <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
-                                        </h:outputText>
-                                    </h:column>
-                                    <h:column>
-                                        <f:facet name="header">Fecha modificación</f:facet>
-                                        <h:outputText value="#{calificacion.fechaModificacion}" >
-                                            <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
-                                        </h:outputText>
-                                    </h:column>
-                                    <h:column>
-                                        <f:facet name="header">Hubo respuesta</f:facet>
-                                        <h:outputText value="#{calificacion.respuesta}" />
-                                    </h:column>
-                                    <h:column>
-                                        <f:facet name="header">Se programo alerta</f:facet>
-                                        <h:outputText value="#{calificacion.indAlertar? 'NO' : 'SI'}" />
-                                    </h:column>
-                                    <h:column rendered="#{registroController.etapaEstado.verEtapa == 5}">
-                                        <f:facet  name="header">Editar</f:facet>
-                                        <a jsf:action="#{registroController.setearExpedienteGestion(calificacion)}">
-                                            <span class="glyphicon glyphicon-pencil" />
-                                        </a>
-                                    </h:column>
-                                    <h:column rendered="#{registroController.etapaEstado.verEtapa != 5}">
-                                        <f:facet  name="header">Ver</f:facet>
-                                        <a jsf:action="#{registroController.setearExpedienteGestion(calificacion)}">
-                                            <span class="glyphicon glyphicon-search" />
-                                        </a>
-                                    </h:column>
-                                </h:dataTable>
+                            <div id="idPanelBodyInvestigacion" class="panel panel-info">
+                                <div class="panel-heading">
+                                    <span style="font-size: 1.5em">Gestiones registradas en la etapa de Gestión:</span>
+                                </div>
+                                <div  class="panel-body">
+                                    <h:dataTable value="#{registroController.listaExpedientesGestionPetitorio}" var="gestion" binding="#{rowx6}" class="table table-hover">
+                                        <h:column>
+                                            <f:facet name="header">N°</f:facet>
+                                            <h:outputText value="#{rowx6.rowIndex+1}" />
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Codigo de gestión</f:facet>
+                                            <h:outputText value="#{gestion.codigoGestion}" />
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Tipo de acción</f:facet>
+                                            <h:outputText value="#{gestion.detalleTipo}" />
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Fecha registro</f:facet>
+                                            <h:outputText value="#{gestion.fechaRegistro}" >
+                                                <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
+                                            </h:outputText>
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Fecha modificación</f:facet>
+                                            <h:outputText value="#{gestion.fechaModificacion}" >
+                                                <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
+                                            </h:outputText>
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Hubo respuesta</f:facet>
+                                            <h:outputText value="#{gestion.respuesta}" />
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Se programo alerta</f:facet>
+                                            <h:outputText value="#{gestion.indAlertar? 'NO' : 'SI'}" />
+                                        </h:column>
+                                        <h:column rendered="#{registroController.etapaEstado.verEtapa == 6}">
+                                            <f:facet name="header">Editar</f:facet>
+                                            <a jsf:action="#{registroController.setearExpedienteGestion(gestion)}">
+                                                <span class="glyphicon glyphicon-pencil" />
+                                            </a>
+                                        </h:column>
+                                        <h:column rendered="#{registroController.etapaEstado.verEtapa != 6}">
+                                            <f:facet  name="header">Ver</f:facet>
+                                            <a jsf:action="#{registroController.verExpedienteGestion(gestion)}">
+                                                <span class="glyphicon glyphicon-search" />
+                                            </a>
+                                        </h:column>
+                                    </h:dataTable>
+                                </div>
                             </div>
-                        </div>
-                        <div id="idPanelBodyInvestigacion" class="panel panel-info">
-                            <div class="panel-heading">
-                                <span style="font-size: 1.5em">Gestiones registradas en la etapa de Gestión:</span>
+                            <div id="idPanelBodyPersuacion" class="panel panel-default">
+                                <div class="panel-heading">
+                                    <span style="font-size: 1.5em">Gestiones registradas en la etapa de Persuasión:</span>
+                                </div>
+                                <div  class="panel-body">
+                                    <h:dataTable value="#{registroController.listaExpedientesPersuacionPetitorio}" var="persuacion" binding="#{rowx7}" class="table table-hover">
+                                        <h:column>
+                                            <f:facet name="header">N°</f:facet>
+                                            <h:outputText value="#{rowx7.rowIndex+1}" />
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Codigo de gestión</f:facet>
+                                            <h:outputText value="#{persuacion.codigoGestion}" />
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Tipo de acción</f:facet>
+                                            <h:outputText value="#{persuacion.detalleTipo}" />
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Fecha registro</f:facet>
+                                            <h:outputText value="#{persuacion.fechaRegistro}" >
+                                                <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
+                                            </h:outputText>
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Fecha modificación</f:facet>
+                                            <h:outputText value="#{persuacion.fechaModificacion}" >
+                                                <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
+                                            </h:outputText>
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Hubo respuesta</f:facet>
+                                            <h:outputText value="#{persuacion.respuesta}" />
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Se programo alerta</f:facet>
+                                            <h:outputText value="#{persuacion.indAlertar? 'NO' : 'SI'}" />
+                                        </h:column>
+                                        <h:column rendered="#{registroController.etapaEstado.verEtapa == 7}">
+                                            <f:facet name="header">Editar</f:facet>
+                                            <a jsf:action="#{registroController.setearExpedienteGestion(persuacion)}">
+                                                <span class="glyphicon glyphicon-pencil" />
+                                            </a>
+                                        </h:column>
+                                        <h:column rendered="#{registroController.etapaEstado.verEtapa != 7}">
+                                            <f:facet  name="header">Ver</f:facet>
+                                            <a jsf:action="#{registroController.verExpedienteGestion(persuacion)}">
+                                                <span class="glyphicon glyphicon-search" />
+                                            </a>
+                                        </h:column>
+                                    </h:dataTable>
+                                </div>
                             </div>
-                            <div  class="panel-body">
-                                <h:dataTable value="#{registroController.listaExpedientesGestionPetitorio}" var="gestion" binding="#{rowx6}" class="table table-hover">
-                                    <h:column>
-                                        <f:facet name="header">N°</f:facet>
-                                        <h:outputText value="#{rowx6.rowIndex+1}" />
-                                    </h:column>
-                                    <h:column>
-                                        <f:facet name="header">Codigo de gestión</f:facet>
-                                        <h:outputText value="#{gestion.codigoGestion}" />
-                                    </h:column>
-                                    <h:column>
-                                        <f:facet name="header">Tipo de acción</f:facet>
-                                        <h:outputText value="#{gestion.detalleTipo}" />
-                                    </h:column>
-                                    <h:column>
-                                        <f:facet name="header">Fecha registro</f:facet>
-                                        <h:outputText value="#{gestion.fechaRegistro}" >
-                                            <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
-                                        </h:outputText>
-                                    </h:column>
-                                    <h:column>
-                                        <f:facet name="header">Fecha modificación</f:facet>
-                                        <h:outputText value="#{gestion.fechaModificacion}" >
-                                            <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
-                                        </h:outputText>
-                                    </h:column>
-                                    <h:column>
-                                        <f:facet name="header">Hubo respuesta</f:facet>
-                                        <h:outputText value="#{gestion.respuesta}" />
-                                    </h:column>
-                                    <h:column>
-                                        <f:facet name="header">Se programo alerta</f:facet>
-                                        <h:outputText value="#{gestion.indAlertar? 'NO' : 'SI'}" />
-                                    </h:column>
-                                    <h:column rendered="#{registroController.etapaEstado.verEtapa == 6}">
-                                        <f:facet name="header">Editar</f:facet>
-                                        <a jsf:action="#{registroController.setearExpedienteGestion(gestion)}">
-                                            <span class="glyphicon glyphicon-pencil" />
-                                        </a>
-                                    </h:column>
-                                    <h:column rendered="#{registroController.etapaEstado.verEtapa != 6}">
-                                        <f:facet  name="header">Ver</f:facet>
-                                        <a jsf:action="#{registroController.setearExpedienteGestion(gestion)}">
-                                            <span class="glyphicon glyphicon-search" />
-                                        </a>
-                                    </h:column>
-                                </h:dataTable>
-                            </div>
-                        </div>
-                        <div id="idPanelBodyPersuacion" class="panel panel-default">
-                            <div class="panel-heading">
-                                <span style="font-size: 1.5em">Gestiones registradas en la etapa de Persuasión:</span>
-                            </div>
-                            <div  class="panel-body">
-                                <h:dataTable value="#{registroController.listaExpedientesPersuacionPetitorio}" var="persuacion" binding="#{rowx7}" class="table table-hover">
-                                    <h:column>
-                                        <f:facet name="header">N°</f:facet>
-                                        <h:outputText value="#{rowx7.rowIndex+1}" />
-                                    </h:column>
-                                    <h:column>
-                                        <f:facet name="header">Codigo de gestión</f:facet>
-                                        <h:outputText value="#{persuacion.codigoGestion}" />
-                                    </h:column>
-                                    <h:column>
-                                        <f:facet name="header">Tipo de acción</f:facet>
-                                        <h:outputText value="#{persuacion.detalleTipo}" />
-                                    </h:column>
-                                    <h:column>
-                                        <f:facet name="header">Fecha registro</f:facet>
-                                        <h:outputText value="#{persuacion.fechaRegistro}" >
-                                            <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
-                                        </h:outputText>
-                                    </h:column>
-                                    <h:column>
-                                        <f:facet name="header">Fecha modificación</f:facet>
-                                        <h:outputText value="#{persuacion.fechaModificacion}" >
-                                            <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
-                                        </h:outputText>
-                                    </h:column>
-                                    <h:column>
-                                        <f:facet name="header">Hubo respuesta</f:facet>
-                                        <h:outputText value="#{persuacion.respuesta}" />
-                                    </h:column>
-                                    <h:column>
-                                        <f:facet name="header">Se programo alerta</f:facet>
-                                        <h:outputText value="#{persuacion.indAlertar? 'NO' : 'SI'}" />
-                                    </h:column>
-                                    <h:column rendered="#{registroController.etapaEstado.verEtapa == 7}">
-                                        <f:facet name="header">Editar</f:facet>
-                                        <a jsf:action="#{registroController.setearExpedienteGestion(persuacion)}">
-                                            <span class="glyphicon glyphicon-pencil" />
-                                        </a>
-                                    </h:column>
-                                    <h:column rendered="#{registroController.etapaEstado.verEtapa != 7}">
-                                        <f:facet  name="header">Ver</f:facet>
-                                        <a jsf:action="#{registroController.setearExpedienteGestion(persuacion)}">
-                                            <span class="glyphicon glyphicon-search" />
-                                        </a>
-                                    </h:column>
-                                </h:dataTable>
-                            </div>
-                        </div>
 
-                        
-</h:panelGroup>
+
+                        </h:panelGroup>
 
                         <script>
                             $("#idPanelBodyCalificacion").hide();

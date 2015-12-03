@@ -33,6 +33,8 @@ public class EtapaEstado {
     private String ultimaEtapa;
     
     private String estadoDetalle;
+    
+    private String ultimoEstado;
 
     public Long getId() {
         return id;
@@ -120,6 +122,14 @@ public class EtapaEstado {
 
     public void setEstadoDetalle(String estadoDetalle) {
         this.estadoDetalle = estadoDetalle;
+    }
+
+    public String getUltimoEstado() {
+        return ultimoEstado;
+    }
+
+    public void setUltimoEstado(String ultimoEstado) {
+        this.ultimoEstado = ultimoEstado;
     }
 
 }

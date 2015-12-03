@@ -205,4 +205,12 @@
         </navigation-case>
   </navigation-rule>
   
+  
+  <navigation-rule>
+        <navigation-case>
+                <from-outcome>mailInbox</from-outcome>
+                <to-view-id>/pages/inbox/mailInbox.xhtml</to-view-id>
+        </navigation-case>
+  </navigation-rule>
+  
 </faces-config>

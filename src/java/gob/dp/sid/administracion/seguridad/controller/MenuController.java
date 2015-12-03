@@ -150,6 +150,12 @@ public class MenuController implements Serializable{
             return rolController.cargarGrafica();
         }
         
+        if(codigoPagina == 18){
+            //RolController rolController = (RolController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "rolController");
+            //menuHijo = menuService.menuHijo(15);
+            return "mailInbox";
+        }
+        
         if(codigoPagina == 33){
             CatalogoController catalogoController = (CatalogoController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "catalogoController");
             menuHijo = menuService.menuHijo(15);
