@@ -114,13 +114,19 @@ public class RegistroController extends AbstractManagedBean implements Serializa
 
     private List<Persona> listaPersonaGeneral;
 
-    private List<ExpedienteGestion> listaExpedientesCalificacion;
+    private List<ExpedienteGestion> listaExpedientesCalificacionQueja;
 
-    private List<ExpedienteGestion> listaExpedientesInvestigacion;
+    private List<ExpedienteGestion> listaExpedientesInvestigacionQueja;
 
-    private List<ExpedienteGestion> listaExpedientesPersuacion;
+    private List<ExpedienteGestion> listaExpedientesPersuacionQueja;
 
-    private List<ExpedienteGestion> listaExpedientesSeguimiento;
+    private List<ExpedienteGestion> listaExpedientesSeguimientoQueja;
+
+    private List<ExpedienteGestion> listaExpedientesCalificacionPetitorio;
+
+    private List<ExpedienteGestion> listaExpedientesGestionPetitorio;
+
+    private List<ExpedienteGestion> listaExpedientesPersuacionPetitorio;
 
     private boolean indSeleccion;
 
@@ -232,23 +238,32 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     }
 
     public String cargarExpedienteGestionLista() {
-        listaExpedientesCalificacion = new ArrayList<>();
-        listaExpedientesInvestigacion = new ArrayList<>();
-        listaExpedientesPersuacion = new ArrayList<>();
-        listaExpedientesSeguimiento = new ArrayList<>();
+        listaExpedientesCalificacionQueja = new ArrayList<>();
+        listaExpedientesInvestigacionQueja = new ArrayList<>();
+        listaExpedientesPersuacionQueja = new ArrayList<>();
+        listaExpedientesSeguimientoQueja = new ArrayList<>();
         List<ExpedienteGestion> list = expedienteGestionService.expedienteGestionListaXexpediente(expediente.getNumero());
         for (ExpedienteGestion ee : list) {
             if (Objects.equals(ee.getIdEtapa(), EtapaType.CALIFICACION_QUEJA.getKey())) {
-                listaExpedientesCalificacion.add(ee);
+                listaExpedientesCalificacionQueja.add(ee);
             }
             if (Objects.equals(ee.getIdEtapa(), EtapaType.INVESTIGACION_QUEJA.getKey())) {
-                listaExpedientesInvestigacion.add(ee);
+                listaExpedientesInvestigacionQueja.add(ee);
             }
             if (Objects.equals(ee.getIdEtapa(), EtapaType.PERSUACION_QUEJA.getKey())) {
-                listaExpedientesPersuacion.add(ee);
+                listaExpedientesPersuacionQueja.add(ee);
             }
             if (Objects.equals(ee.getIdEtapa(), EtapaType.SEGUIMIENTO_QUEJA.getKey())) {
-                listaExpedientesSeguimiento.add(ee);
+                listaExpedientesSeguimientoQueja.add(ee);
+            }
+            if (Objects.equals(ee.getIdEtapa(), EtapaType.CALIFICACION_PETITORIO.getKey())) {
+                listaExpedientesCalificacionPetitorio.add(ee);
+            }
+            if (Objects.equals(ee.getIdEtapa(), EtapaType.GESTION_PETITORIO.getKey())) {
+                listaExpedientesGestionPetitorio.add(ee);
+            }
+            if (Objects.equals(ee.getIdEtapa(), EtapaType.PERSUASION_PETITORIO.getKey())) {
+                listaExpedientesPersuacionPetitorio.add(ee);
             }
         }
         return "expedienteGestionLista";
@@ -1661,36 +1676,36 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         this.listaExpedienteGestion = listaExpedienteGestion;
     }
 
-    public List<ExpedienteGestion> getListaExpedientesCalificacion() {
-        return listaExpedientesCalificacion;
+    public List<ExpedienteGestion> getListaExpedientesCalificacionQueja() {
+        return listaExpedientesCalificacionQueja;
     }
 
-    public void setListaExpedientesCalificacion(List<ExpedienteGestion> listaExpedientesCalificacion) {
-        this.listaExpedientesCalificacion = listaExpedientesCalificacion;
+    public void setListaExpedientesCalificacionQueja(List<ExpedienteGestion> listaExpedientesCalificacionQueja) {
+        this.listaExpedientesCalificacionQueja = listaExpedientesCalificacionQueja;
     }
 
-    public List<ExpedienteGestion> getListaExpedientesInvestigacion() {
-        return listaExpedientesInvestigacion;
+    public List<ExpedienteGestion> getListaExpedientesInvestigacionQueja() {
+        return listaExpedientesInvestigacionQueja;
     }
 
-    public void setListaExpedientesInvestigacion(List<ExpedienteGestion> listaExpedientesInvestigacion) {
-        this.listaExpedientesInvestigacion = listaExpedientesInvestigacion;
+    public void setListaExpedientesInvestigacionQueja(List<ExpedienteGestion> listaExpedientesInvestigacionQueja) {
+        this.listaExpedientesInvestigacionQueja = listaExpedientesInvestigacionQueja;
     }
 
-    public List<ExpedienteGestion> getListaExpedientesPersuacion() {
-        return listaExpedientesPersuacion;
+    public List<ExpedienteGestion> getListaExpedientesPersuacionQueja() {
+        return listaExpedientesPersuacionQueja;
     }
 
-    public void setListaExpedientesPersuacion(List<ExpedienteGestion> listaExpedientesPersuacion) {
-        this.listaExpedientesPersuacion = listaExpedientesPersuacion;
+    public void setListaExpedientesPersuacionQueja(List<ExpedienteGestion> listaExpedientesPersuacionQueja) {
+        this.listaExpedientesPersuacionQueja = listaExpedientesPersuacionQueja;
     }
 
-    public List<ExpedienteGestion> getListaExpedientesSeguimiento() {
-        return listaExpedientesSeguimiento;
+    public List<ExpedienteGestion> getListaExpedientesSeguimientoQueja() {
+        return listaExpedientesSeguimientoQueja;
     }
 
-    public void setListaExpedientesSeguimiento(List<ExpedienteGestion> listaExpedientesSeguimiento) {
-        this.listaExpedientesSeguimiento = listaExpedientesSeguimiento;
+    public void setListaExpedientesSeguimientoQueja(List<ExpedienteGestion> listaExpedientesSeguimientoQueja) {
+        this.listaExpedientesSeguimientoQueja = listaExpedientesSeguimientoQueja;
     }
 
     public Long getNroPaginaPersona() {
@@ -1714,6 +1729,30 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     public List<SelectItem> getListaEstadoPersuacionPetitorio() {
         listaEstadoPersuacionPetitorio = EstadoExpedienteType.getListEstado(7);
         return listaEstadoPersuacionPetitorio;
+    }
+
+    public List<ExpedienteGestion> getListaExpedientesCalificacionPetitorio() {
+        return listaExpedientesCalificacionPetitorio;
+    }
+
+    public void setListaExpedientesCalificacionPetitorio(List<ExpedienteGestion> listaExpedientesCalificacionPetitorio) {
+        this.listaExpedientesCalificacionPetitorio = listaExpedientesCalificacionPetitorio;
+    }
+
+    public List<ExpedienteGestion> getListaExpedientesGestionPetitorio() {
+        return listaExpedientesGestionPetitorio;
+    }
+
+    public void setListaExpedientesGestionPetitorio(List<ExpedienteGestion> listaExpedientesGestionPetitorio) {
+        this.listaExpedientesGestionPetitorio = listaExpedientesGestionPetitorio;
+    }
+
+    public List<ExpedienteGestion> getListaExpedientesPersuacionPetitorio() {
+        return listaExpedientesPersuacionPetitorio;
+    }
+
+    public void setListaExpedientesPersuacionPetitorio(List<ExpedienteGestion> listaExpedientesPersuacionPetitorio) {
+        this.listaExpedientesPersuacionPetitorio = listaExpedientesPersuacionPetitorio;
     }
 
 }
