@@ -466,29 +466,134 @@
                                                 });
                                             </script>
                                             <table style="width: 100%">
+                                                 <tr>
+                                        <td style="padding-bottom: 10px" colspan="2">
+                                            <span class="text-bold" style="font-size: 1.2em; color: red">Ambito</span>
+                                                    </td>
+                                                </tr> 
                                                 <tr>
                                                     <td style="width: 40%; padding-bottom: 10px">
+                                                        <span class="text-bold">Ambito:</span>
+                                                    </td>
+                                                    <td style="padding-bottom: 10px">
+                                                        <table style="width: 100%">
+                                                                    <tr>
+                                                                            <td>
+                                                                                <input type="text" placeholder="Ingrese palabra de búsqueda" />
+                                                                        </td>
+                                                                            <td>
+                                                                                <a style="cursor: pointer">
+                                                                                    <span class="glyphicon glyphicon-search" style="font-size: large" />
+                                                                                </a>
+                                                                        </td>
+                                                                </tr>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding-bottom: 10px">
                                                         <span class="text-bold">Tema:</span>
                                                     </td>
                                                     <td style="padding-bottom: 10px">
-                                                        <h:selectOneMenu value="#{registroController.expediente.tipoTema}" onchange="loadingModal()">
-                                                            <f:selectItem itemValue="0" itemLabel="Selecione" />
-                                                            <f:selectItems value="#{listasComunesController.buscarExpedienteTema(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
-                                                            <f:ajax listener="#{registroController.cargarSubTemas()}"  render="idSelectSubTema" onevent="closeModal"/>
+                                                        <h:selectOneMenu value="0">
+                                                            <f:selectItem itemValue="0" itemLabel="Seleccione" />
+<f:selectItem itemLabel="1. Servicios Públicos" />
+<f:selectItem itemLabel="2. Servicios de Salud" />
+<f:selectItem itemLabel="3. Servicios Educativos" />
+<f:selectItem itemLabel="4. Transporte y tránsito de vehículos" />
+<f:selectItem itemLabel="5. Medio Ambiente y Recursos Naturales" />
+<f:selectItem itemLabel="6. Integridad Personal" />
+<f:selectItem itemLabel="7. Identidad" />
+<f:selectItem itemLabel="8. Laboral" />
+<f:selectItem itemLabel="9. Justicia" />
+<f:selectItem itemLabel="10. Seguridad Pública" />
+<f:selectItem itemLabel="11. Programas Sociales" />
+<f:selectItem itemLabel="12. Pensiones" />
+<f:selectItem itemLabel="13. Demoras en trámites y/o procedimientos" />
+<f:selectItem itemLabel="14. Discriminación" />
+<f:selectItem itemLabel="15. Corrupción" />
+<f:selectItem itemLabel="16. Transparencia y acceso a la información" />
+<f:selectItem itemLabel="17. Participación" />
+<f:selectItem itemLabel="18. Libertad de expresión" />
                                                         </h:selectOneMenu>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td style="padding-bottom: 10px">
-                                                        <span class="text-bold">Subtema:</span>
+                                                        <span class="text-bold">Servicio de salud:</span>
                                                     </td>
                                                     <td style="padding-bottom: 10px">
-                                                        <h:selectOneMenu id="idSelectSubTema" value="#{registroController.expediente.tipoSubtema}">
-                                                            <f:selectItem itemValue="0" itemLabel="Selecione" />
-                                                            <f:selectItems value="#{registroController.listaSubTemas}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
+                                                        <h:selectOneMenu value="0">
+                                                            <f:selectItem itemValue="0" itemLabel="Seleccione" />
+<f:selectItem itemLabel="Infraestructura de salud" />
+<f:selectItem itemLabel="Acceso y alcance de los servicios de salud" />
+<f:selectItem itemLabel="Calidad del servicio de salud" />
+<f:selectItem itemLabel="Calidad de la atención" />
                                                         </h:selectOneMenu>
                                                     </td>
                                                 </tr>
+                                                <tr>
+                                                    <td style="padding-bottom: 10px">
+                                                        <span class="text-bold">Sub sub temas acceso:</span>
+                                                    </td>
+                                                    <td style="padding-bottom: 10px">
+                                                        <h:selectOneMenu value="0">
+                                                            <f:selectItem itemValue="0" itemLabel="Seleccione" />
+<f:selectItem itemLabel="Acceso a seguros de salud adecuados" />
+<f:selectItem itemLabel="Acceso a atención en salud" />
+                                                        </h:selectOneMenu>
+                                                    </td>
+                                                </tr>
+                                                
+                                                <tr>
+                                                    <td style="padding-bottom: 10px">
+                                                        <span class="text-bold">Seleccionar seguro:</span>
+                                                    </td>
+                                                    <td style="padding-bottom: 10px">
+                                                        <h:selectOneMenu value="0">
+                                                            <f:selectItem itemValue="0" itemLabel="Seleccione" />
+<f:selectItem itemLabel="SIS" />
+<f:selectItem itemLabel="EsSalud" />
+<f:selectItem itemLabel="SOAT" />
+<f:selectItem itemLabel="AFOCAT" />
+<f:selectItem itemLabel="Otros seguros" />
+                                                        </h:selectOneMenu>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding-bottom: 20px">
+                                                        <span class="text-bold">Sub sub sub temas seguros</span>
+                                                    </td>
+                                                    <td style="padding-bottom: 20px">
+                                                        <h:selectOneMenu value="0">
+                                                            <f:selectItem itemValue="0" itemLabel="Seleccione" />
+<f:selectItem itemLabel="Impedimentos o restricciones de acceso a Seguros de salud" />
+<f:selectItem itemLabel="Problemas relacionados a la cobertura de seguros de salud" />
+<f:selectItem itemLabel="Impedimentos o restricciones al uso de Seguros de salud" />
+                                                        </h:selectOneMenu>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding-bottom: 20px">
+                                                        <span class="text-bold">Sub sub sub temas seguros</span>
+                                                    </td>
+                                                    <td style="padding-bottom: 20px">
+                                                        <h:selectOneMenu value="0">
+                                                            <f:selectItem itemValue="0" itemLabel="Seleccione" />
+<f:selectItem itemLabel="Negativa injustificada a afiliación" />
+<f:selectItem itemLabel="Falta de información administrativa sobre acceso a seguros de salud" />
+<f:selectItem itemLabel="Cobros indebidos" />
+<f:selectItem itemLabel="Falta de aportes a seguro de salud" />
+<f:selectItem itemLabel="Problemas de focalización (SISFHO)" />
+<f:selectItem itemLabel="Falta de DNI u otra documentación" />
+                                                        </h:selectOneMenu>
+                                                    </td>
+                                                </tr>
+                                                
+                                    
+                                                
+                                                
+                                                
                                                 <tr>
                                                     <td style="padding-bottom: 10px">
                                                         <span class="text-bold">Etiquetas:</span>
