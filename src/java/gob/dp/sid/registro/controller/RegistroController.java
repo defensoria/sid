@@ -1158,6 +1158,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                         expediente.setGeneral("C");
                         expedienteService.expedienteConcluir(expediente.getId());
                     }*/
+                    
                     if (expediente.getEstadoGestion() == EstadoExpedienteType.GESTION_SOLUCIONADO_PETITORIO.getKey()) {
                         expediente.setGeneral("C");
                         expedienteService.expedienteConcluir(expediente.getId());

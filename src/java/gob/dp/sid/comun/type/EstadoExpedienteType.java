@@ -159,7 +159,7 @@ public enum EstadoExpedienteType {
             if(keys == CALIFICACION_NO_ADMITIDA_PETITORIO.getKey())
                 valorRetorno = CALIFICACION_NO_ADMITIDA_PETITORIO.getValue();
             /*if(keys == GESTION_CONCLUIDO_PETITORIO.getKey())
-                valorRetorno = GESTION_CONCLUIDO_PETITORIO.getValue();*/
+                valorRetorno = GESTION_CONCLUIDO_PETITORIO.getValue();*/ 
             if(keys == GESTION_NO_SOLUCIONADO_PETITORIO.getKey())
                 valorRetorno = GESTION_NO_SOLUCIONADO_PETITORIO.getValue();
             if(keys == GESTION_SOLUCIONADO_PETITORIO.getKey())
