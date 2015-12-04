@@ -995,7 +995,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             }
             if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.GESTION_PETITORIO.getKey())) {
                 if (expediente.getEstadoGestion() == null) {
-                    msg.messageAlert("El expediente no cuenta con ningun estado, por favor seleccione si esta solucionado, no solucionado o concluido por desestimiento", null);
+                    msg.messageAlert("El expediente no cuenta con ningun estado, por favor seleccione si esta solucionado o no solucionado", null);
                     return false;
                 }
             }
@@ -1154,10 +1154,10 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.GESTION_PETITORIO.getKey())) {
                     etapaEstado1.setIdEtapa(EtapaType.GESTION_PETITORIO.getKey());
                     etapaEstado1.setIdEstado(expediente.getEstadoGestion());
-                    if (expediente.getEstadoGestion() == EstadoExpedienteType.GESTION_CONCLUIDO_PETITORIO.getKey()) {
+                    /*if (expediente.getEstadoGestion() == EstadoExpedienteType.GESTION_CONCLUIDO_PETITORIO.getKey()) {
                         expediente.setGeneral("C");
                         expedienteService.expedienteConcluir(expediente.getId());
-                    }
+                    }*/
                     if (expediente.getEstadoGestion() == EstadoExpedienteType.GESTION_SOLUCIONADO_PETITORIO.getKey()) {
                         expediente.setGeneral("C");
                         expedienteService.expedienteConcluir(expediente.getId());

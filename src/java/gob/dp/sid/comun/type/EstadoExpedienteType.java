@@ -33,7 +33,7 @@ public enum EstadoExpedienteType {
 	
 	GESTION_NO_SOLUCIONADO_PETITORIO(12, "No solucionado", 6),
         
-        GESTION_CONCLUIDO_PETITORIO(13, "Concluido por desestimiento", 6),
+        //GESTION_CONCLUIDO_PETITORIO(13, "Concluido por desestimiento", 6),
         
         PERSUACION_DEVIENEN_PETITORIO(14, "Devienen en solucionados", 7),
         
@@ -158,8 +158,8 @@ public enum EstadoExpedienteType {
                 valorRetorno = CALIFICACION_ADMITIDA_PETITORIO.getValue();
             if(keys == CALIFICACION_NO_ADMITIDA_PETITORIO.getKey())
                 valorRetorno = CALIFICACION_NO_ADMITIDA_PETITORIO.getValue();
-            if(keys == GESTION_CONCLUIDO_PETITORIO.getKey())
-                valorRetorno = GESTION_CONCLUIDO_PETITORIO.getValue();
+            /*if(keys == GESTION_CONCLUIDO_PETITORIO.getKey())
+                valorRetorno = GESTION_CONCLUIDO_PETITORIO.getValue();*/
             if(keys == GESTION_NO_SOLUCIONADO_PETITORIO.getKey())
                 valorRetorno = GESTION_NO_SOLUCIONADO_PETITORIO.getValue();
             if(keys == GESTION_SOLUCIONADO_PETITORIO.getKey())

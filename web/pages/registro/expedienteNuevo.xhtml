@@ -31,7 +31,7 @@
                     }
                 </script>
                 <gc:confirmSubmit classGC="confirmacion2" bean="#{registroController.guardarVersion()}" mensaje="Está seguro que desea generar una nueva version del expediente?"/>
-                <gc:confirmSubmit classGC="confirmacion3" bean="#{registroController.concluir()}" mensaje="Está seguro que desea concluir el expediente?"/>
+                <gc:confirmSubmit classGC="confirmacion3" bean="#{registroController.concluir()}" mensaje="Está seguro que desea concluir la etapa?"/>
                 <gc:confirmSubmit bean="#{registroController.guardarBorrador()}" />
 
                 <table style="width: 100%">
@@ -378,7 +378,7 @@
                                                             &#160;&#160;
                                                             <h:panelGroup id="idPanel2" rendered="#{registroController.expediente.id != null and registroController.expediente.version > 0 and registroController.expediente.general != 'C'}">
                                                                 <a class="btn btn-warning" onclick="confirmar3()">
-                                                                    <span class="glyphicon glyphicon-floppy-save" />Concluir Expediente
+                                                                    <span class="glyphicon glyphicon-floppy-save" />Concluir Etapa
                                                                 </a>
                                                             </h:panelGroup>
                                                         </td>
@@ -520,72 +520,45 @@
                                                 </tr>
                                                 <tr>
                                                     <td style="padding-bottom: 10px">
-                                                        <span class="text-bold">Servicio de salud:</span>
+                                                        <span class="text-bold">Subtema:</span>
                                                     </td>
                                                     <td style="padding-bottom: 10px">
                                                         <h:selectOneMenu value="0">
                                                             <f:selectItem itemValue="0" itemLabel="Seleccione" />
-                                                            <f:selectItem itemLabel="Infraestructura de salud" />
-                                                            <f:selectItem itemLabel="Acceso y alcance de los servicios de salud" />
-                                                            <f:selectItem itemLabel="Calidad del servicio de salud" />
-                                                            <f:selectItem itemLabel="Calidad de la atención" />
+                                                            <f:selectItem itemLabel="Certificado de Nacido Vivo" />
+                                                            <f:selectItem itemLabel="Declaración Jurada de Nacimiento" />
+                                                            <f:selectItem itemLabel="Inscripción del nacimiento (Acta de Nacimiento)" />
+                                                            <f:selectItem itemLabel="Documento Nacional de Identidad (DNI)" />
+                                                            <f:selectItem itemLabel="Padrón electoral" />
+                                                            <f:selectItem itemLabel="Idoneidad del personal registrador" />
+                                                            <f:selectItem itemLabel="Suplantación o usurpación de identidad" />
                                                         </h:selectOneMenu>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td style="padding-bottom: 10px">
-                                                        <span class="text-bold">Sub tema:</span>
+                                                        <span class="text-bold">Sub subtema:</span>
                                                     </td>
                                                     <td style="padding-bottom: 10px">
                                                         <h:selectOneMenu value="0">
                                                             <f:selectItem itemValue="0" itemLabel="Seleccione" />
-                                                            <f:selectItem itemLabel="Acceso a seguros de salud adecuados" />
-                                                            <f:selectItem itemLabel="Acceso a atención en salud" />
+                                                            <f:selectItem itemLabel="Emisión, duplicado o renovación de DNI" />
+                                                            <f:selectItem itemLabel="Datos erróneos y rectificación" />
+                                                            <f:selectItem itemLabel="Cancelación del DNI" />
                                                         </h:selectOneMenu>
                                                     </td>
                                                 </tr>
 
                                                 <tr>
-                                                    <td style="padding-bottom: 10px">
-                                                        <span class="text-bold">Seguro:</span>
-                                                    </td>
-                                                    <td style="padding-bottom: 10px">
-                                                        <h:selectOneMenu value="0">
-                                                            <f:selectItem itemValue="0" itemLabel="Seleccione" />
-                                                            <f:selectItem itemLabel="SIS" />
-                                                            <f:selectItem itemLabel="EsSalud" />
-                                                            <f:selectItem itemLabel="SOAT" />
-                                                            <f:selectItem itemLabel="AFOCAT" />
-                                                            <f:selectItem itemLabel="Otros seguros" />
-                                                        </h:selectOneMenu>
-                                                    </td>
-                                                </tr>
-                                                <tr>
                                                     <td style="padding-bottom: 20px">
-                                                        <span class="text-bold">Sub sub subtema seguro:</span>
+                                                        <span class="text-bold">sub sub subtema:</span>
                                                     </td>
                                                     <td style="padding-bottom: 20px">
                                                         <h:selectOneMenu value="0">
                                                             <f:selectItem itemValue="0" itemLabel="Seleccione" />
-                                                            <f:selectItem itemLabel="Impedimentos o restricciones de acceso a Seguros de salud" />
-                                                            <f:selectItem itemLabel="Problemas relacionados a la cobertura de seguros de salud" />
-                                                            <f:selectItem itemLabel="Impedimentos o restricciones al uso de Seguros de salud" />
-                                                        </h:selectOneMenu>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td style="padding-bottom: 20px">
-                                                        <span class="text-bold">Sub sub subtema seguro:</span>
-                                                    </td>
-                                                    <td style="padding-bottom: 20px">
-                                                        <h:selectOneMenu value="0">
-                                                            <f:selectItem itemValue="0" itemLabel="Seleccione" />
-                                                            <f:selectItem itemLabel="Negativa injustificada a afiliación" />
-                                                            <f:selectItem itemLabel="Falta de información administrativa sobre acceso a seguros de salud" />
-                                                            <f:selectItem itemLabel="Cobros indebidos" />
-                                                            <f:selectItem itemLabel="Falta de aportes a seguro de salud" />
-                                                            <f:selectItem itemLabel="Problemas de focalización (SISFHO)" />
-                                                            <f:selectItem itemLabel="Falta de DNI u otra documentación" />
+                                                            <f:selectItem itemLabel="Cumplimiento de requerimientos y trámites de emisión" />
+                                                            <f:selectItem itemLabel="Cumplimiento de requerimientos y trámites de duplicado o renovación" />
+                                                            <f:selectItem itemLabel="Condicionamiento o impedimento injustificado a la emisión, duplicado o renovación del DNI" />
                                                         </h:selectOneMenu>
                                                     </td>
                                                 </tr>
@@ -942,7 +915,7 @@
                                 <td style="vertical-align: top; padding-left: 2px">
                                     <div class="panel panel-featured-top-silver" id="idPanel4">
                                         <div class="panel-body">
-                                            <span class="text-resalt-primary">Entidad</span>
+                                            <span class="text-resalt-primary">Entidad gestionada</span>
                                             <br/>
                                             <table style="width: 100%">
                                                 <tr>
