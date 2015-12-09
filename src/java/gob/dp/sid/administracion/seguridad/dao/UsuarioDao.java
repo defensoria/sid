@@ -23,5 +23,7 @@ public interface UsuarioDao {
     public Integer loginUsuario(Usuario usuario);
 
     public Integer getTotalBuscarUsuario(FiltroUsuario filtro);
+    
+    public List<Usuario> listaUsuariosPorOD(Usuario usuario);
 
 }

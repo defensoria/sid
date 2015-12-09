@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD iBatis Mapper 3.0 //EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="gob.dp.sid.bandeja.dao.BandejaDAO">
+    
+    <resultMap id="bandejaMap" type="bandeja">
+        <id property="id" column="N_ID_BANDEJA" />
+        <result property="remitente" column="C_REMITENTE"/>
+        <result property="titulo" column="C_TITULO"/>
+        <result property="estado" column="C_ESTADO"/>
+        <result property="tipo" column="C_TIPO"/>
+        <result property="fechaEnvio" column="D_FECHAENVIO"/>
+        <result property="destinatario" column="C_DESTINATARIO"/>
+        <result property="codigoTipo" column="N_ID_CODIGOTIPO"/>
+    </resultMap> 
+    
+    
+    <insert id="bandejaInsertar" parameterType="bandeja">
+        INSERT INTO SID_MSG_BANDEJA
+        (
+        <if test="remitente != null">
+            C_REMITENTE,
+        </if>
+        <if test="titulo != null">
+            C_TITULO,
+        </if>
+        <if test="estado != null">
+            C_ESTADO,
+        </if>
+        <if test="tipo != null">
+            C_TIPO,
+        </if>
+        <if test="fechaEnvio != null">
+            D_FECHAENVIO,
+        </if>
+        <if test="codigoTipo != null">
+            N_ID_CODIGOTIPO,
+        </if>
+        N_ID_BANDEJA
+        )
+        VALUES 
+        (
+        <if test="remitente != null">
+            #{remitente},
+        </if>
+        <if test="titulo != null">
+            #{titulo},
+        </if>
+        <if test="estado != null">
+            #{estado},
+        </if>
+        <if test="tipo != null">
+            #{tipo},
+        </if>
+        <if test="fechaEnvio != null">
+            #{fechaEnvio},
+        </if>
+        <if test="codigoTipo != null">
+            #{codigoTipo},
+        </if>
+        SEQ_SID_MSG_BANDEJA.NextVal
+        )
+        <selectKey keyProperty="id" resultType="Long">
+            SELECT SEQ_SID_MSG_BANDEJA.CURRVAL FROM DUAL
+        </selectKey>
+    </insert>
+    
+    <select id="bandejaBuscarUsuario" resultMap="bandejaMap" parameterType="String" >
+        SELECT * FROM SID_MSG_BANDEJA WHERE C_DESTINATARIO = #{value}
+    </select>
+    
+</mapper>

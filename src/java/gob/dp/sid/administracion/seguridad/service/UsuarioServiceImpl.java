@@ -11,7 +11,6 @@ import gob.dp.sid.administracion.seguridad.entity.Rol;
 import gob.dp.sid.administracion.seguridad.entity.Usuario;
 import gob.dp.sid.comun.MEncript;
 import java.util.List;
-import java.util.logging.Level;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.apache.log4j.Logger;
@@ -159,6 +158,11 @@ public class UsuarioServiceImpl implements UsuarioService {
         } catch (Exception ex) {
             log.error(ex.getCause());
         }
+    }
+
+    @Override
+    public List<Usuario> listaUsuariosPorOD(Usuario usuario) {
+        return usuarioDao.listaUsuariosPorOD(usuario);
     }
 
 }

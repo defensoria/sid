@@ -78,4 +78,9 @@ public class UsuarioDaoImpl extends SqlSessionDaoSupport implements UsuarioDao {
     public List<Usuario> buscarUsuarioTotal() {
         return getSqlSession().selectList("usuarioDao.buscarUsuarioTotal");
     }
+
+    @Override
+    public List<Usuario> listaUsuariosPorOD(Usuario usuario) {
+        return getSqlSession().selectList("usuarioDao.listaUsuariosPorOD",usuario);
+    }
 }

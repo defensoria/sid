@@ -20,7 +20,8 @@
         flag_clave_inicial as flagClaveInicial,
         c_cargo            as cargo,
         c_sexo             as sexo,
-        n_nivel             as nivel
+        n_nivel            as nivel,
+        N_ID_OD            as codigoOD
         from sid_seg_usuario
         where
         1=1
@@ -238,7 +239,8 @@
         u.tel_fijo           as telefonoFijo,
         u.flag_clave_inicial as flagClaveInicial,
         u.c_cargo            as cargo,
-        u.c_ruta             as ruta
+        u.c_ruta             as ruta,
+        u.N_ID_OD            as codigoOD
         from 
         sid_seg_usuario u
         <where>
@@ -260,6 +262,28 @@
                 and UPPER(ape_materno)  LIKE '%'||UPPER(#{apellidoMaterno})||'%'
             </if>
         </where>
+    </select>
+    
+    <select id="listaUsuariosPorOD" resultType="usuario" parameterType="usuario">
+        select u.codigo_usuario     as codigo,
+        u.nom_usuario        as nombre,
+        u.ape_paterno        as apellidoPaterno,
+        u.ape_materno        as apellidoMaterno,
+        u.num_dni            as dni,
+        u.est_usuario        as estado,
+        u.num_dni            as clave,
+        u.des_email          as email,
+        u.tel_movil          as telefonoMovil,
+        u.tel_fijo           as telefonoFijo,
+        u.flag_clave_inicial as flagClaveInicial,
+        u.c_cargo            as cargo,
+        u.c_ruta             as ruta,
+        u.N_ID_OD            as codigoOD
+        from 
+        sid_seg_usuario u
+        INNER JOIN SID_SEG_USUARIO_ROL B ON B.CODIGO_USUARIO = u.CODIGO_USUARIO
+        WHERE u.N_ID_OD = #{codigoOD} AND B.CODIGO_ROL = #{rol}
+        
     </select>
 
 

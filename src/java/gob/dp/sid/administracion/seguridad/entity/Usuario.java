@@ -43,6 +43,8 @@ public class Usuario implements Serializable
     private Integer nivel;
     
     private String ip; //auditoria
+    
+    private Integer codigoOD;
 
     private List<Rol> listaRol;
     private Map<String,Rol> mapRol;
@@ -52,6 +54,10 @@ public class Usuario implements Serializable
     
     //temporales
     private String tipo;
+    
+    private String codigoRemitente;
+    
+    private String rol;
     
     public String getCodigoConNombreCompleto()
     {
@@ -69,7 +75,7 @@ public class Usuario implements Serializable
 
     public Map<String, Recurso> getMapRecurso() {
     if(mapRecurso==null){
-        mapRecurso= new HashMap<String, Recurso>();
+        mapRecurso= new HashMap<>();
     }
 
         return mapRecurso;
@@ -81,7 +87,7 @@ public class Usuario implements Serializable
 
     public Map<String, Rol> getMapRol() {
     if (mapRol==null)
-        mapRol=new HashMap<String, Rol>();
+        mapRol=new HashMap<>();
         return mapRol;
     }
 
@@ -239,6 +245,30 @@ public class Usuario implements Serializable
 
     public void setNivel(Integer nivel) {
         this.nivel = nivel;
+    }
+
+    public String getCodigoRemitente() {
+        return codigoRemitente;
+    }
+
+    public void setCodigoRemitente(String codigoRemitente) {
+        this.codigoRemitente = codigoRemitente;
+    }
+
+    public Integer getCodigoOD() {
+        return codigoOD;
+    }
+
+    public void setCodigoOD(Integer codigoOD) {
+        this.codigoOD = codigoOD;
+    }
+
+    public String getRol() {
+        return rol;
+    }
+
+    public void setRol(String rol) {
+        this.rol = rol;
     }
 
 }

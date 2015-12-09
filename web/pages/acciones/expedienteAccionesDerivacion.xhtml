@@ -1,0 +1,86 @@
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:h="http://xmlns.jcp.org/jsf/html" 
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:gc="http://xmlns.jcp.org/jsf/composite/gc">
+
+    <ui:composition template="../template/templateCabeceraExpediente.xhtml">
+
+        <ui:define name="content2">
+
+
+            <gc:confirmSubmit bean="#{registroController.enviarDerivacion()}" mensaje="Esta seguro de derivar el expediente?" />
+
+            <ul class="nav nav-tabs">
+                <li role="presentation">
+                    <a style="cursor: pointer" jsf:rendered="true" jsf:action="expedienteNuevo">
+                        <span style="font-size: medium; color: purple;" class="glyphicon glyphicon-list-alt" > Expediente</span>
+                    </a>
+                </li>
+                <li role="presentation"><a style="cursor: pointer" jsf:action="#{registroController.cargarExpedienteGestionLista()}">
+                        <span style="font-size: medium; color: purple;" class="glyphicon glyphicon-list-alt" > Gestiones</span>
+                    </a>
+                </li>
+                <li role="presentation"  class="active">
+                    <a style="cursor: pointer" jsf:rendered="#{registroController.etapaEstado.idEtapa > 0}" jsf:action="#{registroController.inicioAcciones()}">
+                        <span style="font-size: large; color: #007ACC; font-weight: bold" class="glyphicon glyphicon-list-alt" > Acciones pendientes</span>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="panel panel-default">
+
+                <div class="panel-body">
+                    <table style="width: 100%">
+                        <td style="width: 20%; vertical-align: top">
+                            <div class="bs-example" data-example-id="vertical-button-group"> 
+                                <div class="btn-group-vertical" role="group" aria-label="Vertical button group"> 
+                                    <a jsf:action="#{registroController.inicioAccionesDerivacion()}" style="text-align: left" class="btn btn-primary">
+                                        <span class="glyphicon glyphicon-export" />Derivar
+                                    </a> 
+                                    <a style="text-align: left" class="btn btn-default">Consultar adjuntía</a> 
+                                    <a style="text-align: left" class="btn btn-default">Solicitar suspención</a> 
+                                    <a style="text-align: left" class="btn btn-default">Solicitar ampliación de plazo</a> 
+                                    <a style="text-align: left" class="btn btn-default">Acumular expediente</a> 
+                                </div> 
+                            </div>
+                        </td>
+                        <td style="vertical-align: top">
+                            <div class="panel panel-featured-top-primary">
+                                <div class="body">
+                                    <div style="text-align: right">
+                                        <br/>
+                                        <a class="btn btn-primary" onclick="confirmar()">
+                                            <span class="glyphicon glyphicon-share-alt" />Enviar
+                                        </a>
+                                        <br/>
+                                    </div>
+                                    <table style="width: 100%">
+                                        <tr>
+                                            <td style="padding-right: 30px">
+                                                <label>Motivo de la derivación:</label>
+                                                <textarea jsf:value="#{registroController.expedienteDerivacion.detalle}" rows="6" style="width: 100%;" placeholder="Motivo"/>
+                                            </td>
+                                            <td style="vertical-align: top">
+                                                <label>Oficina Defensorial:</label>
+                                                <h:selectOneMenu value="#{registroController.expedienteDerivacion.idOficinaDefensorial}">
+                                                    <f:selectItem itemLabel="Seleccione" itemValue="0" />
+                                        <f:selectItems value="#{registroController.listaOficinaDefensoriales}" />
+                                    </h:selectOneMenu>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    
+                                </div>
+                            </div>
+                        </td>
+                    </table>
+
+                </div>
+            </div>
+
+        </ui:define>
+    </ui:composition>
+</html>            

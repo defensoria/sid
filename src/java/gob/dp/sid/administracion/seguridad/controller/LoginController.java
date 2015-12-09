@@ -28,7 +28,7 @@ import org.springframework.context.annotation.Scope;
 @Scope("session")
 public class LoginController implements Serializable {
 
-    private static Logger log = Logger.getLogger(LoginController.class);
+    private static final Logger log = Logger.getLogger(LoginController.class);
 
     private Usuario usuario;
 

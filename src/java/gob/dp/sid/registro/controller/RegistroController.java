@@ -8,6 +8,7 @@ package gob.dp.sid.registro.controller;
 import gob.dp.sid.administracion.seguridad.controller.LoginController;
 import gob.dp.sid.administracion.seguridad.controller.MenuController;
 import gob.dp.sid.administracion.seguridad.entity.Usuario;
+import gob.dp.sid.bandeja.controller.BandejaController;
 import gob.dp.sid.comun.ConstantesUtil;
 import gob.dp.sid.comun.SelectVO;
 import gob.dp.sid.comun.controller.AbstractManagedBean;
@@ -28,18 +29,22 @@ import gob.dp.sid.comun.type.TiempoType;
 import gob.dp.sid.registro.entity.Entidad;
 import gob.dp.sid.registro.entity.EtapaEstado;
 import gob.dp.sid.registro.entity.Expediente;
+import gob.dp.sid.registro.entity.ExpedienteDerivacion;
 import gob.dp.sid.registro.entity.ExpedienteEntidad;
 import gob.dp.sid.registro.entity.ExpedienteGestion;
 import gob.dp.sid.registro.entity.ExpedientePersona;
 import gob.dp.sid.registro.entity.GestionEtapa;
+import gob.dp.sid.registro.entity.OficinaDefensorial;
 import gob.dp.sid.registro.entity.Persona;
 import gob.dp.sid.registro.service.EntidadService;
 import gob.dp.sid.registro.service.EtapaEstadoService;
+import gob.dp.sid.registro.service.ExpedienteDerivacionService;
 import gob.dp.sid.registro.service.ExpedienteEntidadService;
 import gob.dp.sid.registro.service.ExpedienteGestionService;
 import gob.dp.sid.registro.service.ExpedientePersonaService;
 import gob.dp.sid.registro.service.ExpedienteService;
 import gob.dp.sid.registro.service.GestionEtapaService;
+import gob.dp.sid.registro.service.OficinaDefensorialService;
 import gob.dp.sid.registro.service.PersonaService;
 import java.io.Serializable;
 import java.text.DateFormat;
@@ -163,6 +168,10 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     private List<ExpedienteGestion> listaExpedienteGestion;
 
     private Long nroPaginaPersona = 1L;
+    
+    private List<SelectItem> listaOficinaDefensoriales;
+    
+    private ExpedienteDerivacion expedienteDerivacion;
 
     @Autowired
     private ExpedienteService expedienteService;
@@ -196,7 +205,13 @@ public class RegistroController extends AbstractManagedBean implements Serializa
 
     @Autowired
     private GestionEtapaService gestionEtapaService;
-
+    
+    @Autowired
+    private OficinaDefensorialService oficinaDefensorialService;
+    
+    @Autowired
+    private ExpedienteDerivacionService expedienteDerivacionService;
+    
     public String cargarNuevoExpediente() {
         expediente = new Expediente();
         etapaEstado = new EtapaEstado();
@@ -289,6 +304,30 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         cargarGraficos001();
         cargarGraficos002();
         cargarGraficos003();
+    }
+    
+    public String inicioAcciones(){
+        return "expedienteAcciones";
+    }
+    
+    public String inicioAccionesDerivacion(){
+        expedienteDerivacion = new ExpedienteDerivacion();
+        return "expedienteAccionesDerivacion";
+    }
+    
+    public void enviarDerivacion(){
+        expedienteDerivacion.setIdExpediente(expediente.getId());
+        expedienteDerivacion.setNumeroExpediente(expediente.getNumero());
+        expedienteDerivacion.setEstado("ACT");
+        expedienteDerivacionService.expedienteDerivacionInsertar(expedienteDerivacion);
+        enviarMensajeDerivacion();
+        msg.messageInfo("Se envio la Derivación", null);
+    }
+    
+    private void enviarMensajeDerivacion(){
+        FacesContext context = FacesContext.getCurrentInstance();
+        BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
+        bandejaController.guardarMensajeBandejaPorDerivacion(expedienteDerivacion);
     }
 
     public String registarExpedienteGestion() {
@@ -1811,6 +1850,32 @@ public class RegistroController extends AbstractManagedBean implements Serializa
 
     public void setListaExpedientesPersuacionPetitorio(List<ExpedienteGestion> listaExpedientesPersuacionPetitorio) {
         this.listaExpedientesPersuacionPetitorio = listaExpedientesPersuacionPetitorio;
+    }
+
+    public List<SelectItem> getListaOficinaDefensoriales() {
+        List<SelectItem> listaOficinaDef = new ArrayList<>();
+        try {
+            List<OficinaDefensorial> list = oficinaDefensorialService.listaOficinasDefensoriales();
+                for (OficinaDefensorial od : list) {
+                    listaOficinaDef.add(new SelectItem(od.getId(), od.getNombre()));
+                }
+            listaOficinaDefensoriales = listaOficinaDef;
+        } catch (Exception e) {
+            log.debug(e.getMessage());
+        }
+        return listaOficinaDefensoriales;
+    }
+
+    public void setListaOficinaDefensoriales(List<SelectItem> listaOficinaDefensoriales) {
+        this.listaOficinaDefensoriales = listaOficinaDefensoriales;
+    }
+
+    public ExpedienteDerivacion getExpedienteDerivacion() {
+        return expedienteDerivacion;
+    }
+
+    public void setExpedienteDerivacion(ExpedienteDerivacion expedienteDerivacion) {
+        this.expedienteDerivacion = expedienteDerivacion;
     }
 
 }

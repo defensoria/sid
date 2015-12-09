@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD iBatis Mapper 3.0 //EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="gob.dp.sid.registro.dao.ExpedienteDerivacionDAO">
+    
+    <resultMap id="expedienteDerivacionMap" type="expedienteDerivacion">
+        <id property="id" column="N_ID_DERIVACION" />
+        <result property="idExpediente" column="N_IDEXPEDIENTE"/>
+        <result property="detalle" column="C_DETALLE"/>
+        <result property="idOficinaDefensorial" column="N_ID_OD"/>
+        <result property="estado" column="C_ESTADO"/>
+        <result property="numeroExpediente" column="C_NUMEROEXPEDIENTE"/>
+    </resultMap> 
+    
+    
+    <insert id="expedienteDerivacionInsertar" parameterType="expedienteDerivacion">
+        INSERT INTO SID_REG_EXPEDIENTE_DERIVACION
+        (
+        <if test="idExpediente != null">
+            N_IDEXPEDIENTE,
+        </if>
+        <if test="detalle != null">
+            C_DETALLE,
+        </if>
+        <if test="idOficinaDefensorial != null">
+            N_ID_OD,
+        </if>
+        <if test="estado != null">
+            C_ESTADO,
+        </if>
+        <if test="numeroExpediente != null">
+            C_NUMEROEXPEDIENTE,
+        </if>
+        N_ID_DERIVACION
+        )
+        VALUES 
+        (
+        <if test="idExpediente != null">
+            #{idExpediente},
+        </if>
+        <if test="detalle != null">
+            #{detalle},
+        </if>
+        <if test="idOficinaDefensorial != null">
+            #{idOficinaDefensorial},
+        </if>
+        <if test="estado != null">
+            #{estado},
+        </if>
+        <if test="numeroExpediente != null">
+            #{numeroExpediente},
+        </if>
+        SEQ_SID_REG_EXPEDIENTE_DERIVA.NextVal
+        )
+        <selectKey keyProperty="id" resultType="Long">
+            SELECT SEQ_SID_REG_EXPEDIENTE_DERIVA.CURRVAL FROM DUAL
+        </selectKey>
+    </insert>
+    
+    
+    <update id="expedienteDerivacionUpdate" parameterType="expedienteDerivacion">
+        UPDATE SID_REG_ENTIDAD
+        <set>
+        <if test="ruc != null">
+            C_RUC = #{ruc},
+        </if>
+        <if test="fechaRegistro != null">
+            D_FECHAREGISTRO = #{fechaRegistro},
+        </if>
+        <if test="usuarioRegistro != null">
+            C_USU_REGISTRO = #{usuarioRegistro},
+        </if>
+        C_NOMBRE = UPPER(#{nombre})
+        </set>
+        <where>
+            N_IDENTIDAD = #{id}
+        </where>
+    </update>
+    
+</mapper>

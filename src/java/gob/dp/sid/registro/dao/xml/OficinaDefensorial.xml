@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD iBatis Mapper 3.0 //EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="gob.dp.sid.registro.dao.OficinaDefensorialDAO">
+    
+    <resultMap id="oficinaDefensorialMap" type="oficinaDefensorial">
+        <id property="id" column="N_ID_OD" />
+        <result property="nombre" column="C_NOMBRE"/>
+    </resultMap> 
+    
+    <select id="listaOficinasDefensoriales" resultMap="oficinaDefensorialMap" >
+        SELECT N_ID_OD, C_NOMBRE FROM SID_SEG_OFICINA_DEFENSORIAL
+    </select>
+    
+</mapper>
