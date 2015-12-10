@@ -29,6 +29,12 @@ public class Bandeja implements Serializable{
     private String destinatario;
     
     private Long codigoTipo;
+    
+    private String nombreRemitente;
+    
+    private String detalleTipo;
+    
+    private String colorTipo;
 
     public Long getId() {
         return id;
@@ -92,6 +98,30 @@ public class Bandeja implements Serializable{
 
     public void setCodigoTipo(Long codigoTipo) {
         this.codigoTipo = codigoTipo;
+    }
+
+    public String getNombreRemitente() {
+        return nombreRemitente;
+    }
+
+    public void setNombreRemitente(String nombreRemitente) {
+        this.nombreRemitente = nombreRemitente;
+    }
+
+    public String getDetalleTipo() {
+        return detalleTipo;
+    }
+
+    public void setDetalleTipo(String detalleTipo) {
+        this.detalleTipo = detalleTipo;
+    }
+
+    public String getColorTipo() {
+        return colorTipo;
+    }
+
+    public void setColorTipo(String colorTipo) {
+        this.colorTipo = colorTipo;
     }
     
 }

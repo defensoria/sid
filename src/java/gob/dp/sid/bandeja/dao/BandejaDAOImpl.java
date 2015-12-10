@@ -19,12 +19,12 @@ public class BandejaDAOImpl extends SqlSessionDaoSupport implements BandejaDAO{
 
     @Override
     public void bandejaInsertar(Bandeja bandeja) {
-        getSqlSession().insert("gob.dp.sid.registro.dao.BandejaDAO.bandejaInsertar", bandeja);
+        getSqlSession().insert("gob.dp.sid.bandeja.dao.BandejaDAO.bandejaInsertar", bandeja);
     }
 
     @Override
     public List<Bandeja> bandejaBuscarUsuario(String destinatario) {
-        return getSqlSession().selectList("gob.dp.sid.registro.dao.BandejaDAO.bandejaBuscarUsuario", destinatario);
+        return getSqlSession().selectList("gob.dp.sid.bandeja.dao.BandejaDAO.bandejaBuscarUsuario", destinatario);
     }
     
 }

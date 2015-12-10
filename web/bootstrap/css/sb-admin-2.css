@@ -471,25 +471,17 @@ table.dataTable thead .sorting:after {
 /**MAIL*/
 table.table-mail tr td {
   padding: 6px;
+  
 }
 .table-mail .check-mail {
-  padding-left: 20px;
+  padding-left: 5px;
 }
 .table-mail .mail-date {
-  padding-right: 20px;
-}
-
-.star-mail,
-.check-mail {
-  width: 40px;
-}
-
-.mail-ontact {
-  width: 23%;
+  padding-right: 5px;
 }
 
 .table-mail .mail-date {
-  padding-right: 20px;
+  padding-right: 5px;
 }
 
 .i-checks {
@@ -507,6 +499,31 @@ table.table-mail tr td {
     vertical-align: middle;
     width: 22px;
 }
+
+.icheckbox_important_gmail{
+    background: rgba(0, 0, 0, 0) url("/sid/faces/bootstrap/img/star4.png") no-repeat scroll 0 0;
+    border: medium none;
+    cursor: pointer;
+    display: inline-block;
+    height: 22px;
+    margin: 0;
+    padding: 0;
+    vertical-align: middle;
+    width: 18px;
+}
+
+.icheckbox_important_check_gmail{
+    background: rgba(0, 0, 0, 0) url("/sid/faces/bootstrap/img/star-lit4.png") no-repeat scroll 0 0;
+    border: medium none;
+    cursor: pointer;
+    display: inline-block;
+    height: 22px;
+    margin: 0;
+    padding: 0;
+    vertical-align: middle;
+    width: 18px;
+}
+
 .icheckbox_square-green {
     background-position: 0 0;
 }
@@ -547,7 +564,7 @@ table.table-mail tr td {
 
 .read td a, .read td {
     color: #787878;
-    font-size: 12px;
+    font-size: 10px;
     font-weight: bold;
     
     text-decoration: none;

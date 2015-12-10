@@ -11,6 +11,9 @@
         <result property="fechaEnvio" column="D_FECHAENVIO"/>
         <result property="destinatario" column="C_DESTINATARIO"/>
         <result property="codigoTipo" column="N_ID_CODIGOTIPO"/>
+        <result property="nombreRemitente" column="C_NOMBREREMITENTE"/>
+        <result property="detalleTipo" column="C_DETALLETIPO"/>
+        <result property="colorTipo" column="C_COLORTIPO"/>
     </resultMap> 
     
     
@@ -35,6 +38,18 @@
         <if test="codigoTipo != null">
             N_ID_CODIGOTIPO,
         </if>
+        <if test="destinatario != null">
+            C_DESTINATARIO,
+        </if>
+        <if test="nombreRemitente != null">
+            C_NOMBREREMITENTE,
+        </if>
+        <if test="detalleTipo != null">
+            C_DETALLETIPO,
+        </if>
+        <if test="colorTipo != null">
+            C_COLORTIPO,
+        </if>
         N_ID_BANDEJA
         )
         VALUES 
@@ -56,6 +71,18 @@
         </if>
         <if test="codigoTipo != null">
             #{codigoTipo},
+        </if>
+        <if test="destinatario != null">
+            #{destinatario},
+        </if>
+        <if test="nombreRemitente != null">
+            #{nombreRemitente},
+        </if>
+        <if test="detalleTipo != null">
+            #{detalleTipo},
+        </if>
+        <if test="colorTipo != null">
+            #{colorTipo},
         </if>
         SEQ_SID_MSG_BANDEJA.NextVal
         )

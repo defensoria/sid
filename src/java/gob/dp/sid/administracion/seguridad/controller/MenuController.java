@@ -2,6 +2,7 @@ package gob.dp.sid.administracion.seguridad.controller;
 
 import gob.dp.sid.administracion.parametro.controller.CatalogoController;
 import gob.dp.sid.administracion.seguridad.entity.Usuario;
+import gob.dp.sid.bandeja.controller.BandejaController;
 import gob.dp.sid.comun.controller.BusquedaController;
 import gob.dp.sid.comun.entity.Menu;
 import gob.dp.sid.comun.service.MenuService;
@@ -151,9 +152,8 @@ public class MenuController implements Serializable{
         }
         
         if(codigoPagina == 18){
-            //RolController rolController = (RolController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "rolController");
-            //menuHijo = menuService.menuHijo(15);
-            return "mailInbox";
+            BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
+            return bandejaController.cargarBandeja();
         }
         
         if(codigoPagina == 33){

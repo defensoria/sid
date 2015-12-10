@@ -45,6 +45,8 @@
         <typeAlias type="gob.dp.sid.registro.entity.ExpedienteDerivacion" alias="expedienteDerivacion"/>
         
         <typeAlias type="gob.dp.sid.reporte.entity.Reporte" alias="reporte"/>
+        
+        <typeAlias type="gob.dp.sid.bandeja.entity.Bandeja" alias="bandeja"/>
     </typeAliases>
 
     <mappers>
@@ -71,6 +73,8 @@
         <mapper resource="gob/dp/sid/registro/dao/xml/GestionEtapa.xml" />
         <mapper resource="gob/dp/sid/registro/dao/xml/OficinaDefensorial.xml" />
         <mapper resource="gob/dp/sid/registro/dao/xml/ExpedienteDerivacion.xml" />
+        
+        <mapper resource="gob/dp/sid/bandeja/dao/xml/Bandeja.xml" />
     </mappers>
     
 </configuration>

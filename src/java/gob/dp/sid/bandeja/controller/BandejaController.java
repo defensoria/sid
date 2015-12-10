@@ -35,11 +35,20 @@ public class BandejaController extends AbstractManagedBean implements Serializab
     
     private Usuario usuarioSession;
     
+    private List<Bandeja> listaMensajes;
+    
     @Autowired
     private BandejaService bandejaService;
     
     @Autowired
     private UsuarioService usuarioService;
+    
+    
+    public String cargarBandeja(){
+        usuarioSession();
+        listaMensajes = bandejaService.bandejaBuscarUsuario(usuarioSession.getCodigo());
+        return "bandeja";
+    } 
     
     public void guardarMensajeBandejaPorDerivacion(ExpedienteDerivacion ed){
         usuarioSession();
@@ -54,6 +63,9 @@ public class BandejaController extends AbstractManagedBean implements Serializab
             b.setTipo(MensajeType.MENSAJE_DERIVACION.getKey());
             b.setTitulo(MensajeType.MENSAJE_DERIVACION.getValue());
             b.setCodigoTipo(ed.getId());
+            b.setNombreRemitente(usuarioSession.getNombre()+" "+usuarioSession.getApellidoPaterno()+" "+usuarioSession.getApellidoMaterno());
+            b.setDetalleTipo(MensajeType.MENSAJE_DERIVACION.getDetalle());
+            b.setColorTipo(MensajeType.MENSAJE_DERIVACION.getColor());
             bandejaService.bandejaInsertar(b);
         }
     }
@@ -77,6 +89,14 @@ public class BandejaController extends AbstractManagedBean implements Serializab
 
     public void setUsuarioSession(Usuario usuarioSession) {
         this.usuarioSession = usuarioSession;
+    }
+
+    public List<Bandeja> getListaMensajes() {
+        return listaMensajes;
+    }
+
+    public void setListaMensajes(List<Bandeja> listaMensajes) {
+        this.listaMensajes = listaMensajes;
     }
     
     

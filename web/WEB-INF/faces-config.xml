@@ -223,8 +223,8 @@
   
   <navigation-rule>
         <navigation-case>
-                <from-outcome>mailInbox</from-outcome>
-                <to-view-id>/pages/inbox/mailInbox.xhtml</to-view-id>
+                <from-outcome>bandeja</from-outcome>
+                <to-view-id>/pages/bandeja/bandeja.xhtml</to-view-id>
         </navigation-case>
   </navigation-rule>
   

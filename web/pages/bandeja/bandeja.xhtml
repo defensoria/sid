@@ -1,0 +1,136 @@
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:h="http://xmlns.jcp.org/jsf/html" 
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:gc="http://xmlns.jcp.org/jsf/composite/gc">
+
+    <ui:composition template="../template/template.xhtml">
+
+        <ui:define name="content">
+            <h:form id="idForm" class="form-horizontal">
+                <table style="width: 100%; font-size: 100%">
+                    <td style="width: 18%; vertical-align: top; padding-right: 5px; ">
+                        <div class="file-manager">
+                            <a href="mail_compose.html" class="btn btn-block btn-primary compose-mail">Folder</a>
+                            <div class="space-25"></div>
+                            
+                            <ul style="padding: 0" class="folder-list m-b-md">
+                                <li><a style="text-decoration: none; cursor: pointer; font-size: 13px"> <i class="fa fa-inbox "></i> Recibidos <span class="label label-warning pull-right">16</span> </a></li>
+                                <li><a style="text-decoration: none; cursor: pointer; font-size: 13px"> <i class="fa fa-envelope-o"></i> Enviados</a></li>
+                                <li><a style="text-decoration: none; cursor: pointer; font-size: 13px"> <i class="fa fa-certificate"></i> Importantes</a></li>
+                                <li><a style="text-decoration: none; cursor: pointer; font-size: 13px"> <i class="fa fa-file-text-o"></i> Borradores <span class="label label-danger pull-right">2</span></a></li>
+                                <li><a style="text-decoration: none; cursor: pointer; font-size: 13px"> <i class="fa fa-trash-o"></i> Papelera</a></li>
+                            </ul>
+
+                            <div class="clearfix"></div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="panel panel-default" style="font-size: 14px">
+
+                            <table style="width: 100%;" >
+                                <tr>
+                                    <td style="padding-left: 10px; padding-bottom: 20px; text-align: left; width: 40%">
+                                        <h3 style="color: #676a6c;">Bandeja (#{bandejaController.listaMensajes.size()})</h3>
+                                    </td>
+                                    <td style="text-align: right;padding-bottom: 20px; padding-right: 30px">
+                                        <div class="form-group" style="width: 60%; float: right">
+
+                                            <div class="input-group">
+
+                                                <input type="text" class="form-control" style="border: solid 1px #18A689" id="exampleInputAmount" placeholder="Email"/>
+                                                <div class="input-group-addon" style="color: white; background: #18A689">Buscar</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left: 10px">
+                                        <a jsf:action="#{bandejaController.cargarBandeja()}" style="color: #676a6c;" class="btn btn-sm btn-default">
+                                            <span class="glyphicon glyphicon-refresh" />Actualizar
+                                        </a>
+                                        <a style="color: #676a6c;" class="btn btn-sm btn-default">
+                                            <span class="glyphicon glyphicon-eye-open" />
+                                        </a>
+                                        <a style="color: #676a6c;" class="btn btn-sm btn-default">
+                                            <span class="glyphicon glyphicon-info-sign" />
+                                        </a>
+                                        <a style="color: #676a6c;" class="btn btn-sm btn-default">
+                                            <span class="glyphicon glyphicon-trash" />
+                                        </a>
+                                    </td>
+                                    <td style="text-align: right; padding-right: 15px">
+                                        <a style="color: #676a6c;" class="btn btn-sm btn-default">
+                                            <span class="glyphicon glyphicon-arrow-left" />
+                                        </a>
+                                        <a style="color: #676a6c;" class="btn btn-sm btn-default">
+                                            <span class="glyphicon glyphicon-arrow-right" />
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+                            <br/><br/>
+                            <script>
+                                $(document).ready(function () {
+                                    $(".icheckbox_square-green").mouseover(function () {
+                                        $(this).addClass("hover");
+                                    });
+                                    $(".icheckbox_square-green").mouseout(function () {
+                                        $(this).removeClass("hover");
+                                    });
+                                    $(".icheckbox_square-green").click(function () {
+                                        if ($(this).attr('class') === "icheckbox_square-green hover") {
+                                            $(this).addClass("checked");
+                                        } else{
+                                            $(this).removeClass("checked");
+                                        }
+                                    });
+                                    
+                                    
+                                    $(".importante_check").click(function () {
+                                        if ($(this).attr('class') === "importante_check icheckbox_important_gmail") {
+                                            $(this).removeClass("icheckbox_important_gmail").addClass("icheckbox_important_check_gmail");
+                                        } else {
+                                            $(this).removeClass("icheckbox_important_check_gmail").addClass("icheckbox_important_gmail");
+                                        }
+                                    });
+                                });
+                            </script>
+
+                            <table style="width: 100%;border-top: 1px solid #ddd;" class="table table-hover table-mail" >
+                                <c:forEach var="x" items="#{bandejaController.listaMensajes}">
+                                    <tr class="read">
+                                        <td class="check-mail" style="width: 11%">
+                                            <div class="icheckbox_square-green" style="position: relative;">
+                                                <input type="checkbox" class="i-checks" style="position: absolute; opacity: 0;"/>
+                                                <ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255) none repeat scroll 0% 0%; border: 0px none; opacity: 0;"></ins>
+                                            </div>
+                                            &#160;
+                                            <div class="importante_check icheckbox_important_gmail" style="position: relative;">
+                                                
+                                            </div>
+                                        </td>
+                                        <td class="mail-ontact" style="width: 34%;">
+                                            #{x.nombreRemitente}
+                                        </td>
+                                        <td class="mail-subject" style="width: 35%">
+                                            <span class="label pull-left" style="color: white; background-color: #{x.colorTipo}">#{x.detalleTipo}</span>
+                                            <a>#{x.titulo}</a>
+                                        </td>
+                                        <td class="text-right mail-date" style="width: 20%">
+                                            <h:outputText value="#{x.fechaEnvio}" >
+                                                <f:convertDateTime pattern="dd/MM/yyyy h:mm a" timeZone="America/Lima" />
+                                            </h:outputText>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                            </table>
+                        </div>
+                    </td>
+                </table>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
