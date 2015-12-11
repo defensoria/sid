@@ -17,10 +17,10 @@
                             <div class="space-25"></div>
                             
                             <ul style="padding: 0" class="folder-list m-b-md">
-                                <li><a style="text-decoration: none; cursor: pointer; font-size: 13px"> <i class="fa fa-inbox "></i> Recibidos <span class="label label-warning pull-right">16</span> </a></li>
+                                <li><a style="text-decoration: none; cursor: pointer; font-size: 13px"> <i class="fa fa-inbox "></i> Recibidos <span class="label label-warning pull-right">#{bandejaController.listaMensajes.size()}</span> </a></li>
                                 <li><a style="text-decoration: none; cursor: pointer; font-size: 13px"> <i class="fa fa-envelope-o"></i> Enviados</a></li>
                                 <li><a style="text-decoration: none; cursor: pointer; font-size: 13px"> <i class="fa fa-certificate"></i> Importantes</a></li>
-                                <li><a style="text-decoration: none; cursor: pointer; font-size: 13px"> <i class="fa fa-file-text-o"></i> Borradores <span class="label label-danger pull-right">2</span></a></li>
+                                <li><a style="text-decoration: none; cursor: pointer; font-size: 13px"> <i class="fa fa-file-text-o"></i> Borradores <span class="label label-danger pull-right">0</span></a></li>
                                 <li><a style="text-decoration: none; cursor: pointer; font-size: 13px"> <i class="fa fa-trash-o"></i> Papelera</a></li>
                             </ul>
 
@@ -113,11 +113,15 @@
                                             </div>
                                         </td>
                                         <td class="mail-ontact" style="width: 34%;">
-                                            #{x.nombreRemitente}
+                                            <a jsf:action="#{bandejaController.verMensajeBandeja(x)}">
+                                                #{x.nombreRemitente}
+                                            </a>
                                         </td>
                                         <td class="mail-subject" style="width: 35%">
                                             <span class="label pull-left" style="color: white; background-color: #{x.colorTipo}">#{x.detalleTipo}</span>
-                                            <a>#{x.titulo}</a>
+                                            <a jsf:action="#{bandejaController.verMensajeBandeja(x)}">
+                                                #{x.titulo}
+                                            </a>
                                         </td>
                                         <td class="text-right mail-date" style="width: 20%">
                                             <h:outputText value="#{x.fechaEnvio}" >

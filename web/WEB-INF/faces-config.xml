@@ -220,11 +220,17 @@
         </navigation-case>
   </navigation-rule>
   
-  
   <navigation-rule>
         <navigation-case>
                 <from-outcome>bandeja</from-outcome>
                 <to-view-id>/pages/bandeja/bandeja.xhtml</to-view-id>
+        </navigation-case>
+  </navigation-rule>
+  
+  <navigation-rule>
+        <navigation-case>
+                <from-outcome>verMensaje</from-outcome>
+                <to-view-id>/pages/bandeja/verMensaje.xhtml</to-view-id>
         </navigation-case>
   </navigation-rule>
   

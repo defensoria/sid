@@ -25,5 +25,10 @@ public class OficinaDefensorialServiceImpl implements OficinaDefensorialService{
     public List<OficinaDefensorial> listaOficinasDefensoriales() {
         return oficinaDefensorialDAO.listaOficinasDefensoriales();
     }
+
+    @Override
+    public OficinaDefensorial obtenerOficinaDefensorial(Long id) {
+        return oficinaDefensorialDAO.obtenerOficinaDefensorial(id);
+    }
     
 }

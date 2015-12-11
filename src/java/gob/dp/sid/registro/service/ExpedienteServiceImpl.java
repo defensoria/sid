@@ -103,5 +103,10 @@ public class ExpedienteServiceImpl implements ExpedienteService{
     public Expediente expedienteBuscarActivoEtapa(Expediente expediente) {
         return expedienteDAO.expedienteBuscarActivoEtapa(expediente);
     }
+
+    @Override
+    public Expediente expedienteBuscarPorId(Long idExpediente) {
+        return expedienteDAO.expedienteBuscarPorId(idExpediente);
+    }
     
 }

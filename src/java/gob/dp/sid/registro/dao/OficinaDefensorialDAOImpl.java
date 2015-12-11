@@ -21,5 +21,10 @@ public class OficinaDefensorialDAOImpl extends SqlSessionDaoSupport implements O
     public List<OficinaDefensorial> listaOficinasDefensoriales() {
         return getSqlSession().selectList("gob.dp.sid.registro.dao.OficinaDefensorialDAO.listaOficinasDefensoriales");
     }
+
+    @Override
+    public OficinaDefensorial obtenerOficinaDefensorial(Long id) {
+        return getSqlSession().selectOne("gob.dp.sid.registro.dao.OficinaDefensorialDAO.obtenerOficinaDefensorial", id);
+    }
     
 }

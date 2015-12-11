@@ -11,4 +11,8 @@
         SELECT N_ID_OD, C_NOMBRE FROM SID_SEG_OFICINA_DEFENSORIAL
     </select>
     
+    <select id="obtenerOficinaDefensorial" resultMap="oficinaDefensorialMap" parameterType="Long">
+        SELECT * FROM SID_SEG_OFICINA_DEFENSORIAL WHERE N_ID_OD = #{id}
+    </select>
+    
 </mapper>

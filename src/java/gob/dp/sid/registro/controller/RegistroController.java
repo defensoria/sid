@@ -245,6 +245,11 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         indSeleccion = true;
         return "expedienteUsuario";
     }
+    
+    public String cargarExpedientePorId(Long idExpediente){
+        expediente = expedienteService.expedienteBuscarPorId(idExpediente);
+        return cargarExpedienteEdit(expediente);
+    }
 
     public String cargarExpedienteGestion() {
         expedienteGestion = new ExpedienteGestion();

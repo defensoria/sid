@@ -37,5 +37,7 @@ public interface ExpedienteService {
     public Expediente expedienteBuscarActivo(Expediente expediente);
             
     public Expediente expedienteBuscarActivoEtapa(Expediente expediente);
+    
+    public Expediente expedienteBuscarPorId(Long idExpediente);
 
 }

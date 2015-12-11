@@ -35,6 +35,17 @@ public class Bandeja implements Serializable{
     private String detalleTipo;
     
     private String colorTipo;
+    
+    private String motivo;
+    
+    private String numeroExpediente;
+    
+    private Long idExpediente;
+    
+    private Long idAccion;
+    
+    private String oficinaDefensorial;
+    
 
     public Long getId() {
         return id;
@@ -122,6 +133,46 @@ public class Bandeja implements Serializable{
 
     public void setColorTipo(String colorTipo) {
         this.colorTipo = colorTipo;
+    }
+
+    public String getMotivo() {
+        return motivo;
+    }
+
+    public void setMotivo(String motivo) {
+        this.motivo = motivo;
+    }
+
+    public String getNumeroExpediente() {
+        return numeroExpediente;
+    }
+
+    public void setNumeroExpediente(String numeroExpediente) {
+        this.numeroExpediente = numeroExpediente;
+    }
+
+    public Long getIdExpediente() {
+        return idExpediente;
+    }
+
+    public void setIdExpediente(Long idExpediente) {
+        this.idExpediente = idExpediente;
+    }
+
+    public Long getIdAccion() {
+        return idAccion;
+    }
+
+    public void setIdAccion(Long idAccion) {
+        this.idAccion = idAccion;
+    }
+
+    public String getOficinaDefensorial() {
+        return oficinaDefensorial;
+    }
+
+    public void setOficinaDefensorial(String oficinaDefensorial) {
+        this.oficinaDefensorial = oficinaDefensorial;
     }
     
 }

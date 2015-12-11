@@ -71,5 +71,10 @@ public class ExpedienteDAOImpl extends SqlSessionDaoSupport implements Expedient
     public Expediente expedienteBuscarActivoEtapa(Expediente expediente) {
         return getSqlSession().selectOne("gob.dp.sid.registro.dao.ExpedienteDAO.expedienteBuscarActivoEtapa", expediente);
     }
+
+    @Override
+    public Expediente expedienteBuscarPorId(Long idExpediente) {
+        return getSqlSession().selectOne("gob.dp.sid.registro.dao.ExpedienteDAO.expedienteBuscarPorId", idExpediente);
+    }
     
 }

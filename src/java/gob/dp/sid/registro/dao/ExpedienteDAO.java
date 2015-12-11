@@ -35,4 +35,6 @@ public interface ExpedienteDAO {
     public Expediente expedienteBuscarActivo(Expediente expediente);
             
     public Expediente expedienteBuscarActivoEtapa(Expediente expediente);
+    
+    public Expediente expedienteBuscarPorId(Long idExpediente);
 }

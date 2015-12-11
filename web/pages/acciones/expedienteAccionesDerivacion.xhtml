@@ -48,6 +48,7 @@
                             </div>
                         </td>
                         <td style="vertical-align: top">
+                            <h:panelGroup>
                             <div class="panel panel-featured-top-primary">
                                 <div class="body">
                                     <div style="text-align: right">
@@ -61,26 +62,24 @@
                                         <tr>
                                             <td style="padding-right: 30px">
                                                 <label>Motivo de la derivación:</label>
-                                                <textarea jsf:value="#{registroController.expedienteDerivacion.detalle}" rows="6" style="width: 100%;" placeholder="Motivo"/>
+                                                <textarea jsf:value="#{registroController.expedienteDerivacion.detalle}" rows="6" style="width: 100%" maxlength="1300" placeholder="Motivo"/>
                                             </td>
                                             <td style="vertical-align: top">
                                                 <label>Oficina Defensorial:</label>
                                                 <h:selectOneMenu value="#{registroController.expedienteDerivacion.idOficinaDefensorial}">
                                                     <f:selectItem itemLabel="Seleccione" itemValue="0" />
-                                        <f:selectItems value="#{registroController.listaOficinaDefensoriales}" />
-                                    </h:selectOneMenu>
+                                                    <f:selectItems value="#{registroController.listaOficinaDefensoriales}" />
+                                                </h:selectOneMenu>
                                             </td>
                                         </tr>
                                     </table>
-                                    
                                 </div>
                             </div>
+                                </h:panelGroup>
                         </td>
                     </table>
-
                 </div>
             </div>
-
         </ui:define>
     </ui:composition>
 </html>            
