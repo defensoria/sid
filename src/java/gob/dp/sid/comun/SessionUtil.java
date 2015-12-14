@@ -14,6 +14,13 @@ import javax.servlet.http.HttpSession;
  * @author WIN7
  */
 public class SessionUtil {
+    
+    public static HttpSession getHttpSession() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+        HttpSession httpSession = request.getSession(false);
+        return httpSession;
+    }
 
     public static Usuario getUsuario() {
         FacesContext context = FacesContext.getCurrentInstance();
@@ -26,13 +33,6 @@ public class SessionUtil {
             }
         }
         return null;
-    }
-
-    public static HttpSession getHttpSession() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
-        HttpSession httpSession = request.getSession(false);
-        return httpSession;
     }
 
     public static void setUsuario(Usuario usuario) {

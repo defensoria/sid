@@ -122,7 +122,6 @@ public class UsuarioNuevoController implements Serializable{
             }
             usuarioService.insertarUsuario(filter,lstRolSel);
             usuario.setCodigo(filter.getCodigo());
-            System.out.println("administracion.usuario.crear.ok");
             usuario = new Usuario();
         }catch(Exception e){
             log.error(e);

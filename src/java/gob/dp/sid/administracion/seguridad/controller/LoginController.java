@@ -88,7 +88,7 @@ public class LoginController implements Serializable {
         }
 
     }
-
+    
     private void cargarMenu() {
         FacesContext context = FacesContext.getCurrentInstance();
         MenuController menuController = (MenuController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "menuController");

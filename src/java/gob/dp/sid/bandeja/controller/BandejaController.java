@@ -35,39 +35,45 @@ import org.springframework.context.annotation.Scope;
 public class BandejaController extends AbstractManagedBean implements Serializable {
 
     private static final Logger log = Logger.getLogger(BandejaController.class);
-    
+
     private Usuario usuarioSession;
-    
+
     private List<Bandeja> listaMensajes;
-    
+
     private Bandeja mensajeBandeja;
-    
+
     @Autowired
     private BandejaService bandejaService;
-    
+
     @Autowired
     private UsuarioService usuarioService;
-    
+
     @Autowired
     private OficinaDefensorialService oficinaDefensorialService;
-    
-    
-    public String cargarBandeja(){
+
+    public String cargarBandeja() {
         usuarioSession();
         listaMensajes = bandejaService.bandejaBuscarUsuario(usuarioSession.getCodigo());
         return "bandeja";
-    } 
-    
-    public String verMensajeBandeja(Bandeja b){
+    }
+
+    public String verMensajeBandeja(Bandeja b) {
         setMensajeBandeja(b);
         return "verMensaje";
     }
-    
-    public void guardarMensajeBandejaPorDerivacion(ExpedienteDerivacion ed){
+
+    public void guardarMensaje(ExpedienteDerivacion ed, int tip) {
+        guardarMensajeBandejaPorDerivacion(ed, tip);
+    }
+
+    private void guardarMensajeBandejaPorDerivacion(ExpedienteDerivacion ed, int tip) {
         usuarioSession();
+        if (tip == 2) {
+            usuarioSession.setCodigoOD(ed.getIdOficinaDefensorial());
+        }
         usuarioSession.setRol(RolType.DERIVADOR_OD.getKey());
         List<Usuario> listaDestinatarios = buscarDestinatarios(usuarioSession);
-        for(Usuario u : listaDestinatarios){
+        for (Usuario u : listaDestinatarios) {
             mensajeBandeja = new Bandeja();
             mensajeBandeja.setDestinatario(u.getCodigo());
             mensajeBandeja.setEstado("ACT");
@@ -76,7 +82,7 @@ public class BandejaController extends AbstractManagedBean implements Serializab
             mensajeBandeja.setTipo(MensajeType.MENSAJE_DERIVACION.getKey());
             mensajeBandeja.setTitulo(MensajeType.MENSAJE_DERIVACION.getValue());
             mensajeBandeja.setCodigoTipo(ed.getId());
-            mensajeBandeja.setNombreRemitente(usuarioSession.getNombre()+" "+usuarioSession.getApellidoPaterno()+" "+usuarioSession.getApellidoMaterno());
+            mensajeBandeja.setNombreRemitente(usuarioSession.getNombre() + " " + usuarioSession.getApellidoPaterno() + " " + usuarioSession.getApellidoMaterno());
             mensajeBandeja.setDetalleTipo(MensajeType.MENSAJE_DERIVACION.getDetalle());
             mensajeBandeja.setColorTipo(MensajeType.MENSAJE_DERIVACION.getColor());
             mensajeBandeja.setMotivo(ed.getDetalle());
@@ -88,25 +94,45 @@ public class BandejaController extends AbstractManagedBean implements Serializab
             bandejaService.bandejaInsertar(mensajeBandeja);
         }
     }
-    
+
+    public void guardarMensajeBandejaPorReasignacion(ExpedienteDerivacion ed) {
+        usuarioSession();
+        usuarioSession.setRol(RolType.DERIVADOR_OD.getKey());
+        mensajeBandeja = new Bandeja();
+        mensajeBandeja.setDestinatario(ed.getCodigoUsuarioDerivado());
+        mensajeBandeja.setEstado("ACT");
+        mensajeBandeja.setFechaEnvio(new Date());
+        mensajeBandeja.setRemitente(usuarioSession.getCodigo());
+        mensajeBandeja.setTipo(MensajeType.MENSAJE_DERIVACION.getKey());
+        mensajeBandeja.setTitulo(MensajeType.MENSAJE_DERIVACION.getValue());
+        mensajeBandeja.setCodigoTipo(ed.getId());
+        mensajeBandeja.setNombreRemitente(usuarioSession.getNombre() + " " + usuarioSession.getApellidoPaterno() + " " + usuarioSession.getApellidoMaterno());
+        mensajeBandeja.setDetalleTipo(MensajeType.MENSAJE_DERIVACION.getDetalle());
+        mensajeBandeja.setColorTipo(MensajeType.MENSAJE_DERIVACION.getColor());
+        mensajeBandeja.setMotivo(ed.getDetalle());
+        mensajeBandeja.setNumeroExpediente(ed.getNumeroExpediente());
+        mensajeBandeja.setIdExpediente(ed.getIdExpediente());
+        mensajeBandeja.setIdAccion(ed.getId());
+        bandejaService.bandejaInsertar(mensajeBandeja);
+    }
+
     private void usuarioSession() {
         usuarioSession = new Usuario();
         FacesContext context = FacesContext.getCurrentInstance();
         LoginController loginController = (LoginController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "loginController");
         usuarioSession = loginController.getUsuarioSesion();
     }
-    
+
     public String cargarExpedientePorId() {
         FacesContext context = FacesContext.getCurrentInstance();
         RegistroController registroController = (RegistroController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "registroController");
         return registroController.cargarExpedientePorId(mensajeBandeja.getIdExpediente());
     }
-    
-    private List<Usuario> buscarDestinatarios(Usuario u){
+
+    private List<Usuario> buscarDestinatarios(Usuario u) {
         List<Usuario> list = usuarioService.listaUsuariosPorOD(u);
         return list;
     }
-
 
     public Usuario getUsuarioSession() {
         return usuarioSession;
@@ -131,5 +157,5 @@ public class BandejaController extends AbstractManagedBean implements Serializab
     public void setMensajeBandeja(Bandeja mensajeBandeja) {
         this.mensajeBandeja = mensajeBandeja;
     }
-    
+
 }

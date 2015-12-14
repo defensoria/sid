@@ -6,6 +6,7 @@
 package gob.dp.sid.registro.service;
 
 import gob.dp.sid.registro.entity.ExpedienteDerivacion;
+import java.util.List;
 
 /**
  *
@@ -14,5 +15,7 @@ import gob.dp.sid.registro.entity.ExpedienteDerivacion;
 public interface ExpedienteDerivacionService {
     
     public void expedienteDerivacionInsertar(ExpedienteDerivacion expedienteDerivacion);
+    
+    public List<ExpedienteDerivacion> expedienteDerivacionSelectList(long idExpediente);
     
 }

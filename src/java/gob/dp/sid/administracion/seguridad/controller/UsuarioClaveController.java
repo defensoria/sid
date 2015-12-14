@@ -57,7 +57,6 @@ public class UsuarioClaveController implements Serializable {
 
      public void cambiarClave(){
           if(!this.usuario.getClave().trim().equals(this.usuario.getConfirmacionClave().trim())){
-              System.out.println("error.usuario.claves");
               return;
           }
           try{

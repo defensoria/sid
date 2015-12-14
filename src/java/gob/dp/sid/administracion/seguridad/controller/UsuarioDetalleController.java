@@ -126,7 +126,6 @@ public class UsuarioDetalleController extends AbstractManagedBean implements Ser
     }
 
     public String regresar(){
-         System.out.println("Entrando a UsuarioDetalleController.regresar");
          return "usuarioLista";
      }
 

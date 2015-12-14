@@ -33,19 +33,26 @@
             <div class="panel panel-default">
 
                 <div class="panel-body">
+                    <div class="btn-group" role="group" style="float: right; width: 10%">
+    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <span class="glyphicon glyphicon-th-list" /> Acciones
+      <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu">
+      <li>
+          <a jsf:action="#{registroController.inicioAccionesDerivacion()}">
+              <span class="glyphicon glyphicon-export" />Derivar
+          </a>
+      </li>
+      <li><a href="#">Consultar</a></li>
+      <li><a href="#">Suspención</a></li>
+      <li><a href="#">Ampliación</a></li>
+      <li><a href="#">Acumular</a></li>
+    </ul>
+  </div>
                     <table style="width: 100%">
                         <td style="width: 20%; vertical-align: top">
-                            <div class="bs-example" data-example-id="vertical-button-group"> 
-                                <div class="btn-group-vertical" role="group" aria-label="Vertical button group"> 
-                                    <a jsf:action="#{registroController.inicioAccionesDerivacion()}" style="text-align: left" class="btn btn-default">
-                                        <span class="glyphicon glyphicon-export" />Derivar
-                                    </a> 
-                                    <a style="text-align: left" class="btn btn-default">Consultar adjuntía</a> 
-                                    <a style="text-align: left" class="btn btn-default">Solicitar suspención</a> 
-                                    <a style="text-align: left" class="btn btn-default">Solicitar ampliación de plazo</a> 
-                                    <a style="text-align: left" class="btn btn-default">Acumular expediente</a> 
-                                </div> 
-                            </div>
+                            
                         </td>
                         <td style="vertical-align: top">
                             

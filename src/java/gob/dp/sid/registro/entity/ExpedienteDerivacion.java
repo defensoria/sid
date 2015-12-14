@@ -24,6 +24,16 @@ public class ExpedienteDerivacion implements Serializable{
     private String estado;
     
     private String numeroExpediente;
+    
+    private Integer etapa;
+    
+    private String nombreUsuario;
+    
+    private String codigoUsuario;
+    
+    private String aprueba;
+    
+    private String codigoUsuarioDerivado;
 
     public Long getId() {
         return id;
@@ -72,8 +82,46 @@ public class ExpedienteDerivacion implements Serializable{
     public void setNumeroExpediente(String numeroExpediente) {
         this.numeroExpediente = numeroExpediente;
     }
-    
-    
+
+    public Integer getEtapa() {
+        return etapa;
+    }
+
+    public void setEtapa(Integer etapa) {
+        this.etapa = etapa;
+    }
+
+    public String getNombreUsuario() {
+        return nombreUsuario;
+    }
+
+    public void setNombreUsuario(String nombreUsuario) {
+        this.nombreUsuario = nombreUsuario;
+    }
+
+    public String getCodigoUsuario() {
+        return codigoUsuario;
+    }
+
+    public void setCodigoUsuario(String codigoUsuario) {
+        this.codigoUsuario = codigoUsuario;
+    }
+
+    public String getAprueba() {
+        return aprueba;
+    }
+
+    public void setAprueba(String aprueba) {
+        this.aprueba = aprueba;
+    }
+
+    public String getCodigoUsuarioDerivado() {
+        return codigoUsuarioDerivado;
+    }
+
+    public void setCodigoUsuarioDerivado(String codigoUsuarioDerivado) {
+        this.codigoUsuarioDerivado = codigoUsuarioDerivado;
+    }
     
 }
 

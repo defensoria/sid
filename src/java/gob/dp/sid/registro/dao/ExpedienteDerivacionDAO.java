@@ -6,6 +6,7 @@
 package gob.dp.sid.registro.dao;
 
 import gob.dp.sid.registro.entity.ExpedienteDerivacion;
+import java.util.List;
 
 /**
  *
@@ -14,5 +15,7 @@ import gob.dp.sid.registro.entity.ExpedienteDerivacion;
 public interface ExpedienteDerivacionDAO {
     
     public void expedienteDerivacionInsertar(ExpedienteDerivacion expedienteDerivacion);
+    
+    public List<ExpedienteDerivacion> expedienteDerivacionSelectList(long idExpediente);
     
 }

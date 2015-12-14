@@ -33,8 +33,6 @@ public class SeguridadSessionFilter implements Filter{
                 HttpSession httpSession= httpRequest.getSession(false);
                 HttpServletResponse httpResponse = (HttpServletResponse) response;
 
-                System.out.println("Fitro Entrando a : "+httpRequest.getRequestURI());              
-
                 if(httpRequest.getRequestURI().equals("/sid/")||
                    httpRequest.getRequestURI().equals("/sid/faces/signin.xhtml")
                    )
@@ -42,7 +40,6 @@ public class SeguridadSessionFilter implements Filter{
                     chain.doFilter(request, response);
                 }else{
                      if (httpSession==null || httpSession.getAttribute("usuario") == null) {                            
-                            System.out.println("Usuario NULO, cerrando Sesión");
                             httpResponse.sendRedirect("/sid/cerrarSesion.jsp");                           
                         } else {
                             chain.doFilter(request, response);

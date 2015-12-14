@@ -57,7 +57,6 @@ public class BootstrapMessages extends MessagesRenderer {
         Iterator messageIter = getMessageIter(context, clientId, component);
 
         assert(messageIter != null);
-        System.out.println(messageIter.hasNext());
         if (!messageIter.hasNext()) {
             if (mustRender) {
                 if ("javax_faces_developmentstage_messages".equals(component.getId())) {

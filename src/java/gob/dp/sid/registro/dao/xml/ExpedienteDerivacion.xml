@@ -9,6 +9,11 @@
         <result property="idOficinaDefensorial" column="N_ID_OD"/>
         <result property="estado" column="C_ESTADO"/>
         <result property="numeroExpediente" column="C_NUMEROEXPEDIENTE"/>
+        <result property="etapa" column="C_ETAPA"/>
+        <result property="codigoUsuario" column="C_CODIGOUSUARIO"/>
+        <result property="nombreUsuario" column="C_NOMBREUSUARIO"/>
+        <result property="codigoUsuarioDerivado" column="C_CODIGOUSUARIODERIVADO"/>
+        <result property="aprueba" column="C_APRUEBA"/>
     </resultMap> 
     
     
@@ -30,6 +35,21 @@
         <if test="numeroExpediente != null">
             C_NUMEROEXPEDIENTE,
         </if>
+        <if test="etapa != null">
+            C_ETAPA,
+        </if>
+        <if test="codigoUsuario != null">
+            C_CODIGOUSUARIO,
+        </if>
+        <if test="nombreUsuario != null">
+            C_NOMBREUSUARIO,
+        </if>
+        <if test="aprueba != null">
+            C_APRUEBA,
+        </if>
+        <if test="codigoUsuarioDerivado != null">
+            C_CODIGOUSUARIODERIVADO,
+        </if>
         N_ID_DERIVACION
         )
         VALUES 
@@ -48,6 +68,21 @@
         </if>
         <if test="numeroExpediente != null">
             #{numeroExpediente},
+        </if>
+        <if test="etapa != null">
+            #{etapa},
+        </if>
+        <if test="codigoUsuario != null">
+            #{codigoUsuario},
+        </if>
+        <if test="nombreUsuario != null">
+            #{nombreUsuario},
+        </if>
+        <if test="aprueba != null">
+            #{aprueba},
+        </if>
+        <if test="codigoUsuarioDerivado != null">
+            #{codigoUsuarioDerivado},
         </if>
         SEQ_SID_REG_EXPEDIENTE_DERIVA.NextVal
         )
@@ -75,5 +110,10 @@
             N_IDENTIDAD = #{id}
         </where>
     </update>
+    
+    
+    <select id="expedienteDerivacionSelectList" resultMap="expedienteDerivacionMap"  parameterType="long">
+        SELECT * FROM SID_REG_EXPEDIENTE_DERIVACION WHERE N_IDEXPEDIENTE = #{id}
+    </select>
     
 </mapper>
