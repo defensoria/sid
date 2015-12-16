@@ -234,4 +234,12 @@
         </navigation-case>
   </navigation-rule>
   
+  
+ <navigation-rule>
+        <navigation-case>
+                <from-outcome>busquedaGeneral</from-outcome>
+                <to-view-id>/pages/inicio/busqueda.xhtml</to-view-id>
+        </navigation-case>
+  </navigation-rule>
+  
 </faces-config>

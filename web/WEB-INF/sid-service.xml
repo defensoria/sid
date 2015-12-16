@@ -40,5 +40,6 @@
         
         <context:component-scan  base-package="gob.dp.sid.bandeja.service"/>
         <context:component-scan  base-package="gob.dp.sid.bandeja.controller" scoped-proxy="targetClass"  />
+        
 </beans>
 

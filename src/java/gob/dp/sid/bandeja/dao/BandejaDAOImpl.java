@@ -26,5 +26,10 @@ public class BandejaDAOImpl extends SqlSessionDaoSupport implements BandejaDAO{
     public List<Bandeja> bandejaBuscarUsuario(String destinatario) {
         return getSqlSession().selectList("gob.dp.sid.bandeja.dao.BandejaDAO.bandejaBuscarUsuario", destinatario);
     }
+
+    @Override
+    public void mensajeEstadoVisto(Long id) {
+        getSqlSession().update("gob.dp.sid.bandeja.dao.BandejaDAO.mensajeEstadoVisto", id);
+    }
     
 }

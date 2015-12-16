@@ -76,5 +76,15 @@ public class ExpedienteDAOImpl extends SqlSessionDaoSupport implements Expedient
     public Expediente expedienteBuscarPorId(Long idExpediente) {
         return getSqlSession().selectOne("gob.dp.sid.registro.dao.ExpedienteDAO.expedienteBuscarPorId", idExpediente);
     }
+
+    @Override
+    public Long expedienteCodigoPorOD(Long codigoOD) {
+        return getSqlSession().selectOne("gob.dp.sid.registro.dao.ExpedienteDAO.expedienteCodigoPorOD", codigoOD);
+    }
+
+    /*@Override
+    public List<Expediente> expedienteBuscarUsuarioPaginadoGeneral(Expediente expediente) {
+        return getSqlSession().selectList("gob.dp.sid.registro.dao.ExpedienteDAO.expedienteBuscarUsuarioPaginadoGeneral", expediente);
+    }*/
     
 }

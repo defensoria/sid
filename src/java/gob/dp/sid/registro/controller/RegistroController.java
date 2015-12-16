@@ -53,6 +53,7 @@ import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -377,7 +378,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         msg.messageInfo("Se envio la Derivación", null);
     }
     
-    public void aprobarDesaprobarDerivacion(){
+    public void aprobarDerivacion(){
         expedienteDerivacionAprueba.setIdExpediente(expediente.getId());
         expedienteDerivacionAprueba.setNumeroExpediente(expediente.getNumero());
         expedienteDerivacionAprueba.setEstado("ACT");
@@ -385,11 +386,16 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         expedienteDerivacionAprueba.setCodigoUsuario(usuarioSession.getCodigo());
         expedienteDerivacionAprueba.setNombreUsuario(usuarioSession.getNombre()+" "+usuarioSession.getApellidoPaterno()+" "+usuarioSession.getApellidoMaterno());
         expedienteDerivacionService.expedienteDerivacionInsertar(expedienteDerivacionAprueba);
-        enviarMensajeAprobacion();
-        if(StringUtils.equals(expedienteDerivacionAprueba.getAprueba(), "SI") )
+        if(StringUtils.equals(expedienteDerivacionAprueba.getAprueba(), "SI") ){
+            enviarMensajeAprobacion();
             msg.messageInfo("Se aprobó la Derivación", null);
-        else
-            msg.messageInfo("No se aprobo la Derivación", null);
+        }
+        else{
+            guardarVersion2();
+            enviarMensajeDesaprobacion();
+            msg.messageInfo("No se aprobo la derivación", null);
+        }
+            
     }
     
     public void reasignarDerivacion(){
@@ -400,30 +406,46 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         expedienteDerivacionReasigna.setCodigoUsuario(usuarioSession.getCodigo());
         expedienteDerivacionReasigna.setNombreUsuario(usuarioSession.getNombre()+" "+usuarioSession.getApellidoPaterno()+" "+usuarioSession.getApellidoMaterno());
         expedienteDerivacionService.expedienteDerivacionInsertar(expedienteDerivacionReasigna);
-        enviarMensajeReasignacion();
-        guardarVersion3(expedienteDerivacionReasigna.getCodigoUsuarioDerivado());
-        if(StringUtils.equals(expedienteDerivacionAprueba.getAprueba(), "SI") )
-            msg.messageInfo("Se aprobó la Derivación", null);
-        else
-            msg.messageInfo("No se aprobo la Derivación", null);
+        if(StringUtils.equals(expedienteDerivacionReasigna.getAprueba(), "SI") ){
+            guardarVersion3(expedienteDerivacionReasigna.getCodigoUsuarioDerivado());
+            enviarMensajeReasignacion();
+            msg.messageInfo("Se reasigno por derivación el expediente", null);
+        }
+        else{
+            guardarVersion2();
+            enviarMensajeReasignacionDesaprobada();
+            msg.messageInfo("Se rechaza la derivación", null);
+        }
     }
     
     private void enviarMensajeDerivacion(){
         FacesContext context = FacesContext.getCurrentInstance();
         BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
-        bandejaController.guardarMensaje(expedienteDerivacionEnvia, 1);
+        bandejaController.mensajeEnviaDerivacion(expedienteDerivacionEnvia);
     }
     
     private void enviarMensajeAprobacion(){
         FacesContext context = FacesContext.getCurrentInstance();
         BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
-        bandejaController.guardarMensaje(expedienteDerivacionAprueba, 2);
+        bandejaController.mensajeEnviaAprobacion(expedienteDerivacionAprueba);
+    }
+    
+    private void enviarMensajeDesaprobacion(){
+        FacesContext context = FacesContext.getCurrentInstance();
+        BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
+        bandejaController.mensajeEnviaDesaprobacion(expedienteDerivacionAprueba, expediente);
     }
     
     private void enviarMensajeReasignacion(){
         FacesContext context = FacesContext.getCurrentInstance();
         BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
-        bandejaController.guardarMensajeBandejaPorReasignacion(expedienteDerivacionReasigna);
+        bandejaController.mensajeEnviaReasignacion(expedienteDerivacionReasigna, expediente);
+    }
+    
+    private void enviarMensajeReasignacionDesaprobada(){
+        FacesContext context = FacesContext.getCurrentInstance();
+        BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
+        bandejaController.mensajeEnviaReasignacionDesaprobada(expedienteDerivacionReasigna, expedienteDerivacionAprueba.getCodigoUsuario(), expediente);
     }
 
     public String registarExpedienteGestion() {
@@ -1065,15 +1087,14 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 }
                 expediente.setUsuarioRegistro(usuarioSession.getCodigo());
                 expediente.setVersion(1);
-                DateFormat format = new SimpleDateFormat("yyMMddHHmmss");
+                /*DateFormat format = new SimpleDateFormat("yyMMddHHmmss");
                 String formato = format.format(new Date());
-                expediente.setNumero("CP" + formato);
+                expediente.setNumero("CP" + formato);*/
+                generarCodigoExpediente();
                 expediente.setFechaRegistro(new Date());
             } else {
                 expediente.setVersion(expediente.getVersion() + 1);
-                expediente.setFechaModificacion(new Date());
                 expediente.setEstado("I");
-                expediente.setUsuarioModificacion(usuarioSession.getCodigo());
                 expedienteService.expedienteUpdate(expediente);
             }
             expediente.setEstado("A");
@@ -1082,6 +1103,18 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         } catch (Exception e) {
             log.error(e);
         }
+    }
+    
+    private void generarCodigoExpediente(){
+        Long consecutivo = expedienteService.expedienteCodigoPorOD(usuarioSession.getCodigoOD().longValue());
+        if (consecutivo == null){
+            consecutivo = 0L;
+        }
+        expediente.setCodigoOD(usuarioSession.getCodigoOD());
+        expediente.setConsecutivo(consecutivo+1);
+        Calendar c1 = Calendar.getInstance();
+        String numeroExpediente = String.format("%2s",usuarioSession.getCodigoOD().toString()).replace(' ', '0')+"-"+c1.get(Calendar.YEAR)+"-"+String.format("%7s",expediente.getConsecutivo().toString()).replace(' ', '0');
+        expediente.setNumero(numeroExpediente);
     }
     
     private void guardar1(String codigoUsuario) {
@@ -1094,17 +1127,18 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 }
                 expediente.setUsuarioRegistro(codigoUsuario);
                 expediente.setVersion(1);
-                DateFormat format = new SimpleDateFormat("yyMMddHHmmss");
+                /*DateFormat format = new SimpleDateFormat("yyMMddHHmmss");
                 String formato = format.format(new Date());
-                expediente.setNumero("CP" + formato);
+                expediente.setNumero("CP" + formato);*/
+                generarCodigoExpediente();
                 expediente.setFechaRegistro(new Date());
             } else {
                 expediente.setVersion(expediente.getVersion() + 1);
-                expediente.setFechaModificacion(new Date());
                 expediente.setEstado("I");
-                expediente.setUsuarioModificacion(usuarioSession.getCodigo());
                 expedienteService.expedienteUpdate(expediente);
             }
+            expediente.setUsuarioRegistro(codigoUsuario);
+            expediente.setIndDerivado(1);
             expediente.setEstado("A");
             expedienteService.expedienteInsertar(expediente);
             insertListasPersonaEntidad();

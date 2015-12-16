@@ -30,5 +30,10 @@ public class BandejaServiceImpl implements BandejaService{
     public List<Bandeja> bandejaBuscarUsuario(String destinatario) {
         return bandejaDAO.bandejaBuscarUsuario(destinatario);
     }
+
+    @Override
+    public void mensajeEstadoVisto(Long id) {
+        bandejaDAO.mensajeEstadoVisto(id);
+    }
     
 }

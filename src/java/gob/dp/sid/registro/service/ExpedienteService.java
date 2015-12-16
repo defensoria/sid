@@ -39,5 +39,9 @@ public interface ExpedienteService {
     public Expediente expedienteBuscarActivoEtapa(Expediente expediente);
     
     public Expediente expedienteBuscarPorId(Long idExpediente);
+    
+    public Long expedienteCodigoPorOD(Long codigoOD);
+    
+    //public List<Expediente> expedienteBuscarUsuarioPaginadoGeneral(Expediente expediente);
 
 }

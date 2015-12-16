@@ -60,6 +60,12 @@ public class Expediente implements Serializable{
     
     private String general;
     
+    private Integer indDerivado;
+    
+    private Integer codigoOD;
+    
+    private Long consecutivo;
+    
     /*agregados*/
     
     private String idEtiqueta;
@@ -397,5 +403,31 @@ public class Expediente implements Serializable{
     public void setEstadoGestion(Integer estadoGestion) {
         this.estadoGestion = estadoGestion;
     }
+
+    public Integer getIndDerivado() {
+        return indDerivado;
+    }
+
+    public void setIndDerivado(Integer indDerivado) {
+        this.indDerivado = indDerivado;
+    }
+
+    public Integer getCodigoOD() {
+        return codigoOD;
+    }
+
+    public void setCodigoOD(Integer codigoOD) {
+        this.codigoOD = codigoOD;
+    }
+
+    public Long getConsecutivo() {
+        return consecutivo;
+    }
+
+    public void setConsecutivo(Long consecutivo) {
+        this.consecutivo = consecutivo;
+    }
+    
+    
     
 }

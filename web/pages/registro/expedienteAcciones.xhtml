@@ -34,34 +34,32 @@
 
                 <div class="panel-body">
                     <div class="btn-group" role="group" style="float: right; width: 10%">
-    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <span class="glyphicon glyphicon-th-list" /> Acciones
-      <span class="caret"></span>
-    </button>
-    <ul class="dropdown-menu">
-      <li>
-          <a jsf:action="#{registroController.inicioAccionesDerivacion()}">
-              <span class="glyphicon glyphicon-export" />Derivar
-          </a>
-      </li>
-      <li><a href="#">Consultar</a></li>
-      <li><a href="#">Suspención</a></li>
-      <li><a href="#">Ampliación</a></li>
-      <li><a href="#">Acumular</a></li>
-    </ul>
-  </div>
+                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="glyphicon glyphicon-th-list" /> Acciones
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a jsf:action="#{registroController.inicioAccionesDerivacion()}">
+                                    <span class="glyphicon glyphicon-export" />Derivar
+                                </a>
+                            </li>
+                            <li><a href="#">Consultar</a></li>
+                            <li><a href="#">Suspención</a></li>
+                            <li><a href="#">Ampliación</a></li>
+                            <li><a href="#">Acumular</a></li>
+                        </ul>
+                    </div>
                     <table style="width: 100%">
                         <td style="width: 20%; vertical-align: top">
-                            
+
                         </td>
                         <td style="vertical-align: top">
-                            
+
                         </td>
                     </table>
-
                 </div>
             </div>
-
         </ui:define>
     </ui:composition>
 </html>            

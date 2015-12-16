@@ -108,5 +108,15 @@ public class ExpedienteServiceImpl implements ExpedienteService{
     public Expediente expedienteBuscarPorId(Long idExpediente) {
         return expedienteDAO.expedienteBuscarPorId(idExpediente);
     }
+
+    @Override
+    public Long expedienteCodigoPorOD(Long codigoOD) {
+        return expedienteDAO.expedienteCodigoPorOD(codigoOD);
+    }
+
+    /*@Override
+    public List<Expediente> expedienteBuscarUsuarioPaginadoGeneral(Expediente expediente) {
+        return expedienteDAO.expedienteBuscarUsuarioPaginadoGeneral(expediente);
+    }*/
     
 }

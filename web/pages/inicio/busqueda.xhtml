@@ -6,24 +6,72 @@
     <ui:composition template="../template/template.xhtml">
         <ui:define name="content">
             <h:form id="idForm" class="form-horizontal">
-                <h:dataTable value="#{busquedaController.listadoGeneral}" var="item" class="table table-striped">
-                    <h:column>
-                        <f:facet name="header">Nombre</f:facet>
-                        <h:outputText value="#{item.nombre}" />
-                    </h:column>
-                    
-                    <h:column>
-                        <f:facet name="header">Tipo</f:facet>
-                        <h:outputText value="#{item.detalle}" />
-                    </h:column>
-                    
-                    <h:column>
-                        <f:facet name="header">Enlace</f:facet>
-                        <a jsf:action="#{busquedaController.enlazar(item)}">
-                            <span class="glyphicon glyphicon-share"></span>
-                        </a>
-                    </h:column>
-                </h:dataTable>
+                <table style="width: 100%" class="table">
+                            <tr>
+                                <td colspan="2" style="width: 50%; padding-right: 2px;">
+                                    <div class="panel panel-primary">
+                                        <div class="panel-heading">
+                                            <span >Lista de Expedientes</span>
+                                        </div>
+                                        <div class="panel-body">
+                                            <h:dataTable value="#{busquedaController.listadoGeneral}" var="exped" class="table table-hover" binding="#{row3}">
+                                                <h:column>
+                                                    <f:facet name="header">Nro</f:facet>
+                                                    <h:outputText value="#{(row3.rowIndex+1)+(registroController.nroPagina-1)*10}" />
+                                                </h:column>
+                                                <h:column>
+                                                    <f:facet name="header">Expediente</f:facet>
+                                                    <h:outputText value="#{exped.numero}" />
+                                                </h:column>
+                                                <h:column>
+                                                    <f:facet name="header">Tipo</f:facet>
+                                                    <h:outputText value="#{exped.clasificacionTipoNombre}" />
+                                                </h:column>
+                                                <h:column>
+                                                    <f:facet name="header">Fecha Registro</f:facet>
+                                                    <h:outputText value="#{exped.fechaRegistro}" >
+                                                        <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
+                                                    </h:outputText>
+                                                </h:column>
+                                                <h:column>
+                                                    <f:facet name="header">Etapa</f:facet>
+                                                    <h:outputText value="#{exped.etapaDetalle}" />
+                                                </h:column>
+                                                <h:column>
+                                                    <f:facet name="header">Estado expediente</f:facet>
+                                                    <h:outputText value="#{exped.estadoDetalle}" />
+                                                </h:column>
+                                                <h:column>
+                                                    <f:facet name="header">Estado general</f:facet>
+                                                    <h:outputText value="#{exped.general == 'A'? 'Trámite': 'Concluido'}" />
+                                                </h:column>
+                                                <h:column>
+                                                    <f:facet name="header">Estado registro</f:facet>
+                                                    <h:outputText value="#{exped.version == 0? 'Borrador' : 'En registro' }" />
+                                                </h:column>
+                                                <h:column>
+                                                    <a jsf:action="#{registroController.cargarExpedienteEdit(exped)}">
+                                                        <span class="glyphicon glyphicon-pencil"/>
+                                                    </a>
+                                                </h:column>
+                                            </h:dataTable>
+                                            <ul class="pager">
+                                                <li>
+                                                    <a jsf:action="#{registroController.listarExpedienteUsuarioPaginado(registroController.nroPagina -1)}" jsf:rendered="#{!empty registroController.listaExpedienteXUsuarioPaginado}" jsf:onclick="loadingModal()">Anterior
+                                                        <f:ajax render="@form" onevent="closeModal"/>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a jsf:action="#{registroController.listarExpedienteUsuarioPaginado(registroController.nroPagina +1)}" jsf:rendered="#{!empty registroController.listaExpedienteXUsuarioPaginado}" jsf:onclick="loadingModal()">Siguiente
+                                                        <f:ajax render="@form" onevent="closeModal"/>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
             </h:form> 
         </ui:define>
     </ui:composition>

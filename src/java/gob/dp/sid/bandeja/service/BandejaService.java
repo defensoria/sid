@@ -18,4 +18,6 @@ public interface BandejaService {
             
     public List<Bandeja> bandejaBuscarUsuario(String destinatario);
     
+    public void mensajeEstadoVisto(Long id);
+    
 }

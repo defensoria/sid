@@ -12,13 +12,13 @@
 
 
             <gc:confirmSubmit bean="#{registroController.enviarDerivacion()}" mensaje="Esta seguro de derivar el expediente?" />
-            <gc:confirmSubmit bean="#{registroController.aprobarDesaprobarDerivacion()}" classGC="confirmacion2" mensaje="Esta seguro de derivar el expediente?" />
+            <gc:confirmSubmit bean="#{registroController.aprobarDerivacion()}" classGC="confirmacion2" mensaje="Esta seguro de derivar el expediente?" />
             <gc:confirmSubmit bean="#{registroController.reasignarDerivacion()}" classGC="confirmacion3" mensaje="Esta seguro de derivar el expediente?" />
             <script>
                 function confirmar2() {
                     $(".confirmacion2").modal('show');
                 }
-                
+
                 function confirmar3() {
                     $(".confirmacion3").modal('show');
                 }
@@ -44,23 +44,31 @@
             <div class="panel panel-default">
 
                 <div class="panel-body">
-                    <div style="text-align: right">
-                        <div class="btn-group" role="group">
-                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Acciones
-                                <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a jsf:action="#{registroController.inicioAccionesDerivacion()}">Derivar</a></li>
-                                <li><a href="#">Consultar adjuntía</a></li>
-                                <li><a href="#">Solicitar suspención</a></li>
-                                <li><a href="#">Solicitar ampliación de plazo</a></li>
-                                <li><a href="#">Acumular expedoliiente</a></li>
-                            </ul>
-                        </div>
+                    <div class="btn-group" role="group" style="float: right; width: 10%">
+                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="glyphicon glyphicon-th-list" /> Acciones
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a jsf:action="#{registroController.inicioAccionesDerivacion()}">
+                                    <span class="glyphicon glyphicon-export" />Derivar
+                                </a>
+                            </li>
+                            <li><a href="#">Consultar</a></li>
+                            <li><a href="#">Suspención</a></li>
+                            <li><a href="#">Ampliación</a></li>
+                            <li><a href="#">Acumular</a></li>
+                        </ul>
                     </div>
+
                     <h:panelGroup rendered="#{seguridadUtilController.tieneRecurso('REC_EXP001')}">
+
                         <table style="width: 100%">
+                            <tr>
+                                <td colspan="2" ><br/>
+                                    <br/></td>
+                            </tr>
                             <tr>
                                 <td style="width: 20%; vertical-align: top">
                                     <h3>Derivar Expediente</h3>
@@ -103,6 +111,9 @@
                         <br/>
                         <table style="width: 100%">
                             <tr>
+                                <td colspan="2"><br/><br/></td>
+                            </tr>
+                            <tr>
                                 <td style="width: 20%; vertical-align: top">
                                     <h3>Derivar Expediente</h3>
                                     <span style="color: gray; font-weight: bold">#{registroController.expedienteDerivacionEnvia.nombreUsuario}</span>
@@ -140,16 +151,16 @@
                                             <div style="text-align: right">
                                                 <br/>
                                                 <h:panelGroup rendered="#{registroController.expedienteDerivacionAprueba.id == null}">
-                                                <a class="btn btn-primary" onclick="confirmar2()">
-                                                    <span class="glyphicon glyphicon-share-alt"/>Enviar
-                                                </a>
+                                                    <a class="btn btn-primary" onclick="confirmar2()">
+                                                        <span class="glyphicon glyphicon-share-alt"/>Enviar
+                                                    </a>
                                                 </h:panelGroup>    
                                                 <br/>
                                             </div>
                                             <table style="width: 100%">
                                                 <tr>
                                                     <td style="padding-right: 30px">
-                                                        <label>Motivo de la aprobación/desarpobación</label>
+                                                        <label>Motivo de la aprobación / desaprobación</label>
                                                         <textarea jsf:value="#{registroController.expedienteDerivacionAprueba.detalle}" rows="6" style="width: 100%" maxlength="1300" placeholder="Motivo"/>
                                                         <br/>
                                                         <h:selectOneRadio value="#{registroController.expedienteDerivacionAprueba.aprueba}">
@@ -176,6 +187,9 @@
                         <br/>
                         <table style="width: 100%">
                             <tr>
+                                <td colspan="2"><br/><br/></td>
+                            </tr>
+                            <tr>
                                 <td style="width: 20%; vertical-align: top">
                                     <h3>Aprobar Derivación</h3>
                                     <span style="color: gray; font-weight: bold">#{registroController.expedienteDerivacionAprueba.nombreUsuario}</span>
@@ -189,7 +203,7 @@
                                             <table style="width: 100%">
                                                 <tr>
                                                     <td style="padding-right: 30px">
-                                                        <label>Motivo de la aprobación/desarpobación</label>
+                                                        <label>Motivo de la aprobación / desaprobación</label>
                                                         <textarea jsf:value="#{registroController.expedienteDerivacionAprueba.detalle}" rows="6" style="width: 100%" maxlength="1300" placeholder="Motivo"/>
                                                         <br/>
                                                         <h:selectOneRadio value="#{registroController.expedienteDerivacionAprueba.aprueba}">
@@ -220,16 +234,16 @@
                                             <div style="text-align: right">
                                                 <br/>
                                                 <h:panelGroup rendered="#{registroController.expedienteDerivacionReasigna.id == null}">
-                                                <a class="btn btn-primary" onclick="confirmar3()">
-                                                    <span class="glyphicon glyphicon-share-alt"/>Enviar
-                                                </a>
+                                                    <a class="btn btn-primary" onclick="confirmar3()">
+                                                        <span class="glyphicon glyphicon-share-alt"/>Enviar
+                                                    </a>
                                                 </h:panelGroup>    
                                                 <br/>
                                             </div>
                                             <table style="width: 100%">
                                                 <tr>
                                                     <td style="padding-right: 30px">
-                                                        <label>Motivo de la aprobación/desarpobación</label>
+                                                        <label>Motivo de aceptar / rechazar</label>
                                                         <textarea jsf:value="#{registroController.expedienteDerivacionReasigna.detalle}" rows="6" style="width: 100%" maxlength="1300" placeholder="Motivo"/>
                                                         <br/>
                                                         <h:selectOneRadio value="#{registroController.expedienteDerivacionReasigna.aprueba}">

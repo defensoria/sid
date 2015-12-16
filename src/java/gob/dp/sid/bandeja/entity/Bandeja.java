@@ -44,7 +44,7 @@ public class Bandeja implements Serializable{
     
     private Long idAccion;
     
-    private String oficinaDefensorial;
+    private String tituloMensaje;
     
 
     public Long getId() {
@@ -167,12 +167,12 @@ public class Bandeja implements Serializable{
         this.idAccion = idAccion;
     }
 
-    public String getOficinaDefensorial() {
-        return oficinaDefensorial;
+    public String getTituloMensaje() {
+        return tituloMensaje;
     }
 
-    public void setOficinaDefensorial(String oficinaDefensorial) {
-        this.oficinaDefensorial = oficinaDefensorial;
+    public void setTituloMensaje(String tituloMensaje) {
+        this.tituloMensaje = tituloMensaje;
     }
     
 }

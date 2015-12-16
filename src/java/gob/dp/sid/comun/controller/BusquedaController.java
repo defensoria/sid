@@ -5,68 +5,205 @@
  */
 package gob.dp.sid.comun.controller;
 
-import gob.dp.sid.comun.entity.Busqueda;
-import gob.dp.sid.comun.service.BusquedaService;
+import gob.dp.sid.administracion.seguridad.controller.LoginController;
+import gob.dp.sid.administracion.seguridad.entity.Usuario;
+import gob.dp.sid.comun.ConstantesUtil;
+import gob.dp.sid.comun.type.EtapaType;
+import gob.dp.sid.registro.entity.Expediente;
+import gob.dp.sid.registro.service.EtapaEstadoService;
+import gob.dp.sid.registro.service.ExpedienteService;
 import java.io.Serializable;
 import java.util.List;
-import javax.enterprise.context.SessionScoped;
+import java.util.Objects;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 
 /**
  *
  * @author carlos
  */
-@SessionScoped
-@Named("busquedaController")
+@Named
+@Scope("session")
 public class BusquedaController implements Serializable{
     
-    private String cadenaAutocomplete;
+    private List<Expediente> listadoGeneral;
     
-    private List<Busqueda> listadoGeneral;
+    private Expediente expediente;
     
-    private Busqueda busqueda;
+    private Usuario usuarioSession;
+    
+    private Integer nroPagina = 1;
     
     @Autowired
-    private BusquedaService busquedaService;
+    private ExpedienteService expedienteService;
+    
+    @Autowired
+    private EtapaEstadoService etapaEstadoService;
+    
 
     public void inicioBusqueda(){
-        busqueda = new Busqueda();
-        //cadenaAutocomplete = busquedaService.autocompletarBusquedaGeneral();
-    }
-    
-    public void pintar(){
-        System.out.println("pintar");
+        expediente = new Expediente();
+        usuarioSession();
     }
     
     public String buscar(){
-        listadoGeneral = busquedaService.busquedaListaxPalabra(busqueda);
+        expediente.setCodigoOD(usuarioSession.getCodigoOD());
+        expediente.setUsuarioRegistro(usuarioSession.getCodigo());
+        //listadoGeneral = expedienteService.expedienteBuscarUsuarioPaginadoGeneral(expediente);
         return "busquedaGeneral";
     }
     
-    public String getCadenaAutocomplete() {
-        return cadenaAutocomplete;
+    private void usuarioSession() {
+        usuarioSession = new Usuario();
+        FacesContext context = FacesContext.getCurrentInstance();
+        LoginController loginController = (LoginController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "loginController");
+        usuarioSession = loginController.getUsuarioSesion();
+    }
+    
+    public void listarExpedienteUsuarioPaginado(Integer pagina) {
+        Expediente e = new Expediente();
+        if (pagina > 0) {
+            int paginado = ConstantesUtil.PAGINADO_10;
+            Integer ini = paginado * (pagina - 1) + 1;
+            Integer fin = paginado * pagina;
+            if (pagina == 0) {
+                ini = 1;
+                fin = 10;
+            }
+            e.setUsuarioRegistro(usuarioSession.getCodigo());
+            e.setIni(ini);
+            e.setFin(fin);
+
+            List<Expediente> list = expedienteService.expedienteBuscarUsuarioPaginado(e);
+            if (list.size() > 0) {
+                for (Expediente e1 : list) {
+                    e1.setEtapaDetalle(devolverEtapa(e1));
+                    if(StringUtils.isNoneBlank(e1.getNumero()))
+                       e1.setEstadoDetalle(detalleUltimoEstado(e1.getNumero()));
+                }
+                listadoGeneral = list;
+                nroPagina = pagina;
+            }
+        }
+    }
+    
+    private String detalleUltimoEstado(String numeroExpediente){
+        String retornaDetalle = etapaEstadoService.etapaEstadoUltimoEstado(numeroExpediente);
+        return retornaDetalle;
+    }
+    
+    private String devolverEtapa(Expediente e) {
+        String detalleEtapa = null;
+        if (e.getIdEtapa() != null) {
+            if (e.getIdEtapa() > 0) {
+                if (StringUtils.equals(e.getIndicadorEtapa(), "VIG")) {
+                    if (StringUtils.equals(e.getEstado(), "C")) {
+                        if (Objects.equals(e.getIdEtapa(), EtapaType.CALIFICACION_QUEJA.getKey())) {
+                            detalleEtapa = EtapaType.CALIFICACION_QUEJA.getValue();
+                        }
+                        if (Objects.equals(e.getIdEtapa(), EtapaType.INVESTIGACION_QUEJA.getKey())) {
+                            detalleEtapa = EtapaType.INVESTIGACION_QUEJA.getValue();
+                        }
+                        if (Objects.equals(e.getIdEtapa(), EtapaType.PERSUACION_QUEJA.getKey())) {
+                            detalleEtapa = EtapaType.PERSUACION_QUEJA.getValue();
+                        }
+                        if (Objects.equals(e.getIdEtapa(), EtapaType.SEGUIMIENTO_QUEJA.getKey())) {
+                            detalleEtapa = EtapaType.SEGUIMIENTO_QUEJA.getValue();
+                        }
+                        if (Objects.equals(e.getIdEtapa(), EtapaType.CALIFICACION_PETITORIO.getKey())) {
+                            detalleEtapa = EtapaType.CALIFICACION_PETITORIO.getValue();
+                        }
+                        if (Objects.equals(e.getIdEtapa(), EtapaType.GESTION_PETITORIO.getKey())) {
+                            detalleEtapa = EtapaType.GESTION_PETITORIO.getValue();
+                        }
+                        if (Objects.equals(e.getIdEtapa(), EtapaType.PERSUASION_PETITORIO.getKey())) {
+                            detalleEtapa = EtapaType.PERSUASION_PETITORIO.getValue();
+                        }
+                    } else {
+                        if (Objects.equals(e.getIdEtapa(), EtapaType.CALIFICACION_QUEJA.getKey())) {
+                            detalleEtapa = EtapaType.INVESTIGACION_QUEJA.getValue();
+                        }
+                        if (Objects.equals(e.getIdEtapa(), EtapaType.INVESTIGACION_QUEJA.getKey())) {
+                            detalleEtapa = EtapaType.PERSUACION_QUEJA.getValue();
+                        }
+                        if (Objects.equals(e.getIdEtapa(), EtapaType.PERSUACION_QUEJA.getKey())) {
+                            detalleEtapa = EtapaType.SEGUIMIENTO_QUEJA.getValue();
+                        }
+                        if (Objects.equals(e.getIdEtapa(), EtapaType.SEGUIMIENTO_QUEJA.getKey())) {
+                            detalleEtapa = EtapaType.SEGUIMIENTO_QUEJA.getValue();
+                        }
+                        if (Objects.equals(e.getIdEtapa(), EtapaType.CALIFICACION_PETITORIO.getKey())) {
+                            detalleEtapa = EtapaType.GESTION_PETITORIO.getValue();
+                        }
+                        if (Objects.equals(e.getIdEtapa(), EtapaType.GESTION_PETITORIO.getKey())) {
+                            detalleEtapa = EtapaType.PERSUASION_PETITORIO.getValue();
+                        }
+                        if (Objects.equals(e.getIdEtapa(), EtapaType.PERSUASION_PETITORIO.getKey())) {
+                            detalleEtapa = EtapaType.PERSUASION_PETITORIO.getValue();
+                        }
+                    }
+                } else {
+                    if (Objects.equals(e.getIdEtapa(), EtapaType.CALIFICACION_QUEJA.getKey())) {
+                        detalleEtapa = EtapaType.CALIFICACION_QUEJA.getValue();
+                    }
+                    if (Objects.equals(e.getIdEtapa(), EtapaType.INVESTIGACION_QUEJA.getKey())) {
+                        detalleEtapa = EtapaType.INVESTIGACION_QUEJA.getValue();
+                    }
+                    if (Objects.equals(e.getIdEtapa(), EtapaType.PERSUACION_QUEJA.getKey())) {
+                        detalleEtapa = EtapaType.PERSUACION_QUEJA.getValue();
+                    }
+                    if (Objects.equals(e.getIdEtapa(), EtapaType.SEGUIMIENTO_QUEJA.getKey())) {
+                        detalleEtapa = EtapaType.SEGUIMIENTO_QUEJA.getValue();
+                    }
+                    if (Objects.equals(e.getIdEtapa(), EtapaType.CALIFICACION_PETITORIO.getKey())) {
+                        detalleEtapa = EtapaType.CALIFICACION_PETITORIO.getValue();
+                    }
+                    if (Objects.equals(e.getIdEtapa(), EtapaType.GESTION_PETITORIO.getKey())) {
+                        detalleEtapa = EtapaType.GESTION_PETITORIO.getValue();
+                    }
+                    if (Objects.equals(e.getIdEtapa(), EtapaType.PERSUASION_PETITORIO.getKey())) {
+                        detalleEtapa = EtapaType.PERSUASION_PETITORIO.getValue();
+                    }
+                }
+            }
+        }
+        return detalleEtapa;
     }
 
-    public void setCadenaAutocomplete(String cadenaAutocomplete) {
-        this.cadenaAutocomplete = cadenaAutocomplete;
-    }
-
-    public List<Busqueda> getListadoGeneral() {
+    public List<Expediente> getListadoGeneral() {
         return listadoGeneral;
     }
 
-    public void setListadoGeneral(List<Busqueda> listadoGeneral) {
+    public void setListadoGeneral(List<Expediente> listadoGeneral) {
         this.listadoGeneral = listadoGeneral;
     }
 
-    public Busqueda getBusqueda() {
-        return busqueda;
+    public Expediente getExpediente() {
+        return expediente;
     }
 
-    public void setBusqueda(Busqueda busqueda) {
-        this.busqueda = busqueda;
+    public void setExpediente(Expediente expediente) {
+        this.expediente = expediente;
     }
 
+    public Usuario getUsuarioSession() {
+        return usuarioSession;
+    }
+
+    public void setUsuarioSession(Usuario usuarioSession) {
+        this.usuarioSession = usuarioSession;
+    }
+
+    public Integer getNroPagina() {
+        return nroPagina;
+    }
+
+    public void setNroPagina(Integer nroPagina) {
+        this.nroPagina = nroPagina;
+    }
+    
+    
 }

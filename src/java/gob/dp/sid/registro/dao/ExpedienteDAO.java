@@ -26,6 +26,8 @@ public interface ExpedienteDAO {
     
     public List<Expediente> expedienteBuscarUsuarioPaginado(Expediente expediente); 
     
+    //public List<Expediente> expedienteBuscarUsuarioPaginadoGeneral(Expediente expediente); 
+    
     public List<Expediente> expedienteReporteMesUsuario(Expediente expediente); 
     
     public List<Expediente> expedientexPersona(long idPersona); 
@@ -37,4 +39,6 @@ public interface ExpedienteDAO {
     public Expediente expedienteBuscarActivoEtapa(Expediente expediente);
     
     public Expediente expedienteBuscarPorId(Long idExpediente);
+    
+    public Long expedienteCodigoPorOD(Long codigoOD);
 }

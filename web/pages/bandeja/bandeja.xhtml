@@ -113,13 +113,13 @@
                                             </div>
                                         </td>
                                         <td class="mail-ontact" style="width: 34%;">
-                                            <a jsf:action="#{bandejaController.verMensajeBandeja(x)}">
+                                            <a jsf:action="#{bandejaController.verMensajeBandeja(x)}" style="color: #{x.estado == 'VIS'? '' : 'black'} ;">
                                                 #{x.nombreRemitente}
                                             </a>
                                         </td>
                                         <td class="mail-subject" style="width: 35%">
                                             <span class="label pull-left" style="color: white; background-color: #{x.colorTipo}">#{x.detalleTipo}</span>
-                                            <a jsf:action="#{bandejaController.verMensajeBandeja(x)}">
+                                            <a jsf:action="#{bandejaController.verMensajeBandeja(x)}" style="color: #{x.estado == 'VIS'? '' : 'black'} ;">
                                                 #{x.titulo}
                                             </a>
                                         </td>

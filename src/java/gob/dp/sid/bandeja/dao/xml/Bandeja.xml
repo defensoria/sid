@@ -18,7 +18,7 @@
         <result property="numeroExpediente" column="C_NUMEROEXPEDIENTE"/>
         <result property="idExpediente" column="N_IDEXPEDIENTE"/>
         <result property="idAccion" column="N_ID_ACCION"/>
-        <result property="oficinaDefensorial" column="C_OFICINADEFENSORIAL"/>
+        <result property="tituloMensaje" column="C_TITULOMENSAJE"/>
     </resultMap> 
     
     
@@ -67,8 +67,8 @@
         <if test="idAccion != null">
             N_ID_ACCION,
         </if>
-        <if test="oficinaDefensorial != null">
-            C_OFICINADEFENSORIAL,
+        <if test="tituloMensaje != null">
+            C_TITULOMENSAJE,
         </if>
         
         N_ID_BANDEJA
@@ -117,8 +117,8 @@
         <if test="idAccion != null">
             #{idAccion},
         </if>
-        <if test="oficinaDefensorial != null">
-            #{oficinaDefensorial},
+        <if test="tituloMensaje != null">
+            #{tituloMensaje},
         </if>
         SEQ_SID_MSG_BANDEJA.NextVal
         )
@@ -127,8 +127,19 @@
         </selectKey>
     </insert>
     
+    <update id="mensajeEstadoVisto" parameterType="long">
+        UPDATE SID_MSG_BANDEJA
+        <set>
+            C_ESTADO = 'VIS'
+        </set>
+        <where>
+            N_ID_BANDEJA = #{id}
+        </where>
+    </update>
+    
     <select id="bandejaBuscarUsuario" resultMap="bandejaMap" parameterType="String" >
         SELECT * FROM SID_MSG_BANDEJA WHERE C_DESTINATARIO = #{value}
+        ORDER BY N_ID_BANDEJA DESC
     </select>
     
 </mapper>

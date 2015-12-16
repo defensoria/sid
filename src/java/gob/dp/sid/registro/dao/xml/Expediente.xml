@@ -28,9 +28,12 @@
         <result property="ingresoTipoNombre" column="TIPOINGRESO"/>
         <result property="ingresoTipoTema" column="TIPOTEMA"/>
         <result property="ingresoTipoSubTema" column="TIPOSUBTEMA"/>
+        <result property="indDerivado" column="C_INDDERIVADO"/>
         <result property="count" column="TOTAL"/>
         <result property="mes" column="MES"/>
         <result property="usuarioCompleto" column="USUARIOCOMPLETO"/>
+        <result property="codigoOD" column="N_CODIGOOD"/>
+        <result property="consecutivo" column="N_CONSECUTIVO"/>
         
         <result property="etapaDetalle" column="C_VALOR"/>
         <result property="indicadorEtapa" column="C_INDICADORETAPA"/>
@@ -99,6 +102,15 @@
         <if test="etiqueta != null">
             C_ETIQUETA,
         </if>
+        <if test="indDerivado != null">
+            C_INDDERIVADO,
+        </if>
+        <if test="codigoOD != null">
+            N_CODIGOOD,
+        </if>
+        <if test="consecutivo != null">
+            N_CONSECUTIVO,
+        </if>
         C_ESTADOGENERAL,
         N_IDEXPEDIENTE
         )
@@ -160,6 +172,15 @@
         </if>
         <if test="etiqueta != null">
             #{etiqueta},
+        </if>
+        <if test="indDerivado != null">
+            #{indDerivado},
+        </if>
+        <if test="codigoOD != null">
+            #{codigoOD},
+        </if>
+        <if test="consecutivo != null">
+            #{consecutivo},
         </if>
         'A',
         SEQ_SID_REG_EXPEDIENTE.NextVal
@@ -324,8 +345,8 @@
         SELECT A.*, B.NOMBRE_PARAMETRO AS TIPOCLASIFICACION FROM SID_REG_EXPEDIENTE A 
         INNER JOIN SID_PARAMETRO B ON A.C_TIPOCLASIFICACION = B.VALOR_PARAMETRO
         AND B.PADRE_PARAMETRO = 10
-INNER JOIN SID_REG_EXPEDE_PERSONA C ON A.N_IDEXPEDIENTE = C.N_IDEXPEDIENTE
-WHERE C.N_IDPERSONA = #{id} AND A.C_ESTADO = 'A'
+        INNER JOIN SID_REG_EXPEDE_PERSONA C ON A.N_IDEXPEDIENTE = C.N_IDEXPEDIENTE
+        WHERE C.N_IDPERSONA = #{id} AND A.C_ESTADO = 'A'
         ORDER BY A.N_IDEXPEDIENTE DESC
     </select>
     
@@ -362,5 +383,26 @@ WHERE C.N_IDPERSONA = #{id} AND A.C_ESTADO = 'A'
         WHERE A.C_ESTADO = 'A' AND A.N_IDEXPEDIENTE = #{id}
     </select>
     
-    
+    <select id="expedienteCodigoPorOD" resultType="Long" parameterType="Long">
+        SELECT MAX(N_CONSECUTIVO) as N_CONSECUTIVO FROM SID_REG_EXPEDIENTE WHERE N_CODIGOOD = #{id} AND TO_CHAR(D_FECHAREGISTRO, 'YYYY') = TO_CHAR(SYSDATE, 'YYYY')
+    </select>
+    <!--
+    <select id="expedienteBuscarUsuarioPaginadoGeneral" resultMap="expedienteMap" parameterType="expediente">
+        SELECT A.*
+        FROM (
+        SELECT
+        B.*,
+        ROWNUM numfila
+        FROM (
+        SELECT A.*, B.NOMBRE_PARAMETRO AS TIPOCLASIFICACION, C.C_INDICADORETAPA, C.N_ID_ETAPA, D.C_NOMBRE FROM SID_REG_EXPEDIENTE A
+        INNER JOIN SID_PARAMETRO B ON A.C_TIPOCLASIFICACION = B.VALOR_PARAMETRO AND B.PADRE_PARAMETRO = 10
+        LEFT JOIN SID_REG_ETAPA_ESTADO C ON A.N_IDEXPEDIENTE = C.N_ID_EXPEDIENTE
+        LEFT JOIN SID_REG_ESTADO D ON C.N_ID_ESTADO = D.N_ID_ESTADO
+        WHERE A.C_USUREGISTRO  = #{usuarioRegistro}
+        AND A.C_ESTADO = 'A'
+        ORDER BY A.N_IDEXPEDIENTE DESC
+        ) B
+        ) A WHERE a.numfila BETWEEN #{ini} AND #{fin}
+    </select>
+    -->
 </mapper>
