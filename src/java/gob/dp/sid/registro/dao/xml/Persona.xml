@@ -7,7 +7,8 @@
         <result property="nombre" column="C_NOMBRE"/>
         <result property="apellidoPat" column="C_APELLIDOPAT"/>
         <result property="apellidoMat" column="C_APELLIDOMAT"/>
-        <result property="dni" column="C_DNI"/>
+        <result property="numeroDocumento" column="C_NUMERODOCUMENTO"/>
+        <result property="tipoDocumento" column="C_TIPODOCUMENTO"/>
         <result property="direccion" column="C_DIRECCION"/>
         <result property="email" column="C_EMAIL"/>
         <result property="telefono1" column="C_TELEFONO1"/>
@@ -34,8 +35,11 @@
         <if test="apellidoMat != null">
             C_APELLIDOMAT,
         </if>
-        <if test="dni != null">
-            C_DNI,
+        <if test="numeroDocumento != null">
+            C_NUMERODOCUMENTO,
+        </if>
+        <if test="tipoDocumento != null">
+            C_TIPODOCUMENTO,
         </if>
         <if test="ruc != null">
             C_RUC,
@@ -86,8 +90,11 @@
         <if test="apellidoMat != null">
             #{apellidoMat},
         </if>
-        <if test="dni != null">
-            #{dni},
+        <if test="numeroDocumento != null">
+            #{numeroDocumento},
+        </if>
+        <if test="tipoDocumento != null">
+            #{tipoDocumento},
         </if>
         <if test="ruc != null">
             #{ruc},
@@ -142,8 +149,11 @@
         <if test="apellidoMat != null">
             C_APELLIDOMAT = UPPER(#{apellidoMat}),
         </if>
-        <if test="dni != null">
-            C_DNI = #{dni},
+        <if test="numeroDocumento != null">
+            C_NUMERODOCUMENTO = #{numeroDocumento},
+        </if>
+        <if test="tipoDocumento != null">
+            C_TIPODOCUMENTO = #{tipoDocumento},
         </if>
         <if test="ruc != null">
             C_RUC = #{ruc},
@@ -186,7 +196,7 @@
         SELECT B.* FROM (
         SELECT A.*,ROWNUM numfila FROM (
         SELECT * FROM SID_REG_PERSONA
-        WHERE UPPER(C_NOMBRE||C_APELLIDOPAT||C_APELLIDOMAT||C_DNI) LIKE '%'||UPPER(#{cadenaPersona})||'%'
+        WHERE UPPER(C_NOMBRE||C_APELLIDOPAT||C_APELLIDOMAT||C_NUMERODOCUMENTO) LIKE '%'||UPPER(#{cadenaPersona})||'%'
         ) A
         ) B
         WHERE 1 = 1
@@ -214,8 +224,8 @@ SELECT DISTINCT A.* FROM SID_REG_PERSONA A
         <if test="numeroExpediente != null">
             AND C.C_NUMEROEXPEDIENTE = #{numeroExpediente}
         </if>
-        <if test="dni != null">
-            AND A.C_DNI LIKE '%'||#{dni}||'%'
+        <if test="numeroDocumento != null">
+            AND A.C_NUMERODOCUMENTO LIKE '%'||#{numeroDocumento}||'%'
         </if>
         ORDER BY A.N_IDPERSONA
 ) A
@@ -227,7 +237,7 @@ SELECT DISTINCT A.* FROM SID_REG_PERSONA A
     
     
     <select id="personaValidaDNI" resultType="Long" parameterType="String" >
-        SELECT COUNT(*) FROM SID_REG_PERSONA WHERE C_DNI =  #{value}
+        SELECT COUNT(*) FROM SID_REG_PERSONA WHERE C_NUMERODOCUMENTO =  #{value}
     </select>
     
 </mapper>

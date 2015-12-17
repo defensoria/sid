@@ -9,7 +9,7 @@
         <result property="persona.nombre" column="C_NOMBRE"/>
         <result property="persona.apellidoPat" column="C_APELLIDOPAT"/>
         <result property="persona.apellidoMat" column="C_APELLIDOMAT"/>
-        <result property="persona.dni" column="C_DNI"/>
+        <result property="persona.numeroDocumento" column="C_NUMERODOCUMENTO"/>
     </resultMap> 
     
     
@@ -58,7 +58,7 @@
     </select>
     
     <select id="expedientePersonaBuscarXExpediente" resultMap="expedientePersonaMap"  parameterType="long">
-        SELECT A.*, B.C_NOMBRE, B.C_APELLIDOPAT, B.C_APELLIDOMAT, B.C_DNI 
+        SELECT A.*, B.C_NOMBRE, B.C_APELLIDOPAT, B.C_APELLIDOMAT, B.C_NUMERODOCUMENTO 
         FROM SID_REG_EXPEDE_PERSONA A
         INNER JOIN SID_REG_PERSONA B ON A.N_IDPERSONA = B.N_IDPERSONA
         WHERE A.N_IDEXPEDIENTE = #{id}

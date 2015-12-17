@@ -8,6 +8,8 @@ package gob.dp.sid.comun.controller;
 import gob.dp.sid.comun.ConstantesUtil;
 import gob.dp.sid.comun.entity.Parametro;
 import gob.dp.sid.comun.service.CacheService;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import javax.inject.Named;
 import org.apache.log4j.Logger;
@@ -57,6 +59,28 @@ public class ListasComunesController {
     
     public List<Parametro> buscarGestionTipoCalidadRespuesta(boolean insertarTODOS, boolean insertarNINGUNO, boolean insertarSELECCIONE) {
         return insertarValoresDefectoParametro(cacheService.buscarGestionTipoCalidadRespuesta(), insertarTODOS, insertarNINGUNO, insertarSELECCIONE);
+    }
+    
+    public List<Parametro> buscarAcogimientoRecomendaciones(boolean insertarTODOS, boolean insertarNINGUNO, boolean insertarSELECCIONE) {
+        return insertarValoresDefectoParametro(cacheService.buscarAcogimientoRecomendaciones(), insertarTODOS, insertarNINGUNO, insertarSELECCIONE);
+    }
+    
+    public List<Parametro> buscarDocumentoGestion(boolean insertarTODOS, boolean insertarNINGUNO, boolean insertarSELECCIONE) {
+        return insertarValoresDefectoParametro(cacheService.buscarDocumentoGestion(), insertarTODOS, insertarNINGUNO, insertarSELECCIONE);
+    }
+    
+    public List<Parametro> buscarTipoDocumento(boolean insertarTODOS, boolean insertarNINGUNO, boolean insertarSELECCIONE) {
+        List<Parametro> lista = insertarValoresDefectoParametro(cacheService.buscarTipoDocumento(), insertarTODOS, insertarNINGUNO, insertarSELECCIONE);
+        
+        Collections.sort(lista, new Comparator<Parametro>() {
+
+			@Override
+			public int compare(Parametro o1, Parametro o2) {
+				return o1.getCodigoParametro().compareTo(o2.getCodigoParametro());
+			}
+
+		});
+        return lista;
     }
 
     private List insertarValoresDefectoParametro(List lst, boolean insertarTODOS, boolean insertarNINGUNO, boolean insertarSELECCIONE) {

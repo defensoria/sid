@@ -38,6 +38,12 @@ public class CacheServiceImpl implements CacheService{
     private static final Integer CACHE_PARAMETRO_GESTION_TIPO_ACCION = 70;
     
     private static final Integer CACHE_PARAMETRO_GESTION_TIPO_CALIDAD_RESPUESTA = 80;
+    
+    private static final Integer CACHE_PARAMETRO_ACOGIMIENTO_RECOMENDACIONES = 90;
+    
+    private static final Integer CACHE_PARAMETRO_DOCUMENTO_GESTION = 100;
+    
+    private static final Integer CACHE_PARAMETRO_TIPO_DOCUMENTO = 110;
 
     private volatile HashMap<Integer, Object> contenedor = null;
 
@@ -107,6 +113,21 @@ public class CacheServiceImpl implements CacheService{
         return buscarParametro(CACHE_PARAMETRO_GESTION_TIPO_CALIDAD_RESPUESTA, CACHE_PARAMETRO_GESTION_TIPO_CALIDAD_RESPUESTA);
     }
     
+    @Override
+    public List<Parametro> buscarAcogimientoRecomendaciones() {
+        return buscarParametro(CACHE_PARAMETRO_ACOGIMIENTO_RECOMENDACIONES, CACHE_PARAMETRO_ACOGIMIENTO_RECOMENDACIONES);
+    }
+    
+    @Override
+    public List<Parametro> buscarDocumentoGestion() {
+        return buscarParametro(CACHE_PARAMETRO_DOCUMENTO_GESTION, CACHE_PARAMETRO_DOCUMENTO_GESTION);
+    }
+    
+    @Override
+    public List<Parametro> buscarTipoDocumento() {
+        return buscarParametro(CACHE_PARAMETRO_TIPO_DOCUMENTO, CACHE_PARAMETRO_TIPO_DOCUMENTO);
+    }
+    
     private Object getElemento(Integer key) {
         if (this.contenedor == null) {
             return null;
@@ -116,7 +137,7 @@ public class CacheServiceImpl implements CacheService{
 
     private synchronized void putElemento(Integer key, Object objeto) {
         if (this.contenedor == null) {
-            this.contenedor = new HashMap<Integer, Object>();
+            this.contenedor = new HashMap<>();
         }
         this.contenedor.put(key, objeto);
         notifyAll();

@@ -12,17 +12,17 @@
                 <ul class="nav nav-tabs">
                     <li role="presentation" >
                         <a style="cursor: pointer" jsf:rendered="true" jsf:action="expedienteNuevo">
-                            <span style="font-size: medium; color: purple" class="glyphicon glyphicon-list-alt" > Expediente</span>
+                            <span style="font-size: medium; color: purple" class="glyphicon glyphicon-list-alt" > Datos generales</span>
                         </a>
                     </li>
                     <li role="presentation" class="active">
                         <a style="cursor: pointer" jsf:rendered="#{registroController.etapaEstado.idEtapa > 0}" jsf:action="#{registroController.cargarExpedienteGestionLista()}">
-                            <span style="font-size: large; color: #007ACC; font-weight: bold" class="glyphicon glyphicon-list-alt"> Gestiones</span>
+                            <span style="font-size: large; color: #007ACC; font-weight: bold" class="glyphicon glyphicon-list-alt"> Gestiones externas</span>
                         </a>
                     </li>
                     <li role="presentation">
                         <a style="cursor: pointer" jsf:rendered="#{registroController.etapaEstado.idEtapa > 0}" jsf:action="#{registroController.inicioAcciones()}">
-                            <span style="font-size: medium; color: purple" class="glyphicon glyphicon-list-alt" > Acciones pendientes</span>
+                            <span style="font-size: medium; color: purple" class="glyphicon glyphicon-list-alt" > Gestiones internas</span>
                         </a>
                     </li>
                 </ul>

@@ -80,6 +80,18 @@ public class ExpedienteGestion implements Serializable{
     
     private Boolean indicadorSeleccionHoraFin;
     
+    private Boolean indicadorRecomendacion;
+    
+    private String documentoRespuesta;
+    
+    private String tipoAcogimiento;
+    
+    private String ruta1;
+    
+    private String ruta2;
+    
+    private String documentoGestion;
+    
     /**RESPUESTA**/
     private String nota;
     
@@ -417,6 +429,54 @@ public class ExpedienteGestion implements Serializable{
 
     public void setDetalleTipo(String detalleTipo) {
         this.detalleTipo = detalleTipo;
+    }
+
+    public Boolean getIndicadorRecomendacion() {
+        return indicadorRecomendacion;
+    }
+
+    public void setIndicadorRecomendacion(Boolean indicadorRecomendacion) {
+        this.indicadorRecomendacion = indicadorRecomendacion;
+    }
+
+    public String getDocumentoRespuesta() {
+        return documentoRespuesta;
+    }
+
+    public void setDocumentoRespuesta(String documentoRespuesta) {
+        this.documentoRespuesta = documentoRespuesta;
+    }
+
+    public String getTipoAcogimiento() {
+        return tipoAcogimiento;
+    }
+
+    public void setTipoAcogimiento(String tipoAcogimiento) {
+        this.tipoAcogimiento = tipoAcogimiento;
+    }
+
+    public String getRuta1() {
+        return ruta1;
+    }
+
+    public void setRuta1(String ruta1) {
+        this.ruta1 = ruta1;
+    }
+
+    public String getRuta2() {
+        return ruta2;
+    }
+
+    public void setRuta2(String ruta2) {
+        this.ruta2 = ruta2;
+    }
+
+    public String getDocumentoGestion() {
+        return documentoGestion;
+    }
+
+    public void setDocumentoGestion(String documentoGestion) {
+        this.documentoGestion = documentoGestion;
     }
     
 }

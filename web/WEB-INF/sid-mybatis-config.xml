@@ -31,7 +31,6 @@
         <typeAlias type="gob.dp.sid.comun.entity.Provincia" alias="provincia"/>
         <typeAlias type="gob.dp.sid.comun.entity.Distrito" alias="distrito"/>
         <typeAlias type="gob.dp.sid.comun.entity.Menu" alias="menu"/>
-        <typeAlias type="gob.dp.sid.comun.entity.Busqueda" alias="busqueda"/>
         
         <typeAlias type="gob.dp.sid.registro.entity.Expediente" alias="expediente"/>
         <typeAlias type="gob.dp.sid.registro.entity.Persona" alias="persona"/>
@@ -60,7 +59,6 @@
         <mapper resource="gob/dp/sid/comun/dao/xml/Provincia.xml" />
         <mapper resource="gob/dp/sid/comun/dao/xml/Distrito.xml" />
         <mapper resource="gob/dp/sid/comun/dao/xml/Menu.xml" />
-        <mapper resource="gob/dp/sid/comun/dao/xml/Busqueda.xml" />
         <mapper resource="gob/dp/sid/comun/dao/xml/Parametro.xml" />
         
         <mapper resource="gob/dp/sid/registro/dao/xml/Expediente.xml" />

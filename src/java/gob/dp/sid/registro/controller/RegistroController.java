@@ -49,7 +49,11 @@ import gob.dp.sid.registro.service.ExpedienteService;
 import gob.dp.sid.registro.service.GestionEtapaService;
 import gob.dp.sid.registro.service.OficinaDefensorialService;
 import gob.dp.sid.registro.service.PersonaService;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
+import java.nio.file.Files;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -60,6 +64,8 @@ import java.util.Objects;
 import javax.inject.Named;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import javax.servlet.http.Part;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -182,6 +188,10 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     private ExpedienteDerivacion expedienteDerivacionAprueba;
     
     private ExpedienteDerivacion expedienteDerivacionReasigna;
+    
+    private Part file1;
+    
+    private Part file2;
 
     @Autowired
     private ExpedienteService expedienteService;
@@ -449,6 +459,10 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     }
 
     public String registarExpedienteGestion() {
+        String ruta1 = uploadArchive(file1);
+        String ruta2 = uploadArchive(file2);
+        expedienteGestion.setRuta1(ruta1);
+        expedienteGestion.setRuta2(ruta2);
         if (StringUtils.isBlank(expedienteGestion.getCodigoGestion())) {
             DateFormat format = new SimpleDateFormat("yyMMddHHmmss");
             String formato = format.format(new Date());
@@ -752,8 +766,8 @@ public class RegistroController extends AbstractManagedBean implements Serializa
 
     public boolean buscarPersonaGeneral(Long pagina) {
         int i = 0;
-        if (stringUtil.isBlank(personaBusqueda.getDni())) {
-            personaBusqueda.setDni(null);
+        if (stringUtil.isBlank(personaBusqueda.getNumeroDocumento())) {
+            personaBusqueda.setNumeroDocumento(null);
             i++;
         }
         if (stringUtil.isBlank(personaBusqueda.getApellidoPat())) {
@@ -1449,15 +1463,15 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     }
 
     public boolean guardarVincularListaPersona() {
-        if (StringUtils.isBlank(persona.getDni())) {
-            msg.messageAlert("Debe ingresar un DNI", null);
+        if (StringUtils.isBlank(persona.getNumeroDocumento())) {
+            msg.messageAlert("Debe ingresar el numero del documento", null);
             return false;
-        } else {
-            if (persona.getDni().length() != 8) {
+        } /*else {
+            if (persona.getNumeroDocumento().length() != 8) {
                 msg.messageAlert("El número de DNI debe contar con 8 caracteres", null);
                 return false;
             }
-        }
+        }*/
         persona.setUsuRegistro(usuarioSession.getCodigo());
         persona.setFechaRegistro(new Date());
         persona.setFechaModificacion(new Date());
@@ -1592,6 +1606,41 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 }
             }
             //Provincia prov = ubigeoService.provinciaOne(id);
+        }
+    }
+    
+    private String uploadArchive(Part fil){
+        String nameArchive = getFilename(fil);
+        String extencion = getFileExtension(getFilename(fil));
+        if(StringUtils.isNoneBlank(nameArchive)){
+            String formato = RandomStringUtils .random(32, 0, 20, true, true, "qw32rfHIJk9iQ8Ud7h0X".toCharArray());
+            String ruta = formato + extencion;
+            File file = new File(ConstantesUtil.FILE_SYSTEM+ruta);
+            try (InputStream input = fil.getInputStream()) {
+                Files.copy(input, file.toPath());
+            } catch (IOException ex) {
+                log.error(ex.getCause());
+            }
+            return ruta;
+            }
+        return null;
+    }
+    
+    private static String getFilename(Part part) {
+        for (String cd : part.getHeader("content-disposition").split(";")) {
+            if (cd.trim().startsWith("filename")) {
+                String filename = cd.substring(cd.indexOf("=") + 1).trim().replace("\"", "");
+                return filename.substring(filename.lastIndexOf('/') + 1).substring(filename.lastIndexOf('\\') + 1);
+            }
+        }
+        return null;
+    }
+    
+    private String getFileExtension(String name) {
+        try {
+            return name.substring(name.lastIndexOf("."));
+        } catch (Exception e) {
+            return "";
         }
     }
 
@@ -2069,6 +2118,22 @@ public class RegistroController extends AbstractManagedBean implements Serializa
 
     public void setExpedienteDerivacionReasigna(ExpedienteDerivacion expedienteDerivacionReasigna) {
         this.expedienteDerivacionReasigna = expedienteDerivacionReasigna;
+    }
+
+    public Part getFile1() {
+        return file1;
+    }
+
+    public void setFile1(Part file1) {
+        this.file1 = file1;
+    }
+
+    public Part getFile2() {
+        return file2;
+    }
+
+    public void setFile2(Part file2) {
+        this.file2 = file2;
     }
 
  

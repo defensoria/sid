@@ -22,7 +22,7 @@
                                                 <table>
                                                     <tr>
                                                         <td colspan="2" style="padding-bottom: 5px">
-                                                            <input jsf:value="#{registroController.personaBusqueda.dni}" onkeypress="return soloNumbero(event)" autocomplete="off" maxlength="8" type="text" placeholder="Documento" />
+                                                            <input jsf:value="#{registroController.personaBusqueda.numeroDocumento}" onkeypress="return soloNumbero(event)" autocomplete="off" maxlength="8" type="text" placeholder="Documento" />
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -81,9 +81,17 @@
                                                                 <div class="panel-body">
                                                                     <table style="width: 100%">
                                                                         <tr>
-                                                                            <td style="width: 20%"><b>DNI:</b></td>
+                                                                                    <td style="width: 20%"><b>Tipo de documento:</b></td>
+                                                                                    <td style="padding-bottom: 10px;">
+                                                                                        <h:selectOneMenu value="#{registroController.persona.tipoDocumento}" style="width: 50%">
+                                                            <f:selectItems value="#{listasComunesController.buscarTipoDocumento(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
+                                                        </h:selectOneMenu>
+                                                                                    </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td style="width: 20%"><b>Número documento</b></td>
                                                                             <td style="padding-bottom: 10px;">
-                                                                                <input type="text" placeholder="DNI" jsf:value="#{registroController.persona.dni}" style="width: 50%" maxlength="8"/>
+                                                                                <input type="text" placeholder="Número documento" jsf:value="#{registroController.persona.numeroDocumento}" style="width: 50%" maxlength="8"/>
                                                                             </td>
                                                                         </tr>
                                                                         <tr>
@@ -182,7 +190,7 @@
                                                         </h:column>
                                                         <h:column>
                                                             <f:facet name="header">Documento</f:facet>
-                                                            <h:outputText value="#{per.dni}" />
+                                                            <h:outputText value="#{per.numeroDocumento}" />
                                                         </h:column>
                                                         <h:column>
                                                             <a jsf:action="#{registroController.setearPersonaSeleccionada(per)}" >                            
@@ -219,16 +227,16 @@
                                                             <td><span class="text-bold">Nombre: </span><span >#{registroController.personaSeleccionada.nombre} #{registroController.personaSeleccionada.apellidoPat} #{registroController.personaSeleccionada.apellidoMat}</span></td>
                                                         </tr>
                                                         <tr>
-                                                            <td><span class="text-bold">DNI: </span><span>#{registroController.personaSeleccionada.dni}</span></td>
+                                                            <td><span class="text-bold">Número documento: </span><span>#{registroController.personaSeleccionada.numeroDocumento}</span></td>
                                                         </tr>
                                                         <tr>
                                                             <td>
-                                                                <span class="text-bold">Direccion: </span><span>#{registroController.personaSeleccionada.direccion}</span><br/>
+                                                                <span class="text-bold">Dirección: </span><span>#{registroController.personaSeleccionada.direccion}</span><br/>
                                                                 <span class="text-bold">Ubigeo: </span><span>#{registroController.personaSeleccionada.nombreDepartamento} / #{registroController.personaSeleccionada.nombreProvincia} / #{registroController.personaSeleccionada.nombreDistrito}</span><br/>
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td><span class="text-bold">Telefono: </span><span>#{registroController.personaSeleccionada.telefono1}</span></td>
+                                                            <td><span class="text-bold">Teléfono: </span><span>#{registroController.personaSeleccionada.telefono1}</span></td>
                                                         </tr>
                                                         <tr>
                                                             <td><span class="text-bold">Correo electronico: </span><span>#{registroController.personaSeleccionada.email}</span></td>

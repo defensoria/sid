@@ -9,7 +9,7 @@
     <ui:composition template="../template/template.xhtml">
 
         <ui:define name="content">
-            <h:form id="idFormTemplate" class="form-horizontal">
+            <h:form id="idFormTemplate" class="form-horizontal" enctype="multipart/form-data">
                 <h:messages />
                 
                 <table style="width: 100%">
@@ -188,36 +188,36 @@
                                                                             <td style="padding-right: 10px; width: 70%;">
                                                                                 <h:selectOneRadio rendered="#{registroController.etapaEstado.verEtapa == 1}"  value="#{registroController.expediente.estadoCalificacion}">
                                                                                     <f:selectItems value="#{registroController.listaEstadoCalificacionQueja}"  />
-                                                                                    <f:ajax listener="#{registroController.pintar()}" render="idPanelEstado" execute="@form"/>
+                                                                                    <f:ajax render="idPanelEstado" execute="@form"/>
                                                                                 </h:selectOneRadio>
 
                                                                                 <h:selectOneRadio rendered="#{registroController.etapaEstado.verEtapa == 2}"  value="#{registroController.expediente.estadoInvestigacion}">
                                                                                     <f:selectItems value="#{registroController.listaEstadoInvestigacionQueja}"  />
-                                                                                    <f:ajax listener="#{registroController.pintar()}" render="idPanelEstado" execute="@form"/>
+                                                                                    <f:ajax render="idPanelEstado" execute="@form"/>
                                                                                 </h:selectOneRadio>
 
                                                                                 <h:selectOneRadio rendered="#{registroController.etapaEstado.verEtapa == 3}"  value="#{registroController.expediente.estadoPersuacion}">
                                                                                     <f:selectItems value="#{registroController.listaEstadoPersuacionQueja}"  />
-                                                                                    <f:ajax listener="#{registroController.pintar()}" render="idPanelEstado" execute="@form"/>
+                                                                                    <f:ajax render="idPanelEstado" execute="@form"/>
                                                                                 </h:selectOneRadio>
 
                                                                                 <h:selectOneRadio rendered="#{registroController.etapaEstado.verEtapa == 4}"  value="#{registroController.expediente.estadoSeguimiento}">
                                                                                     <f:selectItems value="#{registroController.listaEstadoSeguimientoQueja}"  />
-                                                                                    <f:ajax listener="#{registroController.pintar()}" render="idPanelEstado" execute="@form"/>
+                                                                                    <f:ajax render="idPanelEstado" execute="@form"/>
                                                                                 </h:selectOneRadio>
                                                                                 <h:selectOneRadio rendered="#{registroController.etapaEstado.verEtapa == 5}"  value="#{registroController.expediente.estadoCalificacion}">
                                                                                     <f:selectItems value="#{registroController.listaEstadoCalificacionPetitorio}"  />
-                                                                                    <f:ajax listener="#{registroController.pintar()}" render="idPanelEstado" execute="@form"/>
+                                                                                    <f:ajax render="idPanelEstado" execute="@form"/>
                                                                                 </h:selectOneRadio>
 
                                                                                 <h:selectOneRadio rendered="#{registroController.etapaEstado.verEtapa == 6}"  value="#{registroController.expediente.estadoGestion}">
                                                                                     <f:selectItems value="#{registroController.listaEstadoGestionPetitorio}"  />
-                                                                                    <f:ajax listener="#{registroController.pintar()}" render="idPanelEstado" execute="@form"/>
+                                                                                    <f:ajax render="idPanelEstado" execute="@form"/>
                                                                                 </h:selectOneRadio>            
 
                                                                                 <h:selectOneRadio rendered="#{registroController.etapaEstado.verEtapa == 7}"  value="#{registroController.expediente.estadoPersuacion}">
                                                                                     <f:selectItems value="#{registroController.listaEstadoPersuacionPetitorio}"  />
-                                                                                    <f:ajax listener="#{registroController.pintar()}" render="idPanelEstado" execute="@form"/>
+                                                                                    <f:ajax render="idPanelEstado" execute="@form"/>
                                                                                 </h:selectOneRadio>            
 
 

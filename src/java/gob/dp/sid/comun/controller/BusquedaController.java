@@ -63,21 +63,20 @@ public class BusquedaController implements Serializable{
         usuarioSession = loginController.getUsuarioSesion();
     }
     
-    public void listarExpedienteUsuarioPaginado(Integer pagina) {
-        Expediente e = new Expediente();
+    public String listarExpedienteUsuarioPaginado(Integer pagina) {
         if (pagina > 0) {
-            int paginado = ConstantesUtil.PAGINADO_10;
+            int paginado = ConstantesUtil.PAGINADO_20;
             Integer ini = paginado * (pagina - 1) + 1;
             Integer fin = paginado * pagina;
             if (pagina == 0) {
                 ini = 1;
                 fin = 10;
             }
-            e.setUsuarioRegistro(usuarioSession.getCodigo());
-            e.setIni(ini);
-            e.setFin(fin);
+            expediente.setUsuarioRegistro(usuarioSession.getCodigo());
+            expediente.setIni(ini);
+            expediente.setFin(fin);
 
-            List<Expediente> list = expedienteService.expedienteBuscarUsuarioPaginado(e);
+            List<Expediente> list = expedienteService.expedienteBuscarUsuarioPaginado(expediente);
             if (list.size() > 0) {
                 for (Expediente e1 : list) {
                     e1.setEtapaDetalle(devolverEtapa(e1));
@@ -88,6 +87,7 @@ public class BusquedaController implements Serializable{
                 nroPagina = pagina;
             }
         }
+        return "busquedaGeneral";
     }
     
     private String detalleUltimoEstado(String numeroExpediente){

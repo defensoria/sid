@@ -31,4 +31,10 @@ public interface CacheService {
     
     public List<Parametro> buscarGestionTipoCalidadRespuesta();
     
+    public List<Parametro> buscarAcogimientoRecomendaciones();
+    
+    public List<Parametro> buscarDocumentoGestion();
+    
+    public List<Parametro> buscarTipoDocumento();
+    
 }

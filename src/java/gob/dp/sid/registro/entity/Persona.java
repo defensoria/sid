@@ -22,7 +22,9 @@ public class Persona implements Serializable{
     
     private String apellidoMat;
     
-    private String dni;
+    private String numeroDocumento;
+    
+    private String tipoDocumento;
     
     private String ruc;
     
@@ -94,14 +96,6 @@ public class Persona implements Serializable{
 
     public void setApellidoMat(String apellidoMat) {
         this.apellidoMat = apellidoMat;
-    }
-
-    public String getDni() {
-        return dni;
-    }
-
-    public void setDni(String dni) {
-        this.dni = dni;
     }
 
     public String getRuc() {
@@ -262,6 +256,22 @@ public class Persona implements Serializable{
 
     public void setCadenaPersona(String cadenaPersona) {
         this.cadenaPersona = cadenaPersona;
+    }
+
+    public String getNumeroDocumento() {
+        return numeroDocumento;
+    }
+
+    public void setNumeroDocumento(String numeroDocumento) {
+        this.numeroDocumento = numeroDocumento;
+    }
+
+    public String getTipoDocumento() {
+        return tipoDocumento;
+    }
+
+    public void setTipoDocumento(String tipoDocumento) {
+        this.tipoDocumento = tipoDocumento;
     }
     
     

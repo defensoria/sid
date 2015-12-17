@@ -37,7 +37,12 @@
         <result property="usuarioModificacion" column="C_USUMODIFICACION"/>
         <result property="fechaRegistro" column="D_FECHAREGISTRO"/>
         <result property="fechaModificacion" column="D_FECHAMODIFICACION"/>
-        
+        <result property="indicadorRecomendacion" column="C_INDRECOMENDACION"/>
+        <result property="documentoRespuesta" column="C_DOCUMENTORESPUESTA"/>
+        <result property="tipoAcogimiento" column="C_TIPOACOGIMIENTO"/>
+        <result property="ruta1" column="C_RUTA1"/>
+        <result property="ruta2" column="C_RUTA2"/>
+        <result property="documentoGestion" column="C_DOCUMENTOGESTION"/>
         <!--adionales-->
         <result property="nombreParametroTipo" column="NOMBRE_PARAMETRO"/>
         <result property="idEtapa" column="N_ID_ETAPA"/>
@@ -142,6 +147,24 @@
         <if test="fechaRegistro != null">
             D_FECHAREGISTRO,
         </if>
+        <if test="indicadorRecomendacion != null">
+            C_INDRECOMENDACION,
+        </if>
+        <if test="documentoRespuesta != null">
+            C_DOCUMENTORESPUESTA,
+        </if>
+        <if test="tipoAcogimiento != null">
+            C_TIPOACOGIMIENTO,
+        </if>
+        <if test="ruta1 != null">
+            C_RUTA1,
+        </if>
+        <if test="ruta2 != null">
+            C_RUTA2,
+        </if>
+        <if test="documentoGestion != null">
+            C_DOCUMENTOGESTION,
+        </if>
         N_ID_GESTION
         )
         VALUES 
@@ -239,6 +262,24 @@
         <if test="fechaRegistro != null">
             #{fechaRegistro},
         </if>
+        <if test="indicadorRecomendacion != null">
+            #{indicadorRecomendacion},
+        </if>
+        <if test="documentoRespuesta != null">
+            #{documentoRespuesta},
+        </if>
+        <if test="tipoAcogimiento != null">
+            #{tipoAcogimiento},
+        </if>
+        <if test="ruta1 != null">
+            #{ruta1},
+        </if>
+        <if test="ruta2 != null">
+            #{ruta2},
+        </if>
+        <if test="documentoGestion != null">
+            #{documentoGestion},
+        </if>
         SEQ_SID_REG_GESTION.NextVal
         )
         <selectKey keyProperty="id" resultType="Long">
@@ -330,6 +371,24 @@
         </if>
         <if test="observacionRespuesta != null">
             C_OBSERVACIONES = #{observacionRespuesta},
+        </if>
+        <if test="indicadorRecomendacion != null">
+            C_INDRECOMENDACION = #{indicadorRecomendacion},
+        </if>
+        <if test="documentoRespuesta != null">
+            C_DOCUMENTORESPUESTA = #{documentoRespuesta},
+        </if>
+        <if test="tipoAcogimiento != null">
+            C_TIPOACOGIMIENTO = #{tipoAcogimiento},
+        </if>
+        <if test="ruta1 != null">
+            C_RUTA1 = #{ruta1},
+        </if>
+        <if test="ruta2 != null">
+            C_RUTA2 = #{ruta2},
+        </if>
+        <if test="documentoGestion != null">
+            C_DOCUMENTOGESTION = #{documentoGestion},
         </if>
         C_USUMODIFICACION = #{usuarioModificacion},
         D_FECHAMODIFICACION = #{fechaModificacion}

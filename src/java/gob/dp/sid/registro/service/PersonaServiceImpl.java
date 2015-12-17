@@ -23,7 +23,7 @@ public class PersonaServiceImpl implements PersonaService{
 
     @Override
     public boolean personaInsertar(Persona persona) {
-        Long valid = personaValidaDNI(persona.getDni());
+        Long valid = personaValidaDNI(persona.getNumeroDocumento());
         if(valid > 0){
             return false;
         }
