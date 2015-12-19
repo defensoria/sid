@@ -32,6 +32,7 @@ import gob.dp.sid.comun.type.TiempoType;
 import gob.dp.sid.registro.entity.Entidad;
 import gob.dp.sid.registro.entity.EtapaEstado;
 import gob.dp.sid.registro.entity.Expediente;
+import gob.dp.sid.registro.entity.ExpedienteConsulta;
 import gob.dp.sid.registro.entity.ExpedienteDerivacion;
 import gob.dp.sid.registro.entity.ExpedienteEntidad;
 import gob.dp.sid.registro.entity.ExpedienteGestion;
@@ -41,6 +42,7 @@ import gob.dp.sid.registro.entity.OficinaDefensorial;
 import gob.dp.sid.registro.entity.Persona;
 import gob.dp.sid.registro.service.EntidadService;
 import gob.dp.sid.registro.service.EtapaEstadoService;
+import gob.dp.sid.registro.service.ExpedienteConsultaService;
 import gob.dp.sid.registro.service.ExpedienteDerivacionService;
 import gob.dp.sid.registro.service.ExpedienteEntidadService;
 import gob.dp.sid.registro.service.ExpedienteGestionService;
@@ -189,9 +191,13 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     
     private ExpedienteDerivacion expedienteDerivacionReasigna;
     
+    private ExpedienteConsulta expedienteConsultaEnvia;
+    
     private Part file1;
     
     private Part file2;
+    
+    private boolean verBotonRegistrarExpediente = true;
 
     @Autowired
     private ExpedienteService expedienteService;
@@ -231,6 +237,9 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     
     @Autowired
     private ExpedienteDerivacionService expedienteDerivacionService;
+    
+    @Autowired
+    private ExpedienteConsultaService expedienteConsultaService;
     
     @Autowired
     private UsuarioService usuarioService;
@@ -338,6 +347,23 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         return "expedienteAcciones";
     }
     
+    public String datosGeneralesExpediente(){
+        defineBotonRegistro();
+        return "expedienteNuevo";
+    }
+    
+    private void defineBotonRegistro(){
+        List<ExpedienteDerivacion> listaExpedienteDerivacion = expedienteDerivacionService.expedienteDerivacionSelectList(expediente.getId());
+        if(listaExpedienteDerivacion.size() > 0)
+            setVerBotonRegistrarExpediente(false);
+        else
+            setVerBotonRegistrarExpediente(true);
+    }
+    
+    public String inicioAccionesConsulta(){
+        return "expedienteAccionesConsulta";
+    }
+    
     public String inicioAccionesDerivacion(){
         List<ExpedienteDerivacion> listaExpedienteDerivacion = expedienteDerivacionService.expedienteDerivacionSelectList(expediente.getId());
         expedienteDerivacionEnvia = null;
@@ -426,6 +452,18 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             enviarMensajeReasignacionDesaprobada();
             msg.messageInfo("Se rechaza la derivación", null);
         }
+    }
+    
+    public void enviarConsulta(){
+        expedienteConsultaEnvia.setIdExpediente(expediente.getId());
+        expedienteConsultaEnvia.setNumeroExpediente(expediente.getNumero());
+        expedienteConsultaEnvia.setEstado("ACT");
+        expedienteConsultaEnvia.setEtapa(EtapaDerivacionType.DERIVAR_ETAPA_ENVIA.getKey());
+        expedienteConsultaEnvia.setCodigoUsuario(usuarioSession.getCodigo());
+        expedienteConsultaEnvia.setNombreUsuario(usuarioSession.getNombre()+" "+usuarioSession.getApellidoPaterno()+" "+usuarioSession.getApellidoMaterno());
+        expedienteConsultaService.expedienteConsultaInsertar(expedienteConsultaEnvia);
+        enviarMensajeDerivacion();
+        msg.messageInfo("Se envio la Derivación", null);
     }
     
     private void enviarMensajeDerivacion(){
@@ -736,6 +774,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         } else {
             inicializarEtapaEstado(1);
         }
+        defineBotonRegistro();
         return "expedienteEdit";
     }
 
@@ -966,6 +1005,9 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             etapaEstado = etapaEstadoService.etapaEstadoVigente(expediente.getId());
             if (etapaEstado == null) {
                 etapaEstado = etapaEstadoService.etapaEstadoInicial(expediente.getId());
+            }
+            if (etapaEstado == null) {
+                etapaEstado = new EtapaEstado();
             }
             /**
              * QUEJA
@@ -1223,7 +1265,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         guardar();
         guardarEtapaEstadoConcluir(idExpedienteOld);
         inicializarEtapaEstado(1);
-        guardarVersion2();
+        //guardarVersion2();
         /**GENERAR NUEVO ESTADO*/
         
         msg.messageInfo("Se concluyó la etapa", null);
@@ -2136,5 +2178,21 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         this.file2 = file2;
     }
 
- 
+    public ExpedienteConsulta getExpedienteConsultaEnvia() {
+        return expedienteConsultaEnvia;
+    }
+
+    public void setExpedienteConsultaEnvia(ExpedienteConsulta expedienteConsultaEnvia) {
+        this.expedienteConsultaEnvia = expedienteConsultaEnvia;
+    }
+
+    public boolean isVerBotonRegistrarExpediente() {
+        return verBotonRegistrarExpediente;
+    }
+
+    public void setVerBotonRegistrarExpediente(boolean verBotonRegistrarExpediente) {
+        this.verBotonRegistrarExpediente = verBotonRegistrarExpediente;
+    }
+    
+    
 }

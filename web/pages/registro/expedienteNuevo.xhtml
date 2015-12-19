@@ -264,19 +264,27 @@
                                                                 <input type="hidden" id="idTipoClasificacion" jsf:value="#{registroController.expediente.tipoClasificion}" />
 
                                                                 <span id="idTextTipoClasificacion" class="text-primary" style="float: left; font-weight: bold;">Seleccione</span>
-                                                                <a href="#" class="trigger2">
+                                                                <h:panelGroup  rendered="#{registroController.etapaEstado.verEtapa == 0 or registroController.etapaEstado.verEtapa == null}">
+                                                                    <a href="#" class="trigger2">
                                                                     <span style="color:#3183b9;font-size:large;vertical-align: top" class="glyphicon glyphicon-chevron-down trigger2"></span>
                                                                 </a>
+                                                                </h:panelGroup>
+                                                                <h:panelGroup  rendered="#{registroController.etapaEstado.verEtapa != 0 and registroController.etapaEstado.verEtapa != null}">
+                                                                    <a class="trigger2">
+                                                                    <span style="color:#3183b9;font-size:large;vertical-align: top" class="glyphicon glyphicon-chevron-down trigger2"></span>
+                                                                </a>
+                                                                </h:panelGroup>
+                                                                
                                                                 <div class="popover-markup" style="float:left">
-                                                                    <div class="head hide"><b class="text-primary">Seleccione</b></div>
+                                                                    <div class="head hide">
+                                                                        <b class="text-primary">Seleccione</b>
+                                                                    </div>
                                                                     <div class="content hide">
                                                                         <div style="width:100%">
                                                                             <c:forEach var="x" items="#{listasComunesController.buscarExpedienteTipoClasificacion(false,false,false)}">
                                                                                 <a class="alink" onclick="asignarTipo('${x.valorParametro}')">
                                                                                     <div class="alert fade in alert-warning" role="alert" style="padding-bottom:5px;padding-top:5px;margin-bottom:3px">
-
                                                                                         <h:outputText value="${x.nombreParametro}" style="cursor:pointer"/>
-
                                                                                     </div>
                                                                                 </a>
                                                                             </c:forEach>
@@ -368,13 +376,13 @@
                                                                 </a>
                                                             </h:panelGroup>
                                                             &#160;&#160;
-                                                            <h:panelGroup rendered="#{registroController.expediente.general != 'C'}">
+                                                            <h:panelGroup rendered="#{registroController.expediente.general != 'C' and registroController.verBotonRegistrarExpediente}">
                                                                 <a class="btn btn-primary" onclick="confirmar2()">
                                                                     <span class="glyphicon glyphicon-floppy-disk" />Guardar
                                                                 </a>
                                                             </h:panelGroup>
                                                             &#160;&#160;
-                                                            <h:panelGroup id="idPanel2" rendered="#{registroController.expediente.id != null and registroController.expediente.version > 0 and registroController.expediente.general != 'C'}">
+                                                            <h:panelGroup id="idPanel2" rendered="#{registroController.expediente.id != null and registroController.expediente.version > 0 and registroController.expediente.general != 'C' and registroController.verBotonRegistrarExpediente}">
                                                                 <a class="btn btn-warning" onclick="confirmar3()">
                                                                     <span class="glyphicon glyphicon-floppy-save" />Concluir Expediente
                                                                 </a>
@@ -393,7 +401,7 @@
                 </table>
                 <ul class="nav nav-tabs">
                     <li role="presentation" class="active">
-                        <a style="cursor: pointer" jsf:rendered="true" jsf:action="expedienteNuevo">
+                        <a style="cursor: pointer" jsf:action="#{registroController.datosGeneralesExpediente()}">
                             <span style="font-size: large; color: #007ACC; font-weight: bold" class="glyphicon glyphicon-list-alt" > Datos generales</span>
                         </a>
                     </li>

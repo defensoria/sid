@@ -27,20 +27,20 @@
                                                     </tr>
                                                     <tr>
                                                         <td colspan="2" style="padding-bottom: 5px">
-                                                            <input jsf:value="#{registroController.personaBusqueda.numeroExpediente}" maxlength="20" type="text" placeholder="Expediente" />
+                                                            <input jsf:value="#{registroController.personaBusqueda.numeroExpediente}" autocomplete="off" maxlength="20" type="text" placeholder="Expediente" />
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                         <td style="padding-bottom: 5px">
-                                                            <input jsf:value="#{registroController.personaBusqueda.apellidoPat}" maxlength="50" type="text" placeholder="Ap. paterno" />
+                                                            <input jsf:value="#{registroController.personaBusqueda.apellidoPat}" autocomplete="off" maxlength="50" type="text" placeholder="Ap. paterno" />
                                                         </td>
                                                         <td style="padding-bottom: 5px">
-                                                            <input jsf:value="#{registroController.personaBusqueda.apellidoMat}" maxlength="50" type="text" placeholder="Ap. Materno" />
+                                                            <input jsf:value="#{registroController.personaBusqueda.apellidoMat}" autocomplete="off" maxlength="50" type="text" placeholder="Ap. Materno" />
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                         <td colspan="2" style="padding-bottom: 5px">
-                                                            <input jsf:value="#{registroController.personaBusqueda.nombre}" maxlength="100" type="text" placeholder="Nombre / Razon Social" />
+                                                            <input jsf:value="#{registroController.personaBusqueda.nombre}" autocomplete="off" maxlength="100" type="text" placeholder="Nombre / Razon Social" />
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -179,6 +179,7 @@
 
 
                                                 <h:panelGroup id="idPanelListaPersonas" rendered="#{registroController.indSeleccion}" style="text-align: left">
+                                                    <h:messages />
                                                     <h:dataTable value="#{registroController.listaPersonaGeneral}" var="per" binding="#{row}" class="table table-hover" rendered="#{registroController.listaPersonaGeneral.size() > 0}">
                                                         <h:column>
                                                             <f:facet name="header">Nro</f:facet>

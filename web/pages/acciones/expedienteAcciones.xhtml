@@ -15,7 +15,7 @@
 
             <ul class="nav nav-tabs">
                 <li role="presentation">
-                    <a style="cursor: pointer" jsf:rendered="true" jsf:action="expedienteNuevo">
+                    <a style="cursor: pointer" jsf:action="#{registroController.datosGeneralesExpediente()}">
                         <span style="font-size: medium; color: purple;" class="glyphicon glyphicon-list-alt" > Datos generales</span>
                     </a>
                 </li>
@@ -44,7 +44,11 @@
                                     <span class="glyphicon glyphicon-export" />Derivar
                                 </a>
                             </li>
-                            <li><a href="#">Consultar</a></li>
+                            <li>
+                                <a jsf:action="#{registroController.inicioAccionesConsulta()}">
+                                    <span class="glyphicon glyphicon-question-sign" />Consultar
+                                </a>
+                            </li>
                             <li><a href="#">Suspención</a></li>
                             <li><a href="#">Ampliación</a></li>
                             <li><a href="#">Acumular</a></li>

@@ -10,7 +10,7 @@
                 <gc:confirmSubmit bean="#{registroController.registarExpedienteGestion()}" mensaje="Esta seguro de registrar la gestión?" />
                 <ul class="nav nav-tabs">
                     <li role="presentation">
-                        <a style="cursor: pointer" jsf:rendered="true" jsf:action="expedienteNuevo">
+                        <a style="cursor: pointer" jsf:action="#{registroController.datosGeneralesExpediente()}">
                             <span style="font-size: medium; color: purple;" class="glyphicon glyphicon-list-alt" > Datos generales</span>
                         </a>
                     </li>

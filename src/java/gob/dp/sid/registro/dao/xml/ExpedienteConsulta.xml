@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD iBatis Mapper 3.0 //EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="gob.dp.sid.registro.dao.ExpedienteConsultaDAO">
+    
+    <resultMap id="expedienteConsultaMap" type="expedienteConsulta">
+        <id property="id" column="N_ID_CONSULTA" />
+        <result property="idExpediente" column="N_IDEXPEDIENTE"/>
+        <result property="detalle" column="C_DETALLE"/>
+        <result property="idOficinaDefensorial" column="N_ID_OD"/>
+        <result property="estado" column="C_ESTADO"/>
+        <result property="numeroExpediente" column="C_NUMEROEXPEDIENTE"/>
+        <result property="etapa" column="C_ETAPA"/>
+        <result property="codigoUsuario" column="C_CODIGOUSUARIO"/>
+        <result property="nombreUsuario" column="C_NOMBREUSUARIO"/>
+        <result property="ruta" column="C_RUTA"/>
+        <result property="aprueba" column="C_APRUEBA"/>
+    </resultMap> 
+    
+    
+    <insert id="expedienteConsultaInsertar" parameterType="expedienteConsulta">
+        INSERT INTO SID_REG_EXPEDIENTE_CONSULTA
+        (
+        <if test="idExpediente != null">
+            N_IDEXPEDIENTE,
+        </if>
+        <if test="detalle != null">
+            C_DETALLE,
+        </if>
+        <if test="idOficinaDefensorial != null">
+            N_ID_OD,
+        </if>
+        <if test="estado != null">
+            C_ESTADO,
+        </if>
+        <if test="numeroExpediente != null">
+            C_NUMEROEXPEDIENTE,
+        </if>
+        <if test="etapa != null">
+            C_ETAPA,
+        </if>
+        <if test="codigoUsuario != null">
+            C_CODIGOUSUARIO,
+        </if>
+        <if test="nombreUsuario != null">
+            C_NOMBREUSUARIO,
+        </if>
+        <if test="aprueba != null">
+            C_APRUEBA,
+        </if>
+        <if test="ruta != null">
+            C_RUTA,
+        </if>
+        N_ID_CONSULTA
+        )
+        VALUES 
+        (
+        <if test="idExpediente != null">
+            #{idExpediente},
+        </if>
+        <if test="detalle != null">
+            #{detalle},
+        </if>
+        <if test="idOficinaDefensorial != null">
+            #{idOficinaDefensorial},
+        </if>
+        <if test="estado != null">
+            #{estado},
+        </if>
+        <if test="numeroExpediente != null">
+            #{numeroExpediente},
+        </if>
+        <if test="etapa != null">
+            #{etapa},
+        </if>
+        <if test="codigoUsuario != null">
+            #{codigoUsuario},
+        </if>
+        <if test="nombreUsuario != null">
+            #{nombreUsuario},
+        </if>
+        <if test="aprueba != null">
+            #{aprueba},
+        </if>
+        <if test="ruta != null">
+            #{ruta},
+        </if>
+        SEQ_SID_REG_EXPEDIENTE_CONSUL.NextVal
+        )
+        <selectKey keyProperty="id" resultType="Long">
+            SELECT SEQ_SID_REG_EXPEDIENTE_CONSUL.CURRVAL FROM DUAL
+        </selectKey>
+    </insert>
+    
+    
+    <update id="expedienteConsultaUpdate" parameterType="expedienteConsulta">
+        UPDATE SID_REG_ENTIDAD
+        <set>
+        <if test="ruc != null">
+            C_RUC = #{ruc},
+        </if>
+        <if test="fechaRegistro != null">
+            D_FECHAREGISTRO = #{fechaRegistro},
+        </if>
+        <if test="usuarioRegistro != null">
+            C_USU_REGISTRO = #{usuarioRegistro},
+        </if>
+        C_NOMBRE = UPPER(#{nombre})
+        </set>
+        <where>
+            N_IDENTIDAD = #{id}
+        </where>
+    </update>
+    
+    
+    <select id="expedienteConsultaSelectList" resultMap="expedienteConsultaMap"  parameterType="long">
+        SELECT * FROM SID_REG_EXPEDIENTE_CONSULTA WHERE N_IDEXPEDIENTE = #{id}
+    </select>
+    
+</mapper>
