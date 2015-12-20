@@ -17,7 +17,7 @@ public class ExpedienteConsulta implements Serializable{
     
     private Long idExpediente;
     
-    private Integer idOficinaDefensorial;
+    private Integer idAdjuntiaDefensorial;
     
     private String detalle;
     
@@ -34,6 +34,14 @@ public class ExpedienteConsulta implements Serializable{
     private String aprueba;
     
     private String ruta;
+    
+    private String codigo;
+    
+    private Integer tipo;
+    
+    
+    private String nombreAdjuntia;
+    
 
     public Long getId() {
         return id;
@@ -51,14 +59,14 @@ public class ExpedienteConsulta implements Serializable{
         this.idExpediente = idExpediente;
     }
 
-    public Integer getIdOficinaDefensorial() {
-        return idOficinaDefensorial;
+    public Integer getIdAdjuntiaDefensorial() {
+        return idAdjuntiaDefensorial;
     }
 
-    public void setIdOficinaDefensorial(Integer idOficinaDefensorial) {
-        this.idOficinaDefensorial = idOficinaDefensorial;
+    public void setIdAdjuntiaDefensorial(Integer idAdjuntiaDefensorial) {
+        this.idAdjuntiaDefensorial = idAdjuntiaDefensorial;
     }
-
+    
     public String getDetalle() {
         return detalle;
     }
@@ -121,6 +129,30 @@ public class ExpedienteConsulta implements Serializable{
 
     public void setRuta(String ruta) {
         this.ruta = ruta;
+    }
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
+
+    public Integer getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(Integer tipo) {
+        this.tipo = tipo;
+    }
+
+    public String getNombreAdjuntia() {
+        return nombreAdjuntia;
+    }
+
+    public void setNombreAdjuntia(String nombreAdjuntia) {
+        this.nombreAdjuntia = nombreAdjuntia;
     }
 
     

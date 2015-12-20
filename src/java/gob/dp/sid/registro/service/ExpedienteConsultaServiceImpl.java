@@ -31,4 +31,9 @@ public class ExpedienteConsultaServiceImpl implements ExpedienteConsultaService{
         return expedienteConsultaDAO.expedienteConsultaSelectList(idExpediente);
     }
 
+    @Override
+    public List<ExpedienteConsulta> expedienteConsultaPorExpediente(String numeroExpediente) {
+        return expedienteConsultaDAO.expedienteConsultaPorExpediente(numeroExpediente);
+    }
+
 }

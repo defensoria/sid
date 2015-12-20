@@ -19,7 +19,7 @@ public enum RolType {
 
 	COMISIONADO_OD("ROL0000001", "COMISIONADO OD"),
 
-        DERIVADOR_OD("ROL0000002", "ROL DE DERIVADOR OD");   
+        APROBADOR_OD("ROL0000002", "APROBADOR OD");   
 	
 	/** La Constante list. */
 	private static final List<RolType> list = new ArrayList<>();

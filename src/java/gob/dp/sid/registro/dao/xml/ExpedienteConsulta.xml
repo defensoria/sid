@@ -6,7 +6,7 @@
         <id property="id" column="N_ID_CONSULTA" />
         <result property="idExpediente" column="N_IDEXPEDIENTE"/>
         <result property="detalle" column="C_DETALLE"/>
-        <result property="idOficinaDefensorial" column="N_ID_OD"/>
+        <result property="idAdjuntiaDefensorial" column="N_ID_AD"/>
         <result property="estado" column="C_ESTADO"/>
         <result property="numeroExpediente" column="C_NUMEROEXPEDIENTE"/>
         <result property="etapa" column="C_ETAPA"/>
@@ -14,6 +14,10 @@
         <result property="nombreUsuario" column="C_NOMBREUSUARIO"/>
         <result property="ruta" column="C_RUTA"/>
         <result property="aprueba" column="C_APRUEBA"/>
+        <result property="tipo" column="N_TIPO"/>
+        <result property="codigo" column="C_CODIGO"/>
+        
+        <result property="nombreAdjuntia" column="ADJUNTIA"/>
     </resultMap> 
     
     
@@ -26,8 +30,8 @@
         <if test="detalle != null">
             C_DETALLE,
         </if>
-        <if test="idOficinaDefensorial != null">
-            N_ID_OD,
+        <if test="idAdjuntiaDefensorial != null">
+            N_ID_AD,
         </if>
         <if test="estado != null">
             C_ESTADO,
@@ -50,6 +54,13 @@
         <if test="ruta != null">
             C_RUTA,
         </if>
+        <if test="tipo != null">
+            N_TIPO,
+        </if>
+        <if test="codigo != null">
+            C_CODIGO,
+        </if>
+
         N_ID_CONSULTA
         )
         VALUES 
@@ -60,8 +71,8 @@
         <if test="detalle != null">
             #{detalle},
         </if>
-        <if test="idOficinaDefensorial != null">
-            #{idOficinaDefensorial},
+        <if test="idAdjuntiaDefensorial != null">
+            #{idAdjuntiaDefensorial},
         </if>
         <if test="estado != null">
             #{estado},
@@ -83,6 +94,12 @@
         </if>
         <if test="ruta != null">
             #{ruta},
+        </if>
+        <if test="tipo != null">
+            #{tipo},
+        </if>
+        <if test="codigo != null">
+            #{codigo},
         </if>
         SEQ_SID_REG_EXPEDIENTE_CONSUL.NextVal
         )
@@ -114,6 +131,13 @@
     
     <select id="expedienteConsultaSelectList" resultMap="expedienteConsultaMap"  parameterType="long">
         SELECT * FROM SID_REG_EXPEDIENTE_CONSULTA WHERE N_IDEXPEDIENTE = #{id}
+    </select>
+    
+    <select id="expedienteConsultaPorExpediente" resultMap="expedienteConsultaMap"  parameterType="String">
+        SELECT A.*, B.C_NOMBRE ADJUNTIA FROM SID_REG_EXPEDIENTE_CONSULTA A
+INNER JOIN SID_SEG_OFICINA_DEFENSORIAL B ON A.N_ID_AD = B.N_ID_OD
+        WHERE A.C_NUMEROEXPEDIENTE = #{value}
+        ORDER BY A.N_ID_CONSULTA DESC
     </select>
     
 </mapper>

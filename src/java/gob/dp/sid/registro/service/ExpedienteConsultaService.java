@@ -16,6 +16,8 @@ public interface ExpedienteConsultaService {
     
     public void expedienteConsultaInsertar(ExpedienteConsulta expedienteConsulta);
     
-    public List<ExpedienteConsulta> expedienteConsultaSelectList(long idExpediente);   
+    public List<ExpedienteConsulta> expedienteConsultaSelectList(long idExpediente); 
+    
+    public List<ExpedienteConsulta> expedienteConsultaPorExpediente(String numeroExpediente);
     
 }

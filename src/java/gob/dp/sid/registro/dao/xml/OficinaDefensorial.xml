@@ -5,10 +5,15 @@
     <resultMap id="oficinaDefensorialMap" type="oficinaDefensorial">
         <id property="id" column="N_ID_OD" />
         <result property="nombre" column="C_NOMBRE"/>
+        <result property="tipo" column="C_TIPO"/>
     </resultMap> 
     
     <select id="listaOficinasDefensoriales" resultMap="oficinaDefensorialMap" >
-        SELECT N_ID_OD, C_NOMBRE FROM SID_SEG_OFICINA_DEFENSORIAL
+        SELECT N_ID_OD, C_NOMBRE FROM SID_SEG_OFICINA_DEFENSORIAL WHERE C_TIPO = 'OD'
+    </select>
+    
+    <select id="listaAdjuntiasDefensoriales" resultMap="oficinaDefensorialMap" >
+        SELECT N_ID_OD, C_NOMBRE FROM SID_SEG_OFICINA_DEFENSORIAL WHERE C_TIPO = 'AD'
     </select>
     
     <select id="obtenerOficinaDefensorial" resultMap="oficinaDefensorialMap" parameterType="Long">

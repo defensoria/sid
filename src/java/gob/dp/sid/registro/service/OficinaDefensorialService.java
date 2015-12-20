@@ -18,4 +18,6 @@ public interface OficinaDefensorialService {
     
     public OficinaDefensorial obtenerOficinaDefensorial(Long id);
     
+    public List<OficinaDefensorial> listaAdjuntiasDefensoriales();
+    
 }

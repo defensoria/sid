@@ -23,6 +23,7 @@ import gob.dp.sid.comun.service.ParametroService;
 import gob.dp.sid.comun.service.UbigeoService;
 import gob.dp.sid.comun.type.AntesDespuesType;
 import gob.dp.sid.comun.type.EstadoExpedienteType;
+import gob.dp.sid.comun.type.EtapaConsultaType;
 import gob.dp.sid.comun.type.EtapaDerivacionType;
 import gob.dp.sid.comun.type.EtapaType;
 import gob.dp.sid.comun.type.ExpedienteType;
@@ -183,6 +184,8 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     
     private List<SelectItem> listaOficinaDefensoriales;
     
+    private List<SelectItem> listaAdjuntiaDefensoriales;
+    
     private List<SelectItem> listaUsuariosComisionadosPorOD;
     
     private ExpedienteDerivacion expedienteDerivacionEnvia;
@@ -193,9 +196,13 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     
     private ExpedienteConsulta expedienteConsultaEnvia;
     
+    private List<ExpedienteConsulta> listaExpedienteConsultaEnvia;
+    
     private Part file1;
     
     private Part file2;
+    
+    private Part file3;
     
     private boolean verBotonRegistrarExpediente = true;
 
@@ -352,15 +359,36 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         return "expedienteNuevo";
     }
     
+    public void limpiarModalConsulta(){
+        expedienteConsultaEnvia = new ExpedienteConsulta();
+        expedienteConsultaEnvia.setIdExpediente(expediente.getId());
+        expedienteConsultaEnvia.setNumeroExpediente(expediente.getNumero());
+    }
+    
     private void defineBotonRegistro(){
+        /*´para derivaciones*/
         List<ExpedienteDerivacion> listaExpedienteDerivacion = expedienteDerivacionService.expedienteDerivacionSelectList(expediente.getId());
         if(listaExpedienteDerivacion.size() > 0)
             setVerBotonRegistrarExpediente(false);
         else
             setVerBotonRegistrarExpediente(true);
+        
+        /*en general*/
+        if(StringUtils.equals(expediente.getUsuarioRegistro(), usuarioSession.getCodigo()))
+            setVerBotonRegistrarExpediente(true);
+        else
+            setVerBotonRegistrarExpediente(false);
     }
     
     public String inicioAccionesConsulta(){
+        listaExpedienteConsultaEnvia = new ArrayList<>();
+        List<ExpedienteConsulta> list = expedienteConsultaService.expedienteConsultaPorExpediente(expediente.getNumero());
+        for(ExpedienteConsulta ec : list){
+            if(ec.getTipo() == EtapaConsultaType.CONSULTA_ETAPA_ENVIA.getKey()){
+                listaExpedienteConsultaEnvia.add(ec);
+            }
+        }
+        expedienteConsultaEnvia = new ExpedienteConsulta();
         return "expedienteAccionesConsulta";
     }
     
@@ -402,7 +430,15 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         return "expedienteAccionesDerivacion";
     }
     
-    public void enviarDerivacion(){
+    public boolean enviarDerivacion(){
+        if(StringUtils.isBlank(expedienteDerivacionEnvia.getDetalle())){
+            msg.messageAlert("Debe ingresar el detalle", null);
+            return false;
+        }
+        if(expedienteDerivacionEnvia.getIdOficinaDefensorial() == 0){
+            msg.messageAlert("Debe seleccionar una oficina defensorial", null);
+            return false;
+        }
         expedienteDerivacionEnvia.setIdExpediente(expediente.getId());
         expedienteDerivacionEnvia.setNumeroExpediente(expediente.getNumero());
         expedienteDerivacionEnvia.setEstado("ACT");
@@ -412,9 +448,26 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         expedienteDerivacionService.expedienteDerivacionInsertar(expedienteDerivacionEnvia);
         enviarMensajeDerivacion();
         msg.messageInfo("Se envio la Derivación", null);
+        return true;
     }
     
-    public void aprobarDerivacion(){
+    public boolean aprobarDerivacion(){
+        if(StringUtils.isBlank(expedienteDerivacionAprueba.getAprueba())){
+            msg.messageAlert("Debe aprobar o desaprobar la solicitud de derivación", null);
+            return false;
+        }
+        
+        if(StringUtils.isBlank(expedienteDerivacionAprueba.getDetalle())){
+            msg.messageAlert("Debe ingresar el detalle", null);
+            return false;
+        }
+        
+        if(StringUtils.equals(expedienteDerivacionAprueba.getAprueba(), "SI")){
+            if(expedienteDerivacionAprueba.getIdOficinaDefensorial() == 0){
+                msg.messageAlert("Debe seleccionar una oficina defensorial", null);
+                return false;
+            }
+        }
         expedienteDerivacionAprueba.setIdExpediente(expediente.getId());
         expedienteDerivacionAprueba.setNumeroExpediente(expediente.getNumero());
         expedienteDerivacionAprueba.setEstado("ACT");
@@ -431,10 +484,26 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             enviarMensajeDesaprobacion();
             msg.messageInfo("No se aprobo la derivación", null);
         }
-            
+        return true; 
     }
     
-    public void reasignarDerivacion(){
+    public boolean reasignarDerivacion(){
+        if(StringUtils.isBlank(expedienteDerivacionReasigna.getAprueba())){
+            msg.messageAlert("Debe aceptar o rechazar la solicitud de derivación", null);
+            return false;
+        }
+        
+        if(StringUtils.isBlank(expedienteDerivacionReasigna.getDetalle())){
+            msg.messageAlert("Debe ingresar el detalle", null);
+            return false;
+        }
+        
+        if(StringUtils.equals(expedienteDerivacionReasigna.getAprueba(), "SI")){
+            if(StringUtils.equals(expedienteDerivacionReasigna.getCodigoUsuarioDerivado(), "0")){
+                msg.messageAlert("Debe seleccionar el comisionado al cual derivará el expediente", null);
+                return false;
+            }
+        }
         expedienteDerivacionReasigna.setIdExpediente(expediente.getId());
         expedienteDerivacionReasigna.setNumeroExpediente(expediente.getNumero());
         expedienteDerivacionReasigna.setEstado("ACT");
@@ -452,18 +521,32 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             enviarMensajeReasignacionDesaprobada();
             msg.messageInfo("Se rechaza la derivación", null);
         }
+        return true;
     }
     
-    public void enviarConsulta(){
+    public void enviarConsulta(int tipo){
+        String ruta1 = uploadArchive(file3);
+        expedienteConsultaEnvia.setRuta(ruta1);
         expedienteConsultaEnvia.setIdExpediente(expediente.getId());
         expedienteConsultaEnvia.setNumeroExpediente(expediente.getNumero());
         expedienteConsultaEnvia.setEstado("ACT");
-        expedienteConsultaEnvia.setEtapa(EtapaDerivacionType.DERIVAR_ETAPA_ENVIA.getKey());
+        expedienteConsultaEnvia.setEtapa(EtapaConsultaType.CONSULTA_ETAPA_ENVIA.getKey());
         expedienteConsultaEnvia.setCodigoUsuario(usuarioSession.getCodigo());
         expedienteConsultaEnvia.setNombreUsuario(usuarioSession.getNombre()+" "+usuarioSession.getApellidoPaterno()+" "+usuarioSession.getApellidoMaterno());
+        expedienteConsultaEnvia.setTipo(tipo);
+        if(tipo == 1){
+            String formato = RandomStringUtils.random(9, 0, 17, true, true, "WERTYUIO123456789".toCharArray());
+            expedienteConsultaEnvia.setCodigo("C"+formato);
+        }
         expedienteConsultaService.expedienteConsultaInsertar(expedienteConsultaEnvia);
-        enviarMensajeDerivacion();
-        msg.messageInfo("Se envio la Derivación", null);
+        enviarMensajeConsulta();
+        msg.messageInfo("Se envio la Consulta", null);
+    }
+    
+    private void enviarMensajeConsulta(){
+        FacesContext context = FacesContext.getCurrentInstance();
+        BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
+        bandejaController.mensajeEnviaConsulta(expedienteConsultaEnvia);
     }
     
     private void enviarMensajeDerivacion(){
@@ -535,7 +618,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     }
 
     private void guardarGestionEtapa() {
-        GestionEtapa ge = new GestionEtapa(expedienteGestion.getId(), expediente.getId(), etapaEstado.getIdEtapa(), expediente.getNumero());
+        GestionEtapa ge = new GestionEtapa(expedienteGestion.getId(), expediente.getId(), etapaEstado.getVerEtapa(), expediente.getNumero());
         gestionEtapaService.gestionEtapaInsertar(ge);
     }
 
@@ -2193,6 +2276,38 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     public void setVerBotonRegistrarExpediente(boolean verBotonRegistrarExpediente) {
         this.verBotonRegistrarExpediente = verBotonRegistrarExpediente;
     }
+
+    public List<SelectItem> getListaAdjuntiaDefensoriales() {
+        List<SelectItem> listaAdjuntiaDef = new ArrayList<>();
+        try {
+            List<OficinaDefensorial> list = oficinaDefensorialService.listaAdjuntiasDefensoriales();
+                for (OficinaDefensorial od : list) {
+                    listaAdjuntiaDef.add(new SelectItem(od.getId(), od.getNombre()));
+                }
+            listaAdjuntiaDefensoriales = listaAdjuntiaDef;
+        } catch (Exception e) {
+            log.debug(e.getMessage());
+        }
+        return listaAdjuntiaDefensoriales;
+    }
+
+    public Part getFile3() {
+        return file3;
+    }
+
+    public void setFile3(Part file3) {
+        this.file3 = file3;
+    }
+
+    public List<ExpedienteConsulta> getListaExpedienteConsultaEnvia() {
+        return listaExpedienteConsultaEnvia;
+    }
+
+    public void setListaExpedienteConsultaEnvia(List<ExpedienteConsulta> listaExpedienteConsultaEnvia) {
+        this.listaExpedienteConsultaEnvia = listaExpedienteConsultaEnvia;
+    }
+
+
     
     
 }

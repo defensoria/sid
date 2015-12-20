@@ -17,7 +17,9 @@ import java.util.Map;
 
 public enum MensajeType {
 
-    MENSAJE_DERIVACION(1, "Mensaje por Derivación", "Derivación", "green");
+    MENSAJE_DERIVACION(1, "Mensaje por Derivación", "Derivación", "green"),
+    
+    MENSAJE_CONSULTA(2, "Mensaje por Consulta", "Consulta", "blue");
 
     /**
      * La Constante list.

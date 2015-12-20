@@ -37,13 +37,13 @@
                             <span style="color: #007ACC; font-size: 1.3em; font-weight: bold">#{bandejaController.mensajeBandeja.tituloMensaje}</span>
                             <br/><br/>
                             
-                            <p style="color: #767778; text-align: justify"><span style="font-weight: bold; font-size: 1em; color: #007ACC">Motivo: </span>#{bandejaController.mensajeBandeja.motivo}</p>
+                            <p style="color: #767778; text-align: justify"><span style="font-weight: bold; font-size: 1em; color: #007ACC">Detalle: </span>#{bandejaController.mensajeBandeja.motivo}</p>
                             <br/><br/>
                             <span style="font-weight: bold; font-size: 1em; color: #007ACC">Remitente:</span>
                             <span style="color: #767778; text-align: justify">#{bandejaController.mensajeBandeja.nombreRemitente}</span>
                             <br/><br/>
                             <span style="font-weight: bold; font-size: 1em; color: #007ACC"></span>
-                            <a title="ir al expediente" jsf:action="#{bandejaController.cargarDerivacionPorId()}">Ir al expediente</a>
+                            <a title="ir al expediente" jsf:action="#{bandejaController.cargarExpedientePorMensaje(bandejaController.mensajeBandeja.tipo)}">Ir al expediente</a>
                         </div>
                     </td>
                 </table>

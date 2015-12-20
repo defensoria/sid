@@ -11,7 +11,7 @@
         <ui:define name="content2">
 
 
-            <gc:confirmSubmit bean="#{registroController.enviarDerivacion()}" mensaje="Esta seguro de derivar el expediente?" />
+            <gc:confirmSubmit bean="#{registroController.enviarConsulta()}" mensaje="Esta seguro de enviar la consulta?" />
             <gc:confirmSubmit bean="#{registroController.aprobarDerivacion()}" classGC="confirmacion2" mensaje="Esta seguro de derivar el expediente?" />
             <gc:confirmSubmit bean="#{registroController.reasignarDerivacion()}" classGC="confirmacion3" mensaje="Esta seguro de derivar el expediente?" />
             <script>
@@ -75,41 +75,106 @@
                             </tr>
                             <tr>
                                 <td style="width: 20%; vertical-align: top">
-                                    <h3>Consulta</h3>
+                                    <h3>Consulta
+                                        <a jsf:action="#{registroController.limpiarModalConsulta}" jsf:onclick="loadingModal()">
+                                            <span class="glyphicon glyphicon-plus" />
+                                            <f:ajax render="@form" onevent="openModalNuevaConsulta" />
+                                        </a>
+                                    </h3>
 
                                 </td>
                                 <td style="vertical-align: top">
-                                    <div class="panel panel-featured-top-primary">
-                                        <div class="body">
-                                            <div style="text-align: right">
-                                                <br/>
-                                                <h:panelGroup rendered="#{registroController.expedienteConsultaEnvia.id == null and seguridadUtilController.tieneRol('ROL0000001')}">
-                                                    <a class="btn btn-primary" onclick="confirmar()">
-                                                        <span class="glyphicon glyphicon-share-alt"/>Enviar
+                                    <script>
+                                        function openModalNuevaConsulta(data) {
+                                            if (data.status === 'success') {
+                                                $("#loadModal").modal('hide');
+                                                $('body').removeClass('modal-open');
+                                                $(".modal-backdrop").removeClass("modal-backdrop");
+                                                $("#idModalNuevaConsulta").modal('show');
+                                            }
+                                        }
+                                    </script>
+
+
+                                    <div class="modal fade" data-backdrop="static" data-keyboard="false" id="idModalNuevaConsulta" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" style="text-align: left">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <a type="button" class="close" data-dismiss="modal">
+                                                        <span style="color:red" class="glyphicon glyphicon-remove"></span>
                                                     </a>
-                                                </h:panelGroup>
-                                                <br/>
+                                                    <span class="text-resalt-primary">Nueva consulta</span>
+                                                </div>
+                                                <div class="modal-body" style="padding:5px">
+                                                    <div class="body">
+                                                        <table style="width: 100%">
+                                                            <tr>
+                                                                <td style="padding-right: 30px; width: 50%; padding-left: 10px">
+                                                                    <label>Detalle de la consulta:</label>
+                                                                    <textarea jsf:value="#{registroController.expedienteConsultaEnvia.detalle}" rows="6" style="width: 100%" maxlength="1300" placeholder="Detalle de la consulta"/>
+                                                                </td>
+                                                                <td style="vertical-align: top; padding-right: 10px">
+                                                                    <label>Adjuntía Defensorial:</label>
+                                                                    <h:selectOneMenu value="#{registroController.expedienteConsultaEnvia.idAdjuntiaDefensorial}">
+                                                                        <f:selectItem itemLabel="Seleccione" itemValue="0" />
+                                                                        <f:selectItems value="#{registroController.listaAdjuntiaDefensoriales}" />
+                                                                    </h:selectOneMenu>
+                                                                    <br/>
+                                                                    <label><span style="font-size: large" class="glyphicon glyphicon-paperclip" />Adjuntar archivo:</label>
+                                                                    <h:inputFile value="#{registroController.file3}"/>
+                                                                    <br/>
+                                                                    <h:panelGroup rendered="#{registroController.expedienteConsultaEnvia.ruta != null}">
+                                                                        <a target="_blank" href="/filesystem/#{registroController.expedienteConsultaEnvia.ruta}">
+                                                                            <span style="font-size: large" class="glyphicon glyphicon-link" />
+                                                                        </a>
+                                                                    </h:panelGroup>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                        <br/>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <a  class="btn btn-default" data-dismiss="modal">
+                                                            <span class="glyphicon glyphicon-remove"/>Cerrar
+                                                        </a>
+                                                        <a class="btn btn-primary" jsf:action="#{registroController.enviarConsulta(1)}">
+                                                            <span class="glyphicon glyphicon-share-alt"/>Enviar
+                                                        </a>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <table style="width: 100%">
-                                                <tr>
-                                                    <td style="padding-right: 30px">
-                                                        <label>Motivo de la derivación:</label>
-                                                        <textarea jsf:value="#{registroController.expedienteDerivacionEnvia.detalle}" rows="6" style="width: 100%" maxlength="1300" placeholder="Motivo"/>
-                                                    </td>
-                                                    <td style="vertical-align: top">
-                                                        <label>Oficina Defensorial:</label>
-                                                        <h:selectOneMenu value="#{registroController.expedienteDerivacionEnvia.idOficinaDefensorial}">
-                                                            <f:selectItem itemLabel="Seleccione" itemValue="0" />
-                                                            <f:selectItems value="#{registroController.listaOficinaDefensoriales}" />
-                                                        </h:selectOneMenu>
-                                                    </td>
-                                                </tr>
-                                            </table>
                                         </div>
                                     </div>
+                                    <br/>
+
+
+
+
                                 </td>
                             </tr>
                         </table>
+                        <h:dataTable value="#{registroController.listaExpedienteConsultaEnvia}" var="envia" class="table table-hover" binding="#{it}">
+                            <h:column>
+                                <f:facet name="header">N°</f:facet>
+                                <h:outputText value="#{it.rowIndex + 1}" />
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Código</f:facet>
+                                <h:outputText value="#{envia.codigo}" />
+                            </h:column>
+                            
+                            <h:column>
+                                <f:facet name="header">Adjuntía Defensorial</f:facet>
+                                <h:outputText value="#{envia.nombreAdjuntia}" />
+                            </h:column>
+
+                            <h:column>
+                                <f:facet name="header">Archivo</f:facet>
+                                <a target="_blank" href="/filesystem/#{envia.ruta}">
+                                    <span style="font-size: large" class="glyphicon glyphicon-link" />
+                                </a>
+                            </h:column>
+                        </h:dataTable>
                     </h:panelGroup>
                     <h:panelGroup rendered="#{seguridadUtilController.tieneRecurso('REC_EXP002') and registroController.usuarioSession.codigo == registroController.expedienteDerivacionAprueba.codigoUsuario}">
                         <br/>

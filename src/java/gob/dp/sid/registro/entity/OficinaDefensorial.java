@@ -22,6 +22,8 @@ public class OficinaDefensorial implements Serializable{
     private Integer idProvincia;
     
     private Integer idDistrito;
+    
+    private String tipo;
 
     public Integer getId() {
         return id;
@@ -61,6 +63,14 @@ public class OficinaDefensorial implements Serializable{
 
     public void setIdDistrito(Integer idDistrito) {
         this.idDistrito = idDistrito;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
     
     

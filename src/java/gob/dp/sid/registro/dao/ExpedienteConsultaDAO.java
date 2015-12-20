@@ -18,4 +18,6 @@ public interface ExpedienteConsultaDAO {
     
     public List<ExpedienteConsulta> expedienteConsultaSelectList(long idExpediente);
     
+    public List<ExpedienteConsulta> expedienteConsultaPorExpediente(String numeroExpediente);
+    
 }
