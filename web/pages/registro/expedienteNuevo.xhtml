@@ -506,40 +506,10 @@
                                                         <span class="text-bold">Tema:</span>
                                                     </td>
                                                     <td style="padding-bottom: 10px">
-                                                        <h:selectOneMenu value="0">
-                                                            <f:selectItem itemValue="0" itemLabel="Seleccione" />
-                                                            <f:selectItem itemLabel="1. Servicios Públicos" />
-                                                            <f:selectItem itemLabel="2. Servicios de Salud" />
-                                                            <f:selectItem itemLabel="3. Servicios Educativos" />
-                                                            <f:selectItem itemLabel="4. Transporte y tránsito de vehículos" />
-                                                            <f:selectItem itemLabel="5. Medio Ambiente y Recursos Naturales" />
-                                                            <f:selectItem itemLabel="6. Integridad Personal" />
-                                                            <f:selectItem itemLabel="7. Identidad" />
-                                                            <f:selectItem itemLabel="8. Laboral" />
-                                                            <f:selectItem itemLabel="9. Justicia" />
-                                                            <f:selectItem itemLabel="10. Seguridad Pública" />
-                                                            <f:selectItem itemLabel="11. Programas Sociales" />
-                                                            <f:selectItem itemLabel="12. Pensiones" />
-                                                            <f:selectItem itemLabel="13. Demoras en trámites y/o procedimientos" />
-                                                            <f:selectItem itemLabel="14. Discriminación" />
-                                                            <f:selectItem itemLabel="15. Corrupción" />
-                                                            <f:selectItem itemLabel="16. Transparencia y acceso a la información" />
-                                                            <f:selectItem itemLabel="17. Participación" />
-                                                            <f:selectItem itemLabel="18. Libertad de expresión" />
-                                                        </h:selectOneMenu>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td style="padding-bottom: 10px">
-                                                        <span class="text-bold">Servicio de salud:</span>
-                                                    </td>
-                                                    <td style="padding-bottom: 10px">
-                                                        <h:selectOneMenu value="0">
-                                                            <f:selectItem itemValue="0" itemLabel="Seleccione" />
-                                                            <f:selectItem itemLabel="Infraestructura de salud" />
-                                                            <f:selectItem itemLabel="Acceso y alcance de los servicios de salud" />
-                                                            <f:selectItem itemLabel="Calidad del servicio de salud" />
-                                                            <f:selectItem itemLabel="Calidad de la atención" />
+                                                        <h:selectOneMenu value="#{registroController.expediente.idPrimerNivel}" onchange="loadingModal()">
+                                                            <f:selectItems value="#{registroController.listaClasificacionPrimerLevel}" />
+                                                            <f:ajax listener="#{registroController.cargarNivelesClasificacion(registroController.expediente.idPrimerNivel, 2)}" 
+                                                                    render="idSelectSegundoNivel idSelectTercerNivel idSelectCuartoNivel idSelectQuintoNivel idSelectSextoNivel" onevent="closeModal"/>
                                                         </h:selectOneMenu>
                                                     </td>
                                                 </tr>
@@ -548,55 +518,62 @@
                                                         <span class="text-bold">Sub tema:</span>
                                                     </td>
                                                     <td style="padding-bottom: 10px">
-                                                        <h:selectOneMenu value="0">
-                                                            <f:selectItem itemValue="0" itemLabel="Seleccione" />
-                                                            <f:selectItem itemLabel="Acceso a seguros de salud adecuados" />
-                                                            <f:selectItem itemLabel="Acceso a atención en salud" />
+                                                        <h:selectOneMenu id="idSelectSegundoNivel" value="#{registroController.expediente.idSegundoNivel}" onchange="loadingModal()">
+                                                            <f:selectItem itemLabel="Seleccione" itemValue="0" />
+                                                            <f:selectItems value="#{registroController.listaClasificacionSegundoLevel}" />
+                                                            <f:ajax listener="#{registroController.cargarNivelesClasificacion(registroController.expediente.idSegundoNivel, 3)}"  
+                                                                    render="idSelectTercerNivel idSelectCuartoNivel idSelectQuintoNivel idSelectSextoNivel" onevent="closeModal"/>
+                                                        </h:selectOneMenu>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding-bottom: 10px">
+                                                        <span class="text-bold">Tercer nivel:</span>
+                                                    </td>
+                                                    <td style="padding-bottom: 10px">
+                                                        <h:selectOneMenu id="idSelectTercerNivel" value="#{registroController.expediente.idTercerNivel}" onchange="loadingModal()">
+                                                            <f:selectItem itemLabel="Seleccione" itemValue="0" />
+                                                            <f:selectItems value="#{registroController.listaClasificacionTercerLevel}" />
+                                                            <f:ajax listener="#{registroController.cargarNivelesClasificacion(registroController.expediente.idTercerNivel, 4)}" 
+                                                                    render="idSelectCuartoNivel idSelectQuintoNivel idSelectSextoNivel" onevent="closeModal"/>
                                                         </h:selectOneMenu>
                                                     </td>
                                                 </tr>
 
                                                 <tr>
                                                     <td style="padding-bottom: 10px">
-                                                        <span class="text-bold">Seguro:</span>
+                                                        <span class="text-bold">Cuarto nivel:</span>
                                                     </td>
                                                     <td style="padding-bottom: 10px">
-                                                        <h:selectOneMenu value="0">
-                                                            <f:selectItem itemValue="0" itemLabel="Seleccione" />
-                                                            <f:selectItem itemLabel="SIS" />
-                                                            <f:selectItem itemLabel="EsSalud" />
-                                                            <f:selectItem itemLabel="SOAT" />
-                                                            <f:selectItem itemLabel="AFOCAT" />
-                                                            <f:selectItem itemLabel="Otros seguros" />
+                                                        <h:selectOneMenu id="idSelectCuartoNivel" value="#{registroController.expediente.idCuartoNivel}" onchange="loadingModal()">
+                                                            <f:selectItem itemLabel="Seleccione" itemValue="0" />
+                                                            <f:selectItems value="#{registroController.listaClasificacionCuartoLevel}" />
+                                                            <f:ajax listener="#{registroController.cargarNivelesClasificacion(registroController.expediente.idCuartoNivel, 5)}" 
+                                                                    render="idSelectQuintoNivel idSelectSextoNivel" onevent="closeModal"/>
                                                         </h:selectOneMenu>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td style="padding-bottom: 20px">
-                                                        <span class="text-bold">Sub sub subtema seguro:</span>
+                                                        <span class="text-bold">Quinto nivel:</span>
                                                     </td>
                                                     <td style="padding-bottom: 20px">
-                                                        <h:selectOneMenu value="0">
-                                                            <f:selectItem itemValue="0" itemLabel="Seleccione" />
-                                                            <f:selectItem itemLabel="Impedimentos o restricciones de acceso a Seguros de salud" />
-                                                            <f:selectItem itemLabel="Problemas relacionados a la cobertura de seguros de salud" />
-                                                            <f:selectItem itemLabel="Impedimentos o restricciones al uso de Seguros de salud" />
+                                                        <h:selectOneMenu id="idSelectQuintoNivel" value="#{registroController.expediente.idQuintoNivel}" onchange="loadingModal()">
+                                                            <f:selectItem itemLabel="Seleccione" itemValue="0" />
+                                                            <f:selectItems value="#{registroController.listaClasificacionQuintoLevel}" />
+                                                            <f:ajax listener="#{registroController.cargarNivelesClasificacion(registroController.expediente.idQuintoNivel, 6)}" 
+                                                                    render="idSelectSextoNivel" onevent="closeModal"/>
                                                         </h:selectOneMenu>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td style="padding-bottom: 20px">
-                                                        <span class="text-bold">Sub sub subtema seguro:</span>
+                                                        <span class="text-bold">Sexto nivel:</span>
                                                     </td>
                                                     <td style="padding-bottom: 20px">
-                                                        <h:selectOneMenu value="0">
-                                                            <f:selectItem itemValue="0" itemLabel="Seleccione" />
-                                                            <f:selectItem itemLabel="Negativa injustificada a afiliación" />
-                                                            <f:selectItem itemLabel="Falta de información administrativa sobre acceso a seguros de salud" />
-                                                            <f:selectItem itemLabel="Cobros indebidos" />
-                                                            <f:selectItem itemLabel="Falta de aportes a seguro de salud" />
-                                                            <f:selectItem itemLabel="Problemas de focalización (SISFHO)" />
-                                                            <f:selectItem itemLabel="Falta de DNI u otra documentación" />
+                                                        <h:selectOneMenu id="idSelectSextoNivel" value="#{registroController.expediente.idSextoNivel}">
+                                                            <f:selectItem itemLabel="Seleccione" itemValue="0" />
+                                                            <f:selectItems value="#{registroController.listaClasificacionSextoLevel}" />
                                                         </h:selectOneMenu>
                                                     </td>
                                                 </tr>

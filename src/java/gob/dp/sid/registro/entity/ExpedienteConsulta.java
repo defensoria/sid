@@ -39,6 +39,8 @@ public class ExpedienteConsulta implements Serializable{
     
     private Integer tipo;
     
+    private String codigoUsuarioReasignado;
+    
     
     private String nombreAdjuntia;
     
@@ -153,6 +155,14 @@ public class ExpedienteConsulta implements Serializable{
 
     public void setNombreAdjuntia(String nombreAdjuntia) {
         this.nombreAdjuntia = nombreAdjuntia;
+    }
+
+    public String getCodigoUsuarioReasignado() {
+        return codigoUsuarioReasignado;
+    }
+
+    public void setCodigoUsuarioReasignado(String codigoUsuarioReasignado) {
+        this.codigoUsuarioReasignado = codigoUsuarioReasignado;
     }
 
     

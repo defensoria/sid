@@ -43,5 +43,7 @@ public interface ExpedienteService {
     public Long expedienteCodigoPorOD(Long codigoOD);
     
     //public List<Expediente> expedienteBuscarUsuarioPaginadoGeneral(Expediente expediente);
+    
+    public Expediente expedienteBuscarPorNumero(String numeroExpediente);
 
 }

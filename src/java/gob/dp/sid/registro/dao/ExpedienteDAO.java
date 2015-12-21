@@ -40,5 +40,7 @@ public interface ExpedienteDAO {
     
     public Expediente expedienteBuscarPorId(Long idExpediente);
     
+    public Expediente expedienteBuscarPorNumero(String numeroExpediente);
+    
     public Long expedienteCodigoPorOD(Long codigoOD);
 }

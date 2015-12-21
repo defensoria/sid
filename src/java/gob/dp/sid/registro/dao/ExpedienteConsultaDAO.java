@@ -16,7 +16,7 @@ public interface ExpedienteConsultaDAO {
     
     public void expedienteConsultaInsertar(ExpedienteConsulta expedienteConsulta);
     
-    public List<ExpedienteConsulta> expedienteConsultaSelectList(long idExpediente);
+    public ExpedienteConsulta expedienteConsultaSelectOne(long idExpediente);
     
     public List<ExpedienteConsulta> expedienteConsultaPorExpediente(String numeroExpediente);
     

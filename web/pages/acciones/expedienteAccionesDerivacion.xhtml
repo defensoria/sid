@@ -56,7 +56,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a jsf:action="#{registroController.inicioAccionesConsulta()}">
+                                <a jsf:action="#{registroController.inicioAccionesConsulta(0)}">
                                     <span class="glyphicon glyphicon-question-sign" />Consultar
                                 </a>
                             </li>
@@ -113,6 +113,7 @@
                     </h:panelGroup>
                     <h:panelGroup rendered="#{seguridadUtilController.tieneRecurso('REC_EXP002') and registroController.usuarioSession.codigo == registroController.expedienteDerivacionAprueba.codigoUsuario}">
                         <br/>
+                        <h2>#{registroController.expedienteDerivacionAprueba.codigoUsuario}</h2>
                         <table style="width: 100%">
                             <tr>
                                 <td colspan="2"><br/><br/></td>

@@ -43,6 +43,7 @@
         <typeAlias type="gob.dp.sid.registro.entity.OficinaDefensorial" alias="oficinaDefensorial"/>
         <typeAlias type="gob.dp.sid.registro.entity.ExpedienteDerivacion" alias="expedienteDerivacion"/>
         <typeAlias type="gob.dp.sid.registro.entity.ExpedienteConsulta" alias="expedienteConsulta"/>
+        <typeAlias type="gob.dp.sid.registro.entity.ExpedienteClasificacion" alias="expedienteClasificacion"/>
         
         <typeAlias type="gob.dp.sid.reporte.entity.Reporte" alias="reporte"/>
         
@@ -73,6 +74,7 @@
         <mapper resource="gob/dp/sid/registro/dao/xml/OficinaDefensorial.xml" />
         <mapper resource="gob/dp/sid/registro/dao/xml/ExpedienteDerivacion.xml" />
         <mapper resource="gob/dp/sid/registro/dao/xml/ExpedienteConsulta.xml" />
+        <mapper resource="gob/dp/sid/registro/dao/xml/ExpedienteClasificacion.xml" />
         
         <mapper resource="gob/dp/sid/bandeja/dao/xml/Bandeja.xml" />
     </mappers>

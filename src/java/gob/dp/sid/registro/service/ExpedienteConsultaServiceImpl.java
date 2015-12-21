@@ -27,8 +27,8 @@ public class ExpedienteConsultaServiceImpl implements ExpedienteConsultaService{
     }
 
     @Override
-    public List<ExpedienteConsulta> expedienteConsultaSelectList(long idExpediente) {
-        return expedienteConsultaDAO.expedienteConsultaSelectList(idExpediente);
+    public ExpedienteConsulta expedienteConsultaSelectOne(long idExpedienteConsulta) {
+        return expedienteConsultaDAO.expedienteConsultaSelectOne(idExpedienteConsulta);
     }
 
     @Override

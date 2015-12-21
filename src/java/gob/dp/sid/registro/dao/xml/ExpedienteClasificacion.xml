@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD iBatis Mapper 3.0 //EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="gob.dp.sid.registro.dao.ExpedienteClasificacionDAO">
+    
+    <resultMap id="expedienteClasificacionMap" type="ExpedienteClasificacion">
+        <id property="id" column="N_ID_CLASIFICACION" />
+        <result property="nombre" column="C_NOMBREPARAMETRO"/>
+        <result property="padre" column="N_PADREPARAMETRO"/>
+        <result property="grupo" column="N_IDGRUPO"/>
+        <result property="estado" column="C_ESTADO"/>
+    </resultMap> 
+    
+    <select id="expedienteClasificacionLista" resultMap="expedienteClasificacionMap"  parameterType="expedienteClasificacion">
+        SELECT * FROM SID_REG_CLASIFICACION WHERE N_PADREPARAMETRO = #{padre} 
+        AND C_ESTADO = 'ACT' 
+        AND N_IDGRUPO = #{grupo} 
+        ORDER BY N_ID_CLASIFICACION
+    </select>
+    
+</mapper>

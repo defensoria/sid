@@ -23,8 +23,8 @@ public class ExpedienteConsultaDAOImpl extends SqlSessionDaoSupport implements E
     }
 
     @Override
-    public List<ExpedienteConsulta> expedienteConsultaSelectList(long idExpediente) {
-        return getSqlSession().selectList("gob.dp.sid.registro.dao.ExpedienteConsultaDAO.expedienteConsultaSelectList", idExpediente);
+    public ExpedienteConsulta expedienteConsultaSelectOne(long idExpedienteConsulta) {
+        return getSqlSession().selectOne("gob.dp.sid.registro.dao.ExpedienteConsultaDAO.expedienteConsultaSelectOne", idExpedienteConsulta);
     }
 
     @Override

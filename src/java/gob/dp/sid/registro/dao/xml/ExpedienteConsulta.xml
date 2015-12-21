@@ -16,6 +16,7 @@
         <result property="aprueba" column="C_APRUEBA"/>
         <result property="tipo" column="N_TIPO"/>
         <result property="codigo" column="C_CODIGO"/>
+        <result property="codigoUsuarioReasignado" column="C_CODIGOUSUARIOREASIGNADO"/>
         
         <result property="nombreAdjuntia" column="ADJUNTIA"/>
     </resultMap> 
@@ -60,6 +61,9 @@
         <if test="codigo != null">
             C_CODIGO,
         </if>
+        <if test="codigoUsuarioReasignado != null">
+            C_CODIGOUSUARIOREASIGNADO,
+        </if>
 
         N_ID_CONSULTA
         )
@@ -101,6 +105,9 @@
         <if test="codigo != null">
             #{codigo},
         </if>
+        <if test="codigoUsuarioReasignado != null">
+            #{codigoUsuarioReasignado},
+        </if>
         SEQ_SID_REG_EXPEDIENTE_CONSUL.NextVal
         )
         <selectKey keyProperty="id" resultType="Long">
@@ -112,16 +119,16 @@
     <update id="expedienteConsultaUpdate" parameterType="expedienteConsulta">
         UPDATE SID_REG_ENTIDAD
         <set>
-        <if test="ruc != null">
-            C_RUC = #{ruc},
-        </if>
-        <if test="fechaRegistro != null">
-            D_FECHAREGISTRO = #{fechaRegistro},
-        </if>
-        <if test="usuarioRegistro != null">
-            C_USU_REGISTRO = #{usuarioRegistro},
-        </if>
-        C_NOMBRE = UPPER(#{nombre})
+            <if test="ruc != null">
+                C_RUC = #{ruc},
+            </if>
+            <if test="fechaRegistro != null">
+                D_FECHAREGISTRO = #{fechaRegistro},
+            </if>
+            <if test="usuarioRegistro != null">
+                C_USU_REGISTRO = #{usuarioRegistro},
+            </if>
+            C_NOMBRE = UPPER(#{nombre})
         </set>
         <where>
             N_IDENTIDAD = #{id}
@@ -129,13 +136,13 @@
     </update>
     
     
-    <select id="expedienteConsultaSelectList" resultMap="expedienteConsultaMap"  parameterType="long">
-        SELECT * FROM SID_REG_EXPEDIENTE_CONSULTA WHERE N_IDEXPEDIENTE = #{id}
+    <select id="expedienteConsultaSelectOne" resultMap="expedienteConsultaMap"  parameterType="long">
+        SELECT * FROM SID_REG_EXPEDIENTE_CONSULTA WHERE N_ID_CONSULTA = #{id}
     </select>
     
     <select id="expedienteConsultaPorExpediente" resultMap="expedienteConsultaMap"  parameterType="String">
         SELECT A.*, B.C_NOMBRE ADJUNTIA FROM SID_REG_EXPEDIENTE_CONSULTA A
-INNER JOIN SID_SEG_OFICINA_DEFENSORIAL B ON A.N_ID_AD = B.N_ID_OD
+        INNER JOIN SID_SEG_OFICINA_DEFENSORIAL B ON A.N_ID_AD = B.N_ID_OD
         WHERE A.C_NUMEROEXPEDIENTE = #{value}
         ORDER BY A.N_ID_CONSULTA DESC
     </select>

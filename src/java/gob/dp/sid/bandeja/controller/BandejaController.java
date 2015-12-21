@@ -88,6 +88,28 @@ public class BandejaController extends AbstractManagedBean implements Serializab
         guardarMensajeConsulta(ec, listaDestinatarios, 0L);
     }
     
+    public void mensajeEnviaConsultaAprobacion(ExpedienteConsulta ec){
+        usuarioSession();
+        mensajeBandeja = new Bandeja();
+        OficinaDefensorial of = oficinaDefensorialService.obtenerOficinaDefensorial(ec.getIdAdjuntiaDefensorial().longValue());
+        mensajeBandeja.setTituloMensaje(MensajeType.MENSAJE_CONSULTA.getDetalle()+" exp: "+ec.getNumeroExpediente()+" a: "+of.getNombre());
+        usuarioSession.setRol(RolType.APROBADOR_OD.getKey());
+        usuarioSession.setCodigoOD(ec.getIdAdjuntiaDefensorial());
+        List<Usuario> listaDestinatarios = buscarDestinatarios(usuarioSession);
+        guardarMensajeConsulta(ec, listaDestinatarios, 0L);
+    }
+    
+    public void mensajeEnviaConsultaReasignacion(ExpedienteConsulta ec){
+        usuarioSession();
+        mensajeBandeja = new Bandeja();
+        mensajeBandeja.setTituloMensaje(MensajeType.MENSAJE_CONSULTA.getDetalle()+" exp: "+ec.getNumeroExpediente());
+        Usuario usuario = new Usuario();
+        usuario.setCodigo(ec.getCodigoUsuarioReasignado());
+        List<Usuario> listaDestinatarios = new ArrayList<>();
+        listaDestinatarios.add(usuario);
+        guardarMensajeConsulta(ec, listaDestinatarios, 0L);
+    }
+    
     public void mensajeEnviaAprobacion(ExpedienteDerivacion ed){
         mensajeBandeja = new Bandeja();
         OficinaDefensorial of = oficinaDefensorialService.obtenerOficinaDefensorial(ed.getIdOficinaDefensorial().longValue());
@@ -212,7 +234,8 @@ public class BandejaController extends AbstractManagedBean implements Serializab
     public String cargarExpedientePorMensaje(Integer tipo){
         if(Objects.equals(tipo, MensajeType.MENSAJE_DERIVACION.getKey()))
             return cargarDerivacionPorId();
-        
+        if(Objects.equals(tipo, MensajeType.MENSAJE_CONSULTA.getKey()))
+            return cargarMensajePorNumero();
         return "";
     }
     
@@ -221,6 +244,13 @@ public class BandejaController extends AbstractManagedBean implements Serializab
         RegistroController registroController = (RegistroController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "registroController");
         registroController.cargarExpedientePorId(mensajeBandeja.getIdExpediente());
         return registroController.inicioAccionesDerivacion();
+    }
+    
+    private String cargarMensajePorNumero() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        RegistroController registroController = (RegistroController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "registroController");
+        registroController.cargarExpedientePorNumero(mensajeBandeja.getNumeroExpediente());
+        return registroController.inicioAccionesConsulta(mensajeBandeja.getIdAccion());
     }
 
     private List<Usuario> buscarDestinatarios(Usuario u) {

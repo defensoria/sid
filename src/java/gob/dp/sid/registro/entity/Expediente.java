@@ -66,6 +66,17 @@ public class Expediente implements Serializable{
     
     private Long consecutivo;
     
+    private Integer idPrimerNivel;
+    
+    private Integer idSegundoNivel;
+    
+    private Integer idTercerNivel;
+    
+    private Integer idCuartoNivel;
+    
+    private Integer idQuintoNivel;
+    
+    private Integer idSextoNivel;
     /*agregados*/
     
     private String idEtiqueta;
@@ -426,6 +437,54 @@ public class Expediente implements Serializable{
 
     public void setConsecutivo(Long consecutivo) {
         this.consecutivo = consecutivo;
+    }
+
+    public Integer getIdPrimerNivel() {
+        return idPrimerNivel;
+    }
+
+    public void setIdPrimerNivel(Integer idPrimerNivel) {
+        this.idPrimerNivel = idPrimerNivel;
+    }
+
+    public Integer getIdSegundoNivel() {
+        return idSegundoNivel;
+    }
+
+    public void setIdSegundoNivel(Integer idSegundoNivel) {
+        this.idSegundoNivel = idSegundoNivel;
+    }
+
+    public Integer getIdTercerNivel() {
+        return idTercerNivel;
+    }
+
+    public void setIdTercerNivel(Integer idTercerNivel) {
+        this.idTercerNivel = idTercerNivel;
+    }
+
+    public Integer getIdCuartoNivel() {
+        return idCuartoNivel;
+    }
+
+    public void setIdCuartoNivel(Integer idCuartoNivel) {
+        this.idCuartoNivel = idCuartoNivel;
+    }
+
+    public Integer getIdQuintoNivel() {
+        return idQuintoNivel;
+    }
+
+    public void setIdQuintoNivel(Integer idQuintoNivel) {
+        this.idQuintoNivel = idQuintoNivel;
+    }
+
+    public Integer getIdSextoNivel() {
+        return idSextoNivel;
+    }
+
+    public void setIdSextoNivel(Integer idSextoNivel) {
+        this.idSextoNivel = idSextoNivel;
     }
     
     
