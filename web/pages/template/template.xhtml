@@ -241,33 +241,26 @@
                                     <li>
                                         <a href="#" class="dropdown-toggle notification-icon" data-toggle="dropdown">
                                             <i class="fa fa-bell"></i>
-                                            <span class="badge">28</span>
+                                            <span class="badge">#{bandejaController.listaMensajesPendientes.size()}</span>
                                         </a>
 
                                         <div class="dropdown-menu notification-menu">
                                             <div class="notification-title">
-                                                <span class="pull-right label label-default">listaAlertaEjecutadas</span>
-                                                Alertas
+                                                Mensajes
                                             </div>
 
                                             <div class="content">
                                                 <ul>
-                                                    
+                                                    <span>Tiene #{bandejaController.listaMensajesPendientes.size()} mensajes no atendidos</span>  
                                                 </ul>
                                                 <hr />
 
                                                 <div class="text-right">
-                                                    <a jsf:action="#{seguimientoAcuerdoController.cargarPagina()}" class="view-more"><i class="fa fa-arrow-right"></i> Ver todas</a>
+                                                    <a jsf:action="#{bandejaController.cargarBandeja()}" class="view-more"><i class="fa fa-arrow-right"></i> ir a la bandeja</a>
                                                 </div>
                                             </div>
                                         </div>                            
 
-                                    </li>
-                                    <li>
-                                        <a href="#" class="dropdown-toggle notification-icon">
-                                            <i class="fa fa-newspaper-o"></i>
-                                            <span class="badge">4</span>
-                                        </a>
                                     </li>
                                     <li>
                                         <a href="#" class="dropdown-toggle notification-icon">
@@ -457,7 +450,13 @@
 
         </section>
         <!-- /#wrapper -->
-
+        
+        
+        
+        
+        
+        
+        
         <div class="modal js-loading-bar" data-toggle="modal" id="loadModal" tabindex="-1" role="dialog" aria-labelledby="loadModal"> style="vertical-align: central"  aria-hidden="true">
             <br/><br/><br/><br/><br/>
             <center>
@@ -527,6 +526,6 @@
                 window.location = '#{facesContext.externalContext.requestContextPath}/cerrarSesion.jsp';
             }
         </script>
-
+      
     </body>
 </html>

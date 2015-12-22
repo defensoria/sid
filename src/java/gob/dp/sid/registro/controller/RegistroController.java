@@ -38,6 +38,7 @@ import gob.dp.sid.registro.entity.ExpedienteConsulta;
 import gob.dp.sid.registro.entity.ExpedienteDerivacion;
 import gob.dp.sid.registro.entity.ExpedienteEntidad;
 import gob.dp.sid.registro.entity.ExpedienteGestion;
+import gob.dp.sid.registro.entity.ExpedienteNivel;
 import gob.dp.sid.registro.entity.ExpedientePersona;
 import gob.dp.sid.registro.entity.GestionEtapa;
 import gob.dp.sid.registro.entity.OficinaDefensorial;
@@ -49,6 +50,7 @@ import gob.dp.sid.registro.service.ExpedienteConsultaService;
 import gob.dp.sid.registro.service.ExpedienteDerivacionService;
 import gob.dp.sid.registro.service.ExpedienteEntidadService;
 import gob.dp.sid.registro.service.ExpedienteGestionService;
+import gob.dp.sid.registro.service.ExpedienteNivelService;
 import gob.dp.sid.registro.service.ExpedientePersonaService;
 import gob.dp.sid.registro.service.ExpedienteService;
 import gob.dp.sid.registro.service.GestionEtapaService;
@@ -225,6 +227,10 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     private List<SelectItem> listaClasificacionQuintoLevel;
 
     private List<SelectItem> listaClasificacionSextoLevel;
+    
+    private ExpedienteNivel expedienteNivel;
+    
+    private List<ExpedienteNivel> listaExpedienteNivel;
 
     @Autowired
     private ExpedienteService expedienteService;
@@ -273,9 +279,13 @@ public class RegistroController extends AbstractManagedBean implements Serializa
 
     @Autowired
     private ExpedienteClasificacionService expedienteClasificacionService;
+    
+    @Autowired
+    private ExpedienteNivelService expedienteNivelService;
 
     public String cargarNuevoExpediente() {
-        expediente = new Expediente();
+        cargarObjetoExpediente();
+        expedienteNivel = new ExpedienteNivel();
         etapaEstado = new EtapaEstado();
         cadenaPersonaPopover = "";
         personasSeleccionadas = new ArrayList<>();
@@ -283,7 +293,14 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         entidadSeleccionadas = new ArrayList<>();
         cadenaEtiquetaAutocomplete = expedienteService.etiquetaBuscarAutocomplete();
         listaEtiquetasSeleccionadas = new ArrayList<>();
+        setVerBotonRegistrarExpediente(true);
         return "expedienteNuevo";
+    }
+    
+    private void cargarObjetoExpediente(){
+        expediente = new Expediente();
+        listaExpedienteNivel = new ArrayList<>();
+        expediente.setListaExpedienteNivel(listaExpedienteNivel);
     }
 
     public String iniciarExpedienteNuevo() {
@@ -295,6 +312,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         ep.setPersona(personaSeleccionada);
         personasSeleccionadas.add(ep);
         inicializarEtapaEstado(0);
+        setVerBotonRegistrarExpediente(true);
         return "expedienteNuevo";
     }
 
@@ -436,6 +454,24 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             }
         }
     }
+    
+    public void guardarNivel(){
+        if(expedienteNivel.getIdPrimerNivel() != null && expedienteNivel.getIdPrimerNivel() != 0){
+            expedienteNivel.setNumeroExpediente(expediente.getNumero());
+            expedienteNivel.setEstado("ACT");
+            expedienteNivelService.expedienteNivelInsertar(expedienteNivel);
+            List<ExpedienteNivel> nivels = expedienteNivelService.expedienteNivelPorExpediente(expediente.getNumero());
+            expediente.setListaExpedienteNivel(nivels);
+            expedienteNivel = new ExpedienteNivel();
+            msg.messageInfo("Se agrego una nueva clasificacion temática", null);
+        }
+    }
+    
+    public void inactivarNivel(ExpedienteNivel en){
+        expedienteNivelService.expedienteNivelUpdate(en.getId());
+        List<ExpedienteNivel> nivels = expedienteNivelService.expedienteNivelPorExpediente(expediente.getNumero());
+        expediente.setListaExpedienteNivel(nivels);
+    }
 
     private void defineBotonRegistro() {
         /*´para derivaciones*/
@@ -474,12 +510,6 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 if(consulta.getEtapa() == EtapaConsultaType.CONSULTA_ETAPA_REASIGNA.getKey())
                     expedienteConsultaReasigna = consulta;
             }
-            /*expedienteConsultaAprueba = null;
-            for (ExpedienteConsulta ec : list) {
-                if (ec.getEtapa() == EtapaConsultaType.CONSULTA_ETAPA_APRUEBA.getKey() && StringUtils.equals(ec.getCodigo(), expedienteConsultaEnvia.getCodigo())) {
-                    setExpedienteConsultaAprueba(ec);
-                }
-            }*/
             if (expedienteConsultaAprueba == null) {
                 expedienteConsultaAprueba = new ExpedienteConsulta();
                 expedienteConsultaAprueba.setCodigoUsuario(usuarioSession.getCodigo());
@@ -539,7 +569,6 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             expedienteDerivacionReasigna = new ExpedienteDerivacion();
             expedienteDerivacionReasigna.setCodigoUsuario(usuarioSession.getCodigo());
         }
-
         return "expedienteAccionesDerivacion";
     }
 
@@ -1050,28 +1079,36 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         } else {
             inicializarEtapaEstado(1);
         }
+        listarNiveles();
         defineBotonRegistro();
-        cargarNiveles();
+        //cargarNiveles();
         return "expedienteEdit";
     }
-
-    private void cargarNiveles() {
-        if (expediente.getIdPrimerNivel() != null && expediente.getIdPrimerNivel() != 0) {
-            cargarNivelesClasificacion(expediente.getIdPrimerNivel(), 2);
-        }
-        if (expediente.getIdSegundoNivel() != null && expediente.getIdSegundoNivel() != 0) {
-            cargarNivelesClasificacion(expediente.getIdSegundoNivel(), 3);
-        }
-        if (expediente.getIdTercerNivel() != null && expediente.getIdTercerNivel() != 0) {
-            cargarNivelesClasificacion(expediente.getIdTercerNivel(), 4);
-        }
-        if (expediente.getIdCuartoNivel() != null && expediente.getIdCuartoNivel() != 0) {
-            cargarNivelesClasificacion(expediente.getIdCuartoNivel(), 5);
-        }
-        if (expediente.getIdQuintoNivel() != null && expediente.getIdQuintoNivel() != 0) {
-            cargarNivelesClasificacion(expediente.getIdQuintoNivel(), 6);
+    
+    private void listarNiveles(){
+        if(StringUtils.isNotBlank(expediente.getNumero())){
+            List<ExpedienteNivel> list = expedienteNivelService.expedienteNivelPorExpediente(expediente.getNumero());
+            expediente.setListaExpedienteNivel(list);
         }
     }
+
+    /*private void cargarNiveles() {
+        if (expediente.getExpedienteNivel().getIdPrimerNivel() != null && expediente.getExpedienteNivel().getIdPrimerNivel() != 0) {
+            cargarNivelesClasificacion(expediente.getExpedienteNivel().getIdPrimerNivel(), 2);
+        }
+        if (expediente.getExpedienteNivel().getIdSegundoNivel() != null && expediente.getExpedienteNivel().getIdSegundoNivel() != 0) {
+            cargarNivelesClasificacion(expediente.getExpedienteNivel().getIdSegundoNivel(), 3);
+        }
+        if (expediente.getExpedienteNivel().getIdTercerNivel() != null && expediente.getExpedienteNivel().getIdTercerNivel() != 0) {
+            cargarNivelesClasificacion(expediente.getExpedienteNivel().getIdTercerNivel(), 4);
+        }
+        if (expediente.getExpedienteNivel().getIdCuartoNivel() != null && expediente.getExpedienteNivel().getIdCuartoNivel() != 0) {
+            cargarNivelesClasificacion(expediente.getExpedienteNivel().getIdCuartoNivel(), 5);
+        }
+        if (expediente.getExpedienteNivel().getIdQuintoNivel() != null && expediente.getExpedienteNivel().getIdQuintoNivel() != 0) {
+            cargarNivelesClasificacion(expediente.getExpedienteNivel().getIdQuintoNivel(), 6);
+        }
+    }*/
 
     public void setearExpediente(Expediente e) {
         FacesContext context = FacesContext.getCurrentInstance();
@@ -2616,6 +2653,22 @@ public class RegistroController extends AbstractManagedBean implements Serializa
 
     public void setListaUsuariosComisionadosPorAD(List<SelectItem> listaUsuariosComisionadosPorAD) {
         this.listaUsuariosComisionadosPorAD = listaUsuariosComisionadosPorAD;
+    }
+
+    public List<ExpedienteNivel> getListaExpedienteNivel() {
+        return listaExpedienteNivel;
+    }
+
+    public void setListaExpedienteNivel(List<ExpedienteNivel> listaExpedienteNivel) {
+        this.listaExpedienteNivel = listaExpedienteNivel;
+    }
+
+    public ExpedienteNivel getExpedienteNivel() {
+        return expedienteNivel;
+    }
+
+    public void setExpedienteNivel(ExpedienteNivel expedienteNivel) {
+        this.expedienteNivel = expedienteNivel;
     }
 
 }

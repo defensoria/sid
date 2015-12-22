@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD iBatis Mapper 3.0 //EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="gob.dp.sid.registro.dao.ExpedienteNivelDAO">
+    
+    <resultMap id="expedienteNivelMap" type="expedienteNivel">
+        <id property="id" column="N_ID_EXPEDIENTECLASI" />
+        <result property="numeroExpediente" column="C_NUMEROEXPEDIENTE"/>
+        <result property="idPrimerNivel" column="N_ID_PRIMERNIVEL"/>
+        <result property="idSegundoNivel" column="N_ID_SEGUNDONIVEL"/>
+        <result property="idTercerNivel" column="N_ID_TERCERNIVEL"/>
+        <result property="idCuartoNivel" column="N_ID_CUARTONIVEL"/>
+        <result property="idQuintoNivel" column="N_ID_QUINTONIVEL"/>
+        <result property="idSextoNivel" column="N_ID_SEXTONIVEL"/>
+        <result property="estado" column="C_ESTADO"/>
+        
+        <result property="primerNivel" column="PRIMERNIVEL"/>
+        <result property="segundoNivel" column="SEGUNDONIVEL"/>
+        <result property="tercerNivel" column="TERCERNIVEL"/>
+        <result property="cuartoNivel" column="CUARTONIVEL"/>
+        <result property="quintoNivel" column="QUINTONIVEL"/>
+        <result property="sextoNivel" column="SEXTONIVEL"/>
+    </resultMap> 
+    
+    
+    <insert id="expedienteNivelInsertar" parameterType="expedienteNivel">
+        INSERT INTO SID_REG_EXPEDIENTE_CLASI
+        (
+        <if test="numeroExpediente != null">
+            C_NUMEROEXPEDIENTE,
+        </if>
+        <if test="idPrimerNivel != null">
+            N_ID_PRIMERNIVEL,
+        </if>
+        <if test="idSegundoNivel != null">
+            N_ID_SEGUNDONIVEL,
+        </if>
+        <if test="idTercerNivel != null">
+            N_ID_TERCERNIVEL,
+        </if>
+        <if test="idCuartoNivel != null">
+            N_ID_CUARTONIVEL,
+        </if>
+        <if test="idQuintoNivel != null">
+            N_ID_QUINTONIVEL,
+        </if>
+        <if test="idSextoNivel != null">
+            N_ID_SEXTONIVEL,
+        </if>
+        <if test="estado != null">
+            C_ESTADO,
+        </if>
+        N_ID_EXPEDIENTECLASI
+        )
+        VALUES 
+        (
+        <if test="numeroExpediente != null">
+            #{numeroExpediente},
+        </if>
+        <if test="idPrimerNivel != null">
+            #{idPrimerNivel},
+        </if>
+        <if test="idSegundoNivel != null">
+            #{idSegundoNivel},
+        </if>
+        <if test="idTercerNivel != null">
+            #{idTercerNivel},
+        </if>
+        <if test="idCuartoNivel != null">
+            #{idCuartoNivel},
+        </if>
+        <if test="idQuintoNivel != null">
+            #{idQuintoNivel},
+        </if>
+        <if test="idSextoNivel != null">
+            #{idSextoNivel},
+        </if>
+        <if test="estado != null">
+            #{estado},
+        </if>
+        SEQ_SIG_REG_EXPEDIENTE_CLASI.NextVal
+        )
+        <selectKey keyProperty="id" resultType="Long">
+            SELECT SEQ_SIG_REG_EXPEDIENTE_CLASI.CURRVAL FROM DUAL
+        </selectKey>
+    </insert>
+    
+    
+    <update id="expedienteNivelUpdate" parameterType="Long">
+        UPDATE SID_REG_EXPEDIENTE_CLASI
+        <set>
+            C_ESTADO = 'INA'
+        </set>
+        <where>
+            N_ID_EXPEDIENTECLASI = #{id}
+        </where>
+    </update>
+    
+    <select id="expedienteNivelPorExpediente" resultMap="expedienteNivelMap" parameterType="String" >
+        SELECT A.*, B.C_NOMBREPARAMETRO PRIMERNIVEL, C.C_NOMBREPARAMETRO SEGUNDONIVEL, 
+D.C_NOMBREPARAMETRO TERCERNIVEL, E.C_NOMBREPARAMETRO CUARTONIVEL 
+FROM SID_REG_EXPEDIENTE_CLASI A 
+LEFT JOIN SID_REG_CLASIFICACION B ON A.N_ID_PRIMERNIVEL = B.N_ID_CLASIFICACION
+LEFT JOIN SID_REG_CLASIFICACION C ON A.N_ID_SEGUNDONIVEL = C.N_ID_CLASIFICACION
+LEFT JOIN SID_REG_CLASIFICACION D ON A.N_ID_TERCERNIVEL = D.N_ID_CLASIFICACION
+LEFT JOIN SID_REG_CLASIFICACION E ON A.N_ID_CUARTONIVEL = E.N_ID_CLASIFICACION
+LEFT JOIN SID_REG_CLASIFICACION F ON A.N_ID_QUINTONIVEL = F.N_ID_CLASIFICACION
+LEFT JOIN SID_REG_CLASIFICACION G ON A.N_ID_SEXTONIVEL = G.N_ID_CLASIFICACION
+WHERE A.C_NUMEROEXPEDIENTE = #{value} AND A.C_ESTADO = 'ACT'
+    </select>
+    
+</mapper>

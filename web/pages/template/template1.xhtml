@@ -182,28 +182,21 @@
 
                                         <div class="dropdown-menu notification-menu">
                                             <div class="notification-title">
-                                                <span class="pull-right label label-default">28</span>
-                                                Alertas
+                                                Mensajes
                                             </div>
 
                                             <div class="content">
                                                 <ul>
-                                                    
+                                                    <span>Tiene #{bandejaController.listaMensajesPendientes.size()} mensajes no atendidos</span>  
                                                 </ul>
                                                 <hr />
 
                                                 <div class="text-right">
-                                                    <a jsf:action="#{seguimientoAcuerdoController.cargarPagina()}" class="view-more"><i class="fa fa-arrow-right"></i> Ver todas</a>
+                                                    <a jsf:action="#{bandejaController.cargarBandeja()}" class="view-more"><i class="fa fa-arrow-right"></i> ir a la bandeja</a>
                                                 </div>
                                             </div>
-                                        </div>                            
+                                        </div>                              
 
-                                    </li>
-                                    <li>
-                                        <a href="#" class="dropdown-toggle notification-icon">
-                                            <i class="fa fa-newspaper-o"></i>
-                                            <span class="badge">4</span>
-                                        </a>
                                     </li>
                                     <li>
                                         <a href="#" class="dropdown-toggle notification-icon">

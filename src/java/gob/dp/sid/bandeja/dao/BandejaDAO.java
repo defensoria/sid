@@ -18,6 +18,8 @@ public interface BandejaDAO {
             
     public List<Bandeja> bandejaBuscarUsuario(String destinatario);
     
+    public List<Bandeja> bandejaBuscarUsuarioPendientes(String destinatario);
+    
     public void mensajeEstadoVisto(Long id);
     
 }

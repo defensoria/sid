@@ -43,6 +43,8 @@ public class BandejaController extends AbstractManagedBean implements Serializab
     private Usuario usuarioSession;
 
     private List<Bandeja> listaMensajes;
+    
+    private List<Bandeja> listaMensajesPendientes;
 
     private Bandeja mensajeBandeja;
 
@@ -59,6 +61,11 @@ public class BandejaController extends AbstractManagedBean implements Serializab
         usuarioSession();
         listaMensajes = bandejaService.bandejaBuscarUsuario(usuarioSession.getCodigo());
         return "bandeja";
+    }
+    
+    public void cargarMensajesPendientes(){
+        usuarioSession();
+        listaMensajesPendientes = bandejaService.bandejaBuscarUsuarioPendientes(usuarioSession.getCodigo());
     }
 
     public String verMensajeBandeja(Bandeja b) {
@@ -280,6 +287,14 @@ public class BandejaController extends AbstractManagedBean implements Serializab
 
     public void setMensajeBandeja(Bandeja mensajeBandeja) {
         this.mensajeBandeja = mensajeBandeja;
+    }
+
+    public List<Bandeja> getListaMensajesPendientes() {
+        return listaMensajesPendientes;
+    }
+
+    public void setListaMensajesPendientes(List<Bandeja> listaMensajesPendientes) {
+        this.listaMensajesPendientes = listaMensajesPendientes;
     }
 
 }

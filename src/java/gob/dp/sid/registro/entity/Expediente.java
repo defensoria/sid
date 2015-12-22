@@ -7,6 +7,7 @@ package gob.dp.sid.registro.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -66,17 +67,7 @@ public class Expediente implements Serializable{
     
     private Long consecutivo;
     
-    private Integer idPrimerNivel;
-    
-    private Integer idSegundoNivel;
-    
-    private Integer idTercerNivel;
-    
-    private Integer idCuartoNivel;
-    
-    private Integer idQuintoNivel;
-    
-    private Integer idSextoNivel;
+    private List<ExpedienteNivel> listaExpedienteNivel;
     /*agregados*/
     
     private String idEtiqueta;
@@ -439,54 +430,12 @@ public class Expediente implements Serializable{
         this.consecutivo = consecutivo;
     }
 
-    public Integer getIdPrimerNivel() {
-        return idPrimerNivel;
+    public List<ExpedienteNivel> getListaExpedienteNivel() {
+        return listaExpedienteNivel;
     }
 
-    public void setIdPrimerNivel(Integer idPrimerNivel) {
-        this.idPrimerNivel = idPrimerNivel;
+    public void setListaExpedienteNivel(List<ExpedienteNivel> listaExpedienteNivel) {
+        this.listaExpedienteNivel = listaExpedienteNivel;
     }
 
-    public Integer getIdSegundoNivel() {
-        return idSegundoNivel;
-    }
-
-    public void setIdSegundoNivel(Integer idSegundoNivel) {
-        this.idSegundoNivel = idSegundoNivel;
-    }
-
-    public Integer getIdTercerNivel() {
-        return idTercerNivel;
-    }
-
-    public void setIdTercerNivel(Integer idTercerNivel) {
-        this.idTercerNivel = idTercerNivel;
-    }
-
-    public Integer getIdCuartoNivel() {
-        return idCuartoNivel;
-    }
-
-    public void setIdCuartoNivel(Integer idCuartoNivel) {
-        this.idCuartoNivel = idCuartoNivel;
-    }
-
-    public Integer getIdQuintoNivel() {
-        return idQuintoNivel;
-    }
-
-    public void setIdQuintoNivel(Integer idQuintoNivel) {
-        this.idQuintoNivel = idQuintoNivel;
-    }
-
-    public Integer getIdSextoNivel() {
-        return idSextoNivel;
-    }
-
-    public void setIdSextoNivel(Integer idSextoNivel) {
-        this.idSextoNivel = idSextoNivel;
-    }
-    
-    
-    
 }

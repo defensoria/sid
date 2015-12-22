@@ -53,9 +53,16 @@ public class MenuController implements Serializable{
         return "ingresarSistema";
     }
     
+    private void cargarMensajesPendientes(){
+        FacesContext context = FacesContext.getCurrentInstance();
+        BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
+        bandejaController.cargarMensajesPendientes();
+    }
+    
     public String cargarPagina(int codigoPagina) {
         menuHijo = null;
         menuNieto = new ArrayList<>();
+        cargarMensajesPendientes();
         FacesContext context = FacesContext.getCurrentInstance();
         
         if(codigoPagina == 0){
