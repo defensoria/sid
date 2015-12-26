@@ -988,15 +988,32 @@
                                 <td style="vertical-align: top; padding-left: 2px">
                                     <div class="panel panel-featured-top-silver" id="idPanel4">
                                         <div class="panel-body">
-                                            <span class="text-resalt-primary">Entidad</span>
                                             <br/>
                                             <table style="width: 100%">
                                                 <tr>
                                                     <td style="width: 60%">
-                                                        <input type="text" id="idBusquedaEntidad" style="width: 100%" placeholder="Ingrese nombre o RUC de la Entidad" jsf:value="#{registroController.entidad.cadenaEntidad}"/>
+                                                        <table style="width: 100%">
+                                                                <tr>
+                                                                        <td>
+                                                                <td>
+                                                                            <span class="text-resalt-primary">Región</span>
+                                                                            <h:selectOneMenu value="#{registroController.entidad.idDepartamento}">
+                                                                                <f:selectItem itemValue="#{registroController.usuarioSession.idDepartamento}" itemLabel="#{registroController.usuarioSession.nombreDepartamento}" />
+                                                                                <f:selectItem itemValue="0" itemLabel="Todas las regiones" />
+                                                            
+                                                        </h:selectOneMenu>
+                                                                    </td>
+                                                                    </td>
+                                                                        <td>
+                                                                            <span class="text-resalt-primary">Entidad</span>
+                                                                <input type="text" id="idBusquedaEntidad" style="width: 100%" placeholder="Ingrese nombre de la Entidad" jsf:value="#{registroController.entidad.nombre}"/>
+                                                                    </td>
+                                                            </tr>
+                                                        </table>
+                                                        
                                                     </td>
                                                     <td>
-                                                        <a href="#" class="trigger1" jsf:action="#{registroController.cargarPopoverEntidad(1)}" jsf:onclick="loadingModal()">
+                                                        <a style="vertical-align: bottom" href="#" class="trigger1" jsf:action="#{registroController.cargarPopoverEntidad(1)}" jsf:onclick="loadingModal()">
                                                             <span style="color: #3183B9; font-size: large;" class="glyphicon glyphicon-search"></span>
                                                             <f:ajax render="idForm:idPanel1" execute="@form" onevent="popove1"/>
                                                         </a>
@@ -1025,8 +1042,10 @@
                                                                             <h:outputText value="#{entidades.nombre}"/>
                                                                         </h:column>
                                                                         <h:column>
-                                                                            <f:facet name="header">RUC</f:facet>
-                                                                            <h:outputText value="#{entidades.ruc}"/>
+                                                                            <f:facet name="header">Tipo</f:facet>
+                                                                            <h:outputText rendered="#{entidades.tipo == 1}" value="centro médico"/>
+                                                                            <h:outputText rendered="#{entidades.tipo == 2}" value="colegio"/>
+                                                                            <h:outputText rendered="#{entidades.tipo == 3}" value="comisaria"/>
                                                                         </h:column>
                                                                         <h:column>
                                                                             <a jsf:action="#{registroController.addEntidad(entidades)}" jsf:onclick="loadingModal()">

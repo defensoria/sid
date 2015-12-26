@@ -143,7 +143,7 @@
     </select>
     
     <select id="bandejaBuscarUsuarioPendientes" resultMap="bandejaMap" parameterType="String" >
-        SELECT * FROM SID_MSG_BANDEJA WHERE C_DESTINATARIO = 'CLEON' AND C_ESTADO = 'PEN'
+        SELECT * FROM SID_MSG_BANDEJA WHERE C_DESTINATARIO = #{value} AND C_ESTADO = 'PEN'
         ORDER BY N_ID_BANDEJA DESC
     </select>
     

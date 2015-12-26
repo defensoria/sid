@@ -70,13 +70,14 @@ public class BusquedaController implements Serializable{
             Integer fin = paginado * pagina;
             if (pagina == 0) {
                 ini = 1;
-                fin = 10;
+                fin = 20;
             }
             expediente.setUsuarioRegistro(usuarioSession.getCodigo());
             expediente.setIni(ini);
             expediente.setFin(fin);
 
             List<Expediente> list = expedienteService.expedienteBuscarUsuarioPaginado(expediente);
+            
             if (list.size() > 0) {
                 for (Expediente e1 : list) {
                     e1.setEtapaDetalle(devolverEtapa(e1));
@@ -85,6 +86,10 @@ public class BusquedaController implements Serializable{
                 }
                 listadoGeneral = list;
                 nroPagina = pagina;
+            }else{
+                if(expediente.getIni() == 1){
+                    listadoGeneral = null;
+                }
             }
         }
         return "busquedaGeneral";

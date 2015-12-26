@@ -21,7 +21,8 @@
         c_cargo            as cargo,
         c_sexo             as sexo,
         n_nivel            as nivel,
-        N_ID_OD            as codigoOD
+        N_ID_OD            as codigoOD,
+        N_IDDEPARTAMENTO            as idDepartamento
         from sid_seg_usuario
         where
         1=1
@@ -72,7 +73,8 @@
         tel_fijo           as telefonoFijo,
         flag_clave_inicial as flagClaveInicial,
         c_cargo            as cargo,
-        c_ruta             as ruta 
+        c_ruta             as ruta,
+        N_IDDEPARTAMENTO            as idDepartamento 
         FROM (
         SELECT codigo_usuario,
         nom_usuario,
@@ -240,7 +242,8 @@
         u.flag_clave_inicial as flagClaveInicial,
         u.c_cargo            as cargo,
         u.c_ruta             as ruta,
-        u.N_ID_OD            as codigoOD
+        u.N_ID_OD            as codigoOD,
+        u.N_IDDEPARTAMENTO            as idDepartamento
         from 
         sid_seg_usuario u
         <where>

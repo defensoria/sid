@@ -18,13 +18,11 @@ public class Entidad implements Serializable{
     
     private String nombre;
     
-    private String ruc;
+    private String idDepartamento;
     
-    private Date fechaRegistro;
+    private String estado;
     
-    private String usuarioRegistro;
-    
-    private String cadenaEntidad;
+    private String tipo;
     
     private Long ini;
     
@@ -46,36 +44,28 @@ public class Entidad implements Serializable{
         this.nombre = nombre;
     }
 
-    public String getRuc() {
-        return ruc;
+    public String getIdDepartamento() {
+        return idDepartamento;
     }
 
-    public void setRuc(String ruc) {
-        this.ruc = ruc;
+    public void setIdDepartamento(String idDepartamento) {
+        this.idDepartamento = idDepartamento;
     }
 
-    public Date getFechaRegistro() {
-        return fechaRegistro;
+    public String getEstado() {
+        return estado;
     }
 
-    public void setFechaRegistro(Date fechaRegistro) {
-        this.fechaRegistro = fechaRegistro;
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 
-    public String getUsuarioRegistro() {
-        return usuarioRegistro;
+    public String getTipo() {
+        return tipo;
     }
 
-    public void setUsuarioRegistro(String usuarioRegistro) {
-        this.usuarioRegistro = usuarioRegistro;
-    }
-
-    public String getCadenaEntidad() {
-        return cadenaEntidad;
-    }
-
-    public void setCadenaEntidad(String cadenaEntidad) {
-        this.cadenaEntidad = cadenaEntidad;
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
     public Long getIni() {

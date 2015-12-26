@@ -17,7 +17,7 @@
                                             <h:dataTable value="#{busquedaController.listadoGeneral}" var="exped" class="table table-hover" binding="#{ro3}">
                                                 <h:column>
                                                     <f:facet name="header">Nro</f:facet>
-                                                    <h:outputText value="#{(ro3.rowIndex+1)+(registroController.nroPagina-1)*10}" />
+                                                    <h:outputText value="#{(ro3.rowIndex+1)+(busquedaController.nroPagina-1)*20}" />
                                                 </h:column>
                                                 <h:column>
                                                     <f:facet name="header">Expediente</f:facet>

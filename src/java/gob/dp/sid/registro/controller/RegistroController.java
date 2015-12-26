@@ -1214,6 +1214,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         FacesContext context = FacesContext.getCurrentInstance();
         LoginController loginController = (LoginController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "loginController");
         usuarioSession = loginController.getUsuarioSesion();
+        usuarioSession.setNombreDepartamento(ubigeoService.departamentoOne(usuarioSession.getIdDepartamento()).getDescripcion());
     }
 
     public boolean cargarPopoverPersona(Long pagina) {
@@ -1270,6 +1271,10 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 if (list.size() > 0) {
                     entidadPopover = list;
                     nroPaginaPersona = pagina;
+                }else{
+                    if(entidad.getIni() == 1){
+                        entidadPopover = null;
+                    }
                 }
             } catch (Exception e) {
                 log.error("ERROR : BusquedaUsuarioController.listarPaginado: " + e.getMessage());

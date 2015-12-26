@@ -3,78 +3,24 @@
 <mapper namespace="gob.dp.sid.registro.dao.EntidadDAO">
     
     <resultMap id="entidadMap" type="entidad">
-        <id property="id" column="N_IDENTIDAD" />
-        <result property="nombre" column="C_NOMBRE"/>
-        <result property="ruc" column="C_RUC"/>
-        <result property="fechaRegistro" column="D_FECHAREGISTRO"/>
-        <result property="usuarioRegistro" column="C_USU_REGISTRO"/>
+        <id property="id" column="N_ID_ENTIDAD" />
+        <result property="nombre" column="C_NOMENTIDAD"/>
+        <result property="idDepartamento" column="N_IDDEPARTAMENTO"/>
+        <result property="estado" column="C_ESTADO"/>
+        <result property="tipo" column="N_TIPO"/>
         
     </resultMap> 
     
     
-    <insert id="entidadInsertar" parameterType="entidad">
-        INSERT INTO SID_REG_ENTIDAD
-        (
-        <if test="nombre != null">
-            C_NOMBRE,
-        </if>
-        <if test="ruc != null">
-            C_RUC,
-        </if>
-        <if test="fechaRegistro != null">
-            D_FECHAREGISTRO,
-        </if>
-        <if test="usuarioRegistro != null">
-            C_USU_REGISTRO,
-        </if>
-        N_IDENTIDAD
-        )
-        VALUES 
-        (
-        <if test="nombre != null">
-            UPPER(#{nombre}),
-        </if>
-        <if test="ruc != null">
-            #{ruc},
-        </if>
-        <if test="fechaRegistro != null">
-            #{fechaRegistro},
-        </if>
-        <if test="usuarioRegistro != null">
-            #{usuarioRegistro},
-        </if>
-        SEQ_SID_REG_ENTIDAD.NextVal
-        )
-        <selectKey keyProperty="id" resultType="Long">
-            SELECT SEQ_SID_REG_ENTIDAD.CURRVAL FROM DUAL
-        </selectKey>
-    </insert>
-    
-    
-    <update id="entidadUpdate" parameterType="entidad">
-        UPDATE SID_REG_ENTIDAD
-        <set>
-        <if test="ruc != null">
-            C_RUC = #{ruc},
-        </if>
-        <if test="fechaRegistro != null">
-            D_FECHAREGISTRO = #{fechaRegistro},
-        </if>
-        <if test="usuarioRegistro != null">
-            C_USU_REGISTRO = #{usuarioRegistro},
-        </if>
-        C_NOMBRE = UPPER(#{nombre})
-        </set>
-        <where>
-            N_IDENTIDAD = #{id}
-        </where>
-    </update>
-    
     <select id="entidadBuscarCadena" resultMap="entidadMap" parameterType="entidad" >
         SELECT B.* FROM (
         SELECT A.*,ROWNUM numfila FROM (
-        SELECT * FROM SID_REG_ENTIDAD
-        WHERE UPPER(C_NOMBRE||C_RUC) LIKE '%'||UPPER(#{cadenaEntidad})||'%'
+        SELECT * FROM SID_ENTIDAD
+        WHERE UPPER(C_NOMENTIDAD) LIKE '%'||UPPER(#{nombre})||'%' 
+        <if test="idDepartamento != 0">
+            AND N_IDDEPARTAMENTO = #{idDepartamento}
+        </if>
+        AND C_ESTADO = 'ACT' ORDER BY C_NOMENTIDAD
         ) A
         ) B
         WHERE 1 = 1

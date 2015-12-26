@@ -45,6 +45,10 @@ public class Usuario implements Serializable
     private String ip; //auditoria
     
     private Integer codigoOD;
+    
+    private Integer idDepartamento;
+    
+    private String nombreDepartamento;
 
     private List<Rol> listaRol;
     private Map<String,Rol> mapRol;
@@ -269,6 +273,22 @@ public class Usuario implements Serializable
 
     public void setRol(String rol) {
         this.rol = rol;
+    }
+
+    public Integer getIdDepartamento() {
+        return idDepartamento;
+    }
+
+    public void setIdDepartamento(Integer idDepartamento) {
+        this.idDepartamento = idDepartamento;
+    }
+
+    public String getNombreDepartamento() {
+        return nombreDepartamento;
+    }
+
+    public void setNombreDepartamento(String nombreDepartamento) {
+        this.nombreDepartamento = nombreDepartamento;
     }
 
 }
