@@ -17,4 +17,9 @@
         ORDER BY N_ID_CLASIFICACION
     </select>
     
+    <select id="expedienteClasificacionBusqueda" resultMap="expedienteClasificacionMap"  parameterType="String">
+        SELECT * FROM SID_REG_CLASIFICACION WHERE C_ESTADO = 'ACT' AND UPPER(C_NOMBREPARAMETRO) LIKE '%'||UPPER(#{value})||'%'
+        ORDER BY N_ID_CLASIFICACION
+    </select>
+    
 </mapper>

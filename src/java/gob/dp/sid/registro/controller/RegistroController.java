@@ -203,6 +203,8 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     private ExpedienteConsulta expedienteConsultaEnvia;
 
     private List<ExpedienteConsulta> listaExpedienteConsultaEnvia;
+    
+    private List<ExpedienteClasificacion> listaExpedienteClasificacionBusqueda;
 
     private ExpedienteConsulta expedienteConsultaAprueba;
     
@@ -231,6 +233,8 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     private ExpedienteNivel expedienteNivel;
     
     private List<ExpedienteNivel> listaExpedienteNivel;
+    
+    private String busquedaClasificacion;
 
     @Autowired
     private ExpedienteService expedienteService;
@@ -409,6 +413,18 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         expedienteConsultaEnvia = new ExpedienteConsulta();
         expedienteConsultaEnvia.setIdExpediente(expediente.getId());
         expedienteConsultaEnvia.setNumeroExpediente(expediente.getNumero());
+    }
+    
+    public void limpiarModalBusquedaClasificacion() {
+        busquedaClasificacion = "";
+    }
+    
+    public void buscarClasificacion(){
+        listaExpedienteClasificacionBusqueda = expedienteClasificacionService.expedienteClasificacionBusqueda(busquedaClasificacion);
+        for(ExpedienteClasificacion ec : listaExpedienteClasificacionBusqueda){
+            ExpedienteNivel en = new ExpedienteNivel();
+            
+        }
     }
 
     public void cargarNivelesClasificacion(Integer idPadre, Integer grupo) {
@@ -2674,6 +2690,22 @@ public class RegistroController extends AbstractManagedBean implements Serializa
 
     public void setExpedienteNivel(ExpedienteNivel expedienteNivel) {
         this.expedienteNivel = expedienteNivel;
+    }
+
+    public String getBusquedaClasificacion() {
+        return busquedaClasificacion;
+    }
+
+    public void setBusquedaClasificacion(String busquedaClasificacion) {
+        this.busquedaClasificacion = busquedaClasificacion;
+    }
+
+    public List<ExpedienteClasificacion> getListaExpedienteClasificacionBusqueda() {
+        return listaExpedienteClasificacionBusqueda;
+    }
+
+    public void setListaExpedienteClasificacionBusqueda(List<ExpedienteClasificacion> listaExpedienteClasificacionBusqueda) {
+        this.listaExpedienteClasificacionBusqueda = listaExpedienteClasificacionBusqueda;
     }
 
 }

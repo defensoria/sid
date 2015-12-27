@@ -407,7 +407,6 @@ table.dataTable thead .sorting:after {
     color: #df8a13;
 }
 
-//css para calendario y timer
 .control-group.warning .input-prepend .add-on, .control-group.warning .input-append .add-on {
     background-color: #fcf8e3;
     border-color: #c09853;

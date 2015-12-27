@@ -506,12 +506,60 @@
                                                         <table style="width: 100%">
                                                             <tr>
                                                                 <td>
-                                                                    <input type="text" placeholder="Ingrese palabra de búsqueda" />
+                                                                    
                                                                 </td>
                                                                 <td>
-                                                                    <a style="cursor: pointer">
+                                                                    <a style="cursor: pointer" jsf:action="#{registroController.limpiarModalBusquedaClasificacion()}" jsf:onclick="loadingModal()">
                                                                         <span class="glyphicon glyphicon-search" style="font-size: large" />
+                                                                        <f:ajax render="@form" onevent="openModalBusquedaClasificacion" />
                                                                     </a>
+                                                                    <script>
+                                                            function openModalBusquedaClasificacion(data) {
+                                                                if (data.status === 'success') {
+                                                                    $("#loadModal").modal('hide');
+                                                                    $('body').removeClass('modal-open');
+                                                                    $(".modal-backdrop").removeClass("modal-backdrop");
+                                                                    $("#idModalBusquedaClasificacion").modal('show');
+                                                                }
+                                                            }
+                                                        </script>
+                                                                    <div class="modal fade" data-backdrop="static" data-keyboard="false" id="idModalBusquedaClasificacion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                                        <div class="modal-dialog" style="text-align: left">
+                                                                            <div class="modal-content">
+                                                                                <div class="modal-header">
+                                                                                    <a type="button" class="close" data-dismiss="modal">
+                                                                                        <span style="color:red" class="glyphicon glyphicon-remove"></span>
+                                                                                    </a>
+                                                                                    <span class="text-resalt-primary">Búsqueda de clasificación</span>
+                                                                                </div>
+                                                                                <div class="modal-body" style="padding:5px">
+                                                                                    <div class="panel-body">
+                                                                                        <table style="width: 100%">
+                                                                                                    <tr>
+                                                                                                            <td>
+                                                                                                    <input type="text" jsf:action="#{registroController.busquedaClasificacion}" maxlength="100" />
+                                                                                                        </td>
+                                                                                                            <td>
+                                                                                                                <a class="btn btn-primary" jsf:action="#{registroController.buscarClasificacion()}">
+                                                                                                                    <span class="glyphicon glyphicon-search" />
+                                                                                                                </a>
+                                                                                                        </td>
+                                                                                                </tr>
+                                                                                        </table>
+                                                                                        
+                                                                                    </div>
+                                                                                    <div class="modal-footer">
+                                                                                        <a  class="btn btn-default" data-dismiss="modal">
+                                                                                            <span class="glyphicon glyphicon-remove"/>Cerrar
+                                                                                        </a>
+                                                                                        <a jsf:action="#{registroController.guardarVincularListaPersona()}" class="btn btn-primary">
+                                                                                            <span class="glyphicon glyphicon-floppy-disk" />Guardar
+                                                                                        </a>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
                                                                 </td>
                                                             </tr>
                                                         </table>
@@ -726,8 +774,8 @@
                                             <textarea rows="5" jsf:value="#{registroController.expediente.observacion}" style="width: 100%" placeholder="Observacion"/>
                                             <br/><br/>
                                             <h:selectBooleanCheckbox value="#{registroController.expediente.indRelevante}" >
-                                        El caso es relevante? 
-                                    </h:selectBooleanCheckbox>
+                                                El caso es relevante? 
+                                            </h:selectBooleanCheckbox>
                                         </div>
                                     </div>
                                 </td>

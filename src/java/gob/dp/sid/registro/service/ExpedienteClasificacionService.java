@@ -16,4 +16,6 @@ public interface ExpedienteClasificacionService {
     
     public List<ExpedienteClasificacion> listaExpedienteClasificacion(ExpedienteClasificacion expedienteClasificacion);
     
+    public List<ExpedienteClasificacion> expedienteClasificacionBusqueda(String nombre);
+    
 }
