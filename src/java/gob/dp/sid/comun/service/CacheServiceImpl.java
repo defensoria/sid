@@ -44,6 +44,12 @@ public class CacheServiceImpl implements CacheService{
     private static final Integer CACHE_PARAMETRO_DOCUMENTO_GESTION = 100;
     
     private static final Integer CACHE_PARAMETRO_TIPO_DOCUMENTO = 110;
+    
+    private static final Integer CACHE_PARAMETRO_ACTUACION_RESPONSABILIDAD = 120;
+    
+    private static final Integer CACHE_PARAMETRO_GRUPO_VULNERABLE = 130;
+    
+    private static final Integer CACHE_PARAMETRO_GRUPO_ESPECIAL = 140;
 
     private volatile HashMap<Integer, Object> contenedor = null;
 
@@ -128,6 +134,21 @@ public class CacheServiceImpl implements CacheService{
         return buscarParametro(CACHE_PARAMETRO_TIPO_DOCUMENTO, CACHE_PARAMETRO_TIPO_DOCUMENTO);
     }
     
+    @Override
+    public List<Parametro> buscarActuacionResponsabilidad() {
+        return buscarParametro(CACHE_PARAMETRO_ACTUACION_RESPONSABILIDAD, CACHE_PARAMETRO_ACTUACION_RESPONSABILIDAD);
+    }
+
+    @Override
+    public List<Parametro> buscarGrupoVulnerable() {
+        return buscarParametro(CACHE_PARAMETRO_GRUPO_VULNERABLE, CACHE_PARAMETRO_GRUPO_VULNERABLE);
+    }
+    
+    @Override
+    public List<Parametro> buscarGrupoEspecial() {
+        return buscarParametro(CACHE_PARAMETRO_GRUPO_ESPECIAL, CACHE_PARAMETRO_GRUPO_ESPECIAL);
+    }
+    
     private Object getElemento(Integer key) {
         if (this.contenedor == null) {
             return null;
@@ -142,5 +163,7 @@ public class CacheServiceImpl implements CacheService{
         this.contenedor.put(key, objeto);
         notifyAll();
     }
+
+    
 
 }

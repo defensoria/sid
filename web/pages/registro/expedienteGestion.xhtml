@@ -68,28 +68,7 @@
                                                 </tr>
                                                 <tr>
                                                     <td style="padding-bottom: 10px" colspan="2">
-                                                        <h:panelGroup id="idSelectAcogimiento" >
-                                                            <table style="width: 100%">
-                                                                <tr>
-                                                                    <td>
-                                                                        <h:selectBooleanCheckbox id="idCheckbox2" value="#{registroController.expedienteGestion.indicadorRecomendacion}" >
-                                                                            Contiene recomendación
-                                                                            <f:ajax render="idSelectAcogimiento" /> 
-                                                                        </h:selectBooleanCheckbox>
-                                                                    </td>
-
-                                                                    <td>
-                                                                        <h:panelGroup rendered="#{registroController.expedienteGestion.indicadorRecomendacion}">
-                                                                            <label>Acogimiento de recomendaciones</label>
-                                                                            <h:selectOneMenu value="#{registroController.expedienteGestion.tipoAcogimiento}">
-                                                                                <f:selectItem itemValue="0" itemLabel="Selecione" />
-                                                                                <f:selectItems value="#{listasComunesController.buscarAcogimientoRecomendaciones(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
-                                                                            </h:selectOneMenu>
-                                                                        </h:panelGroup>
-                                                                    </td>
-                                                                </tr>
-                                                            </table>
-                                                        </h:panelGroup>
+                                                        
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -184,6 +163,32 @@
                                                     <td style="padding-bottom: 10px">
                                                         <span>(*)De darse la respuesta despues de los 30 dias de entregado el documento, se considerará fuera de plazo automaticamente.</span>
                                                     </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2" style="padding-bottom: 20px">
+                                                        <h:panelGroup id="idSelectAcogimiento" rendered="#{registroController.etapaEstado.verEtapa == 3 or registroController.etapaEstado.verEtapa == 7}">
+                                                            <table style="width: 100%">
+                                                                <tr>
+                                                                    <td>
+                                                                        <h:selectBooleanCheckbox id="idCheckbox2" value="#{registroController.expedienteGestion.indicadorRecomendacion}" >
+                                                                            Contiene recomendación
+                                                                            <f:ajax render="idSelectAcogimiento" /> 
+                                                                        </h:selectBooleanCheckbox>
+                                                                    </td>
+
+                                                                    <td>
+                                                                            <h:panelGroup rendered="#{registroController.expedienteGestion.indicadorRecomendacion}">
+                                                                            <label>Acogimiento de recomendaciones</label>
+                                                                            <h:selectOneMenu value="#{registroController.expedienteGestion.tipoAcogimiento}">
+                                                                                <f:selectItem itemValue="0" itemLabel="Selecione" />
+                                                                                <f:selectItems value="#{listasComunesController.buscarAcogimientoRecomendaciones(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
+                                                                            </h:selectOneMenu>
+                                                                        </h:panelGroup>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </h:panelGroup>
+                                                    </td> 
                                                 </tr>
                                                 <tr>
                                                     <td style="padding-bottom: 10px">

@@ -4,9 +4,8 @@
     
     <resultMap id="expedienteEntidadMap" type="expedienteEntidad">
         <result property="expediente.id" column="N_IDEXPEDIENTE"/>
-        <result property="entidad.id" column="N_IDENTIDAD"/>
-        <result property="entidad.nombre" column="C_NOMBRE"/>
-        <result property="entidad.ruc" column="C_RUC"/>
+        <result property="entidad.id" column="N_ID_ENTIDAD"/>
+        <result property="entidad.nombre" column="C_NOMENTIDAD"/>
     </resultMap> 
     
     
@@ -14,7 +13,7 @@
         INSERT INTO SID_REG_EXPEDE_ENTIDAD
         (
         N_IDEXPEDIENTE,
-        N_IDENTIDAD
+        N_ID_ENTIDAD
         )
         VALUES 
         (
@@ -26,20 +25,20 @@
     <delete id="expedienteEntidadDelete" parameterType="expedienteEntidad">
         DELETE SID_REG_EXPEDE_ENTIDAD WHERE
         N_IDEXPEDIENTE = #{expediente.id} AND
-        N_IDENTIDAD = #{entidad.id}
+        N_ID_ENTIDAD = #{entidad.id}
     </delete>
     
     <select id="expedienteEntidadContar" parameterType="expedienteEntidad" resultType="java.lang.Integer" >
         select count(*) from SID_REG_EXPEDE_ENTIDAD
         WHERE
         N_IDEXPEDIENTE = #{expediente.id} AND
-        N_IDENTIDAD = #{entidad.id}
+        N_ID_ENTIDAD = #{entidad.id}
     </select>
     
     <select id="expedienteEntidadBuscarXExpediente" resultMap="expedienteEntidadMap"  parameterType="long">
-        SELECT A.*, B.C_NOMBRE, B.C_RUC
+        SELECT A.*, B.C_NOMENTIDAD
         FROM SID_REG_EXPEDE_ENTIDAD A
-        INNER JOIN SID_REG_ENTIDAD B ON A.N_IDENTIDAD = B.N_IDENTIDAD
+        INNER JOIN SID_REG_ENTIDAD B ON A.N_ID_ENTIDAD = B.N_ID_ENTIDAD
         WHERE A.N_IDEXPEDIENTE = #{id}
     </select>
     

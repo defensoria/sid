@@ -266,15 +266,15 @@
                                                                 <span id="idTextTipoClasificacion" class="text-primary" style="float: left; font-weight: bold;">Seleccione</span>
                                                                 <h:panelGroup  rendered="#{registroController.etapaEstado.verEtapa == 0 or registroController.etapaEstado.verEtapa == null}">
                                                                     <a href="#" class="trigger2">
-                                                                    <span style="color:#3183b9;font-size:large;vertical-align: top" class="glyphicon glyphicon-chevron-down trigger2"></span>
-                                                                </a>
+                                                                        <span style="color:#3183b9;font-size:large;vertical-align: top" class="glyphicon glyphicon-chevron-down trigger2"></span>
+                                                                    </a>
                                                                 </h:panelGroup>
                                                                 <h:panelGroup  rendered="#{registroController.etapaEstado.verEtapa != 0 and registroController.etapaEstado.verEtapa != null}">
                                                                     <a class="trigger2">
-                                                                    <span style="color:#3183b9;font-size:large;vertical-align: top" class="glyphicon glyphicon-chevron-down trigger2"></span>
-                                                                </a>
+                                                                        <span style="color:#3183b9;font-size:large;vertical-align: top" class="glyphicon glyphicon-chevron-down trigger2"></span>
+                                                                    </a>
                                                                 </h:panelGroup>
-                                                                
+
                                                                 <div class="popover-markup" style="float:left">
                                                                     <div class="head hide">
                                                                         <b class="text-primary">Seleccione</b>
@@ -451,19 +451,19 @@
                                             <br/>
                                             <br/>
                                             <table style="width: 100%">
-                                                        <tr>
-                                                                <td>
-                                                            <span class="text-resalt-primary">Clasificación temática</span>
-                                                            </td>
-                                                            <td style="text-align: right">
-                                                                <h:panelGroup rendered="#{registroController.expediente.numero != null}">
-                                                                    <a jsf:action="#{registroController.guardarNivel()}" jsf:onclick="loadingModal()">
-                                                                        <span class="glyphicon glyphicon-plus" style="font-size: 1.3em" />Agregar clasificación
-                                                                            <f:ajax render="@form" execute="@form" onevent="closeModal"/>
-                                                                    </a>
-                                                                    </h:panelGroup>
-                                                            </td>
-                                                    </tr>
+                                                <tr>
+                                                    <td>
+                                                        <span class="text-resalt-primary">Clasificación temática</span>
+                                                    </td>
+                                                    <td style="text-align: right">
+                                                        <h:panelGroup rendered="#{registroController.expediente.numero != null}">
+                                                            <a jsf:action="#{registroController.guardarNivel()}" jsf:onclick="loadingModal()">
+                                                                <span class="glyphicon glyphicon-plus" style="font-size: 1.3em" />Agregar clasificación
+                                                                <f:ajax render="@form" execute="@form" onevent="closeModal"/>
+                                                            </a>
+                                                        </h:panelGroup>
+                                                    </td>
+                                                </tr>
                                             </table>
                                             <br/><br/>
 
@@ -593,42 +593,86 @@
                                                         </h:selectOneMenu>
                                                     </td>
                                                 </tr>
-                                                
+
                                                 <tr>
                                                     <td style="padding-bottom: 20px; vertical-align: top">
                                                         <span class="text-bold">Clasificación:</span>
                                                     </td>
                                                     <td style="padding-bottom: 20px">
                                                         <c:forEach var="nivel" items="#{registroController.expediente.listaExpedienteNivel}">
-                                                    <div class="alert alert-warning fade in" style="margin-bottom: 3px">
-                                                        <table style="width: 100%">
-                                                            <tr>
-                                                                <td>
-                                                                    <h:outputText style="font-weight: bold" value="#{nivel.primerNivel}"/>
-                                                                    <h:outputText style="color: gray; font-weight: bold;" value=" > " rendered="#{nivel.segundoNivel != null}"/>
-                                                                    <h:outputText style="font-weight: bold" value="#{nivel.segundoNivel}" />
-                                                                    <h:outputText style="color: gray; font-weight: bold;" value=" > " rendered="#{nivel.tercerNivel != null}"/>
-                                                                    <h:outputText style="font-weight: bold" value="#{nivel.tercerNivel}" />
-                                                                    <h:outputText style="color: gray; font-weight: bold;" value=" > " rendered="#{nivel.cuartoNivel != null}"/>
-                                                                    <h:outputText style="font-weight: bold" value="#{nivel.cuartoNivel}" />
-                                                                    <h:outputText style="color: gray; font-weight: bold;" value=" > " rendered="#{nivel.quintoNivel != null}"/>
-                                                                    <h:outputText style="font-weight: bold" value="#{nivel.quintoNivel}" />
-                                                                    <h:outputText style="color: gray; font-weight: bold;" value=" > " rendered="#{nivel.sextoNivel != null}"/>
-                                                                    <h:outputText style="font-weight: bold" value="#{nivel.sextoNivel}" />
-                                                                </td>
-                                                                <td style="text-align: right">
-                                                                    <a jsf:action="#{registroController.inactivarNivel(nivel)}" jsf:onclick="loadingModal()">
-                                                                        <span class="glyphicon glyphicon-remove"  style="color: red"/>
-                                                                        <f:ajax render="@form" onevent="closeModal" />
-                                                                    </a>
-                                                                </td>
-                                                            </tr>
-                                                        </table>    
-                                                    </div>             
-                                                </c:forEach>
+                                                            <div class="alert alert-warning fade in" style="margin-bottom: 3px">
+                                                                <table style="width: 100%">
+                                                                    <tr>
+                                                                        <td>
+                                                                            <h:outputText style="font-weight: bold" value="#{nivel.primerNivel}"/>
+                                                                            <h:outputText style="color: gray; font-weight: bold;" value=" > " rendered="#{nivel.segundoNivel != null}"/>
+                                                                            <h:outputText style="font-weight: bold" value="#{nivel.segundoNivel}" />
+                                                                            <h:outputText style="color: gray; font-weight: bold;" value=" > " rendered="#{nivel.tercerNivel != null}"/>
+                                                                            <h:outputText style="font-weight: bold" value="#{nivel.tercerNivel}" />
+                                                                            <h:outputText style="color: gray; font-weight: bold;" value=" > " rendered="#{nivel.cuartoNivel != null}"/>
+                                                                            <h:outputText style="font-weight: bold" value="#{nivel.cuartoNivel}" />
+                                                                            <h:outputText style="color: gray; font-weight: bold;" value=" > " rendered="#{nivel.quintoNivel != null}"/>
+                                                                            <h:outputText style="font-weight: bold" value="#{nivel.quintoNivel}" />
+                                                                            <h:outputText style="color: gray; font-weight: bold;" value=" > " rendered="#{nivel.sextoNivel != null}"/>
+                                                                            <h:outputText style="font-weight: bold" value="#{nivel.sextoNivel}" />
+                                                                        </td>
+                                                                        <td style="text-align: right">
+                                                                            <a jsf:action="#{registroController.inactivarNivel(nivel)}" jsf:onclick="loadingModal()">
+                                                                                <span class="glyphicon glyphicon-remove"  style="color: red"/>
+                                                                                <f:ajax render="@form" onevent="closeModal" />
+                                                                            </a>
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>    
+                                                            </div>             
+                                                        </c:forEach>
                                                     </td>
                                                 </tr>
-
+                                                <tr>
+                                                    <td style="padding-bottom: 10px" colspan="2">
+                                                        <br/>
+                                                        <span class="text-bold" style="font-size: 1.2em; color: red">Actuación o responsabilidad de Entidades del Estado</span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding-bottom: 20px">
+                                                        <span class="text-bold">Actuación o responsabilidad :</span>
+                                                    </td>
+                                                    <td style="padding-bottom: 20px">
+                                                        <h:selectOneMenu value="#{registroController.expediente.tipoActuacionResponsabilidad}" style="width: 50%">
+                                                            <f:selectItem itemLabel="Seleccione" itemValue="0" />
+                                                            <f:selectItems value="#{listasComunesController.buscarActuacionResponsabilidad(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
+                                                        </h:selectOneMenu>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding-bottom: 10px" colspan="2">
+                                                        <br/>
+                                                        <span class="text-bold" style="font-size: 1.2em; color: red">Grupo Vulnerables y Especiales</span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding-bottom: 20px">
+                                                        <span class="text-bold">Grupos vulnerables :</span>
+                                                    </td>
+                                                    <td style="padding-bottom: 20px">
+                                                        <h:selectOneMenu value="#{registroController.expediente.tipoGrupoVulnerable}" style="width: 50%">
+                                                            <f:selectItem itemLabel="Seleccione" itemValue="0" />
+                                                            <f:selectItems value="#{listasComunesController.buscarGrupoVulnerable(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
+                                                        </h:selectOneMenu>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding-bottom: 20px">
+                                                        <span class="text-bold">Grupos especiales :</span>
+                                                    </td>
+                                                    <td style="padding-bottom: 20px">
+                                                        <h:selectOneMenu value="#{registroController.expediente.tipoGrupoEspecial}" style="width: 50%">
+                                                            <f:selectItem itemLabel="Seleccione" itemValue="0" />
+                                                            <f:selectItems value="#{listasComunesController.buscarGrupoEspecial(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
+                                                        </h:selectOneMenu>
+                                                    </td>
+                                                </tr>
                                                 <tr>
                                                     <td style="padding-bottom: 10px">
                                                         <span class="text-bold">Etiquetas:</span>
@@ -680,9 +724,12 @@
                                             <br/>
                                             <span class="text-bold">Observaciones</span>
                                             <textarea rows="5" jsf:value="#{registroController.expediente.observacion}" style="width: 100%" placeholder="Observacion"/>
+                                            <br/><br/>
+                                            <h:selectBooleanCheckbox value="#{registroController.expediente.indRelevante}" >
+                                        El caso es relevante? 
+                                    </h:selectBooleanCheckbox>
                                         </div>
                                     </div>
-
                                 </td>
                             </tr>
                             <tr>
@@ -993,26 +1040,34 @@
                                                 <tr>
                                                     <td style="width: 60%">
                                                         <table style="width: 100%">
-                                                                <tr>
-                                                                        <td>
+                                                            <tr>
                                                                 <td>
-                                                                            <span class="text-resalt-primary">Región</span>
-                                                                            <h:selectOneMenu value="#{registroController.entidad.idDepartamento}">
-                                                                                <f:selectItem itemValue="#{registroController.usuarioSession.idDepartamento}" itemLabel="#{registroController.usuarioSession.nombreDepartamento}" />
-                                                                                <f:selectItem itemValue="0" itemLabel="Todas las regiones" />
-                                                            
-                                                        </h:selectOneMenu>
+                                                                    <td>
+                                                                        <span class="text-resalt-primary">Región</span>
+                                                                        <h:selectOneMenu value="#{registroController.entidad.idDepartamento}">
+                                                                            <f:selectItem itemValue="#{registroController.usuarioSession.idDepartamento}" itemLabel="#{registroController.usuarioSession.nombreDepartamento}" />
+                                                                            <f:selectItem itemValue="0" itemLabel="Todas las regiones" />
+                                                                        </h:selectOneMenu>
                                                                     </td>
+                                                                    <td>
+                                                                        <span class="text-resalt-primary">Tipo</span>
+                                                                        <h:selectOneMenu value="#{registroController.entidad.tipo}">
+                                                                            <f:selectItem itemValue="0" itemLabel="Seleccione" />
+                                                                            <f:selectItem itemValue="1" itemLabel="Centro médico" />
+                                                                            <f:selectItem itemValue="2" itemLabel="Colegio" />
+                                                                            <f:selectItem itemValue="3" itemLabel="Comisaría" />
+                                                                        </h:selectOneMenu>
                                                                     </td>
-                                                                        <td>
-                                                                            <span class="text-resalt-primary">Entidad</span>
-                                                                <input type="text" id="idBusquedaEntidad" style="width: 100%" placeholder="Ingrese nombre de la Entidad" jsf:value="#{registroController.entidad.nombre}"/>
-                                                                    </td>
+                                                                </td>
+                                                                <td>
+                                                                    <span class="text-resalt-primary">Entidad</span>
+                                                                    <input type="text" id="idBusquedaEntidad" style="width: 100%" placeholder="Ingrese nombre de la Entidad" jsf:value="#{registroController.entidad.nombre}"/>
+                                                                </td>
                                                             </tr>
                                                         </table>
-                                                        
+
                                                     </td>
-                                                    <td>
+                                                    <td style="vertical-align: bottom">
                                                         <a style="vertical-align: bottom" href="#" class="trigger1" jsf:action="#{registroController.cargarPopoverEntidad(1)}" jsf:onclick="loadingModal()">
                                                             <span style="color: #3183B9; font-size: large;" class="glyphicon glyphicon-search"></span>
                                                             <f:ajax render="idForm:idPanel1" execute="@form" onevent="popove1"/>
@@ -1046,6 +1101,10 @@
                                                                             <h:outputText rendered="#{entidades.tipo == 1}" value="centro médico"/>
                                                                             <h:outputText rendered="#{entidades.tipo == 2}" value="colegio"/>
                                                                             <h:outputText rendered="#{entidades.tipo == 3}" value="comisaria"/>
+                                                                        </h:column>
+                                                                        <h:column>
+                                                                            <f:facet name="header">Región</f:facet>
+                                                                            <h:outputText value="#{entidades.nombreDepartamento}"/>
                                                                         </h:column>
                                                                         <h:column>
                                                                             <a jsf:action="#{registroController.addEntidad(entidades)}" jsf:onclick="loadingModal()">
@@ -1133,10 +1192,6 @@
                                                             <h:column>
                                                                 <f:facet name="header">Nombre</f:facet>
                                                                 <h:outputText value="#{entidad.entidad.nombre}"/>
-                                                            </h:column>
-                                                            <h:column>
-                                                                <f:facet name="header">RUC</f:facet>
-                                                                <h:outputText value="#{entidad.entidad.ruc}"/>
                                                             </h:column>
                                                             <h:column>
                                                                 <script>

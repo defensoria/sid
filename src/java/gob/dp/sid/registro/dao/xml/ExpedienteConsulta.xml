@@ -115,27 +115,6 @@
         </selectKey>
     </insert>
     
-    
-    <update id="expedienteConsultaUpdate" parameterType="expedienteConsulta">
-        UPDATE SID_REG_ENTIDAD
-        <set>
-            <if test="ruc != null">
-                C_RUC = #{ruc},
-            </if>
-            <if test="fechaRegistro != null">
-                D_FECHAREGISTRO = #{fechaRegistro},
-            </if>
-            <if test="usuarioRegistro != null">
-                C_USU_REGISTRO = #{usuarioRegistro},
-            </if>
-            C_NOMBRE = UPPER(#{nombre})
-        </set>
-        <where>
-            N_IDENTIDAD = #{id}
-        </where>
-    </update>
-    
-    
     <select id="expedienteConsultaSelectOne" resultMap="expedienteConsultaMap"  parameterType="long">
         SELECT * FROM SID_REG_EXPEDIENTE_CONSULTA WHERE N_ID_CONSULTA = #{id}
     </select>

@@ -6,21 +6,25 @@
         <id property="id" column="N_ID_ENTIDAD" />
         <result property="nombre" column="C_NOMENTIDAD"/>
         <result property="idDepartamento" column="N_IDDEPARTAMENTO"/>
+        <result property="nombreDepartamento" column="C_DESCDPTO"/>
         <result property="estado" column="C_ESTADO"/>
         <result property="tipo" column="N_TIPO"/>
-        
     </resultMap> 
     
     
     <select id="entidadBuscarCadena" resultMap="entidadMap" parameterType="entidad" >
         SELECT B.* FROM (
         SELECT A.*,ROWNUM numfila FROM (
-        SELECT * FROM SID_ENTIDAD
-        WHERE UPPER(C_NOMENTIDAD) LIKE '%'||UPPER(#{nombre})||'%' 
+        SELECT A.*, B.C_DESCDPTO FROM SID_REG_ENTIDAD A
+        INNER JOIN SID_UBIGEO_DPTO B ON A.N_IDDEPARTAMENTO = B.N_ID_DPTO
+        WHERE UPPER(A.C_NOMENTIDAD) LIKE '%'||UPPER(#{nombre})||'%' 
         <if test="idDepartamento != 0">
-            AND N_IDDEPARTAMENTO = #{idDepartamento}
+            AND A.N_IDDEPARTAMENTO = #{idDepartamento}
         </if>
-        AND C_ESTADO = 'ACT' ORDER BY C_NOMENTIDAD
+        <if test="tipo != 0">
+            AND A.N_TIPO = #{tipo}
+        </if>
+        AND A.C_ESTADO = 'ACT' ORDER BY C_NOMENTIDAD
         ) A
         ) B
         WHERE 1 = 1

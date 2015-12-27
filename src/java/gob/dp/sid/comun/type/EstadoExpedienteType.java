@@ -21,6 +21,8 @@ public enum EstadoExpedienteType {
         
         PERSUACION_NO_ACOGIDO_QUEJA(6, "No Acogido", 3),
         
+        PERSUACION_ACOGIMIENTO_PARCIAL(17, "Acogimiento parcial", 3),
+        
         SEGUIMIENTO_ACOGIDO_QUEJA(7, "Acogido", 4),
         
         SEGUIMIENTO_NO_ACOGIDO_QUEJA(8, "No Acogido", 4),
@@ -39,7 +41,9 @@ public enum EstadoExpedienteType {
         
         PERSUACION_NEGATIVA_PETITORIO(15, "Por negativa expresa", 7),
         
-        PERSUACION_FALTA_RESPUESTA_PETITORIO(16, "Falta de respuesta", 7);
+        PERSUACION_FALTA_RESPUESTA_PETITORIO(16, "Falta de respuesta", 7),
+        
+        PERSUACION_ACOGIMIENTO_PARCIAL2(18, "Acogimiento parcial", 7);
 	
 	
 	/** La Constante list. */
@@ -170,6 +174,10 @@ public enum EstadoExpedienteType {
                 valorRetorno = PERSUACION_FALTA_RESPUESTA_PETITORIO.getValue();
             if(keys == PERSUACION_NEGATIVA_PETITORIO.getKey())
                 valorRetorno = PERSUACION_NEGATIVA_PETITORIO.getValue();
+            if(keys == PERSUACION_ACOGIMIENTO_PARCIAL.getKey())
+                valorRetorno = PERSUACION_ACOGIMIENTO_PARCIAL.getValue();
+            if(keys == PERSUACION_ACOGIMIENTO_PARCIAL2.getKey())
+                valorRetorno = PERSUACION_ACOGIMIENTO_PARCIAL2.getValue();
             return valorRetorno;
 	}
         

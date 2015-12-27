@@ -1282,7 +1282,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         }
 
         //listaPersonaGeneral = personaService.personaBusarGeneral(personaBusqueda);
-        if (entidadPopover.isEmpty()) {
+        if (entidadPopover == null) {
             msg.messageAlert("No se han encontrado Personas", null);
         }
         return true;

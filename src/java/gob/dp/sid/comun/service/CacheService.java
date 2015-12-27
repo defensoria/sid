@@ -37,4 +37,10 @@ public interface CacheService {
     
     public List<Parametro> buscarTipoDocumento();
     
+    public List<Parametro> buscarActuacionResponsabilidad();
+    
+    public List<Parametro> buscarGrupoVulnerable();
+    
+    public List<Parametro> buscarGrupoEspecial();
+    
 }

@@ -6,7 +6,6 @@
 package gob.dp.sid.registro.entity;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  *
@@ -18,7 +17,9 @@ public class Entidad implements Serializable{
     
     private String nombre;
     
-    private String idDepartamento;
+    private Integer idDepartamento;
+    
+    private String nombreDepartamento;
     
     private String estado;
     
@@ -44,13 +45,22 @@ public class Entidad implements Serializable{
         this.nombre = nombre;
     }
 
-    public String getIdDepartamento() {
+    public Integer getIdDepartamento() {
         return idDepartamento;
     }
 
-    public void setIdDepartamento(String idDepartamento) {
+    public void setIdDepartamento(Integer idDepartamento) {
         this.idDepartamento = idDepartamento;
     }
+
+    public String getNombreDepartamento() {
+        return nombreDepartamento;
+    }
+
+    public void setNombreDepartamento(String nombreDepartamento) {
+        this.nombreDepartamento = nombreDepartamento;
+    }
+
 
     public String getEstado() {
         return estado;

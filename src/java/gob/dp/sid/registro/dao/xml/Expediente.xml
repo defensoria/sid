@@ -29,11 +29,15 @@
         <result property="ingresoTipoTema" column="TIPOTEMA"/>
         <result property="ingresoTipoSubTema" column="TIPOSUBTEMA"/>
         <result property="indDerivado" column="C_INDDERIVADO"/>
+        <result property="indRelevante" column="N_INDRELEVANTE"/>
         <result property="count" column="TOTAL"/>
         <result property="mes" column="MES"/>
         <result property="usuarioCompleto" column="USUARIOCOMPLETO"/>
         <result property="codigoOD" column="N_CODIGOOD"/>
         <result property="consecutivo" column="N_CONSECUTIVO"/>
+        <result property="tipoActuacionResponsabilidad" column="C_TIPOACTUACIONRESPONSA"/>
+        <result property="tipoGrupoVulnerable" column="C_TIPOGRUPOVULNERABLE"/>
+        <result property="tipoGrupoEspecial" column="C_TIPOGRUPOESPECIAL"/>
         
         <result property="etapaDetalle" column="C_VALOR"/>
         <result property="indicadorEtapa" column="C_INDICADORETAPA"/>
@@ -105,11 +109,23 @@
         <if test="indDerivado != null">
             C_INDDERIVADO,
         </if>
+        <if test="indRelevante != null">
+            N_INDRELEVANTE,
+        </if>
         <if test="codigoOD != null">
             N_CODIGOOD,
         </if>
         <if test="consecutivo != null">
             N_CONSECUTIVO,
+        </if>
+        <if test="tipoActuacionResponsabilidad != null">
+            C_TIPOACTUACIONRESPONSA,
+        </if>
+        <if test="tipoGrupoVulnerable != null">
+            C_TIPOGRUPOVULNERABLE,
+        </if>
+        <if test="tipoGrupoEspecial != null">
+            C_TIPOGRUPOESPECIAL,
         </if>
         C_ESTADOGENERAL,
         N_IDEXPEDIENTE
@@ -176,11 +192,23 @@
         <if test="indDerivado != null">
             #{indDerivado},
         </if>
+        <if test="indRelevante != null">
+            #{indRelevante},
+        </if>
         <if test="codigoOD != null">
             #{codigoOD},
         </if>
         <if test="consecutivo != null">
             #{consecutivo},
+        </if>
+        <if test="tipoActuacionResponsabilidad != null">
+            #{tipoActuacionResponsabilidad},
+        </if>
+        <if test="tipoGrupoVulnerable != null">
+            #{tipoGrupoVulnerable},
+        </if>
+        <if test="tipoGrupoEspecial != null">
+            #{tipoGrupoEspecial},
         </if>
         'A',
         SEQ_SID_REG_EXPEDIENTE.NextVal
@@ -364,12 +392,12 @@
         LEFT JOIN SID_REG_ETAPA_ESTADO C ON A.N_IDEXPEDIENTE = C.N_ID_EXPEDIENTE
         LEFT JOIN SID_REG_ESTADO D ON C.N_ID_ESTADO = D.N_ID_ESTADO
         LEFT JOIN SID_REG_EXPEDE_ENTIDAD E ON A.N_IDEXPEDIENTE = E.N_IDEXPEDIENTE
-        LEFT JOIN SID_REG_ENTIDAD F ON E.N_IDENTIDAD = F.N_IDENTIDAD
+        LEFT JOIN SID_REG_ENTIDAD F ON E.N_ID_ENTIDAD = F.N_ID_ENTIDAD
         LEFT JOIN SID_REG_EXPEDE_PERSONA G ON G.N_IDEXPEDIENTE = A.N_IDEXPEDIENTE
         LEFT JOIN SID_REG_PERSONA H ON G.N_IDPERSONA = H.N_IDPERSONA
         WHERE A.C_USUREGISTRO  = #{usuarioRegistro} 
         <if test="observacion != null">
-        AND UPPER(A.C_SUMILLA||''||F.C_NOMBRE||''||H.C_NOMBRE||''||H.C_APELLIDOPAT||''||H.C_APELLIDOMAT||''||A.C_NUMEROEXPEDIENTE) LIKE '%'||UPPER(#{observacion})||'%' 
+        AND UPPER(A.C_SUMILLA||''||F.C_NOMENTIDAD||''||H.C_NOMBRE||''||H.C_APELLIDOPAT||''||H.C_APELLIDOMAT||''||A.C_NUMEROEXPEDIENTE) LIKE '%'||UPPER(#{observacion})||'%' 
         </if>
         AND A.C_ESTADO = 'A'    
         ORDER BY A.N_IDEXPEDIENTE DESC

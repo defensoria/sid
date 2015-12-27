@@ -67,6 +67,14 @@ public class Expediente implements Serializable{
     
     private Long consecutivo;
     
+    private String tipoActuacionResponsabilidad;
+    
+    private String tipoGrupoVulnerable;
+    
+    private String tipoGrupoEspecial;
+    
+    private Boolean indRelevante;
+    
     private List<ExpedienteNivel> listaExpedienteNivel;
     /*agregados*/
     
@@ -436,6 +444,38 @@ public class Expediente implements Serializable{
 
     public void setListaExpedienteNivel(List<ExpedienteNivel> listaExpedienteNivel) {
         this.listaExpedienteNivel = listaExpedienteNivel;
+    }
+
+    public String getTipoActuacionResponsabilidad() {
+        return tipoActuacionResponsabilidad;
+    }
+
+    public void setTipoActuacionResponsabilidad(String tipoActuacionResponsabilidad) {
+        this.tipoActuacionResponsabilidad = tipoActuacionResponsabilidad;
+    }
+
+    public String getTipoGrupoVulnerable() {
+        return tipoGrupoVulnerable;
+    }
+
+    public void setTipoGrupoVulnerable(String tipoGrupoVulnerable) {
+        this.tipoGrupoVulnerable = tipoGrupoVulnerable;
+    }
+
+    public Boolean getIndRelevante() {
+        return indRelevante;
+    }
+
+    public void setIndRelevante(Boolean indRelevante) {
+        this.indRelevante = indRelevante;
+    }
+
+    public String getTipoGrupoEspecial() {
+        return tipoGrupoEspecial;
+    }
+
+    public void setTipoGrupoEspecial(String tipoGrupoEspecial) {
+        this.tipoGrupoEspecial = tipoGrupoEspecial;
     }
 
 }
