@@ -16,6 +16,8 @@ public interface ExpedienteClasificacionDAO {
     
     public List<ExpedienteClasificacion> listaExpedienteClasificacion(ExpedienteClasificacion expedienteClasificacion);
     
-    public List<ExpedienteClasificacion> expedienteClasificacionBusqueda(String nombre);
+    public List<ExpedienteClasificacion> expedienteClasificacionBusqueda(ExpedienteClasificacion expedienteClasificacion);
+    
+    public ExpedienteClasificacion expedienteClasificacionOne(Integer id);
     
 }

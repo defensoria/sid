@@ -27,8 +27,13 @@ public class ExpedienteClasificacionServiceImpl implements ExpedienteClasificaci
     }
 
     @Override
-    public List<ExpedienteClasificacion> expedienteClasificacionBusqueda(String nombre) {
-        return expedienteClasificacionDAO.expedienteClasificacionBusqueda(nombre);
+    public List<ExpedienteClasificacion> expedienteClasificacionBusqueda(ExpedienteClasificacion expedienteClasificacion) {
+        return expedienteClasificacionDAO.expedienteClasificacionBusqueda(expedienteClasificacion);
+    }
+
+    @Override
+    public ExpedienteClasificacion expedienteClasificacionOne(Integer id) {
+        return expedienteClasificacionDAO.expedienteClasificacionOne(id);
     }
     
 }

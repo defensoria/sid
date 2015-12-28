@@ -20,4 +20,6 @@ public interface ExpedienteNivelService {
     
     public List<ExpedienteNivel> expedienteNivelPorExpediente(String numeroExpediente);
     
+    public void expedienteNivelActualizar(ExpedienteNivel expedienteNivel);
+    
 }

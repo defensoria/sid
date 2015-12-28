@@ -159,6 +159,8 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     private String grafico003;
 
     private Integer nroPagina = 1;
+    
+    private Integer nroPaginaModal = 1;
 
     private List<SelectItem> listaTiempo;
 
@@ -203,18 +205,20 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     private ExpedienteConsulta expedienteConsultaEnvia;
 
     private List<ExpedienteConsulta> listaExpedienteConsultaEnvia;
-    
-    private List<ExpedienteClasificacion> listaExpedienteClasificacionBusqueda;
 
     private ExpedienteConsulta expedienteConsultaAprueba;
     
     private ExpedienteConsulta expedienteConsultaReasigna;
+    
+    private ExpedienteClasificacion expedienteClasificacionBusqueda;
 
     private Part file1;
 
     private Part file2;
 
     private Part file3;
+    
+    private Part file4;
 
     private boolean verBotonRegistrarExpediente = true;
 
@@ -234,7 +238,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     
     private List<ExpedienteNivel> listaExpedienteNivel;
     
-    private String busquedaClasificacion;
+    private List<ExpedienteNivel> listaExpedienteNivelModal;
 
     @Autowired
     private ExpedienteService expedienteService;
@@ -298,6 +302,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         cadenaEtiquetaAutocomplete = expedienteService.etiquetaBuscarAutocomplete();
         listaEtiquetasSeleccionadas = new ArrayList<>();
         setVerBotonRegistrarExpediente(true);
+        expedienteClasificacionBusqueda = new ExpedienteClasificacion();
         return "expedienteNuevo";
     }
     
@@ -317,6 +322,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         personasSeleccionadas.add(ep);
         inicializarEtapaEstado(0);
         setVerBotonRegistrarExpediente(true);
+        expedienteClasificacionBusqueda = new ExpedienteClasificacion();
         return "expedienteNuevo";
     }
 
@@ -416,14 +422,73 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     }
     
     public void limpiarModalBusquedaClasificacion() {
-        busquedaClasificacion = "";
+        expedienteClasificacionBusqueda = new ExpedienteClasificacion();
+        listaExpedienteNivelModal = new ArrayList<>();
+        nroPaginaModal = 1;
     }
     
-    public void buscarClasificacion(){
-        listaExpedienteClasificacionBusqueda = expedienteClasificacionService.expedienteClasificacionBusqueda(busquedaClasificacion);
-        for(ExpedienteClasificacion ec : listaExpedienteClasificacionBusqueda){
+    public boolean buscarClasificacion(Integer pagina){
+        List<ExpedienteNivel> ens = new ArrayList<>();
+        if (pagina > 0) {
+            int paginado = ConstantesUtil.PAGINADO_10;
+            Integer ini = paginado * (pagina - 1) + 1;
+            Integer fin = paginado * pagina;
+            if (pagina == 0) {
+                ini = 1;
+                fin = 10;
+            }
+            expedienteClasificacionBusqueda.setIni(ini);
+            expedienteClasificacionBusqueda.setFin(fin);
+
+            List<ExpedienteClasificacion> list = expedienteClasificacionService.expedienteClasificacionBusqueda(expedienteClasificacionBusqueda);
+            for(ExpedienteClasificacion ec : list){
             ExpedienteNivel en = new ExpedienteNivel();
+            clasificarNivel(ec, en);
+            Integer idPadre = ec.getPadre();
             
+            while (idPadre != 0) {
+                ExpedienteClasificacion ec1 = expedienteClasificacionService.expedienteClasificacionOne(idPadre);
+                idPadre = ec1.getPadre();
+                clasificarNivel(ec1, en);
+            }
+            ens.add(en);
+        }
+            if (list.size() > 0) {
+                listaExpedienteNivelModal = ens;
+                nroPaginaModal = pagina;
+            }else{
+                if(expedienteClasificacionBusqueda.getIni() == 1){
+                    listaExpedienteNivelModal = null;
+                }
+            }
+        }
+        return true;
+    }
+    
+    private void clasificarNivel(ExpedienteClasificacion ec2, ExpedienteNivel en){
+        if(ec2.getGrupo() == 1){
+            en.setIdPrimerNivel(ec2.getId());
+            en.setPrimerNivel(ec2.getNombre());
+        }
+        if(ec2.getGrupo() == 2){
+            en.setIdSegundoNivel(ec2.getId());
+            en.setSegundoNivel(ec2.getNombre());
+        }
+        if(ec2.getGrupo() == 3){
+            en.setIdTercerNivel(ec2.getId());
+            en.setTercerNivel(ec2.getNombre());
+        }
+        if(ec2.getGrupo() == 4){
+            en.setIdCuartoNivel(ec2.getId());
+            en.setCuartoNivel(ec2.getNombre());
+        }
+        if(ec2.getGrupo() == 5){
+            en.setIdQuintoNivel(ec2.getId());
+            en.setQuintoNivel(ec2.getNombre());
+        }
+        if(ec2.getGrupo() == 6){
+            en.setIdSextoNivel(ec2.getId());
+            en.setSextoNivel(ec2.getNombre());
         }
     }
 
@@ -473,12 +538,28 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     
     public void guardarNivel(){
         if(expedienteNivel.getIdPrimerNivel() != null && expedienteNivel.getIdPrimerNivel() != 0){
-            expedienteNivel.setNumeroExpediente(expediente.getNumero());
-            expedienteNivel.setEstado("ACT");
-            expedienteNivelService.expedienteNivelInsertar(expedienteNivel);
+            if(expedienteNivel.getId() == null){
+                expedienteNivel.setNumeroExpediente(expediente.getNumero());
+                expedienteNivel.setEstado("ACT");
+                expedienteNivelService.expedienteNivelInsertar(expedienteNivel);
+                msg.messageInfo("Se agrego una nueva clasificacion temática", null);
+            }else{
+                expedienteNivelService.expedienteNivelActualizar(expedienteNivel);
+                msg.messageInfo("Se actualizo la clasificacion temática", null);
+            }
             List<ExpedienteNivel> nivels = expedienteNivelService.expedienteNivelPorExpediente(expediente.getNumero());
             expediente.setListaExpedienteNivel(nivels);
             expedienteNivel = new ExpedienteNivel();
+        }
+    }
+    
+    public void guardarNivel(ExpedienteNivel en){
+        if(en.getIdPrimerNivel() != null && en.getIdPrimerNivel() != 0){
+            en.setNumeroExpediente(expediente.getNumero());
+            en.setEstado("ACT");
+            expedienteNivelService.expedienteNivelInsertar(en);
+            List<ExpedienteNivel> nivels = expedienteNivelService.expedienteNivelPorExpediente(expediente.getNumero());
+            expediente.setListaExpedienteNivel(nivels);
             msg.messageInfo("Se agrego una nueva clasificacion temática", null);
         }
     }
@@ -488,6 +569,35 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         List<ExpedienteNivel> nivels = expedienteNivelService.expedienteNivelPorExpediente(expediente.getNumero());
         expediente.setListaExpedienteNivel(nivels);
     }
+    
+    public void editarNivel(ExpedienteNivel en) {
+        expedienteNivel.setId(en.getId());
+        if (en.getIdPrimerNivel() != null && en.getIdPrimerNivel() != 0) {
+            cargarNivelesClasificacion(en.getIdPrimerNivel(), 2);
+            expedienteNivel.setIdPrimerNivel(en.getIdPrimerNivel());
+        }
+        if (en.getIdSegundoNivel() != null && en.getIdSegundoNivel() != 0) {
+            cargarNivelesClasificacion(en.getIdSegundoNivel(), 3);
+            expedienteNivel.setIdSegundoNivel(en.getIdSegundoNivel());
+        }
+        if (en.getIdTercerNivel() != null && en.getIdTercerNivel() != 0) {
+            cargarNivelesClasificacion(en.getIdTercerNivel(), 4);
+            expedienteNivel.setIdTercerNivel(en.getIdTercerNivel());
+        }
+        if (en.getIdCuartoNivel() != null && en.getIdCuartoNivel() != 0) {
+            cargarNivelesClasificacion(en.getIdCuartoNivel(), 5);
+            expedienteNivel.setIdCuartoNivel(en.getIdCuartoNivel());
+        }
+        if (en.getIdQuintoNivel() != null && en.getIdQuintoNivel() != 0) {
+            cargarNivelesClasificacion(en.getIdQuintoNivel(), 6);
+            expedienteNivel.setIdQuintoNivel(en.getIdQuintoNivel());
+        }
+        if (en.getIdSextoNivel() != null && en.getIdSextoNivel() != 0) {
+            expedienteNivel.setIdSextoNivel(en.getIdSextoNivel());
+        }
+    }
+    
+    
 
     private void defineBotonRegistro() {
         /*´para derivaciones*/
@@ -603,6 +713,9 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         expedienteDerivacionEnvia.setEtapa(EtapaDerivacionType.DERIVAR_ETAPA_ENVIA.getKey());
         expedienteDerivacionEnvia.setCodigoUsuario(usuarioSession.getCodigo());
         expedienteDerivacionEnvia.setNombreUsuario(usuarioSession.getNombre() + " " + usuarioSession.getApellidoPaterno() + " " + usuarioSession.getApellidoMaterno());
+        expedienteDerivacionEnvia.setFecha(new Date());
+        String ruta = uploadArchive(file4);
+        expedienteDerivacionEnvia.setRuta(ruta);
         expedienteDerivacionService.expedienteDerivacionInsertar(expedienteDerivacionEnvia);
         enviarMensajeDerivacion();
         msg.messageInfo("Se envio la Derivación", null);
@@ -632,6 +745,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         expedienteDerivacionAprueba.setEtapa(EtapaDerivacionType.DERIVAR_ETAPA_APRUEBA.getKey());
         expedienteDerivacionAprueba.setCodigoUsuario(usuarioSession.getCodigo());
         expedienteDerivacionAprueba.setNombreUsuario(usuarioSession.getNombre() + " " + usuarioSession.getApellidoPaterno() + " " + usuarioSession.getApellidoMaterno());
+        expedienteDerivacionAprueba.setFecha(new Date());
         expedienteDerivacionService.expedienteDerivacionInsertar(expedienteDerivacionAprueba);
         if (StringUtils.equals(expedienteDerivacionAprueba.getAprueba(), "SI")) {
             enviarMensajeAprobacion();
@@ -701,6 +815,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         expedienteDerivacionReasigna.setEtapa(EtapaDerivacionType.DERIVAR_ETAPA_REASIGNA.getKey());
         expedienteDerivacionReasigna.setCodigoUsuario(usuarioSession.getCodigo());
         expedienteDerivacionReasigna.setNombreUsuario(usuarioSession.getNombre() + " " + usuarioSession.getApellidoPaterno() + " " + usuarioSession.getApellidoMaterno());
+        expedienteDerivacionReasigna.setFecha(new Date());
         expedienteDerivacionService.expedienteDerivacionInsertar(expedienteDerivacionReasigna);
         if (StringUtils.equals(expedienteDerivacionReasigna.getAprueba(), "SI")) {
             guardarVersion3(expedienteDerivacionReasigna.getCodigoUsuarioDerivado());
@@ -1097,7 +1212,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         }
         listarNiveles();
         defineBotonRegistro();
-        //cargarNiveles();
+        expedienteClasificacionBusqueda = new ExpedienteClasificacion();
         return "expedienteEdit";
     }
     
@@ -1107,24 +1222,6 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             expediente.setListaExpedienteNivel(list);
         }
     }
-
-    /*private void cargarNiveles() {
-        if (expediente.getExpedienteNivel().getIdPrimerNivel() != null && expediente.getExpedienteNivel().getIdPrimerNivel() != 0) {
-            cargarNivelesClasificacion(expediente.getExpedienteNivel().getIdPrimerNivel(), 2);
-        }
-        if (expediente.getExpedienteNivel().getIdSegundoNivel() != null && expediente.getExpedienteNivel().getIdSegundoNivel() != 0) {
-            cargarNivelesClasificacion(expediente.getExpedienteNivel().getIdSegundoNivel(), 3);
-        }
-        if (expediente.getExpedienteNivel().getIdTercerNivel() != null && expediente.getExpedienteNivel().getIdTercerNivel() != 0) {
-            cargarNivelesClasificacion(expediente.getExpedienteNivel().getIdTercerNivel(), 4);
-        }
-        if (expediente.getExpedienteNivel().getIdCuartoNivel() != null && expediente.getExpedienteNivel().getIdCuartoNivel() != 0) {
-            cargarNivelesClasificacion(expediente.getExpedienteNivel().getIdCuartoNivel(), 5);
-        }
-        if (expediente.getExpedienteNivel().getIdQuintoNivel() != null && expediente.getExpedienteNivel().getIdQuintoNivel() != 0) {
-            cargarNivelesClasificacion(expediente.getExpedienteNivel().getIdQuintoNivel(), 6);
-        }
-    }*/
 
     public void setearExpediente(Expediente e) {
         FacesContext context = FacesContext.getCurrentInstance();
@@ -2692,20 +2789,36 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         this.expedienteNivel = expedienteNivel;
     }
 
-    public String getBusquedaClasificacion() {
-        return busquedaClasificacion;
+    public List<ExpedienteNivel> getListaExpedienteNivelModal() {
+        return listaExpedienteNivelModal;
     }
 
-    public void setBusquedaClasificacion(String busquedaClasificacion) {
-        this.busquedaClasificacion = busquedaClasificacion;
+    public void setListaExpedienteNivelModal(List<ExpedienteNivel> listaExpedienteNivelModal) {
+        this.listaExpedienteNivelModal = listaExpedienteNivelModal;
     }
 
-    public List<ExpedienteClasificacion> getListaExpedienteClasificacionBusqueda() {
-        return listaExpedienteClasificacionBusqueda;
+    public ExpedienteClasificacion getExpedienteClasificacionBusqueda() {
+        return expedienteClasificacionBusqueda;
     }
 
-    public void setListaExpedienteClasificacionBusqueda(List<ExpedienteClasificacion> listaExpedienteClasificacionBusqueda) {
-        this.listaExpedienteClasificacionBusqueda = listaExpedienteClasificacionBusqueda;
+    public void setExpedienteClasificacionBusqueda(ExpedienteClasificacion expedienteClasificacionBusqueda) {
+        this.expedienteClasificacionBusqueda = expedienteClasificacionBusqueda;
+    }
+
+    public Integer getNroPaginaModal() {
+        return nroPaginaModal;
+    }
+
+    public void setNroPaginaModal(Integer nroPaginaModal) {
+        this.nroPaginaModal = nroPaginaModal;
+    }
+
+    public Part getFile4() {
+        return file4;
+    }
+
+    public void setFile4(Part file4) {
+        this.file4 = file4;
     }
 
 }

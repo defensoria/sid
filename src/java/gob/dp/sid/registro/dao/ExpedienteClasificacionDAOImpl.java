@@ -23,8 +23,13 @@ public class ExpedienteClasificacionDAOImpl extends SqlSessionDaoSupport impleme
     }
 
     @Override
-    public List<ExpedienteClasificacion> expedienteClasificacionBusqueda(String nombre) {
-        return getSqlSession().selectList("gob.dp.sid.registro.dao.ExpedienteClasificacionDAO.expedienteClasificacionBusqueda", nombre);
+    public List<ExpedienteClasificacion> expedienteClasificacionBusqueda(ExpedienteClasificacion expedienteClasificacion) {
+        return getSqlSession().selectList("gob.dp.sid.registro.dao.ExpedienteClasificacionDAO.expedienteClasificacionBusqueda", expedienteClasificacion);
+    }
+
+    @Override
+    public ExpedienteClasificacion expedienteClasificacionOne(Integer id) {
+        return getSqlSession().selectOne("gob.dp.sid.registro.dao.ExpedienteClasificacionDAO.expedienteClasificacionOne", id);
     }
     
 }

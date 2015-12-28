@@ -22,6 +22,10 @@ public class ExpedienteClasificacion implements Serializable{
     private Integer grupo;
     
     private String estado;
+    
+    private Integer ini;
+    
+    private Integer fin;
 
     public ExpedienteClasificacion() {
     }
@@ -72,6 +76,22 @@ public class ExpedienteClasificacion implements Serializable{
 
     public void setEstado(String estado) {
         this.estado = estado;
+    }
+
+    public Integer getIni() {
+        return ini;
+    }
+
+    public void setIni(Integer ini) {
+        this.ini = ini;
+    }
+
+    public Integer getFin() {
+        return fin;
+    }
+
+    public void setFin(Integer fin) {
+        this.fin = fin;
     }
     
     

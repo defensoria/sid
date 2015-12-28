@@ -6,6 +6,7 @@
 package gob.dp.sid.registro.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  *
@@ -34,6 +35,10 @@ public class ExpedienteDerivacion implements Serializable{
     private String aprueba;
     
     private String codigoUsuarioDerivado;
+    
+    private Date fecha;
+    
+    private String ruta;
 
     public Long getId() {
         return id;
@@ -121,6 +126,22 @@ public class ExpedienteDerivacion implements Serializable{
 
     public void setCodigoUsuarioDerivado(String codigoUsuarioDerivado) {
         this.codigoUsuarioDerivado = codigoUsuarioDerivado;
+    }
+
+    public Date getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
+    }
+
+    public String getRuta() {
+        return ruta;
+    }
+
+    public void setRuta(String ruta) {
+        this.ruta = ruta;
     }
     
 }

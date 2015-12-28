@@ -31,5 +31,10 @@ public class ExpedienteNivelDAOImpl extends SqlSessionDaoSupport implements Expe
     public List<ExpedienteNivel> expedienteNivelPorExpediente(String numeroExpediente) {
         return getSqlSession().selectList("gob.dp.sid.registro.dao.ExpedienteNivelDAO.expedienteNivelPorExpediente", numeroExpediente);
     }
+
+    @Override
+    public void expedienteNivelActualizar(ExpedienteNivel expedienteNivel) {
+        getSqlSession().update("gob.dp.sid.registro.dao.ExpedienteNivelDAO.expedienteNivelActualizar", expedienteNivel);
+    }
     
 }

@@ -16,6 +16,8 @@ public interface ExpedienteNivelDAO {
     
     public void expedienteNivelInsertar(ExpedienteNivel expedienteNivel);
     
+    public void expedienteNivelActualizar(ExpedienteNivel expedienteNivel);
+    
     public void expedienteNivelUpdate(Long idExpedienteNivel);
     
     public List<ExpedienteNivel> expedienteNivelPorExpediente(String numeroExpediente);

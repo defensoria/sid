@@ -84,6 +84,33 @@
         </selectKey>
     </insert>
     
+    <update id="expedienteNivelActualizar" parameterType="Long">
+        UPDATE SID_REG_EXPEDIENTE_CLASI
+        <set>
+        <if test="idPrimerNivel != null">
+            N_ID_PRIMERNIVEL = #{idPrimerNivel},
+        </if>
+        <if test="idSegundoNivel != null">
+            N_ID_SEGUNDONIVEL = #{idSegundoNivel},
+        </if>
+        <if test="idTercerNivel != null">
+            N_ID_TERCERNIVEL = #{idTercerNivel},
+        </if>
+        <if test="idCuartoNivel != null">
+            N_ID_CUARTONIVEL = #{idCuartoNivel},
+        </if>
+        <if test="idQuintoNivel != null">
+            N_ID_QUINTONIVEL = #{idQuintoNivel},
+        </if>
+        <if test="idSextoNivel != null">
+            N_ID_SEXTONIVEL = #{idSextoNivel},
+        </if>
+        C_ESTADO = 'ACT'
+        </set>
+        <where>
+            N_ID_EXPEDIENTECLASI = #{id}
+        </where>
+    </update>
     
     <update id="expedienteNivelUpdate" parameterType="Long">
         UPDATE SID_REG_EXPEDIENTE_CLASI

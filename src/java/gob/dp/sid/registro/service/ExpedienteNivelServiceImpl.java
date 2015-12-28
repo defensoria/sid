@@ -35,5 +35,10 @@ public class ExpedienteNivelServiceImpl implements ExpedienteNivelService{
     public List<ExpedienteNivel> expedienteNivelPorExpediente(String numeroExpediente) {
         return expedienteNivelDAO.expedienteNivelPorExpediente(numeroExpediente);
     }
+
+    @Override
+    public void expedienteNivelActualizar(ExpedienteNivel expedienteNivel) {
+        expedienteNivelDAO.expedienteNivelActualizar(expedienteNivel);
+    }
     
 }

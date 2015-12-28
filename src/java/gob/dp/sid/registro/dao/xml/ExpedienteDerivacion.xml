@@ -14,6 +14,8 @@
         <result property="nombreUsuario" column="C_NOMBREUSUARIO"/>
         <result property="codigoUsuarioDerivado" column="C_CODIGOUSUARIODERIVADO"/>
         <result property="aprueba" column="C_APRUEBA"/>
+        <result property="fecha" column="D_FECHAACCION"/>
+        <result property="ruta" column="C_RUTA"/>
     </resultMap> 
     
     
@@ -50,6 +52,12 @@
         <if test="codigoUsuarioDerivado != null">
             C_CODIGOUSUARIODERIVADO,
         </if>
+        <if test="fecha != null">
+            D_FECHAACCION,
+        </if>
+        <if test="ruta != null">
+            C_RUTA,
+        </if>
         N_ID_DERIVACION
         )
         VALUES 
@@ -83,6 +91,12 @@
         </if>
         <if test="codigoUsuarioDerivado != null">
             #{codigoUsuarioDerivado},
+        </if>
+        <if test="fecha != null">
+            #{fecha},
+        </if>
+        <if test="ruta != null">
+            #{ruta},
         </if>
         SEQ_SID_REG_EXPEDIENTE_DERIVA.NextVal
         )

@@ -17,9 +17,21 @@
         ORDER BY N_ID_CLASIFICACION
     </select>
     
-    <select id="expedienteClasificacionBusqueda" resultMap="expedienteClasificacionMap"  parameterType="String">
-        SELECT * FROM SID_REG_CLASIFICACION WHERE C_ESTADO = 'ACT' AND UPPER(C_NOMBREPARAMETRO) LIKE '%'||UPPER(#{value})||'%'
+    <select id="expedienteClasificacionBusqueda" resultMap="expedienteClasificacionMap"  parameterType="expedienteClasificacion">
+        SELECT A.*
+        FROM (
+        SELECT
+        B.*,
+        ROWNUM numfila
+        FROM (
+        SELECT * FROM SID_REG_CLASIFICACION WHERE C_ESTADO = 'ACT' AND UPPER(C_NOMBREPARAMETRO) LIKE '%'||UPPER(#{nombre})||'%'
         ORDER BY N_ID_CLASIFICACION
+        ) B
+        ) A WHERE a.numfila BETWEEN #{ini} AND #{fin}
+    </select>
+    
+    <select id="expedienteClasificacionOne" resultMap="expedienteClasificacionMap"  parameterType="Integer">
+        SELECT * FROM SID_REG_CLASIFICACION WHERE C_ESTADO = 'ACT' AND N_ID_CLASIFICACION = #{id}
     </select>
     
 </mapper>
