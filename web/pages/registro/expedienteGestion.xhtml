@@ -7,7 +7,12 @@
 
     <ui:composition template="../template/templateCabeceraExpediente.xhtml">
         <ui:define name="content2">
-                <gc:confirmSubmit bean="#{registroController.registarExpedienteGestion()}" mensaje="Esta seguro de registrar la gestión?" />
+            <script>
+                    function confirmar6() {
+                        $(".confirmacion6").modal('show');
+                    }
+                </script>
+            <gc:confirmSubmit bean="#{registroController.registarExpedienteGestion()}" classGC="confirmacion6" mensaje="Esta seguro de registrar la gestión?" />
                 <ul class="nav nav-tabs">
                     <li role="presentation">
                         <a style="cursor: pointer" jsf:action="#{registroController.datosGeneralesExpediente()}">
@@ -37,7 +42,7 @@
                                     <span style="font-size: 2em" class="text-resalt-primary">N° Gestión: #{registroController.expedienteGestion.codigoGestion}</span>
                                 </td>
                                 <td style="width: 50%; text-align: right">
-                                    <a class="btn btn-primary" onclick="confirmar()">
+                                    <a class="btn btn-primary" onclick="confirmar6()">
                                         <span class="glyphicon glyphicon-floppy-disk" />Guardar gestión
                                     </a>
                                 </td>
@@ -52,17 +57,18 @@
                                         <div class="panel-body">
                                             <span class="text-resalt-primary">Datos generales</span>
                                             <br/><br/>
+                                            
                                             <table style="width: 100%">
                                                 <tr>
                                                     <td style="width: 50%; padding-right: 5px;padding-bottom: 10px">
                                                         <label>Tipo de acción:</label>
-                                                        <h:selectOneMenu value="#{registroController.expedienteGestion.tipo}" >
+                                                        <h:selectOneMenu class="idTipoDocumento" value="#{registroController.expedienteGestion.tipo}" >
                                                             <f:selectItem itemValue="0" itemLabel="Selecione" />
                                                             <f:selectItems value="#{listasComunesController.buscarGestionTipoAccion(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
                                                         </h:selectOneMenu>
                                                     </td>
                                                     <td style="padding-left: 5px; padding-bottom: 10px">
-                                                        <label>Fecha:</label>
+                                                        <label>Fecha de gestión:</label>
                                                         <gc:calendar value="#{registroController.expedienteGestion.fecha}" />
                                                     </td>
                                                 </tr>
@@ -73,16 +79,49 @@
                                                 </tr>
                                                 <tr>
                                                     <td style="width: 50%; padding-right: 5px;padding-bottom: 10px">
-                                                        <label>Documento de gestión</label>
+                                                        <label>Documento de gestión:</label>
                                                         <h:selectOneMenu value="#{registroController.expedienteGestion.documentoGestion}" >
                                                             <f:selectItem itemValue="0" itemLabel="Selecione" />
                                                             <f:selectItems value="#{listasComunesController.buscarDocumentoGestion(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
                                                         </h:selectOneMenu>
                                                     </td>
-                                                    <td style="padding-left: 5px; padding-bottom: 10px">
+                                                    <td style="padding-left: 5px; padding-bottom: 10px" >
+                                                        <div class="idFechaRecepcion">
+                                                            <label>Fecha de recepción:</label>
+                                                        <gc:calendar value="#{registroController.expedienteGestion.fechaRecepcion}" />
+                                                        </div>
+                                                        
                                                         
                                                     </td>
                                                 </tr>
+                                            </table>
+                                            <style>
+                                                .classHide{
+                                                    display: none;
+                                                }
+                                                .classVer{
+                                                    display: inherit;
+                                                    width: 100%;
+                                                }
+                                                
+                                            </style>
+                                            <script>
+                                                $(".idFechaRecepcion").addClass("classHide");
+                                                $(".idTipoDocumento").change(function(){
+                                                    if($(this).val() === '04'){
+                                                        $(".idFechaRecepcion").removeClass("classHide");
+                                                    }else{
+                                                        $(".idFechaRecepcion").addClass("classHide");
+                                                    }
+                                                });    
+                                                if($(".idTipoDocumento").val() === '04'){
+                                                        $(".idFechaRecepcion").removeClass("classHide");
+                                                    }else{
+                                                        $(".idFechaRecepcion").addClass("classHide");
+                                                    }
+                                                
+                                            </script>
+                                            <table style="width: 100%">
                                                 <tr>
                                                     <td colspan="2" style="padding-bottom: 10px">
                                                         <label>Descripción:</label>
@@ -91,11 +130,11 @@
                                                 </tr>
                                                 <tr>
                                                     <td style="width: 50%;padding-bottom: 10px;padding-right: 10px">
-                                                        Entidad quejada<h:selectBooleanCheckbox id="idCheckbox" value="#{registroController.expedienteGestion.indEntidadQuejada}" />
-                                                    </td>
-                                                    <td style="vertical-align: bottom;padding-bottom: 10px">
                                                         <label>Institución:</label>
                                                         <input type="text" jsf:value="#{registroController.expedienteGestion.institucion}" placeholder="Institución"/>
+                                                    </td>
+                                                    <td style="vertical-align: bottom;padding-bottom: 10px">
+                                                        Entidad quejada<h:selectBooleanCheckbox id="idCheckbox" value="#{registroController.expedienteGestion.indEntidadQuejada}" />
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -113,6 +152,12 @@
                                                                 <td>
                                                                     <label>Apellido materno:</label>
                                                                     <input type="text" jsf:value="#{registroController.expedienteGestion.apellidoMaterno}" placeholder="Apellido Materno"/>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="3" style="padding-top: 10px">
+                                                                    <label>Cargo del funcionario:</label>
+                                                                    <input type="text" style="width: 50%" jsf:value="#{registroController.expedienteGestion.cargo}" placeholder="Cargo del funcionario" maxlength="190"/>
                                                                 </td>
                                                             </tr>
                                                             <tr>

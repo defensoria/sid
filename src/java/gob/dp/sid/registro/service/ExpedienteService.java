@@ -45,5 +45,7 @@ public interface ExpedienteService {
     //public List<Expediente> expedienteBuscarUsuarioPaginadoGeneral(Expediente expediente);
     
     public Expediente expedienteBuscarPorNumero(String numeroExpediente);
+    
+    public void expedienteAsignar(Expediente expediente);
 
 }

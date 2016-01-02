@@ -123,5 +123,10 @@ public class ExpedienteServiceImpl implements ExpedienteService{
     public Expediente expedienteBuscarPorNumero(String numeroExpediente) {
         return expedienteDAO.expedienteBuscarPorNumero(numeroExpediente);
     }
+
+    @Override
+    public void expedienteAsignar(Expediente expediente) {
+        expedienteDAO.expedienteAsignar(expediente);
+    }
     
 }

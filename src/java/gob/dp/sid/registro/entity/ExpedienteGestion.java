@@ -24,6 +24,8 @@ public class ExpedienteGestion implements Serializable{
     
     private Date fecha;
     
+    private Date fechaRecepcion;
+    
     private String descripcion;
     
     private String institucion;
@@ -33,6 +35,8 @@ public class ExpedienteGestion implements Serializable{
     private String apellidoPaterno;
     
     private String apellidoMaterno;
+    
+    private String cargo;
     
     private Boolean indEntidadQuejada;
     
@@ -477,6 +481,22 @@ public class ExpedienteGestion implements Serializable{
 
     public void setDocumentoGestion(String documentoGestion) {
         this.documentoGestion = documentoGestion;
+    }
+
+    public String getCargo() {
+        return cargo;
+    }
+
+    public void setCargo(String cargo) {
+        this.cargo = cargo;
+    }
+
+    public Date getFechaRecepcion() {
+        return fechaRecepcion;
+    }
+
+    public void setFechaRecepcion(Date fechaRecepcion) {
+        this.fechaRecepcion = fechaRecepcion;
     }
     
 }

@@ -16,6 +16,10 @@ public class ExpedienteEntidad implements Serializable{
     private Expediente expediente;
     
     private Entidad entidad;
+    
+    private String nombreCompleto;
+    
+    private String cargo;
 
     public ExpedienteEntidad() {
     }
@@ -39,6 +43,22 @@ public class ExpedienteEntidad implements Serializable{
 
     public void setEntidad(Entidad entidad) {
         this.entidad = entidad;
+    }
+
+    public String getNombreCompleto() {
+        return nombreCompleto;
+    }
+
+    public void setNombreCompleto(String nombreCompleto) {
+        this.nombreCompleto = nombreCompleto;
+    }
+
+    public String getCargo() {
+        return cargo;
+    }
+
+    public void setCargo(String cargo) {
+        this.cargo = cargo;
     }
     
 }

@@ -22,7 +22,7 @@
         c_sexo             as sexo,
         n_nivel            as nivel,
         N_ID_OD            as codigoOD,
-        N_IDDEPARTAMENTO            as idDepartamento
+        n_iddepartamento   as idDepartamento
         from sid_seg_usuario
         where
         1=1
@@ -74,7 +74,7 @@
         flag_clave_inicial as flagClaveInicial,
         c_cargo            as cargo,
         c_ruta             as ruta,
-        N_IDDEPARTAMENTO            as idDepartamento 
+        n_iddepartamento   as idDepartamento 
         FROM (
         SELECT codigo_usuario,
         nom_usuario,
@@ -89,6 +89,7 @@
         flag_clave_inicial,
         c_cargo,
         c_ruta,
+        n_iddepartamento,
         ROWNUM numfila
         FROM (
         select codigo_usuario,
@@ -103,7 +104,8 @@
         tel_fijo,
         flag_clave_inicial,
         c_cargo,
-        c_ruta
+        c_ruta,
+        N_IDDEPARTAMENTO
         from sid_seg_usuario
         where 1=1
         order by codigo_usuario
@@ -243,7 +245,7 @@
         u.c_cargo            as cargo,
         u.c_ruta             as ruta,
         u.N_ID_OD            as codigoOD,
-        u.N_IDDEPARTAMENTO            as idDepartamento
+        u.n_iddepartamento   as idDepartamento
         from 
         sid_seg_usuario u
         <where>
@@ -285,7 +287,11 @@
         from 
         sid_seg_usuario u
         INNER JOIN SID_SEG_USUARIO_ROL B ON B.CODIGO_USUARIO = u.CODIGO_USUARIO
-        WHERE u.N_ID_OD = #{codigoOD} AND B.CODIGO_ROL = #{rol}
+        WHERE u.N_ID_OD = #{codigoOD} 
+        <if test="rol!=null">
+                AND B.CODIGO_ROL = #{rol}
+            </if>
+            
         
     </select>
 

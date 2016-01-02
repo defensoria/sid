@@ -24,6 +24,8 @@ public interface ExpedienteDAO {
     
     public void expedienteConcluir(long idExpediente); 
     
+    public void expedienteAsignar(Expediente expediente); 
+    
     public List<Expediente> expedienteBuscarUsuarioPaginado(Expediente expediente); 
     
     //public List<Expediente> expedienteBuscarUsuarioPaginadoGeneral(Expediente expediente); 

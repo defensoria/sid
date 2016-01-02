@@ -285,6 +285,10 @@
                                             <h:outputText value="#{exped.numero}" />
                                         </h:column>
                                         <h:column>
+                                            <f:facet name="header">OD/MAD</f:facet>
+                                            <h:outputText value="#{exped.nombreOD}" />
+                                        </h:column>
+                                        <h:column>
                                             <f:facet name="header">Tipo</f:facet>
                                             <h:outputText value="#{exped.clasificacionTipoNombre}" />
                                         </h:column>
@@ -296,7 +300,7 @@
                                         </h:column>
                                         <h:column>
                                             <f:facet name="header">Estado</f:facet>
-                                            <h:outputText value="#{exped.general == 'A'? 'Activo' : 'Concluido' }" />
+                                            <h:outputText value="#{exped.general == 'A'? 'Trámite' : 'Concluido' }" />
                                         </h:column>
                                         <h:column>
                                             <a jsf:action="#{registroController.cargarExpedienteEdit(exped)}">

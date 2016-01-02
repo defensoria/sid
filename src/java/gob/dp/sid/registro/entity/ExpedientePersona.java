@@ -18,6 +18,8 @@ public class ExpedientePersona implements Serializable{
     private Persona persona;
     
     private String cargo;
+    
+    private Boolean indicadorReserva;
 
     public ExpedientePersona(Expediente expediente, Persona persona) {
         this.expediente = expediente;
@@ -49,6 +51,14 @@ public class ExpedientePersona implements Serializable{
 
     public void setCargo(String cargo) {
         this.cargo = cargo;
+    }
+
+    public Boolean getIndicadorReserva() {
+        return indicadorReserva;
+    }
+
+    public void setIndicadorReserva(Boolean indicadorReserva) {
+        this.indicadorReserva = indicadorReserva;
     }
     
     

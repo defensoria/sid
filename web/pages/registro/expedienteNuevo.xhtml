@@ -9,7 +9,7 @@
     <ui:composition template="../template/template.xhtml">
 
         <ui:define name="content">
-            <h:form id="idForm" class="form-horizontal">
+            <h:form id="idForm" class="form-horizontal" enctype="multipart/form-data">
                 <h:messages />
                 <script>
                     function confirmar2() {
@@ -256,7 +256,58 @@
                                                                 </h:panelGroup>
                                                             </div>
                                                         </td>
+                                                        <td>
+                                                            <script>
+                                                                
+                                                                function modalAsignar(data){
+                                                                    if (data.status === 'success') {
+                                                                                $("#loadModal").modal('hide');
+                                                                                $('body').removeClass('modal-open');
+                                                                                $(".modal-backdrop").removeClass("modal-backdrop");
+                                                                                $("#idModalAsignar").modal('show');
+                                                                            }
+                                                                }
+                                                            </script>
+                                                            
+                                                            <h:panelGroup rendered="#{(registroController.etapaEstado.verEtapa == 1 or registroController.etapaEstado.verEtapa == 5) and seguridadUtilController.tieneRecurso('REC_EXP007') and registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo}">
+                                                            <a class="btn btn-warning" jsf:action="#{registroController.limpiarModalAsignar()}" jsf:onclick="loadingModal()">
+                                                                <span class="glyphicon glyphicon-user" />Asignar Expediente
+                                                                <f:ajax execute="@form" render="idPanelAsignar" onevent="modalAsignar" />
+                                                            </a>
+                                                                </h:panelGroup>
+                                                            <h:panelGroup id="idPanelAsignar">
+                                                            <div class="modal fade" data-backdrop="static" data-keyboard="false" id="idModalAsignar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                                        <div class="modal-dialog" style="text-align: left">
+                                                                            <div class="modal-content">
+                                                                                <div class="modal-header">
+                                                                                    <a type="button" class="close" data-dismiss="modal">
+                                                                                        <span style="color:red" class="glyphicon glyphicon-remove"></span>
+                                                                                    </a>
+                                                                                    <span class="text-resalt-primary">Asignar expediente</span>
+                                                                                </div>
+                                                                                <div class="modal-body" style="padding:5px">
+                                                                                    
+                                                                                    <span class="text-bold">Seleccione Comisionado:</span>
+                                                                                    <h:selectOneMenu value="#{registroController.expediente.usuarioAsignado}">
+                                                                                        <f:selectItems value="#{registroController.listaUsuarioOD}" var="item" itemLabel="#{item.nombre} #{item.apellidoPaterno} #{item.apellidoMaterno}" itemValue="#{item.codigo}" />
+                                                                                    </h:selectOneMenu>
+                                                                                    <div class="modal-footer">
+                                                                                        <a  class="btn btn-default" data-dismiss="modal">
+                                                                                            <span class="glyphicon glyphicon-remove"/>Cerrar
+                                                                                        </a>
+                                                                                        <a class="btn btn-primary" data-dismiss="modal" jsf:action="#{registroController.guardarAsignado()}">
+                                                                                            <span class="glyphicon glyphicon-floppy-disk"/>Guardar
+                                                                                        </a>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </h:panelGroup>
+                                                        </td>
                                                     </tr>
+                                                </table>
+                                                    <table style="width: 90%">
                                                     <tr>
                                                         <td>
 
@@ -376,13 +427,13 @@
                                                                 </a>
                                                             </h:panelGroup>
                                                             &#160;&#160;
-                                                            <h:panelGroup rendered="#{registroController.expediente.general != 'C' and registroController.verBotonRegistrarExpediente}">
+                                                            <h:panelGroup rendered="#{registroController.expediente.general != 'C' and registroController.verBotonRegistrarExpediente and registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo}">
                                                                 <a class="btn btn-primary" onclick="confirmar2()">
                                                                     <span class="glyphicon glyphicon-floppy-disk" />Guardar
                                                                 </a>
                                                             </h:panelGroup>
                                                             &#160;&#160;
-                                                            <h:panelGroup id="idPanel2" rendered="#{registroController.expediente.id != null and registroController.expediente.version > 0 and registroController.expediente.general != 'C' and registroController.verBotonRegistrarExpediente}">
+                                                            <h:panelGroup id="idPanel2" rendered="#{registroController.expediente.id != null and registroController.expediente.version > 0 and registroController.expediente.general != 'C' and registroController.verBotonRegistrarExpediente and registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo}">
                                                                 <a class="btn btn-warning" onclick="confirmar3()">
                                                                     <span class="glyphicon glyphicon-floppy-save" />Concluir Etapa
                                                                 </a>
@@ -710,13 +761,13 @@
                                                                             <a onclick="confirmar4#{nivel.id}()">
                                                                                 <span class="glyphicon glyphicon-remove"  style="color: red"/>
                                                                             </a>
-                                                                            
+
                                                                             <gc:confirmAjax classGC="confirmacion4#{nivel.id}" bean="#{registroController.inactivarNivel(nivel)}" mensaje="Está seguro de eliminar la clasificación?"/>
                                                                             <script>
-                                                                        function confirmar4#{nivel.id}() {
-                                                                            $(".confirmacion4#{nivel.id}").modal('show');
-                                                                        }
-                                                                        
+                                                                                function confirmar4#{nivel.id}() {
+                                                                                    $(".confirmacion4#{nivel.id}").modal('show');
+                                                                                }
+
                                                                             </script>
                                                                         </td>
                                                                         <td style="padding-left: 10px">
@@ -837,488 +888,513 @@
                                             <h:selectBooleanCheckbox value="#{registroController.expediente.indRelevante}" >
                                                 El caso es relevante? 
                                             </h:selectBooleanCheckbox>
+                                            <br/>
+                                            <table style="width: 100%">
+                                                <tr>
+                                            <td style="padding-top: 20px">
+                                                                    <label><span style="font-size: large" class="glyphicon glyphicon-paperclip" />Adjuntar archivo:</label>
+                                                                    <h:inputFile class="cMedio" value="#{registroController.file5}"/>
+                                                                </td>
+                                                                <td>
+                                                                    <h:panelGroup rendered="#{registroController.expediente.ruta != null}">
+                                                                    <a target="_blank" href="/filesystem/#{registroController.expediente.ruta}">
+                                                                        <span style="font-size: large" class="glyphicon glyphicon-link" />
+                                                                    </a>
+                                                                        </h:panelGroup>
+                                                                </td>
+                                                    </tr>
+                                                </table>
                                         </div>
                                     </div>
                                 </td>
                             </tr>
                             <tr>
-                                <script>
-                                    $(document).ready(function () {
-                                        if (parseInt($("#idPanel3").height()) > parseInt($("#idPanel4").height())) {
-                                            $("#idPanel4").css("height", ($("#idPanel3").height() + 4) + "px");
-                                        } else {
-                                            $("#idPanel3").css("height", ($("#idPanel4").height() + 4) + "px");
-                                        }
-                                        var altura = $("#idPanel1").height();
-                                        $("#idPanel2").css("height", (altura + 4) + "px");
-                                    });
-                                </script>
-                                <td style="vertical-align: top; padding-right: 2px; text-align: left">
-                                    <div class="panel panel-featured-top-silver" id="idPanel3">
-                                        <div class="panel-body">
-                                            <span class="text-resalt-primary">Recurrentes y afectados</span>
-                                            <br/>
-                                            <table style="width: 100%">
-                                                <tr>
-                                                    <td style="width: 60%">
-                                                        <input type="text" id="idBusquedaPersona" name="nombreActor" style="width: 100%" placeholder="Ingrese nombre/documento de la persona" jsf:value="#{registroController.persona.cadenaPersona}"/>
+                                <td colspan="2">
+                                    <table style="width: 100%">
+                                        <tr>
+                                            <td style="vertical-align: top; padding-right: 2px; text-align: left; width: 40%">
+                                                <script>
+                                                    $(document).ready(function () {
+                                                        if (parseInt($("#idPanel3").height()) > parseInt($("#idPanel4").height())) {
+                                                            $("#idPanel4").css("height", ($("#idPanel3").height() + 4) + "px");
+                                                        } else {
+                                                            $("#idPanel3").css("height", ($("#idPanel4").height() + 4) + "px");
+                                                        }
+                                                        var altura = $("#idPanel1").height();
+                                                        $("#idPanel2").css("height", (altura + 4) + "px");
+                                                    });
+                                                </script>
 
-                                                    </td>
-                                                    <td>
+                                                <div class="panel panel-featured-top-silver" id="idPanel3">
+                                                    <div class="panel-body">
+                                                        <br/>
+                                                        <span class="text-resalt-primary">Recurrentes y afectados</span>
+                                                        <br/>
+                                                        <table style="width: 100%">
+                                                            <tr>
+                                                                <td style="width: 60%">
+                                                                    <input type="text" id="idBusquedaPersona" name="nombreActor" style="width: 100%" placeholder="Ingrese nombre/documento de la persona" jsf:value="#{registroController.persona.cadenaPersona}"/>
+                                                                </td>
+                                                                <td>
 
-                                                        <a href="#" class="trigger" jsf:action="#{registroController.cargarPopoverPersona(1)}" jsf:onclick="loadingModal()">
-                                                            <span style="color: #3183B9; font-size: large;" class="glyphicon glyphicon-search"></span>
-                                                            <f:ajax render="idForm:idPanel" execute="@form" onevent="popove"/>
-                                                        </a>
-                                                        <div class="popover-markup" id="idPopover0" style="float: right"> 
-                                                            <div class="head hide ">
-                                                                <table style="width: 100%">
-                                                                    <tr>
-                                                                        <td>
-                                                                            <b class="text-primary">Resultado</b>
-                                                                        </td>
-                                                                        <td style="text-align: right">
-                                                                            <a style="cursor: pointer"  onclick="cerrarBusquedaPersona()">
-                                                                                <span class="glyphicon glyphicon-remove" style="color: red" />
-                                                                            </a>
-                                                                        </td>
-                                                                    </tr>
-                                                                </table>
-                                                            </div>
-                                                            <h:panelGroup id="idPanel">
-                                                                <div class="content hide">
-
-                                                                    <h:dataTable value="#{registroController.personasPopover}" var="personas" id="idDatableBusquedaPerson" class="table table-hover" style="width: 100%">
-                                                                        <h:column>
-                                                                            <f:facet name="header">Nombre</f:facet>
-                                                                            <h:outputText value="#{personas.nombre} #{personas.apellidoPat} #{personas.apellidoMat}"/>
-                                                                        </h:column>
-                                                                        <h:column>
-                                                                            <f:facet name="header">Número documento</f:facet>
-                                                                            <h:outputText value="#{personas.numeroDocumento}"/>
-                                                                        </h:column>
-                                                                        <h:column>
-                                                                            <a jsf:action="#{registroController.addPersona(personas)}" jsf:onclick="loadingModal()">
-                                                                                <span style="font-size: medium" class="glyphicon glyphicon-share-alt"></span>  
-                                                                                <f:ajax render="@form" onevent="closeModal"/>
-                                                                            </a>
-                                                                        </h:column>
-                                                                    </h:dataTable>
-
-                                                                    <ul class="pager">
-                                                                        <li>
-                                                                            <a jsf:action="#{registroController.cargarPopoverPersona(registroController.nroPaginaPersona -1)}" jsf:rendered="#{!empty registroController.personasPopover}" jsf:onclick="loadingModal()">Anterior
-                                                                                <f:ajax render="idDatableBusquedaPerson" onevent="closeModal"/>
-                                                                            </a>
-                                                                        </li>
-                                                                        <li>
-                                                                            <a jsf:action="#{registroController.cargarPopoverPersona(registroController.nroPaginaPersona +1)}" jsf:rendered="#{!empty registroController.personasPopover}" jsf:onclick="loadingModal()">Siguiente
-                                                                                <f:ajax render="idDatableBusquedaPerson" onevent="closeModal"/>
-                                                                            </a>
-                                                                        </li>
-                                                                    </ul>
-                                                                </div>
-
-                                                                <style>
-                                                                    .alink:hover {
-                                                                        text-decoration: none;
-                                                                    }
-                                                                    .alink:link {
-                                                                        text-decoration: none;
-                                                                    }
-
-                                                                    .alink:active {
-                                                                        text-decoration: none;
-                                                                    }
-                                                                </style>
-                                                                <script>
-                                                                    $('body').click(function () {
-                                                                        //$('.trigger').popover('destroy');
-                                                                    });
-
-                                                                    $('#idBusquedaPersona').focus(function () {
-                                                                        $('.trigger').popover('destroy');
-                                                                    });
-
-                                                                    function cerrarBusquedaPersona() {
-                                                                        $('.trigger').popover('destroy');
-                                                                    }
-
-                                                                    var i = 0;
-                                                                    function popove(data) {
-                                                                        if (data.status === 'success') {
-                                                                            i++;
-                                                                            $('.trigger').popover({
-                                                                                html: true,
-                                                                                placement: 'bottom',
-                                                                                tabindex: '0',
-                                                                                trigger: 'focus',
-                                                                                title: function () {
-                                                                                    return $(this).parent().find('.head').html();
-                                                                                },
-                                                                                content: function () {
-                                                                                    return $(this).parent().find('.content').html();
-                                                                                }
-                                                                            });
-
-                                                                            if (i === 1) {
-                                                                                $('.trigger').popover('show');
-                                                                            }
-                                                                            $("#loadModal").modal('hide');
-                                                                            $('body').removeClass('modal-open');
-                                                                            $(".modal-backdrop").removeClass("modal-backdrop");
-                                                                        }
-                                                                    }
-                                                                </script> 
-                                                            </h:panelGroup>
-                                                        </div>
-
-                                                    </td>
-                                                    <td style="text-align: right">
-                                                        <a style="text-decoration:none" class="btn btn-primary" jsf:action="#{registroController.cargarModalActor()}" jsf:onclick="loadingModal()">
-                                                            <span class="glyphicon glyphicon-user"/>Agregar
-                                                            <f:ajax render=":idForm" onevent="openModalNuevaPersona"/>
-                                                        </a>
-                                                        <script>
-                                                            function openModalNuevaPersona(data) {
-                                                                if (data.status === 'success') {
-                                                                    $("#loadModal").modal('hide');
-                                                                    $('body').removeClass('modal-open');
-                                                                    $(".modal-backdrop").removeClass("modal-backdrop");
-                                                                    $("#idModalNuevaPersona").modal('show');
-                                                                }
-                                                            }
-                                                        </script>
-                                                        <div class="modal fade" data-backdrop="static" data-keyboard="false" id="idModalNuevaPersona" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                                            <div class="modal-dialog" style="text-align: left">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <a type="button" class="close" data-dismiss="modal">
-                                                                            <span style="color:red" class="glyphicon glyphicon-remove"></span>
-                                                                        </a>
-                                                                        <span class="text-resalt-primary">Registro de Persona</span>
-                                                                    </div>
-                                                                    <div class="modal-body" style="padding:5px">
-                                                                        <div class="panel-body">
+                                                                    <a href="#" class="trigger" jsf:action="#{registroController.cargarPopoverPersona(1)}" jsf:onclick="loadingModal()">
+                                                                        <span style="color: #3183B9; font-size: large;" class="glyphicon glyphicon-search"></span>
+                                                                        <f:ajax render="idForm:idPanel" execute="@form" onevent="popove"/>
+                                                                    </a>
+                                                                    <div class="popover-markup" id="idPopover0" style="float: right"> 
+                                                                        <div class="head hide ">
                                                                             <table style="width: 100%">
                                                                                 <tr>
-                                                                                    <td style="width: 20%"><b>Tipo de documento:</b></td>
-                                                                                    <td style="padding-bottom: 10px;">
-                                                                                        <h:selectOneMenu value="#{registroController.persona.tipoDocumento}" style="width: 50%">
-                                                                                            <f:selectItems value="#{listasComunesController.buscarTipoDocumento(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
-                                                                                        </h:selectOneMenu>
+                                                                                    <td>
+                                                                                        <b class="text-primary">Resultado</b>
                                                                                     </td>
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <td style="width: 20%"><b>Número documento:</b></td>
-                                                                                    <td style="padding-bottom: 10px;">
-                                                                                        <input type="text" placeholder="Número documento" jsf:value="#{registroController.persona.numeroDocumento}" style="width: 50%" maxlength="50"/>
-                                                                                    </td>
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <td><b>Nombre:</b></td>
-                                                                                    <td style="padding-bottom: 10px">
-                                                                                        <input type="text" placeholder="Nombre" jsf:value="#{registroController.persona.nombre}" style="width: 90%" maxlength="200"/>
-                                                                                    </td>
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <td><b>Apellido paterno:</b></td>
-                                                                                    <td style="padding-bottom: 10px;">
-                                                                                        <input type="text" placeholder="Apellido Paterno" jsf:value="#{registroController.persona.apellidoPat}" style="width: 90%" maxlength="100"/>
-                                                                                    </td>
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <td><b>Apellido Materno:</b></td>
-                                                                                    <td style="padding-bottom: 10px">
-                                                                                        <input type="text" placeholder="Apellido Materno" jsf:value="#{registroController.persona.apellidoMat}" style="width: 90%" maxlength="100"/>
-                                                                                    </td>
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <td><b>Dirección:</b></td>
-                                                                                    <td style="padding-bottom: 10px">
-                                                                                        <input type="text" placeholder="Dirección" jsf:value="#{registroController.persona.direccion}" style="width: 90%" maxlength="300"/><br/>
-                                                                                        <h:panelGroup id="idUbigeoPersona">
-                                                                                            <table style="width:90%">
-                                                                                                <tr>
-                                                                                                    <td style="width:33%">
-                                                                                                        <h:selectOneMenu value="#{registroController.persona.idDepartamento}">
-                                                                                                            <f:selectItem itemLabel="Departamento" itemValue="0"/>
-                                                                                                            <f:selectItems value="#{registroController.listaDepartamento}" var="y" itemLabel="#{y.value}" itemValue="#{y.label}" />
-                                                                                                            <f:ajax listener="#{registroController.comboProvincia()}" render="idUbigeoPersona" />
-                                                                                                        </h:selectOneMenu>
-                                                                                                    </td>
-                                                                                                    <td style="width:33%">
-                                                                                                        <h:selectOneMenu id="cmbProvincia1" value="#{registroController.persona.idProvincia}">
-                                                                                                            <f:selectItem itemLabel="Provincia" itemValue="0"/>
-                                                                                                            <f:selectItems value="#{registroController.listaProvincia}" var="y" itemLabel="#{y.value} #{y.label}" itemValue="#{y.id}" />
-                                                                                                            <f:ajax listener="#{registroController.comboDistrito()}" render="cmbDistrito1"/>
-                                                                                                        </h:selectOneMenu>
-                                                                                                    </td>
-                                                                                                    <td style="width:34%">
-                                                                                                        <h:selectOneMenu id="cmbDistrito1" value="#{registroController.persona.idDistrito}">
-                                                                                                            <f:selectItem itemLabel="Distrito" itemValue="0"/>
-                                                                                                            <f:selectItems value="#{registroController.listaDistrito}" var="y" itemLabel="#{y.value} #{y.label}" itemValue="#{y.id}" />
-                                                                                                        </h:selectOneMenu>
-                                                                                                    </td>
-                                                                                                </tr>
-                                                                                            </table>
-                                                                                        </h:panelGroup>
-                                                                                    </td>
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <td><b>Correo:</b></td>
-                                                                                    <td style="padding-bottom: 10px">
-                                                                                        <input type="text" placeholder="Correo electronico" jsf:value="#{registroController.persona.email}" style="width: 90%" maxlength="100"/>
-                                                                                    </td>
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <td><b>Primer teléfono:</b></td>
-                                                                                    <td style="padding-bottom: 10px">
-                                                                                        <input type="text" placeholder="Telefono 1" jsf:value="#{registroController.persona.telefono1}" style="width: 90%" maxlength="50"/>
-                                                                                    </td>
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <td><b>Segundo teléfono:</b></td>
-                                                                                    <td style="padding-bottom: 10px">
-                                                                                        <input type="text" placeholder="Telefono 2" jsf:value="#{registroController.persona.telefono2}" style="width: 90%" maxlength="50"/>
+                                                                                    <td style="text-align: right">
+                                                                                        <a style="cursor: pointer"  onclick="cerrarBusquedaPersona()">
+                                                                                            <span class="glyphicon glyphicon-remove" style="color: red" />
+                                                                                        </a>
                                                                                     </td>
                                                                                 </tr>
                                                                             </table>
                                                                         </div>
-                                                                        <div class="modal-footer">
-                                                                            <a  class="btn btn-default" data-dismiss="modal">
-                                                                                <span class="glyphicon glyphicon-remove"/>Cerrar
-                                                                            </a>
-                                                                            <a jsf:action="#{registroController.guardarVincularListaPersona()}" class="btn btn-primary">
-                                                                                <span class="glyphicon glyphicon-floppy-disk" />Guardar
-                                                                            </a>
+                                                                        <h:panelGroup id="idPanel">
+                                                                            <div class="content hide">
+
+                                                                                <h:dataTable value="#{registroController.personasPopover}" var="personas" id="idDatableBusquedaPerson" class="table table-hover" style="width: 100%">
+                                                                                    
+                                                                                    <h:column>
+                                                                                        <f:facet name="header">Nombre</f:facet>
+                                                                                        <h:outputText value="#{personas.nombre} #{personas.apellidoPat} #{personas.apellidoMat}"/>
+                                                                                    </h:column>
+                                                                                    <h:column>
+                                                                                        <f:facet name="header">Número documento</f:facet>
+                                                                                        <h:outputText value="#{personas.numeroDocumento}"/>
+                                                                                    </h:column>
+                                                                                    <h:column>
+                                                                                        <a jsf:action="#{registroController.addPersona(personas)}" jsf:onclick="loadingModal()">
+                                                                                            <span style="font-size: medium" class="glyphicon glyphicon-share-alt"></span>  
+                                                                                            <f:ajax render="@form" onevent="closeModal"/>
+                                                                                        </a>
+                                                                                    </h:column>
+                                                                                </h:dataTable>
+
+                                                                                <ul class="pager">
+                                                                                    <li>
+                                                                                        <a jsf:action="#{registroController.cargarPopoverPersona(registroController.nroPaginaPersona -1)}" jsf:rendered="#{!empty registroController.personasPopover}" jsf:onclick="loadingModal()">Anterior
+                                                                                            <f:ajax render="idDatableBusquedaPerson" onevent="closeModal"/>
+                                                                                        </a>
+                                                                                    </li>
+                                                                                    <li>
+                                                                                        <a jsf:action="#{registroController.cargarPopoverPersona(registroController.nroPaginaPersona +1)}" jsf:rendered="#{!empty registroController.personasPopover}" jsf:onclick="loadingModal()">Siguiente
+                                                                                            <f:ajax render="idDatableBusquedaPerson" onevent="closeModal"/>
+                                                                                        </a>
+                                                                                    </li>
+                                                                                </ul>
+                                                                            </div>
+
+                                                                            <style>
+                                                                                .alink:hover {
+                                                                                    text-decoration: none;
+                                                                                }
+                                                                                .alink:link {
+                                                                                    text-decoration: none;
+                                                                                }
+
+                                                                                .alink:active {
+                                                                                    text-decoration: none;
+                                                                                }
+                                                                            </style>
+                                                                            <script>
+                                                                                $('body').click(function () {
+                                                                                    //$('.trigger').popover('destroy');
+                                                                                });
+
+                                                                                $('#idBusquedaPersona').focus(function () {
+                                                                                    $('.trigger').popover('destroy');
+                                                                                });
+
+                                                                                function cerrarBusquedaPersona() {
+                                                                                    $('.trigger').popover('destroy');
+                                                                                }
+
+                                                                                var i = 0;
+                                                                                function popove(data) {
+                                                                                    if (data.status === 'success') {
+                                                                                        i++;
+                                                                                        $('.trigger').popover({
+                                                                                            html: true,
+                                                                                            placement: 'bottom',
+                                                                                            tabindex: '0',
+                                                                                            trigger: 'focus',
+                                                                                            title: function () {
+                                                                                                return $(this).parent().find('.head').html();
+                                                                                            },
+                                                                                            content: function () {
+                                                                                                return $(this).parent().find('.content').html();
+                                                                                            }
+                                                                                        });
+
+                                                                                        if (i === 1) {
+                                                                                            $('.trigger').popover('show');
+                                                                                        }
+                                                                                        $("#loadModal").modal('hide');
+                                                                                        $('body').removeClass('modal-open');
+                                                                                        $(".modal-backdrop").removeClass("modal-backdrop");
+                                                                                    }
+                                                                                }
+                                                                            </script> 
+                                                                        </h:panelGroup>
+                                                                    </div>
+
+                                                                </td>
+                                                                <td style="text-align: right">
+                                                                    <a style="text-decoration:none" class="btn btn-primary" jsf:action="#{registroController.cargarModalActor()}" jsf:onclick="loadingModal()">
+                                                                        <span class="glyphicon glyphicon-user"/>Agregar
+                                                                        <f:ajax render=":idForm" onevent="openModalNuevaPersona"/>
+                                                                    </a>
+                                                                    <script>
+                                                                        function openModalNuevaPersona(data) {
+                                                                            if (data.status === 'success') {
+                                                                                $("#loadModal").modal('hide');
+                                                                                $('body').removeClass('modal-open');
+                                                                                $(".modal-backdrop").removeClass("modal-backdrop");
+                                                                                $("#idModalNuevaPersona").modal('show');
+                                                                            }
+                                                                        }
+                                                                    </script>
+                                                                    <div class="modal fade" data-backdrop="static" data-keyboard="false" id="idModalNuevaPersona" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                                        <div class="modal-dialog" style="text-align: left">
+                                                                            <div class="modal-content">
+                                                                                <div class="modal-header">
+                                                                                    <a type="button" class="close" data-dismiss="modal">
+                                                                                        <span style="color:red" class="glyphicon glyphicon-remove"></span>
+                                                                                    </a>
+                                                                                    <span class="text-resalt-primary">Registro de Persona</span>
+                                                                                </div>
+                                                                                <div class="modal-body" style="padding:5px">
+                                                                                    <div class="panel-body">
+                                                                                        <table style="width: 100%">
+                                                                                            <tr>
+                                                                                                <td style="width: 20%"><b>Tipo de documento:</b></td>
+                                                                                                <td style="padding-bottom: 10px;">
+                                                                                                    <h:selectOneMenu value="#{registroController.persona.tipoDocumento}" style="width: 50%">
+                                                                                                        <f:selectItems value="#{listasComunesController.buscarTipoDocumento(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
+                                                                                                    </h:selectOneMenu>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <td style="width: 20%"><b>Número documento:</b></td>
+                                                                                                <td style="padding-bottom: 10px;">
+                                                                                                    <input type="text" placeholder="Número documento" jsf:value="#{registroController.persona.numeroDocumento}" style="width: 50%" maxlength="50"/>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <td><b>Nombre:</b></td>
+                                                                                                <td style="padding-bottom: 10px">
+                                                                                                    <input type="text" placeholder="Nombre" jsf:value="#{registroController.persona.nombre}" style="width: 90%" maxlength="200"/>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <td><b>Apellido paterno:</b></td>
+                                                                                                <td style="padding-bottom: 10px;">
+                                                                                                    <input type="text" placeholder="Apellido Paterno" jsf:value="#{registroController.persona.apellidoPat}" style="width: 90%" maxlength="100"/>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <td><b>Apellido Materno:</b></td>
+                                                                                                <td style="padding-bottom: 10px">
+                                                                                                    <input type="text" placeholder="Apellido Materno" jsf:value="#{registroController.persona.apellidoMat}" style="width: 90%" maxlength="100"/>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <td><b>Dirección:</b></td>
+                                                                                                <td style="padding-bottom: 10px">
+                                                                                                    <input type="text" placeholder="Dirección" jsf:value="#{registroController.persona.direccion}" style="width: 90%" maxlength="300"/><br/>
+                                                                                                    <h:panelGroup id="idUbigeoPersona">
+                                                                                                        <table style="width:90%">
+                                                                                                            <tr>
+                                                                                                                <td style="width:33%">
+                                                                                                                    <h:selectOneMenu value="#{registroController.persona.idDepartamento}">
+                                                                                                                        <f:selectItem itemLabel="Departamento" itemValue="0"/>
+                                                                                                                        <f:selectItems value="#{registroController.listaDepartamento}" var="y" itemLabel="#{y.value}" itemValue="#{y.label}" />
+                                                                                                                        <f:ajax listener="#{registroController.comboProvincia()}" render="idUbigeoPersona" />
+                                                                                                                    </h:selectOneMenu>
+                                                                                                                </td>
+                                                                                                                <td style="width:33%">
+                                                                                                                    <h:selectOneMenu id="cmbProvincia1" value="#{registroController.persona.idProvincia}">
+                                                                                                                        <f:selectItem itemLabel="Provincia" itemValue="0"/>
+                                                                                                                        <f:selectItems value="#{registroController.listaProvincia}" var="y" itemLabel="#{y.value} #{y.label}" itemValue="#{y.id}" />
+                                                                                                                        <f:ajax listener="#{registroController.comboDistrito()}" render="cmbDistrito1"/>
+                                                                                                                    </h:selectOneMenu>
+                                                                                                                </td>
+                                                                                                                <td style="width:34%">
+                                                                                                                    <h:selectOneMenu id="cmbDistrito1" value="#{registroController.persona.idDistrito}">
+                                                                                                                        <f:selectItem itemLabel="Distrito" itemValue="0"/>
+                                                                                                                        <f:selectItems value="#{registroController.listaDistrito}" var="y" itemLabel="#{y.value} #{y.label}" itemValue="#{y.id}" />
+                                                                                                                    </h:selectOneMenu>
+                                                                                                                </td>
+                                                                                                            </tr>
+                                                                                                        </table>
+                                                                                                    </h:panelGroup>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <td><b>Correo:</b></td>
+                                                                                                <td style="padding-bottom: 10px">
+                                                                                                    <input type="text" placeholder="Correo electronico" jsf:value="#{registroController.persona.email}" style="width: 90%" maxlength="100"/>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <td><b>Primer teléfono:</b></td>
+                                                                                                <td style="padding-bottom: 10px">
+                                                                                                    <input type="text" placeholder="Telefono 1" jsf:value="#{registroController.persona.telefono1}" style="width: 90%" maxlength="50"/>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <td><b>Segundo teléfono:</b></td>
+                                                                                                <td style="padding-bottom: 10px">
+                                                                                                    <input type="text" placeholder="Telefono 2" jsf:value="#{registroController.persona.telefono2}" style="width: 90%" maxlength="50"/>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                        </table>
+                                                                                    </div>
+                                                                                    <div class="modal-footer">
+                                                                                        <a  class="btn btn-default" data-dismiss="modal">
+                                                                                            <span class="glyphicon glyphicon-remove"/>Cerrar
+                                                                                        </a>
+                                                                                        <a jsf:action="#{registroController.guardarVincularListaPersona()}" class="btn btn-primary">
+                                                                                            <span class="glyphicon glyphicon-floppy-disk" />Guardar
+                                                                                        </a>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                            <table style="width: 100%">
-                                                <tr>
-                                                    <td>
-                                                        <br/><br/>
-                                                        <h:dataTable value="#{registroController.personasSeleccionadas}" var="persona" class="table table-striped" binding="#{item}" rendered="#{registroController.personasSeleccionadas.size() > 0}">
-                                                            <h:column>
-                                                                <f:facet name="header">Nro</f:facet>
-                                                                <h:outputText value="#{item.rowIndex+1}" />
-                                                            </h:column>
-                                                            <h:column>
-                                                                <f:facet name="header">Nombre</f:facet>
-                                                                <h:outputText value="#{persona.persona.nombre} #{persona.persona.apellidoPat} #{persona.persona.apellidoMat}"/>
-                                                            </h:column>
-                                                            <h:column>
-                                                                <f:facet name="header">Número documento</f:facet>
-                                                                <h:outputText value="#{persona.persona.numeroDocumento}"/>
-                                                            </h:column>
-                                                            <h:column>
-                                                                <h:selectOneMenu value="#{persona.cargo}">
-                                                                    <f:selectItems value="#{listasComunesController.buscarExpedienteTipoActor(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
-                                                                </h:selectOneMenu>
-                                                            </h:column>
-                                                            <h:column>
-                                                                <script>
-                                                                    function confirmar4#{item.rowIndex+1}() {
-                                                                        $(".confirmacion4#{item.rowIndex+1}").modal('show');
-                                                                    }
-                                                                </script>
-                                                                <gc:confirmAjax bean="#{registroController.removePersona(persona)}" classGC="confirmacion4#{item.rowIndex+1}" mensaje="Esta seguro de desvincular a la Persona?" />
-
-                                                                <a onclick="confirmar4#{item.rowIndex+1}()">
-                                                                    <span style="font-size: large; color: red" class="glyphicon glyphicon-remove"></span>
-                                                                </a>
-                                                            </h:column>
-                                                        </h:dataTable>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td style="vertical-align: top; padding-left: 2px">
-                                    <div class="panel panel-featured-top-silver" id="idPanel4">
-                                        <div class="panel-body">
-                                            <br/>
-                                            <table style="width: 100%">
-                                                <tr>
-                                                    <td style="width: 60%">
-                                                        <table style="width: 100%">
-                                                            <tr>
-                                                                <td>
-                                                                    <td>
-                                                                        <span class="text-resalt-primary">Región</span>
-                                                                        <h:selectOneMenu value="#{registroController.entidad.idDepartamento}">
-                                                                            <f:selectItem itemValue="#{registroController.usuarioSession.idDepartamento}" itemLabel="#{registroController.usuarioSession.nombreDepartamento}" />
-                                                                            <f:selectItem itemValue="0" itemLabel="Todas las regiones" />
-                                                                        </h:selectOneMenu>
-                                                                    </td>
-                                                                    <td>
-                                                                        <span class="text-resalt-primary">Tipo</span>
-                                                                        <h:selectOneMenu value="#{registroController.entidad.tipo}">
-                                                                            <f:selectItem itemValue="0" itemLabel="Seleccione" />
-                                                                            <f:selectItem itemValue="1" itemLabel="Centro médico" />
-                                                                            <f:selectItem itemValue="2" itemLabel="Colegio" />
-                                                                            <f:selectItem itemValue="3" itemLabel="Comisaría" />
-                                                                        </h:selectOneMenu>
-                                                                    </td>
-                                                                </td>
-                                                                <td>
-                                                                    <span class="text-resalt-primary">Entidad</span>
-                                                                    <input type="text" id="idBusquedaEntidad" style="width: 100%" placeholder="Ingrese nombre de la Entidad" jsf:value="#{registroController.entidad.nombre}"/>
                                                                 </td>
                                                             </tr>
                                                         </table>
-
-                                                    </td>
-                                                    <td style="vertical-align: bottom">
-                                                        <a style="vertical-align: bottom" href="#" class="trigger1" jsf:action="#{registroController.cargarPopoverEntidad(1)}" jsf:onclick="loadingModal()">
-                                                            <span style="color: #3183B9; font-size: large;" class="glyphicon glyphicon-search"></span>
-                                                            <f:ajax render="idForm:idPanel1" execute="@form" onevent="popove1"/>
-                                                        </a>
-                                                        <div class="popover-markup" style="float: right"> 
-                                                            <div class="head hide ">
-                                                                <table style="width: 100%">
-                                                                    <tr>
-                                                                        <td>
-                                                                            <b class="text-primary">Resultado</b>
-                                                                        </td>
-                                                                        <td style="text-align: right">
-                                                                            <a style="cursor: pointer"  onclick="cerrarBusquedaEntidad()">
-                                                                                <span class="glyphicon glyphicon-remove" style="color: red" />
-                                                                            </a>
-                                                                        </td>
-                                                                    </tr>
-                                                                </table>
-                                                            </div>
-
-                                                            <h:panelGroup id="idPanel1">
-                                                                <div class="content hide">
-
-                                                                    <h:dataTable value="#{registroController.entidadPopover}" id="idDatableBusquedaEntida" var="entidades" class="table table-hover">
+                                                        <table style="width: 100%">
+                                                            <tr>
+                                                                <td>
+                                                                    <br/><br/>
+                                                                    <h:dataTable value="#{registroController.personasSeleccionadas}" var="persona" class="table table-striped" rendered="#{registroController.personasSeleccionadas.size() > 0}">
+                                                                        <h:column>
+                                                                                        <f:facet name="header">Reserva</f:facet>
+                                                                                        <h:selectBooleanCheckbox id="idCheckbox" value="#{persona.indicadorReserva}" />
+                                                                                    </h:column>
                                                                         <h:column>
                                                                             <f:facet name="header">Nombre</f:facet>
-                                                                            <h:outputText value="#{entidades.nombre}"/>
+                                                                            <h:outputText value="#{persona.persona.nombre} #{persona.persona.apellidoPat} #{persona.persona.apellidoMat}"/>
                                                                         </h:column>
                                                                         <h:column>
-                                                                            <f:facet name="header">Tipo</f:facet>
-                                                                            <h:outputText rendered="#{entidades.tipo == 1}" value="centro médico"/>
-                                                                            <h:outputText rendered="#{entidades.tipo == 2}" value="colegio"/>
-                                                                            <h:outputText rendered="#{entidades.tipo == 3}" value="comisaria"/>
+                                                                            <f:facet name="header">Documento</f:facet>
+                                                                            <h:outputText value="#{persona.persona.numeroDocumento}"/>
                                                                         </h:column>
                                                                         <h:column>
-                                                                            <f:facet name="header">Región</f:facet>
-                                                                            <h:outputText value="#{entidades.nombreDepartamento}"/>
+                                                                            <h:selectOneMenu value="#{persona.cargo}">
+                                                                                <f:selectItems value="#{listasComunesController.buscarExpedienteTipoActor(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
+                                                                            </h:selectOneMenu>
                                                                         </h:column>
                                                                         <h:column>
-                                                                            <a jsf:action="#{registroController.addEntidad(entidades)}" jsf:onclick="loadingModal()">
-                                                                                <span style="font-size: medium" class="glyphicon glyphicon-share-alt"></span>  
-                                                                                <f:ajax render="@form" onevent="closeModal"/>
+                                                                            <script>
+                                                                    function confirmar4#{item.rowIndex+1}() {
+                                                                        $(".confirmacion4#{item.rowIndex+1}").modal('show');
+                                                                    }
+                                                                            </script>
+                                                                            <gc:confirmAjax bean="#{registroController.removePersona(persona)}" classGC="confirmacion4#{item.rowIndex+1}" mensaje="Esta seguro de desvincular a la Persona?" />
+
+                                                                            <a onclick="confirmar4#{item.rowIndex+1}()">
+                                                                                <span style="font-size: medium; color: red" class="glyphicon glyphicon-remove"></span>
                                                                             </a>
                                                                         </h:column>
                                                                     </h:dataTable>
-                                                                    <ul class="pager">
-                                                                        <li>
-                                                                            <a jsf:action="#{registroController.cargarPopoverEntidad(registroController.nroPaginaPersona -1)}" jsf:rendered="#{!empty registroController.entidadPopover}" jsf:onclick="loadingModal()">Anterior
-                                                                                <f:ajax render="idDatableBusquedaEntida" onevent="closeModal"/>
-                                                                            </a>
-                                                                        </li>
-                                                                        <li>
-                                                                            <a jsf:action="#{registroController.cargarPopoverEntidad(registroController.nroPaginaPersona +1)}" jsf:rendered="#{!empty registroController.entidadPopover}" jsf:onclick="loadingModal()">Siguiente
-                                                                                <f:ajax render="idDatableBusquedaEntida" onevent="closeModal"/>
-                                                                            </a>
-                                                                        </li>
-                                                                    </ul>
-                                                                </div>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td style="vertical-align: top; padding-left: 2px">
+                                                <div class="panel panel-featured-top-silver" id="idPanel4">
+                                                    <div class="panel-body">
+                                                        <br/>
+                                                        <table style="width: 100%">
+                                                            <tr>
+                                                                <td style="width: 85%">
+                                                                    <table style="width: 100%">
+                                                                        <tr>
+                                                                            <td>
+                                                                                <td>
+                                                                                    <span class="text-resalt-primary">Región</span>
+                                                                                    <h:selectOneMenu value="#{registroController.entidad.idDepartamento}">
+                                                                                        <f:selectItem itemValue="#{registroController.usuarioSession.idDepartamento}" itemLabel="#{registroController.usuarioSession.nombreDepartamento}" />
+                                                                                        <f:selectItem itemValue="0" itemLabel="Todas las regiones" />
+                                                                                    </h:selectOneMenu>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <span class="text-resalt-primary">Tipo</span>
+                                                                                    <h:selectOneMenu value="#{registroController.entidad.tipo}">
+                                                                                        <f:selectItem itemValue="0" itemLabel="Seleccione" />
+                                                                                        <f:selectItem itemValue="1" itemLabel="Centro médico" />
+                                                                                        <f:selectItem itemValue="2" itemLabel="Colegio" />
+                                                                                        <f:selectItem itemValue="3" itemLabel="Comisaría" />
+                                                                                    </h:selectOneMenu>
+                                                                                </td>
+                                                                            </td>
+                                                                            <td>
+                                                                                <span class="text-resalt-primary">Entidad</span>
+                                                                                <input type="text" id="idBusquedaEntidad" style="width: 100%" placeholder="Ingrese nombre de la Entidad" jsf:value="#{registroController.entidad.nombre}"/>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
 
-                                                                <style>
-                                                                    .alink:hover {
-                                                                        text-decoration: none;
-                                                                    }
-                                                                    .alink:link {
-                                                                        text-decoration: none;
-                                                                    }
+                                                                </td>
+                                                                <td style="vertical-align: bottom">
+                                                                    <a style="vertical-align: bottom" href="#" class="trigger1" jsf:action="#{registroController.cargarPopoverEntidad(1)}" jsf:onclick="loadingModal()">
+                                                                        <span style="color: #3183B9; font-size: large;" class="glyphicon glyphicon-search"></span>
+                                                                        <f:ajax render="idForm:idPanel1" execute="@form" onevent="popove1"/>
+                                                                    </a>
+                                                                    <div class="popover-markup" style="float: right"> 
+                                                                        <div class="head hide ">
+                                                                            <table style="width: 100%">
+                                                                                <tr>
+                                                                                    <td>
+                                                                                        <b class="text-primary">Resultado</b>
+                                                                                    </td>
+                                                                                    <td style="text-align: right">
+                                                                                        <a style="cursor: pointer"  onclick="cerrarBusquedaEntidad()">
+                                                                                            <span class="glyphicon glyphicon-remove" style="color: red" />
+                                                                                        </a>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </table>
+                                                                        </div>
 
-                                                                    .alink:active {
-                                                                        text-decoration: none;
-                                                                    }
-                                                                </style>
-                                                                <script>
-                                                                    /*$('body').click(function () {
-                                                                     $('.trigger1').popover('destroy');
-                                                                     });*/
-                                                                    $('#idBusquedaEntidad').focus(function () {
-                                                                        $('.trigger1').popover('destroy');
-                                                                    });
+                                                                        <h:panelGroup id="idPanel1">
+                                                                            <div class="content hide">
 
-                                                                    function cerrarBusquedaEntidad() {
-                                                                        $('.trigger1').popover('destroy');
-                                                                    }
+                                                                                <h:dataTable value="#{registroController.entidadPopover}" id="idDatableBusquedaEntida" var="entidades" class="table table-hover">
+                                                                                    <h:column>
+                                                                                        <f:facet name="header">Nombre</f:facet>
+                                                                                        <h:outputText value="#{entidades.nombre}"/>
+                                                                                    </h:column>
+                                                                                    <h:column>
+                                                                                        <f:facet name="header">Tipo</f:facet>
+                                                                                        <h:outputText rendered="#{entidades.tipo == 1}" value="centro médico"/>
+                                                                                        <h:outputText rendered="#{entidades.tipo == 2}" value="colegio"/>
+                                                                                        <h:outputText rendered="#{entidades.tipo == 3}" value="comisaria"/>
+                                                                                    </h:column>
+                                                                                    <h:column>
+                                                                                        <f:facet name="header">Región</f:facet>
+                                                                                        <h:outputText value="#{entidades.nombreDepartamento}"/>
+                                                                                    </h:column>
+                                                                                    <h:column>
+                                                                                        <a jsf:action="#{registroController.addEntidad(entidades)}" jsf:onclick="loadingModal()">
+                                                                                            <span style="font-size: medium" class="glyphicon glyphicon-share-alt"></span>  
+                                                                                            <f:ajax render="@form" onevent="closeModal"/>
+                                                                                        </a>
+                                                                                    </h:column>
+                                                                                </h:dataTable>
+                                                                                <ul class="pager">
+                                                                                    <li>
+                                                                                        <a jsf:action="#{registroController.cargarPopoverEntidad(registroController.nroPaginaPersona -1)}" jsf:rendered="#{!empty registroController.entidadPopover}" jsf:onclick="loadingModal()">Anterior
+                                                                                            <f:ajax render="idDatableBusquedaEntida" onevent="closeModal"/>
+                                                                                        </a>
+                                                                                    </li>
+                                                                                    <li>
+                                                                                        <a jsf:action="#{registroController.cargarPopoverEntidad(registroController.nroPaginaPersona +1)}" jsf:rendered="#{!empty registroController.entidadPopover}" jsf:onclick="loadingModal()">Siguiente
+                                                                                            <f:ajax render="idDatableBusquedaEntida" onevent="closeModal"/>
+                                                                                        </a>
+                                                                                    </li>
+                                                                                </ul>
+                                                                            </div>
 
-                                                                    var i = 0;
-                                                                    function popove1(data) {
-                                                                        if (data.status === 'success') {
-                                                                            i++;
-                                                                            $('.trigger1').popover({
-                                                                                html: true,
-                                                                                placement: 'bottom',
-                                                                                tabindex: '0',
-                                                                                trigger: 'focus',
-                                                                                title: function () {
-                                                                                    return $(this).parent().find('.head').html();
-                                                                                },
-                                                                                content: function () {
-                                                                                    return $(this).parent().find('.content').html();
+                                                                            <style>
+                                                                                .alink:hover {
+                                                                                    text-decoration: none;
                                                                                 }
-                                                                            });
+                                                                                .alink:link {
+                                                                                    text-decoration: none;
+                                                                                }
 
-                                                                            if (i === 1) {
-                                                                                $('.trigger1').popover('show');
-                                                                            }
-                                                                            $("#loadModal").modal('hide');
-                                                                            $('body').removeClass('modal-open');
-                                                                            $(".modal-backdrop").removeClass("modal-backdrop");
-                                                                        }
-                                                                    }
-                                                                </script> 
-                                                            </h:panelGroup>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td colspan="2">
-                                                        <br/><br/>
-                                                        <h:dataTable value="#{registroController.entidadSeleccionadas}" var="entidad" class="table table-striped" binding="#{item1}" rendered="#{registroController.entidadSeleccionadas.size() > 0}">
-                                                            <h:column>
-                                                                <f:facet name="header">Nro</f:facet>
-                                                                <h:outputText value="#{item1.rowIndex+1}" />
-                                                            </h:column>
-                                                            <h:column>
-                                                                <f:facet name="header">Nombre</f:facet>
-                                                                <h:outputText value="#{entidad.entidad.nombre}"/>
-                                                            </h:column>
-                                                            <h:column>
-                                                                <script>
+                                                                                .alink:active {
+                                                                                    text-decoration: none;
+                                                                                }
+                                                                            </style>
+                                                                            <script>
+                                                                                $('#idBusquedaEntidad').focus(function () {
+                                                                                    $('.trigger1').popover('destroy');
+                                                                                });
+
+                                                                                function cerrarBusquedaEntidad() {
+                                                                                    $('.trigger1').popover('destroy');
+                                                                                }
+
+                                                                                var i = 0;
+                                                                                function popove1(data) {
+                                                                                    if (data.status === 'success') {
+                                                                                        i++;
+                                                                                        $('.trigger1').popover({
+                                                                                            html: true,
+                                                                                            placement: 'bottom',
+                                                                                            tabindex: '0',
+                                                                                            trigger: 'focus',
+                                                                                            title: function () {
+                                                                                                return $(this).parent().find('.head').html();
+                                                                                            },
+                                                                                            content: function () {
+                                                                                                return $(this).parent().find('.content').html();
+                                                                                            }
+                                                                                        });
+
+                                                                                        if (i === 1) {
+                                                                                            $('.trigger1').popover('show');
+                                                                                        }
+                                                                                        $("#loadModal").modal('hide');
+                                                                                        $('body').removeClass('modal-open');
+                                                                                        $(".modal-backdrop").removeClass("modal-backdrop");
+                                                                                    }
+                                                                                }
+                                                                            </script> 
+                                                                        </h:panelGroup>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="2">
+                                                                    <br/><br/>
+                                                                    <h:dataTable value="#{registroController.entidadSeleccionadas}" var="entidad" class="table table-striped" rendered="#{registroController.entidadSeleccionadas.size() > 0}">
+                                                                        <h:column>
+                                                                            <f:facet name="header">Nombre</f:facet>
+                                                                            <h:outputText value="#{entidad.entidad.nombre}"/>
+                                                                        </h:column>
+                                                                        <h:column>
+                                                                            <f:facet name="header">Func. quejado</f:facet>
+                                                                            <input type="text" jsf:value="#{entidad.nombreCompleto}" placeholder="Nombre" maxlength="300"/> 
+                                                                        </h:column>
+                                                                        <h:column>
+                                                                            <f:facet name="header">Cargo</f:facet>
+                                                                            <input type="text" jsf:value="#{entidad.cargo}" placeholder="Cargo" maxlength="200"/>
+                                                                        </h:column>
+                                                                        <h:column>
+                                                                            <script>
                                                                     function confirmar3#{item1.rowIndex+1}() {
                                                                         $(".confirmacion3#{item1.rowIndex+1}").modal('show');
                                                                     }
-                                                                </script>
-                                                                <gc:confirmAjax bean="#{registroController.removeEntidad(entidad)}" classGC="confirmacion3#{item1.rowIndex+1}" mensaje="Esta seguro de desvincular la Entidad?" />
-                                                                <a onclick="confirmar3#{item1.rowIndex+1}()">
-                                                                    <span style="font-size: large; color: red" class="glyphicon glyphicon-remove"></span>
-                                                                </a>
-                                                            </h:column>
-                                                        </h:dataTable>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </div>
-                                    </div>
+                                                                            </script>
+                                                                            <gc:confirmAjax bean="#{registroController.removeEntidad(entidad)}" classGC="confirmacion3#{item1.rowIndex+1}" mensaje="Esta seguro de desvincular la Entidad?" />
+                                                                            <a onclick="confirmar3#{item1.rowIndex+1}()">
+                                                                                <span style="font-size: large; color: red" class="glyphicon glyphicon-remove"></span>
+                                                                            </a>
+                                                                        </h:column>
+                                                                    </h:dataTable>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
                                 </td>
                             </tr>
                             <tr>

@@ -6,6 +6,7 @@
         <result property="expediente.id" column="N_IDEXPEDIENTE"/>
         <result property="persona.id" column="N_IDPERSONA"/>
         <result property="cargo" column="C_CARGO"/>
+        <result property="indicadorReserva" column="N_INDRESERVA"/>
         <result property="persona.nombre" column="C_NOMBRE"/>
         <result property="persona.apellidoPat" column="C_APELLIDOPAT"/>
         <result property="persona.apellidoMat" column="C_APELLIDOMAT"/>
@@ -19,6 +20,9 @@
         <if test="cargo != null">
             C_CARGO,
         </if>
+        <if test="indicadorReserva != null">
+            N_INDRESERVA,
+        </if>
         N_IDEXPEDIENTE,
         N_IDPERSONA
         )
@@ -26,6 +30,9 @@
         (
         <if test="cargo != null">
             #{cargo},    
+        </if>
+        <if test="indicadorReserva != null">
+            #{indicadorReserva},    
         </if>
         #{expediente.id},
         #{persona.id}
@@ -36,7 +43,8 @@
     <update id="expedientePersonaUpdate" parameterType="expedientePersona">
         UPDATE SID_REG_EXPEDE_PERSONA
         <set> 
-            C_CARGO = #{cargo}
+            C_CARGO = #{cargo},
+            N_INDRESERVA = #{indicadorReserva}
         </set>
         <where>
             N_IDPERSONA = #{persona.id} AND

@@ -219,6 +219,8 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     private Part file3;
     
     private Part file4;
+    
+    private Part file5;
 
     private boolean verBotonRegistrarExpediente = true;
 
@@ -239,6 +241,8 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     private List<ExpedienteNivel> listaExpedienteNivel;
     
     private List<ExpedienteNivel> listaExpedienteNivelModal;
+    
+    private List<Usuario> listaUsuarioOD;
 
     @Autowired
     private ExpedienteService expedienteService;
@@ -425,6 +429,20 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         expedienteClasificacionBusqueda = new ExpedienteClasificacion();
         listaExpedienteNivelModal = new ArrayList<>();
         nroPaginaModal = 1;
+    }
+    
+    public void limpiarModalAsignar() {
+        listaUsuarioOD = usuarioService.listaUsuariosPorOD(usuarioSession);
+    }
+    
+    public void guardarAsignado(){
+        if(StringUtils.isBlank(expediente.getUsuarioAsignado())){
+            msg.messageAlert("Debe ingresar el usuario asignado", null);
+        }else{
+            expedienteService.expedienteAsignar(expediente);
+            expediente.setUsuarioRegistro(expediente.getUsuarioAsignado());
+            msg.messageInfo("Se asigno el expediente correctamente",null);
+        }
     }
     
     public boolean buscarClasificacion(Integer pagina){
@@ -1593,9 +1611,6 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 }
                 expediente.setUsuarioRegistro(usuarioSession.getCodigo());
                 expediente.setVersion(1);
-                /*DateFormat format = new SimpleDateFormat("yyMMddHHmmss");
-                 String formato = format.format(new Date());
-                 expediente.setNumero("CP" + formato);*/
                 generarCodigoExpediente();
                 expediente.setFechaRegistro(new Date());
             } else {
@@ -1604,6 +1619,8 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 expedienteService.expedienteUpdate(expediente);
             }
             expediente.setEstado("A");
+            String ruta = uploadArchive(file5);
+            expediente.setRuta(ruta);
             expedienteService.expedienteInsertar(expediente);
             insertListasPersonaEntidad();
         } catch (Exception e) {
@@ -2819,6 +2836,22 @@ public class RegistroController extends AbstractManagedBean implements Serializa
 
     public void setFile4(Part file4) {
         this.file4 = file4;
+    }
+
+    public List<Usuario> getListaUsuarioOD() {
+        return listaUsuarioOD;
+    }
+
+    public void setListaUsuarioOD(List<Usuario> listaUsuarioOD) {
+        this.listaUsuarioOD = listaUsuarioOD;
+    }
+
+    public Part getFile5() {
+        return file5;
+    }
+
+    public void setFile5(Part file5) {
+        this.file5 = file5;
     }
 
 }

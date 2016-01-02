@@ -367,13 +367,13 @@
                                                                 </a>
                                                             </h:panelGroup>
                                                             &#160;&#160;
-                                                            <h:panelGroup rendered="#{registroController.expediente.general != 'C' and registroController.verBotonRegistrarExpediente}">
+                                                            <h:panelGroup rendered="#{registroController.expediente.general != 'C' and registroController.verBotonRegistrarExpediente and registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo}">
                                                                 <a class="btn btn-primary" onclick="confirmar2()">
                                                                     <span class="glyphicon glyphicon-floppy-disk" />Guardar
                                                                 </a>
                                                             </h:panelGroup>
                                                             &#160;&#160;
-                                                            <h:panelGroup id="idPanel2" rendered="#{registroController.expediente.id != null and registroController.expediente.version > 0 and registroController.expediente.general != 'C' and registroController.verBotonRegistrarExpediente}">
+                                                            <h:panelGroup id="idPanel2" rendered="#{registroController.expediente.id != null and registroController.expediente.version > 0 and registroController.expediente.general != 'C' and registroController.verBotonRegistrarExpediente and registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo}">
                                                                 <a class="btn btn-warning" onclick="confirmar3()">
                                                                     <span class="glyphicon glyphicon-floppy-save" />Concluir Etapa
                                                                 </a>

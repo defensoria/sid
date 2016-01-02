@@ -75,6 +75,8 @@ public class Expediente implements Serializable{
     
     private Boolean indRelevante;
     
+    private String ruta;
+    
     private List<ExpedienteNivel> listaExpedienteNivel;
     /*agregados*/
     
@@ -107,6 +109,10 @@ public class Expediente implements Serializable{
     private String indicadorEtapa;
     
     private String estadoDetalle;
+    
+    private String nombreOD;
+    
+    private String usuarioAsignado;
 
     public Long getId() {
         return id;
@@ -476,6 +482,30 @@ public class Expediente implements Serializable{
 
     public void setTipoGrupoEspecial(String tipoGrupoEspecial) {
         this.tipoGrupoEspecial = tipoGrupoEspecial;
+    }
+
+    public String getNombreOD() {
+        return nombreOD;
+    }
+
+    public void setNombreOD(String nombreOD) {
+        this.nombreOD = nombreOD;
+    }
+
+    public String getUsuarioAsignado() {
+        return usuarioAsignado;
+    }
+
+    public void setUsuarioAsignado(String usuarioAsignado) {
+        this.usuarioAsignado = usuarioAsignado;
+    }
+
+    public String getRuta() {
+        return ruta;
+    }
+
+    public void setRuta(String ruta) {
+        this.ruta = ruta;
     }
 
 }

@@ -6,6 +6,8 @@
         <result property="expediente.id" column="N_IDEXPEDIENTE"/>
         <result property="entidad.id" column="N_ID_ENTIDAD"/>
         <result property="entidad.nombre" column="C_NOMENTIDAD"/>
+        <result property="nombreCompleto" column="C_FUNCIONARIOQUEJADO"/>
+        <result property="cargo" column="C_CARGOFUNCIONARIO"/>
     </resultMap> 
     
     
@@ -13,11 +15,23 @@
         INSERT INTO SID_REG_EXPEDE_ENTIDAD
         (
         N_IDEXPEDIENTE,
+        <if test="nombreCompleto != null">
+            C_FUNCIONARIOQUEJADO,
+        </if>
+        <if test="cargo != null">
+            C_CARGOFUNCIONARIO,
+        </if>
         N_ID_ENTIDAD
         )
         VALUES 
         (
         #{expediente.id},
+        <if test="nombreCompleto != null">
+            #{nombreCompleto},
+        </if>
+        <if test="cargo != null">
+            #{cargo},
+        </if>
         #{entidad.id}
         )
     </insert>

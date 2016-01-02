@@ -91,5 +91,10 @@ public class ExpedienteDAOImpl extends SqlSessionDaoSupport implements Expedient
     public Expediente expedienteBuscarPorNumero(String numeroExpediente) {
         return getSqlSession().selectOne("gob.dp.sid.registro.dao.ExpedienteDAO.expedienteBuscarPorNumero", numeroExpediente);
     }
+
+    @Override
+    public void expedienteAsignar(Expediente expediente) {
+        getSqlSession().update("gob.dp.sid.registro.dao.ExpedienteDAO.expedienteAsignar", expediente);
+    }
     
 }

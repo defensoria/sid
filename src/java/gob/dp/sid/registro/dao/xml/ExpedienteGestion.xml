@@ -13,6 +13,7 @@
         <result property="nombre" column="C_NOMBREFUNC"/>
         <result property="apellidoPaterno" column="C_APEPATFUNC"/>
         <result property="apellidoMaterno" column="C_APEMATFUNC"/>
+        <result property="cargo" column="C_CARGOFUNC"/>
         <result property="indAlertar" column="C_INDALERTAR"/>
         <result property="inicioSeguimiento" column="D_FECINISEGUIMIENTO" />
         <result property="finSeguimiento" column="D_FECFINSEGUIMIENTO"/>
@@ -43,6 +44,7 @@
         <result property="ruta1" column="C_RUTA1"/>
         <result property="ruta2" column="C_RUTA2"/>
         <result property="documentoGestion" column="C_DOCUMENTOGESTION"/>
+        <result property="fechaRecepcion" column="D_FECHARECEPCION"/>
         <!--adionales-->
         <result property="nombreParametroTipo" column="NOMBRE_PARAMETRO"/>
         <result property="idEtapa" column="N_ID_ETAPA"/>
@@ -77,6 +79,9 @@
         </if>
         <if test="apellidoMaterno != null">
             C_APEMATFUNC,
+        </if>
+        <if test="cargo != null">
+            C_CARGOFUNC,
         </if>
         <if test="institucion != null">
             C_INSTITUCION,
@@ -165,6 +170,9 @@
         <if test="documentoGestion != null">
             C_DOCUMENTOGESTION,
         </if>
+        <if test="fechaRecepcion != null">
+            D_FECHARECEPCION,
+        </if>
         N_ID_GESTION
         )
         VALUES 
@@ -192,6 +200,9 @@
         </if>
         <if test="apellidoMaterno != null">
             #{apellidoMaterno},
+        </if>
+        <if test="cargo != null">
+            #{cargo},
         </if>
         <if test="institucion != null">
             #{institucion},
@@ -280,6 +291,9 @@
         <if test="documentoGestion != null">
             #{documentoGestion},
         </if>
+        <if test="fechaRecepcion != null">
+            #{fechaRecepcion},
+        </if>
         SEQ_SID_REG_GESTION.NextVal
         )
         <selectKey keyProperty="id" resultType="Long">
@@ -308,6 +322,9 @@
         </if>
         <if test="apellidoMaterno != null">
             C_APEMATFUNC = #{apellidoMaterno},
+        </if>
+        <if test="cargo != null">
+            C_CARGOFUNC = #{cargo},
         </if>
         <if test="institucion != null">
             C_INSTITUCION = #{institucion},
@@ -389,6 +406,9 @@
         </if>
         <if test="documentoGestion != null">
             C_DOCUMENTOGESTION = #{documentoGestion},
+        </if>
+        <if test="fechaRecepcion != null">
+            D_FECHARECEPCION = #{fechaRecepcion},
         </if>
         C_USUMODIFICACION = #{usuarioModificacion},
         D_FECHAMODIFICACION = #{fechaModificacion}
