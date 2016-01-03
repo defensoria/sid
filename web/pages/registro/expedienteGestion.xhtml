@@ -129,12 +129,21 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td style="width: 50%;padding-bottom: 10px;padding-right: 10px">
+                                                    <td colspan="2">
+                                                        <table style="width: 100%">
+                                                            <tr>
+                                                                <td style="width: 50%;padding-bottom: 10px;padding-right: 10px">
                                                         <label>Institución:</label>
                                                         <input type="text" jsf:value="#{registroController.expedienteGestion.institucion}" placeholder="Institución"/>
                                                     </td>
                                                     <td style="vertical-align: bottom;padding-bottom: 10px">
-                                                        Entidad quejada<h:selectBooleanCheckbox id="idCheckbox" value="#{registroController.expedienteGestion.indEntidadQuejada}" />
+                                                        Entidad quejada
+                                                        <h:selectBooleanCheckbox value="#{registroController.expedienteGestion.indEntidadQuejada}" >
+                                                            <f:ajax render="@form" listener="#{registroController.entidadQuejada()}" />
+                                                        </h:selectBooleanCheckbox>
+                                                    </td>
+                                                            </tr>
+                                                        </table>
                                                     </td>
                                                 </tr>
                                                 <tr>

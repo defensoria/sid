@@ -5,7 +5,7 @@
     <resultMap id="expedientePersonaMap" type="expedientePersona">
         <result property="expediente.id" column="N_IDEXPEDIENTE"/>
         <result property="persona.id" column="N_IDPERSONA"/>
-        <result property="cargo" column="C_CARGO"/>
+        <result property="tipo" column="C_TIPO"/>
         <result property="indicadorReserva" column="N_INDRESERVA"/>
         <result property="persona.nombre" column="C_NOMBRE"/>
         <result property="persona.apellidoPat" column="C_APELLIDOPAT"/>
@@ -17,8 +17,8 @@
     <insert id="expedientePersonaInsertar" parameterType="expedientePersona">
         INSERT INTO SID_REG_EXPEDE_PERSONA
         (
-        <if test="cargo != null">
-            C_CARGO,
+        <if test="tipo != null">
+            C_TIPO,
         </if>
         <if test="indicadorReserva != null">
             N_INDRESERVA,
@@ -28,8 +28,8 @@
         )
         VALUES 
         (
-        <if test="cargo != null">
-            #{cargo},    
+        <if test="tipo != null">
+            #{tipo},    
         </if>
         <if test="indicadorReserva != null">
             #{indicadorReserva},    
@@ -43,7 +43,7 @@
     <update id="expedientePersonaUpdate" parameterType="expedientePersona">
         UPDATE SID_REG_EXPEDE_PERSONA
         <set> 
-            C_CARGO = #{cargo},
+            C_TIPO = #{tipo},
             N_INDRESERVA = #{indicadorReserva}
         </set>
         <where>

@@ -56,6 +56,7 @@ import gob.dp.sid.registro.service.ExpedienteService;
 import gob.dp.sid.registro.service.GestionEtapaService;
 import gob.dp.sid.registro.service.OficinaDefensorialService;
 import gob.dp.sid.registro.service.PersonaService;
+import gob.dp.sid.reporte.entity.ExpedienteFicha;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -66,12 +67,20 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 import javax.inject.Named;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -243,6 +252,8 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     private List<ExpedienteNivel> listaExpedienteNivelModal;
     
     private List<Usuario> listaUsuarioOD;
+    
+    JasperPrint jasperPrint;
 
     @Autowired
     private ExpedienteService expedienteService;
@@ -338,6 +349,126 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         listaExpedienteXPersona = null;
         indSeleccion = true;
         return "expedienteUsuario";
+    }
+    
+    public void initConsulta() throws JRException {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        List<ExpedienteFicha> list = new ArrayList<>();
+        ExpedienteFicha ficha = new ExpedienteFicha();
+        String oficina = usuarioSession.getNombreOD().replace("OD", "OFICINA DEFENSORIAL");
+        ficha.setNumeroExpediente("EXPEDIENTE "+expediente.getNumero());
+        ficha.setOficinaDefensorial(oficina+" - "+usuarioSession.getNombreOD());
+        /**LISTA DE PERSONAS*/
+        List<ExpedientePersona> eps = new ArrayList<>();
+        Integer nro = 0;
+        FiltroParametro fp = new FiltroParametro();
+        Parametro parametro;
+        for(ExpedientePersona ep : personasSeleccionadas){
+            if(!ep.getIndicadorReserva()){
+                nro++;
+                ep.setNro(nro.toString()+".-");
+                ep.setNombreCompleto(ep.getPersona().getNombre().toUpperCase()+" "+ep.getPersona().getApellidoPat().toUpperCase()+" "+ep.getPersona().getApellidoMat().toUpperCase());
+                fp.setCodigoPadreParametro(50);
+                fp.setValorParametro(ep.getTipo());
+                parametro = parametroService.consultarParametroValor(fp);
+                ep.setDetalleCargo(parametro.getNombreParametro().toUpperCase()+": ");
+                eps.add(ep);
+            }
+        }
+        ficha.setFechaIngreso(simpleDateFormat.format(expediente.getFechaIngreso()));
+        ficha.setFechaRegistro(simpleDateFormat.format(expediente.getFechaRegistro()));
+        ficha.setClaseExpediente(expediente.getClasificacionTipoNombre());
+        fp.setCodigoPadreParametro(20);
+        fp.setValorParametro(expediente.getTipoIngreso());
+        parametro = parametroService.consultarParametroValor(fp);
+        ficha.setClaseExpediente(expediente.getClasificacionTipoNombre());
+        ficha.setFormaIngreso(parametro.getNombreParametro().toUpperCase());
+        ficha.setDireccion("Oficina");
+        ficha.setLugarRecepcion("Oficina");
+        ficha.setDescripcion(expediente.getSumilla().toUpperCase());
+        ficha.setConclusion(expediente.getConclusion().toUpperCase());
+        ficha.setCodigoUsuario(usuarioSession.getCodigo().toUpperCase());
+        ficha.setExpedientePersonas(eps);
+        if(StringUtils.equals(expediente.getGeneral(), "C"))
+            ficha.setFechaConclusion(simpleDateFormat.format(expediente.getFechaModificacion()));
+        else
+            ficha.setFechaConclusion("");
+            
+        /**LISTA DE PERSONAS*/
+        list.add(ficha);
+        JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(
+                list);
+        jasperPrint = JasperFillManager.fillReport("C:\\recursos\\reportesSID\\expedienteConsulta.jasper",
+                new HashMap(), beanCollectionDataSource);
+
+    }
+    
+    public void initPetitorio() throws JRException {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        List<ExpedienteFicha> list = new ArrayList<>();
+        ExpedienteFicha ficha = new ExpedienteFicha();
+        String oficina = expediente.getNombreOD().replace("OD", "OFICINA DEFENSORIAL");
+        ficha.setNumeroExpediente("EXPEDIENTE "+expediente.getNumero());
+        ficha.setOficinaDefensorial(oficina+" - "+usuarioSession.getNombreOD());
+        /**LISTA DE PERSONAS*/
+        List<ExpedientePersona> eps = new ArrayList<>();
+        Integer nro = 0;
+        FiltroParametro fp = new FiltroParametro();
+        Parametro parametro;
+        for(ExpedientePersona ep : personasSeleccionadas){
+            if(!ep.getIndicadorReserva()){
+                nro++;
+                ep.setNro(nro.toString()+".-");
+                ep.setNombreCompleto(ep.getPersona().getNombre().toUpperCase()+" "+ep.getPersona().getApellidoPat().toUpperCase()+" "+ep.getPersona().getApellidoMat().toUpperCase());
+                fp.setCodigoPadreParametro(50);
+                fp.setValorParametro(ep.getTipo());
+                parametro = parametroService.consultarParametroValor(fp);
+                ep.setDetalleCargo(parametro.getNombreParametro().toUpperCase()+": ");
+                eps.add(ep);
+            }
+        }
+        ficha.setFechaIngreso(simpleDateFormat.format(expediente.getFechaIngreso()));
+        ficha.setFechaRegistro(simpleDateFormat.format(expediente.getFechaRegistro()));
+        ficha.setClaseExpediente(expediente.getClasificacionTipoNombre());
+        fp.setCodigoPadreParametro(20);
+        fp.setValorParametro(expediente.getTipoIngreso());
+        parametro = parametroService.consultarParametroValor(fp);
+        ficha.setClaseExpediente(expediente.getClasificacionTipoNombre());
+        ficha.setFormaIngreso(parametro.getNombreParametro().toUpperCase());
+        ficha.setDireccion("Oficina");
+        ficha.setLugarRecepcion("Oficina");
+        ficha.setDescripcion(expediente.getSumilla().toUpperCase());
+        ficha.setConclusion(expediente.getConclusion().toUpperCase());
+        ficha.setCodigoUsuario(usuarioSession.getCodigo().toUpperCase());
+        ficha.setExpedientePersonas(eps);
+        /**LISTA DE PERSONAS*/
+        list.add(ficha);
+        JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(
+                list);
+        jasperPrint = JasperFillManager.fillReport("C:\\recursos\\reportesSID\\expedienteConsulta.jasper",
+                new HashMap(), beanCollectionDataSource);
+
+    }
+    
+
+    public void pdf() throws JRException, IOException {
+        Date date = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        String fecha = simpleDateFormat.format(date);
+        if(StringUtils.equals(expediente.getTipoClasificion(), ExpedienteType.CONSULTA.getKey())){
+            initConsulta();
+        }
+        if(StringUtils.equals(expediente.getTipoClasificion(), ExpedienteType.PETITORIO.getKey())){
+            initConsulta();
+        }
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        HttpServletResponse httpServletResponse;
+        httpServletResponse = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+        httpServletResponse.addHeader("Content-disposition", "attachment; filename=" + fecha + "_caso.pdf");
+        ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();
+        JasperExportManager.exportReportToPdfStream(jasperPrint, servletOutputStream);
+        facesContext.responseComplete();
+        facesContext.renderResponse();
     }
 
     public String cargarExpedientePorId(Long idExpediente) {
@@ -1347,6 +1478,16 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         usuarioSession = loginController.getUsuarioSesion();
         usuarioSession.setNombreDepartamento(ubigeoService.departamentoOne(usuarioSession.getIdDepartamento()).getDescripcion());
     }
+    
+    public void entidadQuejada(){
+        System.out.println("entro");
+        System.out.println(expedienteGestion.getIndEntidadQuejada());
+        if(entidadSeleccionadas.size() == 1){
+            for(ExpedienteEntidad ee : entidadSeleccionadas){
+                expedienteGestion.setInstitucion(ee.getEntidad().getNombre());
+            }
+        }
+    }
 
     public boolean cargarPopoverPersona(Long pagina) {
         if (pagina == 1) {
@@ -1373,13 +1514,10 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 log.error("ERROR : BusquedaUsuarioController.listarPaginado: " + e.getMessage());
             }
         }
-
-        //listaPersonaGeneral = personaService.personaBusarGeneral(personaBusqueda);
         if (personasPopover.isEmpty()) {
             msg.messageAlert("No se han encontrado Personas", null);
         }
         return true;
-
     }
 
     public boolean cargarPopoverEntidad(Long pagina) {
@@ -1394,7 +1532,6 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 ini = 1L;
                 fin = 5L;
             }
-
             entidad.setIni(ini);
             entidad.setFin(fin);
             try {
@@ -1411,8 +1548,6 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 log.error("ERROR : BusquedaUsuarioController.listarPaginado: " + e.getMessage());
             }
         }
-
-        //listaPersonaGeneral = personaService.personaBusarGeneral(personaBusqueda);
         if (entidadPopover == null) {
             msg.messageAlert("No se han encontrado Personas", null);
         }
@@ -1466,6 +1601,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     }
 
     private void inicializarEtapaEstado(int tip) {
+        try {
         if (tip == 0) {
             etapaEstado = new EtapaEstado();
             etapaEstado.setVerEtapa(0);
@@ -1551,6 +1687,10 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             }
             etapaEstado.setUltimoEstado(detalleUltimoEstado(expediente.getNumero()));
         }
+            
+        } catch (Exception e) {
+            log.error(e);
+        }
     }
 
     public void guardarBorrador() {
@@ -1571,7 +1711,8 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     }
 
     public void guardarVersion() {
-        Long idExpedienteOld = null;
+        try {
+            Long idExpedienteOld = null;
         if (expediente.getId() != null) {
             idExpedienteOld = expediente.getId();
         }
@@ -1579,26 +1720,38 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         guardarEtapaEstado(idExpedienteOld);
         inicializarEtapaEstado(1);
         msg.messageInfo("Se genero una nueva version del Expediente", null);
+        } catch (Exception e) {
+            log.error(e);
+        }
     }
 
     public void guardarVersion2() {
-        Long idExpedienteOld = null;
+        try {
+            Long idExpedienteOld = null;
         if (expediente.getId() != null) {
             idExpedienteOld = expediente.getId();
         }
         guardar();
         guardarEtapaEstado(idExpedienteOld);
-        inicializarEtapaEstado(1);
+        inicializarEtapaEstado(1);    
+        } catch (Exception e) {
+            log.error(e);
+        }
     }
 
     public void guardarVersion3(String codigoUsuario) {
-        Long idExpedienteOld = null;
+        try {
+            Long idExpedienteOld = null;
         if (expediente.getId() != null) {
             idExpedienteOld = expediente.getId();
         }
         guardar1(codigoUsuario);
         guardarEtapaEstado(idExpedienteOld);
         inicializarEtapaEstado(1);
+        } catch (Exception e) {
+            log.error(e);
+        }
+        
     }
 
     private void guardar() {
@@ -1616,11 +1769,13 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             } else {
                 expediente.setVersion(expediente.getVersion() + 1);
                 expediente.setEstado("I");
+                expediente.setFechaModificacion(new Date());
                 expedienteService.expedienteUpdate(expediente);
             }
             expediente.setEstado("A");
-            String ruta = uploadArchive(file5);
-            expediente.setRuta(ruta);
+            //String ruta = uploadArchive(file5);
+            /*if (ruta != null)
+                expediente.setRuta(ruta);*/
             expedienteService.expedienteInsertar(expediente);
             insertListasPersonaEntidad();
         } catch (Exception e) {
@@ -1743,6 +1898,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
 
     private void guardarEtapaEstado(Long idExpedienteOld) {
         EtapaEstado etapaEstado1 = new EtapaEstado();
+        try {
         /**
          * QUEJA
          */
@@ -1814,9 +1970,13 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         etapaEstado1.setNumeroExpediente(expediente.getNumero());
         etapaEstado1.setIndicador("ACT");
         etapaEstadoService.etapaEstadoInsertar(etapaEstado1);
+        } catch (Exception e) {
+            log.error(e);
+        }
     }
 
     private void guardarEtapaEstadoConcluir(Long idExpedienteOld) {
+        try {
         EtapaEstado etapaEstado1 = new EtapaEstado();
         /**
          * QUEJA
@@ -1906,15 +2066,28 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 etapaEstado1.setIdEtapa(EtapaType.CALIFICACION_PETITORIO.getKey());
             }
         }
+        
+        /**
+         * CONSULTA
+         */
+        if (StringUtils.equals(expediente.getTipoClasificion(), ExpedienteType.CONSULTA.getKey())) {
+            expediente.setGeneral("C");
+            expedienteService.expedienteConcluir(expediente.getId());
+        }
 
         etapaEstado1.setIdExpediente(expediente.getId());
         etapaEstado1.setNumeroExpediente(expediente.getNumero());
         etapaEstado1.setIndicador("ACT");
         etapaEstadoService.etapaEstadoInsertar(etapaEstado1);
+            
+        } catch (Exception e) {
+            log.error(e);
+        }
     }
 
     private void insertUpdateListasPersonaEntidad() {
-        for (ExpedientePersona p : personasSeleccionadas) {
+        try {
+         for (ExpedientePersona p : personasSeleccionadas) {
             p.setExpediente(expediente);
             insertUpdateExpedientePersona(p);
         }
@@ -1922,6 +2095,9 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         for (ExpedienteEntidad e : entidadSeleccionadas) {
             e.setExpediente(expediente);
             insertUpdateExpedienteEntidad(e);
+        }   
+        } catch (Exception e) {
+            log.error(e);
         }
     }
 

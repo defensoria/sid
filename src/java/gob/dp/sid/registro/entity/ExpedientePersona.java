@@ -17,9 +17,15 @@ public class ExpedientePersona implements Serializable{
     
     private Persona persona;
     
-    private String cargo;
+    private String tipo;
     
     private Boolean indicadorReserva;
+    
+    private String nombreCompleto;
+    
+    private String detalleCargo;
+    
+    private String nro;
 
     public ExpedientePersona(Expediente expediente, Persona persona) {
         this.expediente = expediente;
@@ -45,12 +51,12 @@ public class ExpedientePersona implements Serializable{
         this.persona = persona;
     }
 
-    public String getCargo() {
-        return cargo;
+    public String getTipo() {
+        return tipo;
     }
 
-    public void setCargo(String cargo) {
-        this.cargo = cargo;
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
     public Boolean getIndicadorReserva() {
@@ -59,6 +65,30 @@ public class ExpedientePersona implements Serializable{
 
     public void setIndicadorReserva(Boolean indicadorReserva) {
         this.indicadorReserva = indicadorReserva;
+    }
+
+    public String getNombreCompleto() {
+        return nombreCompleto;
+    }
+
+    public void setNombreCompleto(String nombreCompleto) {
+        this.nombreCompleto = nombreCompleto;
+    }
+
+    public String getDetalleCargo() {
+        return detalleCargo;
+    }
+
+    public void setDetalleCargo(String detalleCargo) {
+        this.detalleCargo = detalleCargo;
+    }
+
+    public String getNro() {
+        return nro;
+    }
+
+    public void setNro(String nro) {
+        this.nro = nro;
     }
     
     

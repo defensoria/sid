@@ -1,0 +1,40 @@
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:composite="http://xmlns.jcp.org/jsf/composite"
+      xmlns:c="http://java.sun.com/jsp/jstl/core" 
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+    <composite:interface>
+        <composite:attribute name="value" required="true"/>
+        <composite:attribute name="lista" required="true"/>
+        <composite:attribute name="idSelect" required="true"/>
+        <composite:attribute name="idHidden" required="true"/>
+    </composite:interface>
+
+    <composite:implementation>
+        <input type="hidden" jsf:value="#{cc.attrs.value}" id="#{cc.attrs.idHidden}"/>
+        <script type="text/javascript">
+
+            $(document).ready(function () {
+                if ($("##{cc.attrs.idHidden}").val().trim() !== "") {
+                    var data = $("##{cc.attrs.idHidden}").val();
+                    var dataarray = data.split(",");
+                    $("##{cc.attrs.idSelect}").val(dataarray);
+                    $("##{cc.attrs.idSelect}").multiselect("refresh");
+                }
+                $("##{cc.attrs.idSelect}").change(function () {
+                    $("##{cc.attrs.idHidden}").val($("##{cc.attrs.idSelect}").val());
+                });
+
+                $('##{cc.attrs.idSelect}').multiselect();
+
+            });
+
+        </script>
+        <select id="#{cc.attrs.idSelect}" multiple="multiple">
+            <c:forEach var="x" items="#{cc.attrs.lista}">
+                <option value="${x.valorParametro}">${x.nombreParametro}</option>
+            </c:forEach>
+        </select>
+    </composite:implementation>
+
+</html>            

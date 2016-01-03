@@ -9,7 +9,7 @@
     <ui:composition template="../template/template.xhtml">
 
         <ui:define name="content">
-            <h:form id="idForm" class="form-horizontal" enctype="multipart/form-data">
+            <h:form id="idForm" class="form-horizontal">
                 <h:messages />
                 <script>
                     function confirmar2() {
@@ -41,8 +41,13 @@
                                 <div class="panel-body" >
                                     <table style="width: 100%">
                                         <tr>
-                                            <td colspan="2">
+                                            <td>
                                                 <span style="font-size: 2em" class="text-resalt-primary">Expediente: #{registroController.expediente.numero}</span>
+                                            </td>
+                                            <td style="text-align: right">
+                                                <a jsf:action="#{registroController.pdf()}">
+                                                            <img src="../../bootstrap/img/pdf.png" alt="Plan de Intervencion" height="30" width="30"/>
+                                                        </a>
                                             </td>
                                         </tr>
                                         <tr>
@@ -309,13 +314,13 @@
                                                 </table>
                                                     <table style="width: 90%">
                                                     <tr>
-                                                        <td>
+                                                        <td style="width: 50%">
 
                                                             <div  class="alert fade in" role="alert" style="width: 100%;text-align:right;border:solid silver 1px;background:white;color:silver;padding-bottom:5px;padding-top:5px;margin-bottom:3px">
                                                                 <input type="hidden" id="idTipoClasificacion" jsf:value="#{registroController.expediente.tipoClasificion}" />
 
                                                                 <span id="idTextTipoClasificacion" class="text-primary" style="float: left; font-weight: bold;">Seleccione</span>
-                                                                <h:panelGroup  rendered="#{registroController.etapaEstado.verEtapa == 0 or registroController.etapaEstado.verEtapa == null}">
+                                                                <h:panelGroup rendered="#{registroController.etapaEstado.verEtapa == 0 or registroController.etapaEstado.verEtapa == null or registroController.expediente.version == 0}">
                                                                     <a href="#" class="trigger2">
                                                                         <span style="color:#3183b9;font-size:large;vertical-align: top" class="glyphicon glyphicon-chevron-down trigger2"></span>
                                                                     </a>
@@ -816,10 +821,8 @@
                                                         <span class="text-bold">Grupos vulnerables :</span>
                                                     </td>
                                                     <td style="padding-bottom: 20px">
-                                                        <h:selectOneMenu value="#{registroController.expediente.tipoGrupoVulnerable}" style="width: 60%">
-                                                            <f:selectItem itemLabel="Seleccione" itemValue="0" />
-                                                            <f:selectItems value="#{listasComunesController.buscarGrupoVulnerable(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
-                                                        </h:selectOneMenu>
+                                                        <gc:selectMultiBootstrap idSelect="idSelectGrupoViolencia" idHidden="idSelect1" 
+                                                            lista="#{listasComunesController.buscarGrupoVulnerable(false,false,false)}" value="#{registroController.expediente.tipoGrupoVulnerable}"/>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -827,10 +830,8 @@
                                                         <span class="text-bold">Grupos especiales :</span>
                                                     </td>
                                                     <td style="padding-bottom: 20px">
-                                                        <h:selectOneMenu value="#{registroController.expediente.tipoGrupoEspecial}" style="width: 60%">
-                                                            <f:selectItem itemLabel="Seleccione" itemValue="0" />
-                                                            <f:selectItems value="#{listasComunesController.buscarGrupoEspecial(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
-                                                        </h:selectOneMenu>
+                                                        <gc:selectMultiBootstrap idSelect="idSelectGrupoEspecial" idHidden="idSelect32" 
+                                                            lista="#{listasComunesController.buscarGrupoEspecial(false,false,false)}" value="#{registroController.expediente.tipoGrupoEspecial}"/>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -880,10 +881,10 @@
                                             <span class="text-resalt-primary">Información de adicional</span>
                                             <br/><br/>
                                             <span class="text-bold">Sumilla</span>
-                                            <textarea rows="5" jsf:value="#{registroController.expediente.sumilla}" style="width: 100%;" placeholder="Sumilla"/>
+                                            <textarea rows="5" jsf:value="#{registroController.expediente.sumilla}" style="width: 100%;" placeholder="Sumilla" maxlength="1950"/>
                                             <br/>
                                             <span class="text-bold">Observaciones</span>
-                                            <textarea rows="5" jsf:value="#{registroController.expediente.observacion}" style="width: 100%" placeholder="Observacion"/>
+                                            <textarea rows="5" jsf:value="#{registroController.expediente.observacion}" style="width: 100%" placeholder="Observacion"  maxlength="1950"/>
                                             <br/><br/>
                                             <h:selectBooleanCheckbox value="#{registroController.expediente.indRelevante}" >
                                                 El caso es relevante? 
@@ -892,22 +893,34 @@
                                             <table style="width: 100%">
                                                 <tr>
                                             <td style="padding-top: 20px">
-                                                                    <label><span style="font-size: large" class="glyphicon glyphicon-paperclip" />Adjuntar archivo:</label>
-                                                                    <h:inputFile class="cMedio" value="#{registroController.file5}"/>
+                                                                   <!-- <label><span style="font-size: large" class="glyphicon glyphicon-paperclip" />Adjuntar archivo:</label>
+                                                                    
+                                                                    <input type="file"  jsf:value="#{registroController.file5}"/>-->
                                                                 </td>
                                                                 <td>
-                                                                    <h:panelGroup rendered="#{registroController.expediente.ruta != null}">
+                                                                    <!--<h:panelGroup rendered="#{registroController.expediente.ruta != null}">
                                                                     <a target="_blank" href="/filesystem/#{registroController.expediente.ruta}">
                                                                         <span style="font-size: large" class="glyphicon glyphicon-link" />
                                                                     </a>
                                                                         </h:panelGroup>
+                                                                    -->
                                                                 </td>
                                                     </tr>
                                                 </table>
+                                            <br/><br/>
+                                            <span class="text-resalt-primary">Información de conclusión</span>
+                                            <br/><br/>
+                                            <span class="text-bold">Conclusión</span>
+                                            <textarea rows="5" jsf:value="#{registroController.expediente.conclusion}" style="width: 100%;" placeholder="Conclusión" maxlength="1950"/>
                                         </div>
                                     </div>
                                 </td>
                             </tr>
+                        </table>
+                    </div>
+                </div>
+                   
+                <table style="width: 100%">       
                             <tr>
                                 <td colspan="2">
                                     <table style="width: 100%">
@@ -939,7 +952,7 @@
 
                                                                     <a href="#" class="trigger" jsf:action="#{registroController.cargarPopoverPersona(1)}" jsf:onclick="loadingModal()">
                                                                         <span style="color: #3183B9; font-size: large;" class="glyphicon glyphicon-search"></span>
-                                                                        <f:ajax render="idForm:idPanel" execute="@form" onevent="popove"/>
+                                                                        <f:ajax render="idPanel" execute="@form" onevent="popove"/>
                                                                     </a>
                                                                     <div class="popover-markup" id="idPopover0" style="float: right"> 
                                                                         <div class="head hide ">
@@ -1049,7 +1062,7 @@
                                                                 <td style="text-align: right">
                                                                     <a style="text-decoration:none" class="btn btn-primary" jsf:action="#{registroController.cargarModalActor()}" jsf:onclick="loadingModal()">
                                                                         <span class="glyphicon glyphicon-user"/>Agregar
-                                                                        <f:ajax render=":idForm" onevent="openModalNuevaPersona"/>
+                                                                        <f:ajax render="@form" onevent="openModalNuevaPersona"/>
                                                                     </a>
                                                                     <script>
                                                                         function openModalNuevaPersona(data) {
@@ -1176,33 +1189,33 @@
                                                             <tr>
                                                                 <td>
                                                                     <br/><br/>
-                                                                    <h:dataTable value="#{registroController.personasSeleccionadas}" var="persona" class="table table-striped" rendered="#{registroController.personasSeleccionadas.size() > 0}">
+                                                                    <h:dataTable value="#{registroController.personasSeleccionadas}" var="per" class="table table-striped" rendered="#{registroController.personasSeleccionadas.size() > 0}" binding="#{rowIn}">
                                                                         <h:column>
                                                                                         <f:facet name="header">Reserva</f:facet>
-                                                                                        <h:selectBooleanCheckbox id="idCheckbox" value="#{persona.indicadorReserva}" />
+                                                                                        <h:selectBooleanCheckbox id="idCheckbox" value="#{per.indicadorReserva}" />
                                                                                     </h:column>
                                                                         <h:column>
                                                                             <f:facet name="header">Nombre</f:facet>
-                                                                            <h:outputText value="#{persona.persona.nombre} #{persona.persona.apellidoPat} #{persona.persona.apellidoMat}"/>
+                                                                            <h:outputText value="#{per.persona.nombre} #{per.persona.apellidoPat} #{per.persona.apellidoMat}"/>
                                                                         </h:column>
                                                                         <h:column>
                                                                             <f:facet name="header">Documento</f:facet>
-                                                                            <h:outputText value="#{persona.persona.numeroDocumento}"/>
+                                                                            <h:outputText value="#{per.persona.numeroDocumento}"/>
                                                                         </h:column>
                                                                         <h:column>
-                                                                            <h:selectOneMenu value="#{persona.cargo}">
+                                                                            <h:selectOneMenu value="#{per.tipo}">
                                                                                 <f:selectItems value="#{listasComunesController.buscarExpedienteTipoActor(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
                                                                             </h:selectOneMenu>
                                                                         </h:column>
                                                                         <h:column>
                                                                             <script>
-                                                                    function confirmar4#{item.rowIndex+1}() {
-                                                                        $(".confirmacion4#{item.rowIndex+1}").modal('show');
+                                                                    function confirmar4#{rowIn.rowIndex+1}() {
+                                                                        $(".confirmacion4#{rowIn.rowIndex+1}").modal('show');
                                                                     }
                                                                             </script>
-                                                                            <gc:confirmAjax bean="#{registroController.removePersona(persona)}" classGC="confirmacion4#{item.rowIndex+1}" mensaje="Esta seguro de desvincular a la Persona?" />
+                                                                            <gc:confirmAjax bean="#{registroController.removePersona(per)}" classGC="confirmacion4#{rowIn.rowIndex+1}" mensaje="Esta seguro de desvincular a la Persona?" />
 
-                                                                            <a onclick="confirmar4#{item.rowIndex+1}()">
+                                                                            <a onclick="confirmar4#{rowIn.rowIndex+1}()">
                                                                                 <span style="font-size: medium; color: red" class="glyphicon glyphicon-remove"></span>
                                                                             </a>
                                                                         </h:column>
@@ -1251,7 +1264,7 @@
                                                                 <td style="vertical-align: bottom">
                                                                     <a style="vertical-align: bottom" href="#" class="trigger1" jsf:action="#{registroController.cargarPopoverEntidad(1)}" jsf:onclick="loadingModal()">
                                                                         <span style="color: #3183B9; font-size: large;" class="glyphicon glyphicon-search"></span>
-                                                                        <f:ajax render="idForm:idPanel1" execute="@form" onevent="popove1"/>
+                                                                        <f:ajax render="@form" execute="@form" onevent="popove1"/>
                                                                     </a>
                                                                     <div class="popover-markup" style="float: right"> 
                                                                         <div class="head hide ">
@@ -1377,12 +1390,12 @@
                                                                         </h:column>
                                                                         <h:column>
                                                                             <script>
-                                                                    function confirmar3#{item1.rowIndex+1}() {
-                                                                        $(".confirmacion3#{item1.rowIndex+1}").modal('show');
+                                                                    function confirmar3#{entidad.entidad.id}() {
+                                                                        $(".confirmacion3#{entidad.entidad.id}").modal('show');
                                                                     }
                                                                             </script>
-                                                                            <gc:confirmAjax bean="#{registroController.removeEntidad(entidad)}" classGC="confirmacion3#{item1.rowIndex+1}" mensaje="Esta seguro de desvincular la Entidad?" />
-                                                                            <a onclick="confirmar3#{item1.rowIndex+1}()">
+                                                                            <gc:confirmAjax bean="#{registroController.removeEntidad(entidad)}" classGC="confirmacion3#{entidad.entidad.id}" mensaje="Esta seguro de desvincular la Entidad?" />
+                                                                            <a onclick="confirmar3#{entidad.entidad.id}()">
                                                                                 <span style="font-size: large; color: red" class="glyphicon glyphicon-remove"></span>
                                                                             </a>
                                                                         </h:column>
@@ -1413,8 +1426,7 @@
                                 </td>
                             </tr>
                         </table>
-                    </div>
-                </div>
+                
             </h:form>
         </ui:define>
     </ui:composition>

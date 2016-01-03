@@ -77,6 +77,8 @@ public class Expediente implements Serializable{
     
     private String ruta;
     
+    private String conclusion;
+    
     private List<ExpedienteNivel> listaExpedienteNivel;
     /*agregados*/
     
@@ -506,6 +508,14 @@ public class Expediente implements Serializable{
 
     public void setRuta(String ruta) {
         this.ruta = ruta;
+    }
+
+    public String getConclusion() {
+        return conclusion;
+    }
+
+    public void setConclusion(String conclusion) {
+        this.conclusion = conclusion;
     }
 
 }

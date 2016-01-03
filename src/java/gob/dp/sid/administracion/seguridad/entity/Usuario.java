@@ -46,6 +46,8 @@ public class Usuario implements Serializable
     
     private Integer codigoOD;
     
+    private String nombreOD;
+    
     private Integer idDepartamento;
     
     private String nombreDepartamento;
@@ -289,6 +291,14 @@ public class Usuario implements Serializable
 
     public void setNombreDepartamento(String nombreDepartamento) {
         this.nombreDepartamento = nombreDepartamento;
+    }
+
+    public String getNombreOD() {
+        return nombreOD;
+    }
+
+    public void setNombreOD(String nombreOD) {
+        this.nombreOD = nombreOD;
     }
 
 }
