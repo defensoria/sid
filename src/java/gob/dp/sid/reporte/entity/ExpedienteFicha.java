@@ -5,6 +5,7 @@
  */
 package gob.dp.sid.reporte.entity;
 
+import gob.dp.sid.registro.entity.ExpedienteGestion;
 import gob.dp.sid.registro.entity.ExpedientePersona;
 import java.io.Serializable;
 import java.util.List;
@@ -39,8 +40,9 @@ public class ExpedienteFicha implements Serializable{
     
     private String codigoUsuario;
     
-    
     private List<ExpedientePersona> expedientePersonas;
+    
+    private List<ExpedienteGestion> expedienteGestions;
 
     public String getOficinaDefensorial() {
         return oficinaDefensorial;
@@ -144,6 +146,14 @@ public class ExpedienteFicha implements Serializable{
 
     public void setFechaConclusion(String fechaConclusion) {
         this.fechaConclusion = fechaConclusion;
+    }
+
+    public List<ExpedienteGestion> getExpedienteGestions() {
+        return expedienteGestions;
+    }
+
+    public void setExpedienteGestions(List<ExpedienteGestion> expedienteGestions) {
+        this.expedienteGestions = expedienteGestions;
     }
     
     

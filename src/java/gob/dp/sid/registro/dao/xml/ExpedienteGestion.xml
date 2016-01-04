@@ -8,7 +8,7 @@
         <result property="tipo" column="C_TIPO"/>
         <result property="fecha" column="D_FECHA"/>
         <result property="descripcion" column="C_DESCRIPCION"/>
-        <result property="institucion" column="C_INSTITUCION"/>
+        <result property="idEntidad" column="N_IDENTIDAD"/>
         <result property="indEntidadQuejada" column="C_INDENTQUEJADA"/>
         <result property="nombre" column="C_NOMBREFUNC"/>
         <result property="apellidoPaterno" column="C_APEPATFUNC"/>
@@ -49,6 +49,7 @@
         <result property="nombreParametroTipo" column="NOMBRE_PARAMETRO"/>
         <result property="idEtapa" column="N_ID_ETAPA"/>
         <result property="detalleTipo" column="GESTION_TIPO"/>
+        <result property="nombreEntidad" column="C_NOMENTIDAD"/>
         
     </resultMap> 
     
@@ -83,8 +84,8 @@
         <if test="cargo != null">
             C_CARGOFUNC,
         </if>
-        <if test="institucion != null">
-            C_INSTITUCION,
+        <if test="idEntidad != null">
+            N_IDENTIDAD,
         </if>
         <if test="indAlertar != null">
             C_INDALERTAR,
@@ -204,8 +205,8 @@
         <if test="cargo != null">
             #{cargo},
         </if>
-        <if test="institucion != null">
-            #{institucion},
+        <if test="idEntidad != null">
+            #{idEntidad},
         </if>
         <if test="indAlertar != null">
             #{indAlertar},
@@ -305,113 +306,116 @@
     <update id="expedienteGestionUpdate" parameterType="expedienteGestion">
         UPDATE SID_REG_GESTION
         <set>
-        <if test="tipo != null">
-            C_TIPO = #{tipo},
-        </if>
-        <if test="descripcion != null">
-            C_DESCRIPCION = #{descripcion},
-        </if>
-        <if test="indEntidadQuejada != null">
-            C_INDENTQUEJADA = #{indEntidadQuejada},
-        </if>
-        <if test="nombre != null">
-            C_NOMBREFUNC = #{nombre},
-        </if>
-        <if test="apellidoPaterno != null">
-            C_APEPATFUNC = #{apellidoPaterno},
-        </if>
-        <if test="apellidoMaterno != null">
-            C_APEMATFUNC = #{apellidoMaterno},
-        </if>
-        <if test="cargo != null">
-            C_CARGOFUNC = #{cargo},
-        </if>
-        <if test="institucion != null">
-            C_INSTITUCION = #{institucion},
-        </if>
-        <if test="indAlertar != null">
-            C_INDALERTAR = #{indAlertar},
-        </if>
-        <if test="inicioSeguimiento != null">
-            D_FECINISEGUIMIENTO = #{inicioSeguimiento},
-        </if>
-        <if test="finSeguimiento != null">
-            D_FECFINSEGUIMIENTO = #{finSeguimiento},
-        </if>
-        <if test="tipoTiempoIni != null">
-            C_INDTIPOTIEMPOINI = #{tipoTiempoIni},
-        </if>
-        <if test="tipoTiempoFin != null">
-            C_INDTIPOTIEMPOFIN = #{tipoTiempoFin},
-        </if>
-        <if test="numeroInicial != null">
-            N_NUMEROTIEMPOINI = #{numeroInicial},
-        </if>
-        <if test="numeroFinal != null">
-            N_NUMEROTIEMPOFIN = #{numeroFinal},
-        </if>
-        <if test="indicadorAntesDespuesIni != null">
-            C_INDANTESDESPUESINI = #{indicadorAntesDespuesIni},
-        </if>
-        <if test="indicadorAntesDespuesFin != null">
-            C_INDANTESDESPUESFIN = #{indicadorAntesDespuesFin},
-        </if>
-        <if test="inicioDefinitivo != null">
-            D_FECINISEGUIMIENTOFINAL = #{inicioDefinitivo},
-        </if>
-        <if test="finDefinitivo != null">
-            D_FECFINSEGUIMIENTOFINAL = #{finDefinitivo},
-        </if>
-        <if test="indiceRepeticion != null">
-            C_INDREPETICION = #{indiceRepeticion},
-        </if>
-        <if test="indicadorSeleccionHoraIni != null">
-            C_INDSELECCIONHORAINI = #{indicadorSeleccionHoraIni},
-        </if>
-        <if test="indicadorSeleccionHoraFin != null">
-            C_INDSELECCIONHORAFIN = #{indicadorSeleccionHoraFin},
-        </if>
-        <if test="nota != null">
-            C_NOTA = #{nota},
-        </if>
-        <if test="respuesta != null">
-            C_RESPUESTA = #{respuesta},
-        </if>
-        <if test="fechaRespuesta != null">
-            D_FECHARESPUESTA = #{fechaRespuesta},
-        </if>
-        <if test="tipoCalidad != null">
-            C_CALIDADRESPUESTA = #{tipoCalidad},
-        </if>
-        <if test="detalleRespuesta != null">
-            C_DESCRIPCIONRESPUESTA = #{detalleRespuesta},
-        </if>
-        <if test="observacionRespuesta != null">
-            C_OBSERVACIONES = #{observacionRespuesta},
-        </if>
-        <if test="indicadorRecomendacion != null">
-            C_INDRECOMENDACION = #{indicadorRecomendacion},
-        </if>
-        <if test="documentoRespuesta != null">
-            C_DOCUMENTORESPUESTA = #{documentoRespuesta},
-        </if>
-        <if test="tipoAcogimiento != null">
-            C_TIPOACOGIMIENTO = #{tipoAcogimiento},
-        </if>
-        <if test="ruta1 != null">
-            C_RUTA1 = #{ruta1},
-        </if>
-        <if test="ruta2 != null">
-            C_RUTA2 = #{ruta2},
-        </if>
-        <if test="documentoGestion != null">
-            C_DOCUMENTOGESTION = #{documentoGestion},
-        </if>
-        <if test="fechaRecepcion != null">
-            D_FECHARECEPCION = #{fechaRecepcion},
-        </if>
-        C_USUMODIFICACION = #{usuarioModificacion},
-        D_FECHAMODIFICACION = #{fechaModificacion}
+            <if test="tipo != null">
+                C_TIPO = #{tipo},
+            </if>
+            <if test="fecha != null">
+                D_FECHA = #{fecha},
+            </if>
+            <if test="descripcion != null">
+                C_DESCRIPCION = #{descripcion},
+            </if>
+            <if test="indEntidadQuejada != null">
+                C_INDENTQUEJADA = #{indEntidadQuejada},
+            </if>
+            <if test="nombre != null">
+                C_NOMBREFUNC = #{nombre},
+            </if>
+            <if test="apellidoPaterno != null">
+                C_APEPATFUNC = #{apellidoPaterno},
+            </if>
+            <if test="apellidoMaterno != null">
+                C_APEMATFUNC = #{apellidoMaterno},
+            </if>
+            <if test="cargo != null">
+                C_CARGOFUNC = #{cargo},
+            </if>
+            <if test="idEntidad != null">
+                N_IDENTIDAD = #{idEntidad},
+            </if>
+            <if test="indAlertar != null">
+                C_INDALERTAR = #{indAlertar},
+            </if>
+            <if test="inicioSeguimiento != null">
+                D_FECINISEGUIMIENTO = #{inicioSeguimiento},
+            </if>
+            <if test="finSeguimiento != null">
+                D_FECFINSEGUIMIENTO = #{finSeguimiento},
+            </if>
+            <if test="tipoTiempoIni != null">
+                C_INDTIPOTIEMPOINI = #{tipoTiempoIni},
+            </if>
+            <if test="tipoTiempoFin != null">
+                C_INDTIPOTIEMPOFIN = #{tipoTiempoFin},
+            </if>
+            <if test="numeroInicial != null">
+                N_NUMEROTIEMPOINI = #{numeroInicial},
+            </if>
+            <if test="numeroFinal != null">
+                N_NUMEROTIEMPOFIN = #{numeroFinal},
+            </if>
+            <if test="indicadorAntesDespuesIni != null">
+                C_INDANTESDESPUESINI = #{indicadorAntesDespuesIni},
+            </if>
+            <if test="indicadorAntesDespuesFin != null">
+                C_INDANTESDESPUESFIN = #{indicadorAntesDespuesFin},
+            </if>
+            <if test="inicioDefinitivo != null">
+                D_FECINISEGUIMIENTOFINAL = #{inicioDefinitivo},
+            </if>
+            <if test="finDefinitivo != null">
+                D_FECFINSEGUIMIENTOFINAL = #{finDefinitivo},
+            </if>
+            <if test="indiceRepeticion != null">
+                C_INDREPETICION = #{indiceRepeticion},
+            </if>
+            <if test="indicadorSeleccionHoraIni != null">
+                C_INDSELECCIONHORAINI = #{indicadorSeleccionHoraIni},
+            </if>
+            <if test="indicadorSeleccionHoraFin != null">
+                C_INDSELECCIONHORAFIN = #{indicadorSeleccionHoraFin},
+            </if>
+            <if test="nota != null">
+                C_NOTA = #{nota},
+            </if>
+            <if test="respuesta != null">
+                C_RESPUESTA = #{respuesta},
+            </if>
+            <if test="fechaRespuesta != null">
+                D_FECHARESPUESTA = #{fechaRespuesta},
+            </if>
+            <if test="tipoCalidad != null">
+                C_CALIDADRESPUESTA = #{tipoCalidad},
+            </if>
+            <if test="detalleRespuesta != null">
+                C_DESCRIPCIONRESPUESTA = #{detalleRespuesta},
+            </if>
+            <if test="observacionRespuesta != null">
+                C_OBSERVACIONES = #{observacionRespuesta},
+            </if>
+            <if test="indicadorRecomendacion != null">
+                C_INDRECOMENDACION = #{indicadorRecomendacion},
+            </if>
+            <if test="documentoRespuesta != null">
+                C_DOCUMENTORESPUESTA = #{documentoRespuesta},
+            </if>
+            <if test="tipoAcogimiento != null">
+                C_TIPOACOGIMIENTO = #{tipoAcogimiento},
+            </if>
+            <if test="ruta1 != null">
+                C_RUTA1 = #{ruta1},
+            </if>
+            <if test="ruta2 != null">
+                C_RUTA2 = #{ruta2},
+            </if>
+            <if test="documentoGestion != null">
+                C_DOCUMENTOGESTION = #{documentoGestion},
+            </if>
+            <if test="fechaRecepcion != null">
+                D_FECHARECEPCION = #{fechaRecepcion},
+            </if>
+            C_USUMODIFICACION = #{usuarioModificacion},
+            D_FECHAMODIFICACION = #{fechaModificacion}
         </set>
         <where>
             N_ID_GESTION = #{id}
@@ -431,11 +435,12 @@
     
     
     <select id="expedienteGestionListaXexpediente" resultMap="expedienteGestionMap" parameterType="String" >
-        SELECT A.*,B.N_ID_ETAPA, C.NOMBRE_PARAMETRO AS GESTION_TIPO FROM SID_REG_GESTION A
-INNER JOIN SID_REG_GESTION_ETAPA B ON A.N_ID_GESTION = B.N_ID_GESTION 
-LEFT JOIN SID_PARAMETRO C ON TRIM(A.C_TIPO) = TRIM(C.VALOR_PARAMETRO) 
-AND C.PADRE_PARAMETRO = 70 
-WHERE B.C_NUMEROEXPEDIENTE = #{value}
+        SELECT A.*,B.N_ID_ETAPA, C.NOMBRE_PARAMETRO AS GESTION_TIPO, D.C_NOMENTIDAD FROM SID_REG_GESTION A
+        INNER JOIN SID_REG_GESTION_ETAPA B ON A.N_ID_GESTION = B.N_ID_GESTION 
+        LEFT JOIN SID_PARAMETRO C ON TRIM(A.C_TIPO) = TRIM(C.VALOR_PARAMETRO) 
+        AND C.PADRE_PARAMETRO = 70 
+        LEFT JOIN SID_REG_ENTIDAD D ON A.N_IDENTIDAD = D.N_ID_ENTIDAD
+        WHERE B.C_NUMEROEXPEDIENTE = #{value}
     </select>
     
     

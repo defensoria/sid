@@ -24,7 +24,6 @@
                 </library>
                 <library dirs="200">
                     <file>${file.reference.javax.faces-2.2.10.jar}</file>
-                    <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
                     <file>${file.reference.javax.faces-2.2.8-11.jar}</file>
@@ -114,6 +113,10 @@
                 </library>
                 <library dirs="200">
                     <file>${libs.jasper.classpath}</file>
+                    <path-in-war>WEB-INF/lib</path-in-war>
+                </library>
+                <library dirs="200">
+                    <file>${file.reference.javax.faces-2.2.11.jar}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
             </web-module-libraries>

@@ -8,470 +8,621 @@
     <ui:composition template="../template/templateCabeceraExpediente.xhtml">
         <ui:define name="content2">
             <script>
-                    function confirmar6() {
-                        $(".confirmacion6").modal('show');
-                    }
-                </script>
+                function confirmar6() {
+                    $(".confirmacion6").modal('show');
+                }
+            </script>
             <gc:confirmSubmit bean="#{registroController.registarExpedienteGestion()}" classGC="confirmacion6" mensaje="Esta seguro de registrar la gestión?" />
-                <ul class="nav nav-tabs">
-                    <li role="presentation">
-                        <a style="cursor: pointer" jsf:action="#{registroController.datosGeneralesExpediente()}">
-                            <span style="font-size: medium; color: purple;" class="glyphicon glyphicon-list-alt" > Datos generales</span>
-                        </a>
-                    </li>
-                    <li role="presentation"><a style="cursor: pointer" jsf:action="#{registroController.cargarExpedienteGestionLista()}">
-                            <span style="font-size: medium; color: purple;" class="glyphicon glyphicon-list-alt" > Gestiones externas</span>
-                        </a>
-                    </li>
-                    <li role="presentation" class="active"><a style="cursor: pointer">
-                            <span style="font-size: large; color: #007ACC;font-weight: bold" class="glyphicon glyphicon-list-alt" > Nueva gestión externa</span>
-                        </a>
-                    </li>
-                    <li role="presentation">
-                        <a style="cursor: pointer" jsf:rendered="#{registroController.etapaEstado.idEtapa > 0}" jsf:action="#{registroController.inicioAcciones()}">
-                            <span style="font-size: medium; color: purple" class="glyphicon glyphicon-list-alt" > Gestiones internas</span>
-                        </a>
-                    </li>
-                </ul>
+            <ul class="nav nav-tabs">
+                <li role="presentation">
+                    <a style="cursor: pointer" jsf:action="#{registroController.datosGeneralesExpediente()}">
+                        <span style="font-size: medium; color: purple;" class="glyphicon glyphicon-list-alt" > Datos generales</span>
+                    </a>
+                </li>
+                <li role="presentation"><a style="cursor: pointer" jsf:action="#{registroController.cargarExpedienteGestionLista()}">
+                        <span style="font-size: medium; color: purple;" class="glyphicon glyphicon-list-alt" > Gestiones externas</span>
+                    </a>
+                </li>
+                <li role="presentation" class="active"><a style="cursor: pointer">
+                        <span style="font-size: large; color: #007ACC;font-weight: bold" class="glyphicon glyphicon-list-alt" > Nueva gestión externa</span>
+                    </a>
+                </li>
+                <li role="presentation">
+                    <a style="cursor: pointer" jsf:rendered="#{registroController.etapaEstado.idEtapa > 0}" jsf:action="#{registroController.inicioAcciones()}">
+                        <span style="font-size: medium; color: purple" class="glyphicon glyphicon-list-alt" > Gestiones internas</span>
+                    </a>
+                </li>
+            </ul>
 
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <table style="width: 100%">
-                            <tr>
-                                <td>
-                                    <span style="font-size: 2em" class="text-resalt-primary">N° Gestión: #{registroController.expedienteGestion.codigoGestion}</span>
-                                </td>
-                                <td style="width: 50%; text-align: right">
-                                    <a class="btn btn-primary" onclick="confirmar6()">
-                                        <span class="glyphicon glyphicon-floppy-disk" />Guardar gestión
-                                    </a>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="panel-body">
-                        <table style="width: 100%">
-                            <tr>
-                                <td style="width: 50%; vertical-align: top; padding-right: 2px">
-                                    <div class="panel panel-featured-top-silver">
-                                        <div class="panel-body">
-                                            <span class="text-resalt-primary">Datos generales</span>
-                                            <br/><br/>
-                                            
-                                            <table style="width: 100%">
-                                                <tr>
-                                                    <td style="width: 50%; padding-right: 5px;padding-bottom: 10px">
-                                                        <label>Tipo de acción:</label>
-                                                        <h:selectOneMenu class="idTipoDocumento" value="#{registroController.expedienteGestion.tipo}" >
-                                                            <f:selectItem itemValue="0" itemLabel="Selecione" />
-                                                            <f:selectItems value="#{listasComunesController.buscarGestionTipoAccion(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
-                                                        </h:selectOneMenu>
-                                                    </td>
-                                                    <td style="padding-left: 5px; padding-bottom: 10px">
-                                                        <label>Fecha de gestión:</label>
-                                                        <gc:calendar value="#{registroController.expedienteGestion.fecha}" />
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td style="padding-bottom: 10px" colspan="2">
-                                                        
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td style="width: 50%; padding-right: 5px;padding-bottom: 10px">
-                                                        <label>Documento de gestión:</label>
-                                                        <h:selectOneMenu value="#{registroController.expedienteGestion.documentoGestion}" >
-                                                            <f:selectItem itemValue="0" itemLabel="Selecione" />
-                                                            <f:selectItems value="#{listasComunesController.buscarDocumentoGestion(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
-                                                        </h:selectOneMenu>
-                                                    </td>
-                                                    <td style="padding-left: 5px; padding-bottom: 10px" >
-                                                        <div class="idFechaRecepcion">
-                                                            <label>Fecha de recepción:</label>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <table style="width: 100%">
+                        <tr>
+                            <td>
+                                <span style="font-size: 2em" class="text-resalt-primary">N° Gestión: #{registroController.expedienteGestion.codigoGestion}</span>
+                            </td>
+                            <td style="width: 50%; text-align: right">
+                                <a class="btn btn-primary" onclick="confirmar6()">
+                                    <span class="glyphicon glyphicon-floppy-disk" />Guardar gestión
+                                </a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="panel-body">
+                    <table style="width: 100%">
+                        <tr>
+                            <td style="width: 50%; vertical-align: top; padding-right: 2px">
+                                <div class="panel panel-featured-top-silver">
+                                    <div class="panel-body">
+                                        <span class="text-resalt-primary">Datos generales</span>
+                                        <br/><br/>
+
+                                        <table style="width: 100%">
+                                            <tr>
+                                                <td style="width: 50%; padding-right: 5px;padding-bottom: 10px">
+                                                    <label>Tipo de acción:</label>
+                                                    <h:selectOneMenu class="idTipoDocumento" value="#{registroController.expedienteGestion.tipo}" >
+                                                        <f:selectItem itemValue="0" itemLabel="Selecione" />
+                                                        <f:selectItems value="#{listasComunesController.buscarGestionTipoAccion(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
+                                                    </h:selectOneMenu>
+                                                </td>
+                                                <td style="padding-left: 5px; padding-bottom: 10px">
+                                                    <label>Fecha de gestión:</label>
+                                                    <gc:calendar value="#{registroController.expedienteGestion.fecha}" />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding-bottom: 10px" colspan="2">
+
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width: 50%; padding-right: 5px;padding-bottom: 10px">
+                                                    <label>Documento de gestión:</label>
+                                                    <h:selectOneMenu value="#{registroController.expedienteGestion.documentoGestion}" >
+                                                        <f:selectItem itemValue="0" itemLabel="Selecione" />
+                                                        <f:selectItems value="#{listasComunesController.buscarDocumentoGestion(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
+                                                    </h:selectOneMenu>
+                                                </td>
+                                                <td style="padding-left: 5px; padding-bottom: 10px" >
+                                                    <div class="idFechaRecepcion">
+                                                        <label>Fecha de recepción:</label>
                                                         <gc:calendar value="#{registroController.expedienteGestion.fechaRecepcion}" />
-                                                        </div>
-                                                        
-                                                        
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                            <style>
-                                                .classHide{
-                                                    display: none;
+                                                    </div>
+
+
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <style>
+                                            .classHide{
+                                                display: none;
+                                            }
+                                            .classVer{
+                                                display: inherit;
+                                                width: 100%;
+                                            }
+
+                                        </style>
+                                        <script>
+                                            $(".idFechaRecepcion").addClass("classHide");
+                                            $(".idTipoDocumento").change(function () {
+                                                if ($(this).val() === '04') {
+                                                    $(".idFechaRecepcion").removeClass("classHide");
+                                                } else {
+                                                    $(".idFechaRecepcion").addClass("classHide");
                                                 }
-                                                .classVer{
-                                                    display: inherit;
-                                                    width: 100%;
-                                                }
-                                                
-                                            </style>
-                                            <script>
+                                            });
+                                            if ($(".idTipoDocumento").val() === '04') {
+                                                $(".idFechaRecepcion").removeClass("classHide");
+                                            } else {
                                                 $(".idFechaRecepcion").addClass("classHide");
-                                                $(".idTipoDocumento").change(function(){
-                                                    if($(this).val() === '04'){
-                                                        $(".idFechaRecepcion").removeClass("classHide");
-                                                    }else{
-                                                        $(".idFechaRecepcion").addClass("classHide");
-                                                    }
-                                                });    
-                                                if($(".idTipoDocumento").val() === '04'){
-                                                        $(".idFechaRecepcion").removeClass("classHide");
-                                                    }else{
-                                                        $(".idFechaRecepcion").addClass("classHide");
-                                                    }
-                                                
-                                            </script>
-                                            <table style="width: 100%">
-                                                <tr>
-                                                    <td colspan="2" style="padding-bottom: 10px">
-                                                        <label>Descripción:</label>
-                                                        <textarea rows="6" jsf:value="#{registroController.expedienteGestion.descripcion}" style="width: 100%;" placeholder="Descripción"/>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td colspan="2">
-                                                        <table style="width: 100%">
-                                                            <tr>
-                                                                <td style="width: 50%;padding-bottom: 10px;padding-right: 10px">
-                                                        <label>Institución:</label>
-                                                        <input type="text" jsf:value="#{registroController.expedienteGestion.institucion}" placeholder="Institución"/>
-                                                    </td>
-                                                    <td style="vertical-align: bottom;padding-bottom: 10px">
-                                                        Entidad quejada
-                                                        <h:selectBooleanCheckbox value="#{registroController.expedienteGestion.indEntidadQuejada}" >
-                                                            <f:ajax render="@form" listener="#{registroController.entidadQuejada()}" />
-                                                        </h:selectBooleanCheckbox>
-                                                    </td>
-                                                            </tr>
-                                                        </table>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td colspan="2">
-                                                        <table style="width: 100%">
-                                                            <tr>
-                                                                <td style="width: 34%;padding-right: 10px">
-                                                                    <label>Nombre:</label>
-                                                                    <input type="text" jsf:value="#{registroController.expedienteGestion.nombre}" placeholder="Nombre"/>
-                                                                </td>
-                                                                <td style="width: 34%;padding-right: 10px">
-                                                                    <label>Apellido paterno:</label>
-                                                                    <input type="text" jsf:value="#{registroController.expedienteGestion.apellidoPaterno}" placeholder="Apellido paterno"/>
-                                                                </td>
-                                                                <td>
-                                                                    <label>Apellido materno:</label>
-                                                                    <input type="text" jsf:value="#{registroController.expedienteGestion.apellidoMaterno}" placeholder="Apellido Materno"/>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td colspan="3" style="padding-top: 10px">
-                                                                    <label>Cargo del funcionario:</label>
-                                                                    <input type="text" style="width: 50%" jsf:value="#{registroController.expedienteGestion.cargo}" placeholder="Cargo del funcionario" maxlength="190"/>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td colspan="2" style="padding-top: 10px">
-                                                                    <label>Documento de la gestión:</label>
-                                                                    <input type="text" placeholder="Documento de la gestión"/>
-                                                                </td>
-                                                                <td></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td style="padding-top: 20px">
-                                                                    <label><span style="font-size: large" class="glyphicon glyphicon-paperclip" />Adjuntar archivo:</label>
-                                                                    <h:inputFile class="cMedio" value="#{registroController.file1}"/>
-                                                                </td>
-                                                                <td>
-                                                                    <h:panelGroup rendered="#{registroController.expedienteGestion.ruta1 != null}">
+                                            }
+
+                                        </script>
+                                        <table style="width: 100%">
+                                            <tr>
+                                                <td colspan="2" style="padding-bottom: 10px">
+                                                    <label>Descripción:</label>
+                                                    <textarea rows="6" jsf:value="#{registroController.expedienteGestion.descripcion}" style="width: 100%;" placeholder="Descripción"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2">
+                                                    <h:panelGroup id="idPanerl">
+                                                    <table style="width: 100%">
+                                                        <tr>
+                                                            <td style="width: 70%;padding-bottom: 10px;padding-right: 10px">
+                                                                <label>Institución:</label>
+
+
+                                                                
+                                                                <table style="width: 100%">
+                                                                    <tr>
+                                                                        <td style="width: 85%">
+                                                                                <table style="width: 100%">
+                                                                                    <tr>
+                                                                                        <td>
+                                                                                            <td>
+                                                                                                <span class="text-resalt-primary">Región</span>
+                                                                                                <h:selectOneMenu value="#{registroController.entidad.idDepartamento}">
+                                                                                                    <f:selectItem itemValue="#{registroController.usuarioSession.idDepartamento}" itemLabel="#{registroController.usuarioSession.nombreDepartamento}" />
+                                                                                                    <f:selectItem itemValue="0" itemLabel="Todas las regiones" />
+                                                                                                </h:selectOneMenu>
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                <span class="text-resalt-primary">Tipo</span>
+                                                                                                <h:selectOneMenu value="#{registroController.entidad.tipo}">
+                                                                                                    <f:selectItem itemValue="0" itemLabel="Seleccione" />
+                                                                                                    <f:selectItem itemValue="1" itemLabel="Centro médico" />
+                                                                                                    <f:selectItem itemValue="2" itemLabel="Colegio" />
+                                                                                                    <f:selectItem itemValue="3" itemLabel="Comisaría" />
+                                                                                                </h:selectOneMenu>
+                                                                                            </td>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <span class="text-resalt-primary">Entidad</span>
+                                                                                            <input type="text" id="idBusquedaEntidad" style="width: 100%" placeholder="Ingrese nombre de la Entidad" jsf:value="#{registroController.entidad.nombre}"/>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                </table>
+                                                                            
+                                                                        </td>
+                                                                        <td style="vertical-align: bottom">
+                                                                            <a style="vertical-align: bottom" href="#" class="trigger1" jsf:action="#{registroController.cargarPopoverEntidad(1)}" jsf:onclick="loadingModal()">
+                                                                                <span style="color: #3183B9; font-size: large;" class="glyphicon glyphicon-search"></span>
+                                                                                <f:ajax render="idPanerl" onevent="popove1" execute="idPanerl"/>
+                                                                            </a>
+                                                                            <div class="popover-markup" style="float: right"> 
+                                                                                <div class="head hide ">
+                                                                                    <table style="width: 100%">
+                                                                                        <tr>
+                                                                                            <td>
+                                                                                                <b class="text-primary">Resultado</b>
+                                                                                            </td>
+                                                                                            <td style="text-align: right">
+                                                                                                <a style="cursor: pointer"  onclick="cerrarBusquedaEntidad()">
+                                                                                                    <span class="glyphicon glyphicon-remove" style="color: red" />
+                                                                                                </a>
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                    </table>
+                                                                                </div>
+
+                                                                                <h:panelGroup id="idPanel1">
+                                                                                    <div class="content hide">
+
+                                                                                        <h:dataTable value="#{registroController.entidadPopover}" id="idDatableBusquedaEntida" var="entidades" class="table table-hover">
+                                                                                            <h:column>
+                                                                                                <f:facet name="header">Nombre</f:facet>
+                                                                                                <h:outputText value="#{entidades.nombre}"/>
+                                                                                            </h:column>
+                                                                                            <h:column>
+                                                                                                <f:facet name="header">Tipo</f:facet>
+                                                                                                <h:outputText rendered="#{entidades.tipo == 1}" value="centro médico"/>
+                                                                                                <h:outputText rendered="#{entidades.tipo == 2}" value="colegio"/>
+                                                                                                <h:outputText rendered="#{entidades.tipo == 3}" value="comisaria"/>
+                                                                                            </h:column>
+                                                                                            <h:column>
+                                                                                                <f:facet name="header">Región</f:facet>
+                                                                                                <h:outputText value="#{entidades.nombreDepartamento}"/>
+                                                                                            </h:column>
+                                                                                            <h:column>
+                                                                                                <a jsf:action="#{registroController.addEntidadQuejada(entidades)}" jsf:onclick="loadingModal()">
+                                                                                                    <span style="font-size: medium" class="glyphicon glyphicon-share-alt"></span>  
+                                                                                                    <f:ajax render=":idFormTemplate:idPanerl" onevent="closeModal"/>
+                                                                                                </a>
+                                                                                            </h:column>
+                                                                                        </h:dataTable>
+                                                                                        <ul class="pager">
+                                                                                            <li>
+                                                                                                <a jsf:action="#{registroController.cargarPopoverEntidad(registroController.nroPaginaPersona -1)}" jsf:rendered="#{!empty registroController.entidadPopover}" jsf:onclick="loadingModal()">Anterior
+                                                                                                    <f:ajax render="idDatableBusquedaEntida" onevent="closeModal"/>
+                                                                                                </a>
+                                                                                            </li>
+                                                                                            <li>
+                                                                                                <a jsf:action="#{registroController.cargarPopoverEntidad(registroController.nroPaginaPersona +1)}" jsf:rendered="#{!empty registroController.entidadPopover}" jsf:onclick="loadingModal()">Siguiente
+                                                                                                    <f:ajax render="idDatableBusquedaEntida" onevent="closeModal"/>
+                                                                                                </a>
+                                                                                            </li>
+                                                                                        </ul>
+                                                                                    </div>
+
+                                                                                    <style>
+                                                                                        .alink:hover {
+                                                                                            text-decoration: none;
+                                                                                        }
+                                                                                        .alink:link {
+                                                                                            text-decoration: none;
+                                                                                        }
+
+                                                                                        .alink:active {
+                                                                                            text-decoration: none;
+                                                                                        }
+                                                                                    </style>
+                                                                                    <script>
+                                                                                        $('#idBusquedaEntidad').focus(function () {
+                                                                                            $('.trigger1').popover('destroy');
+                                                                                        });
+
+                                                                                        function cerrarBusquedaEntidad() {
+                                                                                            $('.trigger1').popover('destroy');
+                                                                                        }
+
+                                                                                        var i = 0;
+                                                                                        function popove1(data) {
+                                                                                            if (data.status === 'success') {
+                                                                                                i++;
+                                                                                                $('.trigger1').popover({
+                                                                                                    html: true,
+                                                                                                    placement: 'bottom',
+                                                                                                    tabindex: '0',
+                                                                                                    trigger: 'focus',
+                                                                                                    title: function () {
+                                                                                                        return $(this).parent().find('.head').html();
+                                                                                                    },
+                                                                                                    content: function () {
+                                                                                                        return $(this).parent().find('.content').html();
+                                                                                                    }
+                                                                                                });
+
+                                                                                                if (i === 1) {
+                                                                                                    $('.trigger1').popover('show');
+                                                                                                }
+                                                                                                $("#loadModal").modal('hide');
+                                                                                                $('body').removeClass('modal-open');
+                                                                                                $(".modal-backdrop").removeClass("modal-backdrop");
+                                                                                            }
+                                                                                        }
+                                                                                    </script> 
+                                                                                </h:panelGroup>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+
+                                                                <br/>
+
+                                                                <h:inputHidden value="#{registroController.expedienteGestion.idEntidad}" />
+                                                                <input type="text" jsf:value="#{registroController.expedienteGestion.nombreEntidad}" placeholder="Institución" readonly="true"/>
+                                                            </td>
+                                                            <td style="vertical-align: bottom;padding-bottom: 10px">
+                                                                Entidad quejada
+                                                                <h:selectBooleanCheckbox value="#{registroController.expedienteGestion.indEntidadQuejada}" >
+                                                                    <f:ajax render="idPanerl" listener="#{registroController.entidadQuejada()}" />
+                                                                </h:selectBooleanCheckbox>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                    </h:panelGroup>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2">
+                                                    <table style="width: 100%">
+                                                        <tr>
+                                                            <td style="width: 34%;padding-right: 10px">
+                                                                <label>Nombre:</label>
+                                                                <input type="text" jsf:value="#{registroController.expedienteGestion.nombre}" placeholder="Nombre"/>
+                                                            </td>
+                                                            <td style="width: 34%;padding-right: 10px">
+                                                                <label>Apellido paterno:</label>
+                                                                <input type="text" jsf:value="#{registroController.expedienteGestion.apellidoPaterno}" placeholder="Apellido paterno"/>
+                                                            </td>
+                                                            <td>
+                                                                <label>Apellido materno:</label>
+                                                                <input type="text" jsf:value="#{registroController.expedienteGestion.apellidoMaterno}" placeholder="Apellido Materno"/>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="3" style="padding-top: 10px">
+                                                                <label>Cargo del funcionario:</label>
+                                                                <input type="text" style="width: 50%" jsf:value="#{registroController.expedienteGestion.cargo}" placeholder="Cargo del funcionario" maxlength="190"/>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="2" style="padding-top: 10px">
+                                                                <label>Documento de la gestión:</label>
+                                                                <input type="text" placeholder="Documento de la gestión"/>
+                                                            </td>
+                                                            <td></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="padding-top: 20px">
+                                                                <label><span style="font-size: large" class="glyphicon glyphicon-paperclip" />Adjuntar archivo:</label>
+                                                                <h:inputFile class="cMedio" value="#{registroController.file1}"/>
+                                                            </td>
+                                                            <td>
+                                                                <h:panelGroup rendered="#{registroController.expedienteGestion.ruta1 != null}">
                                                                     <a target="_blank" href="/filesystem/#{registroController.expedienteGestion.ruta1}">
                                                                         <span style="font-size: large" class="glyphicon glyphicon-link" />
                                                                     </a>
-                                                                        </h:panelGroup>
+                                                                </h:panelGroup>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </td>
+                            <td style="vertical-align: top;  padding-left: 2px;">
+                                <div class="panel panel-featured-top-silver">
+                                    <div class="panel-body">
+                                        <span class="text-resalt-primary">Información de respuesta</span>
+                                        <br/><br/>
+                                        <table style="width: 100%">
+                                            <tr>
+                                                <td style="width: 34%; padding-bottom: 10px">
+                                                    <label>Hubo respuesta?</label>
+                                                    <h:selectOneRadio value="#{registroController.expedienteGestion.respuesta}">
+                                                        <f:selectItem itemValue="SI" itemLabel="Si" />
+                                                        <f:selectItem itemValue="NO" itemLabel="No" />
+                                                    </h:selectOneRadio>
+                                                </td>
+                                                <td style="width: 34%;padding-bottom: 10px">
+                                                    <label>Fecha respuesta</label>
+                                                    <gc:calendar value="#{registroController.expedienteGestion.fechaRespuesta}" />
+                                                </td>
+                                                <td style="padding-bottom: 10px">
+                                                    <span>(*)De darse la respuesta despues de los 30 dias de entregado el documento, se considerará fuera de plazo automaticamente.</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2" style="padding-bottom: 20px">
+                                                    <h:panelGroup id="idSelectAcogimiento" rendered="#{registroController.etapaEstado.verEtapa == 3 or registroController.etapaEstado.verEtapa == 7}">
+                                                        <table style="width: 100%">
+                                                            <tr>
+                                                                <td>
+                                                                    <h:selectBooleanCheckbox id="idCheckbox2" value="#{registroController.expedienteGestion.indicadorRecomendacion}" >
+                                                                        Contiene recomendación
+                                                                        <f:ajax render="idSelectAcogimiento" /> 
+                                                                    </h:selectBooleanCheckbox>
+                                                                </td>
+
+                                                                <td>
+                                                                    <h:panelGroup rendered="#{registroController.expedienteGestion.indicadorRecomendacion}">
+                                                                        <label>Acogimiento de recomendaciones</label>
+                                                                        <h:selectOneMenu value="#{registroController.expedienteGestion.tipoAcogimiento}">
+                                                                            <f:selectItem itemValue="0" itemLabel="Selecione" />
+                                                                            <f:selectItems value="#{listasComunesController.buscarAcogimientoRecomendaciones(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
+                                                                        </h:selectOneMenu>
+                                                                    </h:panelGroup>
                                                                 </td>
                                                             </tr>
                                                         </table>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </div>
+                                                    </h:panelGroup>
+                                                </td> 
+                                            </tr>
+                                            <tr>
+                                                <td style="padding-bottom: 10px">
+                                                    <label>Documento de respuesta</label>
+                                                    <input type="text" placeholder="Documento de respuesta" jsf:value="#{registroController.expedienteGestion.documentoRespuesta}" />
+                                                </td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2" style="padding-bottom: 10px">
+                                                    <label>Calidad Respuesta</label>
+                                                    <h:selectOneMenu value="#{registroController.expedienteGestion.tipoCalidad}">
+                                                        <f:selectItem itemValue="0" itemLabel="Selecione" />
+                                                        <f:selectItems value="#{listasComunesController.buscarGestionTipoCalidadRespuesta(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
+                                                    </h:selectOneMenu>
+                                                </td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="3" style="padding-bottom: 10px">
+                                                    <label>Descripción respuesta</label>
+                                                    <textarea rows="6" jsf:value="#{registroController.expedienteGestion.detalleRespuesta}" style="width: 100%;" placeholder="Descripción respuesta"/>
+                                                </td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="3">
+                                                    <label>Observaciones</label>
+                                                    <textarea rows="6" jsf:value="#{registroController.expedienteGestion.observacionRespuesta}" style="width: 100%;" placeholder="Observaciones"/>
+                                                </td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding-top: 20px">
+                                                    <label><span style="font-size: large" class="glyphicon glyphicon-paperclip" />Adjuntar archivo:</label>
+                                                    <h:inputFile class="cMedio" value="#{registroController.file2}"/>
+                                                </td>
+                                                <td>
+                                                    <h:panelGroup rendered="#{registroController.expedienteGestion.ruta2 != null}">
+                                                        <a target="_blank" href="/filesystem/#{registroController.expedienteGestion.ruta2}">
+                                                            <span style="font-size: large" class="glyphicon glyphicon-link" />
+                                                        </a>
+                                                    </h:panelGroup>
+                                                </td>
+                                            </tr>
+                                        </table>
                                     </div>
-                                </td>
-                                <td style="vertical-align: top;  padding-left: 2px;">
-                                    <div class="panel panel-featured-top-silver">
-                                        <div class="panel-body">
-                                            <span class="text-resalt-primary">Información de respuesta</span>
-                                            <br/><br/>
-                                            <table style="width: 100%">
-                                                <tr>
-                                                    <td style="width: 34%; padding-bottom: 10px">
-                                                        <label>Hubo respuesta?</label>
-                                                        <h:selectOneRadio value="#{registroController.expedienteGestion.respuesta}">
-                                                            <f:selectItem itemValue="SI" itemLabel="Si" />
-                                                            <f:selectItem itemValue="NO" itemLabel="No" />
-                                                        </h:selectOneRadio>
-                                                    </td>
-                                                    <td style="width: 34%;padding-bottom: 10px">
-                                                        <label>Fecha respuesta</label>
-                                                        <gc:calendar value="#{registroController.expedienteGestion.fechaRespuesta}" />
-                                                    </td>
-                                                    <td style="padding-bottom: 10px">
-                                                        <span>(*)De darse la respuesta despues de los 30 dias de entregado el documento, se considerará fuera de plazo automaticamente.</span>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td colspan="2" style="padding-bottom: 20px">
-                                                        <h:panelGroup id="idSelectAcogimiento" rendered="#{registroController.etapaEstado.verEtapa == 3 or registroController.etapaEstado.verEtapa == 7}">
-                                                            <table style="width: 100%">
-                                                                <tr>
-                                                                    <td>
-                                                                        <h:selectBooleanCheckbox id="idCheckbox2" value="#{registroController.expedienteGestion.indicadorRecomendacion}" >
-                                                                            Contiene recomendación
-                                                                            <f:ajax render="idSelectAcogimiento" /> 
-                                                                        </h:selectBooleanCheckbox>
-                                                                    </td>
-
-                                                                    <td>
-                                                                            <h:panelGroup rendered="#{registroController.expedienteGestion.indicadorRecomendacion}">
-                                                                            <label>Acogimiento de recomendaciones</label>
-                                                                            <h:selectOneMenu value="#{registroController.expedienteGestion.tipoAcogimiento}">
-                                                                                <f:selectItem itemValue="0" itemLabel="Selecione" />
-                                                                                <f:selectItems value="#{listasComunesController.buscarAcogimientoRecomendaciones(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
-                                                                            </h:selectOneMenu>
-                                                                        </h:panelGroup>
-                                                                    </td>
-                                                                </tr>
-                                                            </table>
-                                                        </h:panelGroup>
-                                                    </td> 
-                                                </tr>
-                                                <tr>
-                                                    <td style="padding-bottom: 10px">
-                                                        <label>Documento de respuesta</label>
-                                                        <input type="text" placeholder="Documento de respuesta" jsf:value="#{registroController.expedienteGestion.documentoRespuesta}" />
-                                                    </td>
-                                                    <td></td>
-                                                </tr>
-                                                <tr>
-                                                    <td colspan="2" style="padding-bottom: 10px">
-                                                        <label>Calidad Respuesta</label>
-                                                        <h:selectOneMenu value="#{registroController.expedienteGestion.tipoCalidad}">
-                                                            <f:selectItem itemValue="0" itemLabel="Selecione" />
-                                                            <f:selectItems value="#{listasComunesController.buscarGestionTipoCalidadRespuesta(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
-                                                        </h:selectOneMenu>
-                                                    </td>
-                                                    <td></td>
-                                                </tr>
-                                                <tr>
-                                                    <td colspan="3" style="padding-bottom: 10px">
-                                                        <label>Descripción respuesta</label>
-                                                        <textarea rows="6" jsf:value="#{registroController.expedienteGestion.detalleRespuesta}" style="width: 100%;" placeholder="Descripción respuesta"/>
-                                                    </td>
-                                                    <td></td>
-                                                </tr>
-                                                <tr>
-                                                    <td colspan="3">
-                                                        <label>Observaciones</label>
-                                                        <textarea rows="6" jsf:value="#{registroController.expedienteGestion.observacionRespuesta}" style="width: 100%;" placeholder="Observaciones"/>
-                                                    </td>
-                                                    <td></td>
-                                                </tr>
-                                                <tr>
-                                                                <td style="padding-top: 20px">
-                                                                    <label><span style="font-size: large" class="glyphicon glyphicon-paperclip" />Adjuntar archivo:</label>
-                                                                    <h:inputFile class="cMedio" value="#{registroController.file2}"/>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <div class="panel panel-featured-top-silver">
+                                    <div class="panel-body">
+                                        <span class="text-resalt-primary">Programación de alertas</span>
+                                        <br/><br/>
+                                        <table style="width: 100%">
+                                            <tr>
+                                                <td style="width: 65%; padding-right: 2px">
+                                                    <span class="text-primary" style="font-size:1.2em;font-weight:bold">Alertas</span>
+                                                    <br/>
+                                                    <h:selectBooleanCheckbox id="checkIndAlertar" value="#{registroController.expedienteGestion.indAlertar}" />No alertar
+                                                    <div id="idDivAlert">
+                                                        <table style="width:100%">
+                                                            <tr>
+                                                                <td style="width:10%">
+                                                                    <h:outputText value="Inicio" />
                                                                 </td>
                                                                 <td>
-                                                                    <h:panelGroup rendered="#{registroController.expedienteGestion.ruta2 != null}">
-                                                                    <a target="_blank" href="/filesystem/#{registroController.expedienteGestion.ruta2}">
-                                                                        <span style="font-size: large" class="glyphicon glyphicon-link" />
-                                                                    </a>
-                                                                        </h:panelGroup>
+                                                                    <table style="width:100%">
+                                                                        <tr>
+                                                                            <td style="width:8%">
+                                                                                <div id="idDivTxtNumeroInicial">
+                                                                                    <input type="text" id="txtNumeroInicial" onkeypress="return soloNumbero(event)" jsf:value="#{registroController.expedienteGestion.numeroInicial}"/>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td style="width:30%">
+                                                                                <div id="idDivSelTipoTiempoIni">
+                                                                                    <h:selectOneMenu id="selTipoTiempoIni" value="#{registroController.expedienteGestion.tipoTiempoIni}">
+                                                                                        <f:selectItems value="#{registroController.listaTiempo}" var="y" itemLabel="#{y.label}" itemValue="#{y.value}" />
+                                                                                    </h:selectOneMenu>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td style="width:30%">
+                                                                                <div id="idDivSelIndicadorAntesDespuesIni">
+                                                                                    <h:selectOneMenu id="selIndicadorAntesDespuesIni" value="#{registroController.expedienteGestion.indicadorAntesDespuesIni}">
+                                                                                        <f:selectItems value="#{registroController.listaAntesDespues}" var="y" itemLabel="#{y.label}" itemValue="#{y.value}" />
+                                                                                    </h:selectOneMenu>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td style="width:32%">
+                                                                                <div class="input-group datepicker" id="idDivTxtInicioSeguimiento">
+                                                                                    <div class="input-group-addon add-on">
+                                                                                        <span class="glyphicon glyphicon-calendar"></span>
+                                                                                    </div>
+                                                                                    <input type="text" id="txtInicioSeguimiento" data-format="dd/MM/yyyy" jsf:value="#{registroController.expedienteGestion.inicioSeguimiento}">
+                                                                                        <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
+                                                                                    </input>
+                                                                                </div>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                    <table style="width: 100%">
+                                                                        <tr>
+                                                                            <td colspan="2">
+                                                                                <br/>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td style="width:5%">
+                                                                                <h:selectBooleanCheckbox id="checkIndicadorSeleccionHoraIni" value="#{registroController.expedienteGestion.indicadorSeleccionHoraIni}"/>
+                                                                            </td>
+                                                                            <td style="width:25%">
+                                                                                <div class="input-group datepicker" id="idDivTxtInicioDefinitivo">
+                                                                                    <div class="input-group-addon add-on">
+                                                                                        <span class="glyphicon glyphicon-calendar"></span>
+                                                                                    </div>
+                                                                                    <input type="text" id="txtInicioDefinitivo" data-format="dd/MM/yyyy" jsf:value="#{registroController.expedienteGestion.inicioDefinitivo}">
+                                                                                        <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
+                                                                                    </input>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td style="width:70%"></td>
+                                                                        </tr>
+                                                                    </table>
                                                                 </td>
                                                             </tr>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    <div class="panel panel-featured-top-silver">
-                                        <div class="panel-body">
-                                            <span class="text-resalt-primary">Programación de alertas</span>
-                                            <br/><br/>
-                                            <table style="width: 100%">
-                                                <tr>
-                                                    <td style="width: 65%; padding-right: 2px">
-                                                        <span class="text-primary" style="font-size:1.2em;font-weight:bold">Alertas</span>
+                                                        </table>
                                                         <br/>
-                                                        <h:selectBooleanCheckbox id="checkIndAlertar" value="#{registroController.expedienteGestion.indAlertar}" />No alertar
-                                                        <div id="idDivAlert">
-                                                            <table style="width:100%">
-                                                                <tr>
-                                                                    <td style="width:10%">
-                                                                        <h:outputText value="Inicio" />
-                                                                    </td>
-                                                                    <td>
-                                                                        <table style="width:100%">
-                                                                            <tr>
-                                                                                <td style="width:8%">
-                                                                                    <div id="idDivTxtNumeroInicial">
-                                                                                        <input type="text" id="txtNumeroInicial" onkeypress="return soloNumbero(event)" jsf:value="#{registroController.expedienteGestion.numeroInicial}"/>
+                                                        <table style="width:100%">
+                                                            <tr>
+                                                                <td style="width:10%">
+                                                                    <h:outputText value="Finaliza" />
+                                                                </td>
+                                                                <td>
+                                                                    <table style="width:100%">
+                                                                        <tr>
+                                                                            <td style="width:8%">
+                                                                                <div id="idDivTxtNumeroFinal">
+                                                                                    <input type="text" id="txtNumeroFinal" onkeypress="return soloNumbero(event)" jsf:value="#{registroController.expedienteGestion.numeroFinal}" />
+                                                                                </div>
+                                                                            </td>
+                                                                            <td style="width:30%">
+                                                                                <div id="idDivSelTipoTiempoFin">
+                                                                                    <h:selectOneMenu id="selTipoTiempoFin" value="#{registroController.expedienteGestion.tipoTiempoFin}">
+                                                                                        <f:selectItems value="#{registroController.listaTiempo}" var="y" itemLabel="#{y.label}" itemValue="#{y.value}" />
+                                                                                    </h:selectOneMenu>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td style="width:30%">
+                                                                                <div id="idDivSelIndicadorAntesDespuesFin">
+                                                                                    <h:selectOneMenu id="selIndicadorAntesDespuesFin" value="#{registroController.expedienteGestion.indicadorAntesDespuesFin}">
+                                                                                        <f:selectItems value="#{registroController.listaAntesDespues}" var="y" itemLabel="#{y.label}" itemValue="#{y.value}" />
+                                                                                    </h:selectOneMenu>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td style="width:32%">
+                                                                                <div class="input-group datepicker" id="idDivTxtFinSeguimiento">
+                                                                                    <div class="input-group-addon add-on">
+                                                                                        <span class="glyphicon glyphicon-calendar"></span>
                                                                                     </div>
-                                                                                </td>
-                                                                                <td style="width:30%">
-                                                                                    <div id="idDivSelTipoTiempoIni">
-                                                                                        <h:selectOneMenu id="selTipoTiempoIni" value="#{registroController.expedienteGestion.tipoTiempoIni}">
-                                                                                            <f:selectItems value="#{registroController.listaTiempo}" var="y" itemLabel="#{y.label}" itemValue="#{y.value}" />
-                                                                                        </h:selectOneMenu>
+                                                                                    <input type="text" data-format="dd/MM/yyyy" id="txtFinSeguimiento" jsf:value="#{registroController.expedienteGestion.finSeguimiento}">
+                                                                                        <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
+                                                                                    </input>
+                                                                                </div>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                    <table style="width: 100%">
+                                                                        <tr>
+                                                                            <td colspan="2">
+                                                                                <br/>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td style="width:5%">
+                                                                                <h:selectBooleanCheckbox id="checkIndicadorSeleccionHoraFin" value="#{registroController.expedienteGestion.indicadorSeleccionHoraFin}"/>
+                                                                            </td>
+                                                                            <td style="width:25%">
+                                                                                <div class="input-group datepicker" id="idDivTxtFinDefinitivo">
+                                                                                    <div class="input-group-addon add-on">
+                                                                                        <span class="glyphicon glyphicon-calendar"></span>
                                                                                     </div>
-                                                                                </td>
-                                                                                <td style="width:30%">
-                                                                                    <div id="idDivSelIndicadorAntesDespuesIni">
-                                                                                        <h:selectOneMenu id="selIndicadorAntesDespuesIni" value="#{registroController.expedienteGestion.indicadorAntesDespuesIni}">
-                                                                                            <f:selectItems value="#{registroController.listaAntesDespues}" var="y" itemLabel="#{y.label}" itemValue="#{y.value}" />
-                                                                                        </h:selectOneMenu>
-                                                                                    </div>
-                                                                                </td>
-                                                                                <td style="width:32%">
-                                                                                    <div class="input-group datepicker" id="idDivTxtInicioSeguimiento">
-                                                                                        <div class="input-group-addon add-on">
-                                                                                            <span class="glyphicon glyphicon-calendar"></span>
-                                                                                        </div>
-                                                                                        <input type="text" id="txtInicioSeguimiento" data-format="dd/MM/yyyy" jsf:value="#{registroController.expedienteGestion.inicioSeguimiento}">
-                                                                                            <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
-                                                                                        </input>
-                                                                                    </div>
-                                                                                </td>
-                                                                            </tr>
-                                                                        </table>
-                                                                        <table style="width: 100%">
-                                                                            <tr>
-                                                                                <td colspan="2">
-                                                                                    <br/>
-                                                                                </td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td style="width:5%">
-                                                                                    <h:selectBooleanCheckbox id="checkIndicadorSeleccionHoraIni" value="#{registroController.expedienteGestion.indicadorSeleccionHoraIni}"/>
-                                                                                </td>
-                                                                                <td style="width:25%">
-                                                                                    <div class="input-group datepicker" id="idDivTxtInicioDefinitivo">
-                                                                                        <div class="input-group-addon add-on">
-                                                                                            <span class="glyphicon glyphicon-calendar"></span>
-                                                                                        </div>
-                                                                                        <input type="text" id="txtInicioDefinitivo" data-format="dd/MM/yyyy" jsf:value="#{registroController.expedienteGestion.inicioDefinitivo}">
-                                                                                            <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
-                                                                                        </input>
-                                                                                    </div>
-                                                                                </td>
-                                                                                <td style="width:70%"></td>
-                                                                            </tr>
-                                                                        </table>
-                                                                    </td>
-                                                                </tr>
-                                                            </table>
-                                                            <br/>
-                                                            <table style="width:100%">
-                                                                <tr>
-                                                                    <td style="width:10%">
-                                                                        <h:outputText value="Finaliza" />
-                                                                    </td>
-                                                                    <td>
-                                                                        <table style="width:100%">
-                                                                            <tr>
-                                                                                <td style="width:8%">
-                                                                                    <div id="idDivTxtNumeroFinal">
-                                                                                        <input type="text" id="txtNumeroFinal" onkeypress="return soloNumbero(event)" jsf:value="#{registroController.expedienteGestion.numeroFinal}" />
-                                                                                    </div>
-                                                                                </td>
-                                                                                <td style="width:30%">
-                                                                                    <div id="idDivSelTipoTiempoFin">
-                                                                                        <h:selectOneMenu id="selTipoTiempoFin" value="#{registroController.expedienteGestion.tipoTiempoFin}">
-                                                                                            <f:selectItems value="#{registroController.listaTiempo}" var="y" itemLabel="#{y.label}" itemValue="#{y.value}" />
-                                                                                        </h:selectOneMenu>
-                                                                                    </div>
-                                                                                </td>
-                                                                                <td style="width:30%">
-                                                                                    <div id="idDivSelIndicadorAntesDespuesFin">
-                                                                                        <h:selectOneMenu id="selIndicadorAntesDespuesFin" value="#{registroController.expedienteGestion.indicadorAntesDespuesFin}">
-                                                                                            <f:selectItems value="#{registroController.listaAntesDespues}" var="y" itemLabel="#{y.label}" itemValue="#{y.value}" />
-                                                                                        </h:selectOneMenu>
-                                                                                    </div>
-                                                                                </td>
-                                                                                <td style="width:32%">
-                                                                                    <div class="input-group datepicker" id="idDivTxtFinSeguimiento">
-                                                                                        <div class="input-group-addon add-on">
-                                                                                            <span class="glyphicon glyphicon-calendar"></span>
-                                                                                        </div>
-                                                                                        <input type="text" data-format="dd/MM/yyyy" id="txtFinSeguimiento" jsf:value="#{registroController.expedienteGestion.finSeguimiento}">
-                                                                                            <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
-                                                                                        </input>
-                                                                                    </div>
-                                                                                </td>
-                                                                            </tr>
-                                                                        </table>
-                                                                        <table style="width: 100%">
-                                                                            <tr>
-                                                                                <td colspan="2">
-                                                                                    <br/>
-                                                                                </td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td style="width:5%">
-                                                                                    <h:selectBooleanCheckbox id="checkIndicadorSeleccionHoraFin" value="#{registroController.expedienteGestion.indicadorSeleccionHoraFin}"/>
-                                                                                </td>
-                                                                                <td style="width:25%">
-                                                                                    <div class="input-group datepicker" id="idDivTxtFinDefinitivo">
-                                                                                        <div class="input-group-addon add-on">
-                                                                                            <span class="glyphicon glyphicon-calendar"></span>
-                                                                                        </div>
-                                                                                        <input type="text" id="txtFinDefinitivo" data-format="dd/MM/yyyy" jsf:value="#{registroController.expedienteGestion.finDefinitivo}">
-                                                                                            <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
-                                                                                        </input>
-                                                                                    </div>
-                                                                                </td>
-                                                                                <td style="width:70%"></td>
-                                                                            </tr>
-                                                                        </table>
-                                                                    </td>
-                                                                </tr>
-                                                            </table>
-                                                            <br/>
-                                                            <table style="width:100%">
-                                                                <tr>
-                                                                    <td style="width:10%">
-                                                                        <h:outputText value="Repetir" />
-                                                                    </td>
-                                                                    <td style="width:30%">
-                                                                        <div id="idDivSelIndiceRepeticion">
-                                                                            <h:selectOneMenu id="selIndiceRepeticion" value="#{registroController.expedienteGestion.indiceRepeticion}">
-                                                                                <f:selectItems value="#{registroController.listaRepeticion}" var="y" itemLabel="#{y.label}" itemValue="#{y.value}" />
-                                                                            </h:selectOneMenu>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td style="width:60%"></td>
-                                                                </tr>
-                                                            </table>
-                                                        </div>
-                                                    </td>
-                                                    <td style="vertical-align: top;  padding-left: 2px">
-                                                        <label>Notas:</label>
-                                                        <textarea rows="6" jsf:value="#{registroController.expedienteGestion.nota}" style="width: 100%;" placeholder="Notas"/>
-                                                    </td>
-                                                </tr>
-                                                <tr>
+                                                                                    <input type="text" id="txtFinDefinitivo" data-format="dd/MM/yyyy" jsf:value="#{registroController.expedienteGestion.finDefinitivo}">
+                                                                                        <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
+                                                                                    </input>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td style="width:70%"></td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                        <br/>
+                                                        <table style="width:100%">
+                                                            <tr>
+                                                                <td style="width:10%">
+                                                                    <h:outputText value="Repetir" />
+                                                                </td>
+                                                                <td style="width:30%">
+                                                                    <div id="idDivSelIndiceRepeticion">
+                                                                        <h:selectOneMenu id="selIndiceRepeticion" value="#{registroController.expedienteGestion.indiceRepeticion}">
+                                                                            <f:selectItems value="#{registroController.listaRepeticion}" var="y" itemLabel="#{y.label}" itemValue="#{y.value}" />
+                                                                        </h:selectOneMenu>
+                                                                    </div>
+                                                                </td>
+                                                                <td style="width:60%"></td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </td>
+                                                <td style="vertical-align: top;  padding-left: 2px">
+                                                    <label>Notas:</label>
+                                                    <textarea rows="6" jsf:value="#{registroController.expedienteGestion.nota}" style="width: 100%;" placeholder="Notas"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
 
-                                                </tr>
-                                            </table>
-                                        </div>
+                                            </tr>
+                                        </table>
                                     </div>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
-          
+            </div>
         </ui:define>
     </ui:composition>
 </html>            

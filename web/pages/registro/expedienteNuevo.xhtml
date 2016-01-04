@@ -9,7 +9,7 @@
     <ui:composition template="../template/template.xhtml">
 
         <ui:define name="content">
-            <h:form id="idForm" class="form-horizontal">
+            <h:form id="idForm" class="form-horizontal" enctype="multipart/form-data">
                 <h:messages />
                 <script>
                     function confirmar2() {
@@ -506,6 +506,7 @@
                                             <br/>
                                             <br/>
                                             <br/>
+                                            <h:panelGroup id="idPanelClasificacionTem">
                                             <table style="width: 100%">
                                                 <tr>
                                                     <td>
@@ -515,7 +516,7 @@
                                                         <h:panelGroup rendered="#{registroController.expediente.numero != null}">
                                                             <a jsf:action="#{registroController.guardarNivel()}" jsf:onclick="loadingModal()">
                                                                 <span class="glyphicon glyphicon-plus" style="font-size: 1.3em" />Agregar/Actualizar clasificación
-                                                                <f:ajax render="@form" execute="@form" onevent="closeModal"/>
+                                                                <f:ajax render="idPanelClasificacionTem" execute="idPanelClasificacionTem" onevent="closeModal"/>
                                                             </a>
                                                         </h:panelGroup>
                                                     </td>
@@ -788,6 +789,7 @@
                                                     </td>
                                                 </tr>
                                             </table>
+                                            </h:panelGroup>
                                             <table style="width: 100%">
                                                 <tr>
                                                     <td style="width: 50%"></td>
@@ -893,17 +895,17 @@
                                             <table style="width: 100%">
                                                 <tr>
                                             <td style="padding-top: 20px">
-                                                                   <!-- <label><span style="font-size: large" class="glyphicon glyphicon-paperclip" />Adjuntar archivo:</label>
+                                                                    <label><span style="font-size: large" class="glyphicon glyphicon-paperclip" />Adjuntar archivo:</label>
                                                                     
-                                                                    <input type="file"  jsf:value="#{registroController.file5}"/>-->
+                                                                    <input type="file"  jsf:value="#{registroController.file5}"/>
                                                                 </td>
                                                                 <td>
-                                                                    <!--<h:panelGroup rendered="#{registroController.expediente.ruta != null}">
+                                                                    <h:panelGroup rendered="#{registroController.expediente.ruta != null}">
                                                                     <a target="_blank" href="/filesystem/#{registroController.expediente.ruta}">
                                                                         <span style="font-size: large" class="glyphicon glyphicon-link" />
                                                                     </a>
                                                                         </h:panelGroup>
-                                                                    -->
+                                                                    
                                                                 </td>
                                                     </tr>
                                                 </table>
@@ -943,6 +945,7 @@
                                                         <br/>
                                                         <span class="text-resalt-primary">Recurrentes y afectados</span>
                                                         <br/>
+                                                        <h:panelGroup id="idPanelRecurrentes">
                                                         <table style="width: 100%">
                                                             <tr>
                                                                 <td style="width: 60%">
@@ -952,7 +955,7 @@
 
                                                                     <a href="#" class="trigger" jsf:action="#{registroController.cargarPopoverPersona(1)}" jsf:onclick="loadingModal()">
                                                                         <span style="color: #3183B9; font-size: large;" class="glyphicon glyphicon-search"></span>
-                                                                        <f:ajax render="idPanel" execute="@form" onevent="popove"/>
+                                                                        <f:ajax render="idPanelRecurrentes" execute="idPanelRecurrentes" onevent="popove"/>
                                                                     </a>
                                                                     <div class="popover-markup" id="idPopover0" style="float: right"> 
                                                                         <div class="head hide ">
@@ -969,7 +972,7 @@
                                                                                 </tr>
                                                                             </table>
                                                                         </div>
-                                                                        <h:panelGroup id="idPanel">
+                                                                        
                                                                             <div class="content hide">
 
                                                                                 <h:dataTable value="#{registroController.personasPopover}" var="personas" id="idDatableBusquedaPerson" class="table table-hover" style="width: 100%">
@@ -985,7 +988,7 @@
                                                                                     <h:column>
                                                                                         <a jsf:action="#{registroController.addPersona(personas)}" jsf:onclick="loadingModal()">
                                                                                             <span style="font-size: medium" class="glyphicon glyphicon-share-alt"></span>  
-                                                                                            <f:ajax render="@form" onevent="closeModal"/>
+                                                                                            <f:ajax render=":idForm:idPanelRecurrentes" onevent="closeModal"/>
                                                                                         </a>
                                                                                     </h:column>
                                                                                 </h:dataTable>
@@ -1055,7 +1058,7 @@
                                                                                     }
                                                                                 }
                                                                             </script> 
-                                                                        </h:panelGroup>
+                                                                        
                                                                     </div>
 
                                                                 </td>
@@ -1185,6 +1188,7 @@
                                                                 </td>
                                                             </tr>
                                                         </table>
+                                                            
                                                         <table style="width: 100%">
                                                             <tr>
                                                                 <td>
@@ -1213,7 +1217,7 @@
                                                                         $(".confirmacion4#{rowIn.rowIndex+1}").modal('show');
                                                                     }
                                                                             </script>
-                                                                            <gc:confirmAjax bean="#{registroController.removePersona(per)}" classGC="confirmacion4#{rowIn.rowIndex+1}" mensaje="Esta seguro de desvincular a la Persona?" />
+                                                                            <gc:confirmSubmit bean="#{registroController.removePersona(per)}" classGC="confirmacion4#{rowIn.rowIndex+1}" mensaje="Esta seguro de desvincular a la Persona?" />
 
                                                                             <a onclick="confirmar4#{rowIn.rowIndex+1}()">
                                                                                 <span style="font-size: medium; color: red" class="glyphicon glyphicon-remove"></span>
@@ -1223,6 +1227,7 @@
                                                                 </td>
                                                             </tr>
                                                         </table>
+                                                            </h:panelGroup>
                                                     </div>
                                                 </div>
                                             </td>
@@ -1230,6 +1235,7 @@
                                                 <div class="panel panel-featured-top-silver" id="idPanel4">
                                                     <div class="panel-body">
                                                         <br/>
+                                                        <h:panelGroup id="idPanelEntidadesQue">
                                                         <table style="width: 100%">
                                                             <tr>
                                                                 <td style="width: 85%">
@@ -1264,7 +1270,7 @@
                                                                 <td style="vertical-align: bottom">
                                                                     <a style="vertical-align: bottom" href="#" class="trigger1" jsf:action="#{registroController.cargarPopoverEntidad(1)}" jsf:onclick="loadingModal()">
                                                                         <span style="color: #3183B9; font-size: large;" class="glyphicon glyphicon-search"></span>
-                                                                        <f:ajax render="@form" execute="@form" onevent="popove1"/>
+                                                                        <f:ajax render="idPanelEntidadesQue" execute="idPanelEntidadesQue" onevent="popove1"/>
                                                                     </a>
                                                                     <div class="popover-markup" style="float: right"> 
                                                                         <div class="head hide ">
@@ -1303,7 +1309,7 @@
                                                                                     <h:column>
                                                                                         <a jsf:action="#{registroController.addEntidad(entidades)}" jsf:onclick="loadingModal()">
                                                                                             <span style="font-size: medium" class="glyphicon glyphicon-share-alt"></span>  
-                                                                                            <f:ajax render="@form" onevent="closeModal"/>
+                                                                                            <f:ajax render=":idForm:idPanelEntidadesQue" onevent="closeModal"/>
                                                                                         </a>
                                                                                     </h:column>
                                                                                 </h:dataTable>
@@ -1394,7 +1400,7 @@
                                                                         $(".confirmacion3#{entidad.entidad.id}").modal('show');
                                                                     }
                                                                             </script>
-                                                                            <gc:confirmAjax bean="#{registroController.removeEntidad(entidad)}" classGC="confirmacion3#{entidad.entidad.id}" mensaje="Esta seguro de desvincular la Entidad?" />
+                                                                            <gc:confirmSubmit bean="#{registroController.removeEntidad(entidad)}" classGC="confirmacion3#{entidad.entidad.id}" mensaje="Esta seguro de desvincular la Entidad?" />
                                                                             <a onclick="confirmar3#{entidad.entidad.id}()">
                                                                                 <span style="font-size: large; color: red" class="glyphicon glyphicon-remove"></span>
                                                                             </a>
@@ -1403,6 +1409,7 @@
                                                                 </td>
                                                             </tr>
                                                         </table>
+                                                            </h:panelGroup>
                                                     </div>
                                                 </div>
                                             </td>

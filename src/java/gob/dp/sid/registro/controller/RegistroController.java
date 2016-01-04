@@ -404,10 +404,10 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     }
     
     public void initPetitorio() throws JRException {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
         List<ExpedienteFicha> list = new ArrayList<>();
         ExpedienteFicha ficha = new ExpedienteFicha();
-        String oficina = expediente.getNombreOD().replace("OD", "OFICINA DEFENSORIAL");
+        String oficina = usuarioSession.getNombreOD().replace("OD", "OFICINA DEFENSORIAL");
         ficha.setNumeroExpediente("EXPEDIENTE "+expediente.getNumero());
         ficha.setOficinaDefensorial(oficina+" - "+usuarioSession.getNombreOD());
         /**LISTA DE PERSONAS*/
@@ -427,14 +427,51 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 eps.add(ep);
             }
         }
-        ficha.setFechaIngreso(simpleDateFormat.format(expediente.getFechaIngreso()));
+        Integer nro2 = 0;
+        List<ExpedienteGestion> listaGestiones = expedienteGestionService.expedienteGestionListaXexpediente(expediente.getNumero());
+        for(ExpedienteGestion eg : listaGestiones){
+            nro2++;
+            if(eg.getDescripcion() == null)
+                eg.setDescripcion("");
+            if(eg.getDetalleRespuesta() == null)
+                eg.setDetalleRespuesta("");
+            
+            eg.setNro(nro2.toString()+".-");
+            if(eg.getFecha() != null)
+                eg.setFechaString(simpleDateFormat.format(eg.getFecha()));
+            else
+                eg.setFechaString("");
+            fp.setCodigoPadreParametro(70);
+            fp.setValorParametro(eg.getTipo());
+            parametro = parametroService.consultarParametroValor(fp);
+            if(parametro != null)
+                eg.setTipoAccionString(parametro.getNombreParametro());
+            else
+                eg.setTipoAccionString("");
+        }
+        ficha.setExpedienteGestions(listaGestiones);
+        if(expediente.getFechaIngreso() != null)
+            ficha.setFechaIngreso(simpleDateFormat.format(expediente.getFechaIngreso()));
+        else
+            ficha.setFechaIngreso("");
+        
         ficha.setFechaRegistro(simpleDateFormat.format(expediente.getFechaRegistro()));
+        if(expediente.getClasificacionTipoNombre()== null){
+            fp.setCodigoPadreParametro(10);
+            fp.setValorParametro(expediente.getTipoClasificion());
+            parametro = parametroService.consultarParametroValor(fp);
+            ficha.setClaseExpediente(parametro.getNombreParametro());
+        }else{
+            ficha.setClaseExpediente(expediente.getClasificacionTipoNombre());
+        }
         ficha.setClaseExpediente(expediente.getClasificacionTipoNombre());
         fp.setCodigoPadreParametro(20);
         fp.setValorParametro(expediente.getTipoIngreso());
         parametro = parametroService.consultarParametroValor(fp);
-        ficha.setClaseExpediente(expediente.getClasificacionTipoNombre());
-        ficha.setFormaIngreso(parametro.getNombreParametro().toUpperCase());
+        if(parametro != null)
+            ficha.setFormaIngreso(parametro.getNombreParametro().toUpperCase());
+        else
+            ficha.setFormaIngreso("");
         ficha.setDireccion("Oficina");
         ficha.setLugarRecepcion("Oficina");
         ficha.setDescripcion(expediente.getSumilla().toUpperCase());
@@ -445,7 +482,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         list.add(ficha);
         JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(
                 list);
-        jasperPrint = JasperFillManager.fillReport("C:\\recursos\\reportesSID\\expedienteConsulta.jasper",
+        jasperPrint = JasperFillManager.fillReport("C:\\recursos\\reportesSID\\expedientePetitorio.jasper",
                 new HashMap(), beanCollectionDataSource);
 
     }
@@ -459,7 +496,10 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             initConsulta();
         }
         if(StringUtils.equals(expediente.getTipoClasificion(), ExpedienteType.PETITORIO.getKey())){
-            initConsulta();
+            initPetitorio();
+        }
+        if(StringUtils.equals(expediente.getTipoClasificion(), ExpedienteType.QUEJA.getKey())){
+            initPetitorio();
         }
         FacesContext facesContext = FacesContext.getCurrentInstance();
         HttpServletResponse httpServletResponse;
@@ -1480,13 +1520,22 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     }
     
     public void entidadQuejada(){
-        System.out.println("entro");
-        System.out.println(expedienteGestion.getIndEntidadQuejada());
-        if(entidadSeleccionadas.size() == 1){
-            for(ExpedienteEntidad ee : entidadSeleccionadas){
-                expedienteGestion.setInstitucion(ee.getEntidad().getNombre());
+        if(expedienteGestion.getIndEntidadQuejada()){
+            if(entidadSeleccionadas.size() == 1){
+                for(ExpedienteEntidad ee : entidadSeleccionadas){
+                    expedienteGestion.setIdEntidad(Integer.parseInt(ee.getEntidad().getId().toString()));
+                    expedienteGestion.setNombreEntidad(ee.getEntidad().getNombre());
+                }
             }
+        }else{
+            expedienteGestion.setIdEntidad(null);
+            expedienteGestion.setNombreEntidad(null);
         }
+    }
+    
+    public void addEntidadQuejada(Entidad entidad){
+        expedienteGestion.setIdEntidad(Integer.parseInt(entidad.getId().toString()));
+        expedienteGestion.setNombreEntidad(entidad.getNombre());
     }
 
     public boolean cargarPopoverPersona(Long pagina) {
@@ -1773,9 +1822,9 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 expedienteService.expedienteUpdate(expediente);
             }
             expediente.setEstado("A");
-            //String ruta = uploadArchive(file5);
-            /*if (ruta != null)
-                expediente.setRuta(ruta);*/
+            String ruta = uploadArchive(file5);
+            if (ruta != null)
+                expediente.setRuta(ruta);
             expedienteService.expedienteInsertar(expediente);
             insertListasPersonaEntidad();
         } catch (Exception e) {

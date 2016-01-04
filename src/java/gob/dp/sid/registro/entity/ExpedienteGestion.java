@@ -28,7 +28,9 @@ public class ExpedienteGestion implements Serializable{
     
     private String descripcion;
     
-    private String institucion;
+    private Integer idEntidad;
+    
+    private String nombreEntidad;
     
     private String nombre;
     
@@ -114,6 +116,11 @@ public class ExpedienteGestion implements Serializable{
     
     private String detalleTipo;
     
+    private String fechaString;
+    
+    private String tipoAccionString;
+    
+    private String nro;
 
     public Long getId() {
         return id;
@@ -139,13 +146,15 @@ public class ExpedienteGestion implements Serializable{
         this.descripcion = descripcion;
     }
 
-    public String getInstitucion() {
-        return institucion;
+    public Integer getIdEntidad() {
+        return idEntidad;
     }
 
-    public void setInstitucion(String institucion) {
-        this.institucion = institucion;
+    public void setIdEntidad(Integer idEntidad) {
+        this.idEntidad = idEntidad;
     }
+
+    
 
     public String getNombre() {
         return nombre;
@@ -498,5 +507,39 @@ public class ExpedienteGestion implements Serializable{
     public void setFechaRecepcion(Date fechaRecepcion) {
         this.fechaRecepcion = fechaRecepcion;
     }
+
+    public String getNombreEntidad() {
+        return nombreEntidad;
+    }
+
+    public void setNombreEntidad(String nombreEntidad) {
+        this.nombreEntidad = nombreEntidad;
+    }
+
+    public String getFechaString() {
+        return fechaString;
+    }
+
+    public void setFechaString(String fechaString) {
+        this.fechaString = fechaString;
+    }
+
+    public String getTipoAccionString() {
+        return tipoAccionString;
+    }
+
+    public void setTipoAccionString(String tipoAccionString) {
+        this.tipoAccionString = tipoAccionString;
+    }
+
+    public String getNro() {
+        return nro;
+    }
+
+    public void setNro(String nro) {
+        this.nro = nro;
+    }
     
 }
+
+
