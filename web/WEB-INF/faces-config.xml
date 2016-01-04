@@ -248,4 +248,11 @@
         </navigation-case>
   </navigation-rule>
   
+  <navigation-rule>
+        <navigation-case>
+                <from-outcome>importarONP</from-outcome>
+                <to-view-id>/pages/onp/importarONP.xhtml</to-view-id>
+        </navigation-case>
+  </navigation-rule>
+  
 </faces-config>

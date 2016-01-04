@@ -6,6 +6,7 @@ import gob.dp.sid.bandeja.controller.BandejaController;
 import gob.dp.sid.comun.controller.BusquedaController;
 import gob.dp.sid.comun.entity.Menu;
 import gob.dp.sid.comun.service.MenuService;
+import gob.dp.sid.registro.controller.ImportarController;
 import gob.dp.sid.registro.controller.RegistroController;
 import gob.dp.sid.reporte.controller.ReporteController;
 import java.io.Serializable;
@@ -161,6 +162,11 @@ public class MenuController implements Serializable{
         if(codigoPagina == 18){
             BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
             return bandejaController.cargarBandeja();
+        }
+        
+        if(codigoPagina == 19){
+            ImportarController importarController = (ImportarController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "importarController");
+            return importarController.cargarPagina();
         }
         
         if(codigoPagina == 33){
