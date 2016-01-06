@@ -200,9 +200,7 @@
                                                                                             </h:column>
                                                                                             <h:column>
                                                                                                 <f:facet name="header">Tipo</f:facet>
-                                                                                                <h:outputText rendered="#{entidades.tipo == 1}" value="centro médico"/>
-                                                                                                <h:outputText rendered="#{entidades.tipo == 2}" value="colegio"/>
-                                                                                                <h:outputText rendered="#{entidades.tipo == 3}" value="comisaria"/>
+                                                                                                <h:outputText value="#{entidades.tipoDetalle}"/>
                                                                                             </h:column>
                                                                                             <h:column>
                                                                                                 <f:facet name="header">Región</f:facet>

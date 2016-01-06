@@ -160,6 +160,13 @@
                                 <f:facet name="header">Adjuntía Defensorial</f:facet>
                                 <h:outputText value="#{envia.nombreAdjuntia}" />
                             </h:column>
+                            
+                            <h:column>
+                                <f:facet name="header">Fecha</f:facet>
+                                <h:outputText value="#{envia.fecha}" >
+                                    <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
+                                </h:outputText>
+                            </h:column>
 
                             <h:column>
                                 <f:facet name="header">Archivo</f:facet>

@@ -6,6 +6,7 @@
 package gob.dp.sid.registro.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  *
@@ -41,9 +42,9 @@ public class ExpedienteConsulta implements Serializable{
     
     private String codigoUsuarioReasignado;
     
-    
     private String nombreAdjuntia;
     
+    private Date fecha;
 
     public Long getId() {
         return id;
@@ -165,7 +166,14 @@ public class ExpedienteConsulta implements Serializable{
         this.codigoUsuarioReasignado = codigoUsuarioReasignado;
     }
 
-    
+    public Date getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
+    }
+
 }
 
 

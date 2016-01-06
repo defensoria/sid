@@ -351,6 +351,12 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         return "expedienteUsuario";
     }
     
+    public String irOficio(){
+        iniciarExpedienteNuevo();
+        expediente.setIndicadorOficio(true);
+        return "expedienteNuevo";
+    }
+    
     public void initConsulta() throws JRException {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         List<ExpedienteFicha> list = new ArrayList<>();
@@ -786,7 +792,12 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         }
     }
     
-    
+    public void desistirExpediente(){
+        expediente.setIndicadorDesestimiento(1);
+        expediente.setGeneral("C");
+        expedienteService.expedienteDesistir(expediente);
+        msg.messageInfo("Se ha concluido el expediente, pasa al estado desistido", null);
+    }
 
     private void defineBotonRegistro() {
         /*´para derivaciones*/
@@ -970,6 +981,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         expedienteConsultaAprueba.setEtapa(EtapaConsultaType.CONSULTA_ETAPA_APRUEBA.getKey());
         expedienteConsultaAprueba.setCodigoUsuario(usuarioSession.getCodigo());
         expedienteConsultaAprueba.setNombreUsuario(usuarioSession.getNombre() + " " + usuarioSession.getApellidoPaterno() + " " + usuarioSession.getApellidoMaterno());
+        expedienteConsultaAprueba.setFecha(new Date());
         expedienteConsultaService.expedienteConsultaInsertar(expedienteConsultaAprueba);
         if (StringUtils.equals(expedienteConsultaAprueba.getAprueba(), "SI")) {
             enviarMensajeAprobacionConsulta();
@@ -1041,6 +1053,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         expedienteConsultaReasigna.setEtapa(EtapaDerivacionType.DERIVAR_ETAPA_REASIGNA.getKey());
         expedienteConsultaReasigna.setCodigoUsuario(usuarioSession.getCodigo());
         expedienteConsultaReasigna.setNombreUsuario(usuarioSession.getNombre() + " " + usuarioSession.getApellidoPaterno() + " " + usuarioSession.getApellidoMaterno());
+        expedienteConsultaReasigna.setFecha(new Date());
         expedienteConsultaService.expedienteConsultaInsertar(expedienteConsultaReasigna);
         if (StringUtils.equals(expedienteConsultaReasigna.getAprueba(), "SI")) {
             enviarMensajeReasignacionConsulta();
@@ -1066,6 +1079,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             String formato = RandomStringUtils.random(9, 0, 17, true, true, "WERTYUIO123456789".toCharArray());
             expedienteConsultaEnvia.setCodigo("C" + formato);
         }
+        expedienteConsultaEnvia.setFecha(new Date());
         expedienteConsultaService.expedienteConsultaInsertar(expedienteConsultaEnvia);
         enviarMensajeConsulta();
         inicioAccionesConsulta(0L);
@@ -1837,10 +1851,11 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         if (consecutivo == null) {
             consecutivo = 0L;
         }
+        String stringCodigoOD = String.format("%4s",usuarioSession.getCodigoOD().toString()).replace(' ', '0');
         expediente.setCodigoOD(usuarioSession.getCodigoOD());
         expediente.setConsecutivo(consecutivo + 1);
         Calendar c1 = Calendar.getInstance();
-        String numeroExpediente = String.format("%2s", usuarioSession.getCodigoOD().toString()).replace(' ', '0') + "-" + c1.get(Calendar.YEAR) + "-" + String.format("%7s", expediente.getConsecutivo().toString()).replace(' ', '0');
+        String numeroExpediente = stringCodigoOD + "-" + c1.get(Calendar.YEAR) + "-" + String.format("%7s", expediente.getConsecutivo().toString()).replace(' ', '0');
         expediente.setNumero(numeroExpediente);
     }
 

@@ -9,14 +9,16 @@
         <result property="nombreDepartamento" column="C_DESCDPTO"/>
         <result property="estado" column="C_ESTADO"/>
         <result property="tipo" column="N_TIPO"/>
+        <result property="tipoDetalle" column="C_DETALLE"/>
     </resultMap> 
     
     
     <select id="entidadBuscarCadena" resultMap="entidadMap" parameterType="entidad" >
         SELECT B.* FROM (
         SELECT A.*,ROWNUM numfila FROM (
-        SELECT A.*, B.C_DESCDPTO FROM SID_REG_ENTIDAD A
+        SELECT A.*, B.C_DESCDPTO, C.C_DETALLE FROM SID_REG_ENTIDAD A
         INNER JOIN SID_UBIGEO_DPTO B ON A.N_IDDEPARTAMENTO = B.N_ID_DPTO
+        INNER JOIN SID_REG_ENTIDAD_TIPO C ON A.N_TIPO = C.N_ID_TIP
         WHERE UPPER(A.C_NOMENTIDAD) LIKE '%'||UPPER(#{nombre})||'%' 
         <if test="idDepartamento != 0">
             AND A.N_IDDEPARTAMENTO = #{idDepartamento}

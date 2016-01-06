@@ -23,4 +23,7 @@ public interface ExpedienteGestionDAO {
     public ExpedienteGestion expedienteGestionBuscarOne(Long id);
     
     public List<ExpedienteGestion> expedienteGestionListaXexpediente(String numeroExpediente);
+    
+    public Integer expedienteGestionCountONP(String codigoONP);
+    
 }

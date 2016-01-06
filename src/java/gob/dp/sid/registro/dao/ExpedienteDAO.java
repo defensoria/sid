@@ -28,8 +28,6 @@ public interface ExpedienteDAO {
     
     public List<Expediente> expedienteBuscarUsuarioPaginado(Expediente expediente); 
     
-    //public List<Expediente> expedienteBuscarUsuarioPaginadoGeneral(Expediente expediente); 
-    
     public List<Expediente> expedienteReporteMesUsuario(Expediente expediente); 
     
     public List<Expediente> expedientexPersona(long idPersona); 
@@ -45,4 +43,6 @@ public interface ExpedienteDAO {
     public Expediente expedienteBuscarPorNumero(String numeroExpediente);
     
     public Long expedienteCodigoPorOD(Long codigoOD);
+    
+    public void expedienteDesistir(Expediente expediente);
 }

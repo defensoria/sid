@@ -25,6 +25,8 @@ public class Entidad implements Serializable{
     
     private String tipo;
     
+    private String tipoDetalle;
+    
     private Long ini;
     
     private Long fin;
@@ -92,6 +94,14 @@ public class Entidad implements Serializable{
 
     public void setFin(Long fin) {
         this.fin = fin;
+    }
+
+    public String getTipoDetalle() {
+        return tipoDetalle;
+    }
+
+    public void setTipoDetalle(String tipoDetalle) {
+        this.tipoDetalle = tipoDetalle;
     }
 
 }

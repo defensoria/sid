@@ -50,6 +50,8 @@ public class ExpedienteGestion implements Serializable{
     
     private Date fechaModificacion;
     
+    private String codigoONP;
+    
     /**SEGUIMIENTO*/
     
     private boolean indAlertar;
@@ -121,6 +123,16 @@ public class ExpedienteGestion implements Serializable{
     private String tipoAccionString;
     
     private String nro;
+    
+    private String numeroExpediente;
+    
+    private String validaExpediente;
+    
+    private String existeGestion;
+    
+    private Integer verEtapa;
+    
+    private Long idExpediente;
 
     public Long getId() {
         return id;
@@ -538,6 +550,54 @@ public class ExpedienteGestion implements Serializable{
 
     public void setNro(String nro) {
         this.nro = nro;
+    }
+
+    public String getCodigoONP() {
+        return codigoONP;
+    }
+
+    public void setCodigoONP(String codigoONP) {
+        this.codigoONP = codigoONP;
+    }
+
+    public String getNumeroExpediente() {
+        return numeroExpediente;
+    }
+
+    public void setNumeroExpediente(String numeroExpediente) {
+        this.numeroExpediente = numeroExpediente;
+    }
+
+    public String getValidaExpediente() {
+        return validaExpediente;
+    }
+
+    public void setValidaExpediente(String validaExpediente) {
+        this.validaExpediente = validaExpediente;
+    }
+
+    public String getExisteGestion() {
+        return existeGestion;
+    }
+
+    public void setExisteGestion(String existeGestion) {
+        this.existeGestion = existeGestion;
+    }
+
+    public Integer getVerEtapa() {
+        return verEtapa;
+    }
+
+    public void setVerEtapa(Integer verEtapa) {
+        this.verEtapa = verEtapa;
+    }
+
+    public Long getIdExpediente() {
+        return idExpediente;
+    }
+
+    public void setIdExpediente(Long idExpediente) {
+        this.idExpediente = idExpediente;
     }
     
 }

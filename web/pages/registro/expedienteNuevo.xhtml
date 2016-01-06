@@ -17,6 +17,12 @@
                             alertar("Debe de ingresar el tipo de expediente!");
                             return false;
                         } else {
+                            if($(".idChecExpedienteOficio").is(':checked')){
+                                if($("#idTipoClasificacion").val() === "02"){
+                                    alertar("Para un expediente de oficio el tipo no puede ser CONSULTA");
+                                    return false;
+                                }
+                            }
                             $(".confirmacion2").modal('show');
                         }
 
@@ -26,13 +32,25 @@
                             alertar("Debe de ingresar el tipo de expediente!");
                             return false;
                         } else {
+                            if($(".idChecExpedienteOficio").is(':checked')){
+                                if($("#idTipoClasificacion").val() === "02"){
+                                    alertar("Para un expediente de oficio el tipo no puede ser CONSULTA");
+                                    return false;
+                                }
+                            }
                             $(".confirmacion3").modal('show');
                         }
+                    }
+                    function confirmar0() {
+                        
+                            $(".confirmacion0").modal('show');
+                        
                     }
                 </script>
                 <gc:confirmSubmit classGC="confirmacion2" bean="#{registroController.guardarVersion()}" mensaje="Está seguro que desea generar una nueva version del expediente?"/>
                 <gc:confirmSubmit classGC="confirmacion3" bean="#{registroController.concluir()}" mensaje="Está seguro que desea concluir la etapa?"/>
                 <gc:confirmSubmit bean="#{registroController.guardarBorrador()}" />
+                <gc:confirmSubmitRemove classGC="confirmacion0" bean="#{registroController.desistirExpediente()}"  mensaje="Está seguro que desea desistir expediente?"/>
 
                 <table style="width: 100%">
                     <tr>
@@ -273,11 +291,10 @@
                                                                             }
                                                                 }
                                                             </script>
-                                                            
-                                                            <h:panelGroup rendered="#{(registroController.etapaEstado.verEtapa == 1 or registroController.etapaEstado.verEtapa == 5) and seguridadUtilController.tieneRecurso('REC_EXP007') and registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo}">
+                                                            <h:panelGroup rendered="#{(registroController.etapaEstado.verEtapa == 1 or registroController.etapaEstado.verEtapa == 5) and seguridadUtilController.tieneRecurso('REC_EXP007') and registroController.expediente.codigoOD == registroController.usuarioSession.codigoOD}">
                                                             <a class="btn btn-warning" jsf:action="#{registroController.limpiarModalAsignar()}" jsf:onclick="loadingModal()">
                                                                 <span class="glyphicon glyphicon-user" />Asignar Expediente
-                                                                <f:ajax execute="@form" render="idPanelAsignar" onevent="modalAsignar" />
+                                                                <f:ajax render="idPanelAsignar" onevent="modalAsignar" />
                                                             </a>
                                                                 </h:panelGroup>
                                                             <h:panelGroup id="idPanelAsignar">
@@ -443,6 +460,16 @@
                                                                     <span class="glyphicon glyphicon-floppy-save" />Concluir Etapa
                                                                 </a>
                                                             </h:panelGroup>
+                                                            &#160;&#160;
+                                                            <a class="btn btn-info">
+                                                                    <span class="glyphicon glyphicon-link" />Mayor información
+                                                                </a>
+                                                            &#160;&#160;
+                                                            <h:panelGroup rendered="#{registroController.expediente.id != null and registroController.expediente.version > 0 and registroController.expediente.general != 'C' and registroController.verBotonRegistrarExpediente and registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo}">
+                                                            <a class="btn btn-danger" onclick="confirmar0()" >
+                                                                    <span class="glyphicon glyphicon-remove" />Desistir
+                                                                </a>
+                                                                </h:panelGroup>
                                                         </td>
                                                     </tr>
                                                 </table>
@@ -500,6 +527,14 @@
                                                             <f:selectItem itemValue="0" itemLabel="Seleccione" />
                                                             <f:selectItems value="#{listasComunesController.buscarExpedienteTipoIngreso(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
                                                         </h:selectOneMenu>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                <span class="text-bold">Expediente de oficio:</span>
+                                                    </td>
+                                                    <td>
+                                                        <h:selectBooleanCheckbox class="idChecExpedienteOficio" value="#{registroController.expediente.indicadorOficio}" style="background: #EEEEEE; pointer-events:none;"/>
                                                     </td>
                                                 </tr>
                                             </table>
@@ -1298,9 +1333,7 @@
                                                                                     </h:column>
                                                                                     <h:column>
                                                                                         <f:facet name="header">Tipo</f:facet>
-                                                                                        <h:outputText rendered="#{entidades.tipo == 1}" value="centro médico"/>
-                                                                                        <h:outputText rendered="#{entidades.tipo == 2}" value="colegio"/>
-                                                                                        <h:outputText rendered="#{entidades.tipo == 3}" value="comisaria"/>
+                                                                                        <h:outputText value="#{entidades.tipoDetalle}"/>
                                                                                     </h:column>
                                                                                     <h:column>
                                                                                         <f:facet name="header">Región</f:facet>

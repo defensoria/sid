@@ -82,11 +82,6 @@ public class ExpedienteDAOImpl extends SqlSessionDaoSupport implements Expedient
         return getSqlSession().selectOne("gob.dp.sid.registro.dao.ExpedienteDAO.expedienteCodigoPorOD", codigoOD);
     }
 
-    /*@Override
-    public List<Expediente> expedienteBuscarUsuarioPaginadoGeneral(Expediente expediente) {
-        return getSqlSession().selectList("gob.dp.sid.registro.dao.ExpedienteDAO.expedienteBuscarUsuarioPaginadoGeneral", expediente);
-    }*/
-
     @Override
     public Expediente expedienteBuscarPorNumero(String numeroExpediente) {
         return getSqlSession().selectOne("gob.dp.sid.registro.dao.ExpedienteDAO.expedienteBuscarPorNumero", numeroExpediente);
@@ -95,6 +90,11 @@ public class ExpedienteDAOImpl extends SqlSessionDaoSupport implements Expedient
     @Override
     public void expedienteAsignar(Expediente expediente) {
         getSqlSession().update("gob.dp.sid.registro.dao.ExpedienteDAO.expedienteAsignar", expediente);
+    }
+
+    @Override
+    public void expedienteDesistir(Expediente expediente) {
+        getSqlSession().update("gob.dp.sid.registro.dao.ExpedienteDAO.expedienteDesistir", expediente);
     }
     
 }

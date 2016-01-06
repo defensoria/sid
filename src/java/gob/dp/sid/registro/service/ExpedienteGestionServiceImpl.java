@@ -45,5 +45,10 @@ public class ExpedienteGestionServiceImpl implements ExpedienteGestionService{
     public List<ExpedienteGestion> expedienteGestionListaXexpediente(String numeroExpediente) {
         return expedienteGestionDAO.expedienteGestionListaXexpediente(numeroExpediente);
     }
+
+    @Override
+    public Integer expedienteGestionCountONP(String codigoONP) {
+        return expedienteGestionDAO.expedienteGestionCountONP(codigoONP);
+    }
     
 }

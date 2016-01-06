@@ -41,6 +41,8 @@
         <result property="tipoGrupoEspecial" column="C_TIPOGRUPOESPECIAL"/>
         <result property="ruta" column="C_RUTA"/>
         <result property="conclusion" column="C_CONCLUSION"/>
+        <result property="indicadorDesestimiento" column="N_INDDESESTIMIENTO"/>
+        <result property="indicadorOficio" column="N_INDOFICIO"/>
         
         <result property="etapaDetalle" column="C_VALOR"/>
         <result property="indicadorEtapa" column="C_INDICADORETAPA"/>
@@ -143,6 +145,9 @@
         <if test="conclusion != null">
             C_CONCLUSION,
         </if>
+        <if test="indicadorOficio != null">
+            N_INDOFICIO,
+        </if>
         C_ESTADOGENERAL,
         N_IDEXPEDIENTE
         )
@@ -238,6 +243,9 @@
         <if test="conclusion != null">
             #{conclusion},
         </if>
+        <if test="indicadorOficio != null">
+            #{indicadorOficio},
+        </if>
         'A',
         SEQ_SID_REG_EXPEDIENTE.NextVal
         )
@@ -331,6 +339,16 @@
         </where>
     </update>
     
+    <update id="expedienteDesistir" parameterType="expediente">
+        UPDATE SID_REG_EXPEDIENTE
+        <set>
+            N_INDDESESTIMIENTO = 1,
+            C_ESTADOGENERAL = 'C'
+        </set>
+        <where>
+            N_IDEXPEDIENTE = #{id}
+        </where>
+    </update>
     
     <select id="expedienteBuscar" resultMap="expedienteMap" parameterType="expediente">
         SELECT A.*, 

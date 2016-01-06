@@ -115,6 +115,10 @@ public class Expediente implements Serializable{
     private String nombreOD;
     
     private String usuarioAsignado;
+    
+    private Integer indicadorDesestimiento;
+    
+    private Boolean indicadorOficio;
 
     public Long getId() {
         return id;
@@ -516,6 +520,22 @@ public class Expediente implements Serializable{
 
     public void setConclusion(String conclusion) {
         this.conclusion = conclusion;
+    }
+
+    public Integer getIndicadorDesestimiento() {
+        return indicadorDesestimiento;
+    }
+
+    public void setIndicadorDesestimiento(Integer indicadorDesestimiento) {
+        this.indicadorDesestimiento = indicadorDesestimiento;
+    }
+
+    public Boolean getIndicadorOficio() {
+        return indicadorOficio;
+    }
+
+    public void setIndicadorOficio(Boolean indicadorOficio) {
+        this.indicadorOficio = indicadorOficio;
     }
 
 }

@@ -58,6 +58,10 @@
                                                     <span class="glyphicon glyphicon-user"/>Nueva Persona
                                                     <f:ajax render=":idForm" onevent="openModalNuevaPersona"/>
                                                 </a>
+                                                &#160;&#160;&#160;&#160;&#160;
+                                                <a style="text-decoration:none" class="btn btn-primary"  jsf:action="#{registroController.irOficio()}">
+                                                    <span class="glyphicon glyphicon-folder-close"/>Expediente de Oficio
+                                                </a>
                                                 <script>
                                                     function openModalNuevaPersona(data) {
                                                         if (data.status === 'success') {

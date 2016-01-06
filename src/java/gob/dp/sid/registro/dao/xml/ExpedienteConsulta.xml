@@ -16,6 +16,7 @@
         <result property="aprueba" column="C_APRUEBA"/>
         <result property="tipo" column="N_TIPO"/>
         <result property="codigo" column="C_CODIGO"/>
+        <result property="fecha" column="D_FECHA"/>
         <result property="codigoUsuarioReasignado" column="C_CODIGOUSUARIOREASIGNADO"/>
         
         <result property="nombreAdjuntia" column="ADJUNTIA"/>
@@ -64,7 +65,9 @@
         <if test="codigoUsuarioReasignado != null">
             C_CODIGOUSUARIOREASIGNADO,
         </if>
-
+        <if test="fecha != null">
+            D_FECHA,
+        </if>
         N_ID_CONSULTA
         )
         VALUES 
@@ -107,6 +110,9 @@
         </if>
         <if test="codigoUsuarioReasignado != null">
             #{codigoUsuarioReasignado},
+        </if>
+        <if test="fecha != null">
+            #{fecha},
         </if>
         SEQ_SID_REG_EXPEDIENTE_CONSUL.NextVal
         )

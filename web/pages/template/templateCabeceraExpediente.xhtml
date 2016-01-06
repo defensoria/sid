@@ -29,10 +29,17 @@
                             $(".confirmacion3").modal('show');
                         }
                     }
+                    
+                    function confirmar0() {
+                        
+                            $(".confirmacion0").modal('show');
+                        
+                    }
                 </script>
                 <gc:confirmSubmit classGC="confirmacion2" bean="#{registroController.guardarVersion()}" mensaje="Está seguro que desea generar una nueva version del expediente?"/>
                 <gc:confirmSubmit classGC="confirmacion3" bean="#{registroController.concluir()}" mensaje="Está seguro que desea concluir la etapa?"/>
                 <gc:confirmSubmit bean="#{registroController.guardarBorrador()}" />
+                <gc:confirmSubmitRemove classGC="confirmacion0" bean="#{registroController.desistirExpediente()}"  mensaje="Está seguro que desea desistir expediente?"/>
                 <table style="width: 100%">
                     <tr>
                         <td colspan="2">
@@ -378,6 +385,16 @@
                                                                     <span class="glyphicon glyphicon-floppy-save" />Concluir Etapa
                                                                 </a>
                                                             </h:panelGroup>
+                                                            &#160;&#160;
+                                                            <a class="btn btn-info">
+                                                                    <span class="glyphicon glyphicon-link" />Mayor información
+                                                                </a>
+                                                            &#160;&#160;
+                                                            <h:panelGroup rendered="#{registroController.expediente.id != null and registroController.expediente.version > 0 and registroController.expediente.general != 'C' and registroController.verBotonRegistrarExpediente and registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo}">
+                                                            <a class="btn btn-danger" onclick="confirmar0()" >
+                                                                    <span class="glyphicon glyphicon-remove" />Desistir
+                                                                </a>
+                                                                </h:panelGroup>
                                                         </td>
                                                     </tr>
                                                 </table>

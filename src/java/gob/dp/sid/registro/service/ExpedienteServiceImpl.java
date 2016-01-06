@@ -114,11 +114,6 @@ public class ExpedienteServiceImpl implements ExpedienteService{
         return expedienteDAO.expedienteCodigoPorOD(codigoOD);
     }
 
-    /*@Override
-    public List<Expediente> expedienteBuscarUsuarioPaginadoGeneral(Expediente expediente) {
-        return expedienteDAO.expedienteBuscarUsuarioPaginadoGeneral(expediente);
-    }*/
-
     @Override
     public Expediente expedienteBuscarPorNumero(String numeroExpediente) {
         return expedienteDAO.expedienteBuscarPorNumero(numeroExpediente);
@@ -127,6 +122,11 @@ public class ExpedienteServiceImpl implements ExpedienteService{
     @Override
     public void expedienteAsignar(Expediente expediente) {
         expedienteDAO.expedienteAsignar(expediente);
+    }
+
+    @Override
+    public void expedienteDesistir(Expediente expediente) {
+        expedienteDAO.expedienteDesistir(expediente);
     }
     
 }

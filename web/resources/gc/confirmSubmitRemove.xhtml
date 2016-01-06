@@ -1,0 +1,48 @@
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:composite="http://xmlns.jcp.org/jsf/composite"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <composite:interface>
+        <composite:attribute name="bean" required="true" method-signature="void action(java.lang.String)"/>
+        <composite:attribute name="mensaje" default="Esta seguro que desea eliminar el registro ?"/>
+        <composite:attribute name="classGC" default="confirmación"/>
+        <composite:attribute name="evento" default="loadingModal()"/>
+    </composite:interface>
+
+    <composite:implementation>
+        <div class="modal fade #{cc.attrs.classGC}" data-keyboard="false" data-backdrop="static" style="text-align: left">
+            <div class="modal-dialog modal-sm" >
+                <div class="modal-content" style=" background: #C7302C">
+                    <div class="modal-header" style="padding: 5px;">
+                        <h4 style="color: #FFFFFF"><b>Confirmación</b></h4>
+                    </div>
+                    <div style="background: white;" >
+                        <div class="modal-body" style="padding: 7px;">
+                            <table style="width: 100%">
+                                <tr>
+                                    <td style="padding-right: 8px">
+                                        <img style="width: 30px" src="../../bootstrap/img/warning.png" />
+                                    </td>
+                                    <td>
+                                        <div style="color: #878787">
+                                            <h:outputText style="font-size: 1em" value="#{cc.attrs.mensaje}" />
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer" style="padding: 5px; background: white;">
+                        <a class="btn btn-warning" id="view" data-dismiss="modal" style="text-decoration: none" jsf:action="#{cc.attrs.bean}" jsf:onclick="#{cc.attrs.evento}">
+                            Aceptar
+                        </a>
+                        <a class="btn btn-danger" data-dismiss="modal" style="text-decoration: none">
+                            Cancelar
+                        </a>                
+                    </div>
+                </div>
+            </div>
+        </div>
+    </composite:implementation>
+</html>            

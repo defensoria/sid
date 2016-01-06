@@ -7,10 +7,98 @@
     <ui:composition template="../template/template.xhtml">
         <ui:define name="content">
             <h:form  enctype="multipart/form-data">
-                <h:inputFile value="#{importarController.file1}" />
-                <a jsf:action="#{importarController.cargarExcel()}">
-                    Importar
-                </a>
+                <h:messages />
+                <div class="panel panel-featured-top-primary">
+                    <div class="panel-body" >
+                      <span style="font-size: 2em" class="text-resalt-primary">Importar Gestiones</span>  
+                      <br/><br/>
+                      <table>
+                          <tr>
+                              <td>
+                                  <h:inputFile value="#{importarController.file1}" />
+                              </td>
+                              <td>
+                                  &#160;&#160;&#160;&#160;&#160;&#160;
+                                    <a class="btn btn-primary" jsf:action="#{importarController.cargarExcel()}">
+                                        <span class="glyphicon glyphicon-import" />Importar
+                                    </a>
+                              </td>
+                          </tr>
+                      </table>
+                      
+                      
+                    </div>
+                </div>
+                <br/>
+                <div class="panel panel-featured-top-primary">
+                    <div class="panel-body" >
+                        <table>
+                            <tr>
+                                <td>
+                                    <span style="font-size: 2em" class="text-resalt-primary">Listado de gestiones</span>  
+                                </td>
+                                <td>
+                                    <a class="btn btn-primary" jsf:action="#{importarController.insertarActualizarGestiones()}">
+                                        <span class="glyphicon glyphicon-floppy-save" />Cargar gestiones
+                                    </a>
+                                </td>
+                            </tr>
+                        </table>
+                        <br/>
+                        <br/>
+                <h:dataTable value="#{importarController.listaGestionesONP}" var="onp" binding="#{row}" class="table table-hover">
+                    <h:column>
+                        <f:facet name="header">Nro</f:facet>
+                        <h:outputText value="#{row.rowIndex+1}" />
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Número expediente</f:facet>
+                        <h:outputText value="#{onp.numeroExpediente}" />
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Código ONP</f:facet>
+                        <h:outputText value="#{onp.codigoONP}" />
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Fecha gestión</f:facet>
+                        <h:outputText value="#{onp.fecha}" >
+                            <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
+                        </h:outputText>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Fecha Actualización</f:facet>
+                        <h:outputText value="#{onp.fechaModificacion}" >
+                            <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
+                        </h:outputText>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Oficio ONP</f:facet>
+                        <h:outputText value="#{onp.documentoRespuesta}" />
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Fecha de oficio</f:facet>
+                        <h:outputText value="#{onp.fechaRespuesta}" >
+                            <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
+                        </h:outputText>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Existe expediente</f:facet>
+                        <h:outputText value="#{onp.validaExpediente}" />
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">etapa</f:facet>
+                        <h:outputText value="#{onp.verEtapa}" />
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Existe gestión</f:facet>
+                        <h:outputText value="#{onp.existeGestion}" />
+                    </h:column>
+                </h:dataTable>
+                    </div>
+                </div>
+                
+                
+                
             </h:form> 
         </ui:define>
     </ui:composition>
