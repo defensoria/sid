@@ -106,6 +106,8 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     private Persona personaBusqueda;
 
     private Persona personaSeleccionada;
+    
+    private ExpedientePersona expedientepersonaModalEdit;
 
     private Entidad entidad;
 
@@ -318,6 +320,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         listaEtiquetasSeleccionadas = new ArrayList<>();
         setVerBotonRegistrarExpediente(true);
         expedienteClasificacionBusqueda = new ExpedienteClasificacion();
+        expedientepersonaModalEdit = new ExpedientePersona();
         return "expedienteNuevo";
     }
     
@@ -329,6 +332,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
 
     public String iniciarExpedienteNuevo() {
         persona = new Persona();
+        expedientepersonaModalEdit = new ExpedientePersona();
         entidad = new Entidad();
         cargarNuevoExpediente();
         ExpedientePersona ep = new ExpedientePersona();
@@ -1450,7 +1454,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     public void cargarModalActor() {
         persona = new Persona();
     }
-
+    
     public boolean buscarPersonaGeneral(Long pagina) {
         int i = 0;
         if (stringUtil.isBlank(personaBusqueda.getNumeroDocumento())) {
@@ -1628,6 +1632,30 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         ExpedientePersona ep = new ExpedientePersona(expediente, p);
         personasSeleccionadas.add(ep);
         cadenaPersonaPopover = null;
+        return true;
+    }
+    
+    public boolean seteaPersonaExpediente(ExpedientePersona ep){
+        setExpedientepersonaModalEdit(ep);
+        if(ep.getIdDepartamento() != null && ep.getIdDepartamento() != 0)
+            comboProvinciaId(ep.getIdDepartamento());
+        if(ep.getIdProvincia() != null && ep.getIdProvincia() != 0)
+            comboDistritoId(ep.getIdProvincia());
+        return true;
+    }
+    
+    public boolean editaPersonaExpediente(){
+        expedientepersonaModalEdit.getPersona().setUsuModificacion(usuarioSession.getCodigo());
+        expedientepersonaModalEdit.getPersona().setFechaModificacion(new Date());
+        expedientepersonaModalEdit.getPersona().setDireccion(expedientepersonaModalEdit.getDireccion());
+        expedientepersonaModalEdit.getPersona().setTelefono1(expedientepersonaModalEdit.getTelefono1());
+        expedientepersonaModalEdit.getPersona().setEmail(expedientepersonaModalEdit.getEmail());
+        expedientepersonaModalEdit.getPersona().setIdDepartamento(expedientepersonaModalEdit.getIdDepartamento());
+        expedientepersonaModalEdit.getPersona().setIdProvincia(expedientepersonaModalEdit.getIdProvincia());
+        expedientepersonaModalEdit.getPersona().setIdDistrito(expedientepersonaModalEdit.getIdDistrito());
+        personaService.personaUpdate(expedientepersonaModalEdit.getPersona());
+        expedientePersonaService.expedienteDatosPersonaUpdate(expedientepersonaModalEdit);
+        msg.messageInfo("Se actualizo los datos de la persona", null);
         return true;
     }
 
@@ -2201,6 +2229,16 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         personaService.personaInsertar(persona);
         msg.messageInfo("Se registro la Persona", null);
     }
+    
+    public boolean guardarVincularPersona2() {
+        persona.setUsuRegistro(usuarioSession.getCodigo());
+        persona.setFechaRegistro(new Date());
+        persona.setFechaModificacion(new Date());
+        persona.setUsuModificacion(usuarioSession.getCodigo());
+        setearPersonaSeleccionada(persona);
+        msg.messageInfo("Se registro la Persona", null);
+        return true;
+    }
 
     public boolean guardarVincularPersona() {
         persona.setUsuRegistro(usuarioSession.getCodigo());
@@ -2362,6 +2400,35 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 }
             }
             //Provincia prov = ubigeoService.provinciaOne(id);
+        }
+    }
+    
+    public void comboProvinciaId(Integer idDepartamento) {
+        listaProvincia = new ArrayList<>();
+        listaDistrito = new ArrayList<>();
+        if (idDepartamento == 0) {
+            listaProvincia.clear();
+        } else {
+            List<Provincia> list = ubigeoService.provinciaLista(idDepartamento);
+            if (list.size() > 0) {
+                for (Provincia provincia : list) {
+                    listaProvincia.add(new SelectItem(provincia.getId(), provincia.getDescripcion()));
+                }
+            }
+        }
+    }
+
+    public void comboDistritoId(Integer idProvincia) {
+        listaDistrito = new ArrayList<>();
+        if (idProvincia == 0) {
+            listaDistrito.clear();
+        } else {
+            List<Distrito> list = ubigeoService.distritoLista(idProvincia);
+            if (list.size() > 0) {
+                for (Distrito distrito : list) {
+                    listaDistrito.add(new SelectItem(distrito.getId(), distrito.getDescripcion()));
+                }
+            }
         }
     }
 
@@ -3093,5 +3160,15 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     public void setFile5(Part file5) {
         this.file5 = file5;
     }
+
+    public ExpedientePersona getExpedientepersonaModalEdit() {
+        return expedientepersonaModalEdit;
+    }
+
+    public void setExpedientepersonaModalEdit(ExpedientePersona expedientepersonaModalEdit) {
+        this.expedientepersonaModalEdit = expedientepersonaModalEdit;
+    }
+
+
 
 }

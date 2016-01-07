@@ -183,7 +183,7 @@
             D_FECHAMODIFICACION = #{fechaModificacion},
         </if>
         <if test="usuModificacion != null">
-            C_USUMODIFICACION = #{usuarioModificacion},
+            C_USUMODIFICACION = #{usuModificacion},
         </if>
         C_NOMBRE = UPPER(#{nombre})
         </set>

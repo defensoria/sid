@@ -58,10 +58,7 @@
                                                     <span class="glyphicon glyphicon-user"/>Nueva Persona
                                                     <f:ajax render=":idForm" onevent="openModalNuevaPersona"/>
                                                 </a>
-                                                &#160;&#160;&#160;&#160;&#160;
-                                                <a style="text-decoration:none" class="btn btn-primary"  jsf:action="#{registroController.irOficio()}">
-                                                    <span class="glyphicon glyphicon-folder-close"/>Expediente de Oficio
-                                                </a>
+                                                
                                                 <script>
                                                     function openModalNuevaPersona(data) {
                                                         if (data.status === 'success') {
@@ -227,7 +224,7 @@
                                                     </table>
                                                     <br/>
                                                     <table style="width: 100%; text-align: left" class="table table-hover">
-
+                                                        
                                                         <tr>
                                                             <td><span class="text-bold">Nombre: </span><span >#{registroController.personaSeleccionada.nombre} #{registroController.personaSeleccionada.apellidoPat} #{registroController.personaSeleccionada.apellidoMat}</span></td>
                                                         </tr>
@@ -254,7 +251,12 @@
                                                     </table>
                                                 </h:panelGroup>
                                             </td>
-                                            <td style="padding-left: 5px">
+                                            <td style="padding-left: 5px; vertical-align: top; text-align: right">
+                                                
+                                                <a style="text-decoration:none" class="btn btn-primary"  jsf:action="#{registroController.irOficio()}">
+                                                    <span class="glyphicon glyphicon-folder-close"/>Expediente de Oficio
+                                                </a>
+                                                <br/><br/><br/>
                                                 <h:panelGroup rendered="#{!registroController.indSeleccion}">
                                                     <span class="text-resalt-primary">Tipo de registro: </span>
                                                     <h:selectOneMenu value="#{registroController.personaSeleccionada.tipoExpediente}">

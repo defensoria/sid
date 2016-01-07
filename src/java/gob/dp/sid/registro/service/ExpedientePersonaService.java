@@ -14,13 +14,15 @@ import java.util.List;
  */
 public interface ExpedientePersonaService {
     
-    void expedientePersonaInsertar(ExpedientePersona expedientePersona);
+    public void expedientePersonaInsertar(ExpedientePersona expedientePersona);
     
-    void expedientePersonaUpdate(ExpedientePersona expedientePersona);
+    public void expedientePersonaUpdate(ExpedientePersona expedientePersona);
     
-    void expedientePersonaDelete(ExpedientePersona expedientePersona);
+    public void expedientePersonaDelete(ExpedientePersona expedientePersona);
     
-    int expedientePersonaContar(ExpedientePersona expedientePersona);
+    public int expedientePersonaContar(ExpedientePersona expedientePersona);
     
-    List<ExpedientePersona> expedientePersonaBuscarXExpediente(long idExpediente);
+    public List<ExpedientePersona> expedientePersonaBuscarXExpediente(long idExpediente);
+    
+    public void expedienteDatosPersonaUpdate(ExpedientePersona expedientePersona);
 }

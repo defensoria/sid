@@ -11,6 +11,12 @@
         <result property="persona.apellidoPat" column="C_APELLIDOPAT"/>
         <result property="persona.apellidoMat" column="C_APELLIDOMAT"/>
         <result property="persona.numeroDocumento" column="C_NUMERODOCUMENTO"/>
+        <result property="direccion" column="C_DIRECCION"/>
+        <result property="email" column="C_EMAIL"/>
+        <result property="telefono1" column="C_TELEFONO1"/>
+        <result property="idDepartamento" column="N_IDDEPA"/>
+        <result property="idProvincia" column="N_IDPROV"/>
+        <result property="idDistrito" column="N_IDDISTR"/>
     </resultMap> 
     
     
@@ -23,6 +29,24 @@
         <if test="indicadorReserva != null">
             N_INDRESERVA,
         </if>
+        <if test="direccion != null">
+            C_DIRECCION,
+        </if>
+        <if test="email != null">
+            C_EMAIL,
+        </if>
+        <if test="telefono1 != null">
+            C_TELEFONO1,
+        </if>
+        <if test="idDepartamento != null">
+            N_IDDEPA,
+        </if>
+        <if test="idProvincia != null">
+            N_IDPROV,
+        </if>
+        <if test="idDistrito != null">
+            N_IDDISTR,
+        </if>
         N_IDEXPEDIENTE,
         N_IDPERSONA
         )
@@ -33,6 +57,24 @@
         </if>
         <if test="indicadorReserva != null">
             #{indicadorReserva},    
+        </if>
+        <if test="direccion != null">
+            #{direccion},    
+        </if>
+        <if test="email != null">
+            #{email},    
+        </if>
+        <if test="telefono1 != null">
+            #{telefono1},    
+        </if>
+        <if test="idDepartamento != null">
+            #{idDepartamento},    
+        </if>
+        <if test="idProvincia != null">
+            #{idProvincia},    
+        </if>
+        <if test="idDistrito != null">
+            #{idDistrito},   
         </if>
         #{expediente.id},
         #{persona.id}
@@ -45,6 +87,32 @@
         <set> 
             C_TIPO = #{tipo},
             N_INDRESERVA = #{indicadorReserva}
+        </set>
+        <where>
+            N_IDPERSONA = #{persona.id} AND
+            N_IDEXPEDIENTE= #{expediente.id}
+        </where>
+    </update>
+    
+    <update id="expedienteDatosPersonaUpdate" parameterType="expedientePersona">
+        UPDATE SID_REG_EXPEDE_PERSONA
+        <set>
+        <if test="email != null">
+            C_EMAIL = #{email},
+        </if>
+        <if test="telefono1 != null">
+            C_TELEFONO1 = #{telefono1},
+        </if>
+        <if test="idDepartamento != null">
+            N_IDDEPA = #{idDepartamento},
+        </if>
+        <if test="idProvincia != null">
+            N_IDPROV = #{idProvincia},
+        </if>
+        <if test="idDistrito != null">
+            N_IDDISTR = #{idDistrito},
+        </if>
+            C_DIRECCION = #{direccion}
         </set>
         <where>
             N_IDPERSONA = #{persona.id} AND

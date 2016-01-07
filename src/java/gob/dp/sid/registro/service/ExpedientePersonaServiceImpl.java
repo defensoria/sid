@@ -45,5 +45,10 @@ public class ExpedientePersonaServiceImpl implements ExpedientePersonaService{
     public List<ExpedientePersona> expedientePersonaBuscarXExpediente(long idExpediente) {
         return expedientePersonaDAO.expedientePersonaBuscarXExpediente(idExpediente);
     }
+
+    @Override
+    public void expedienteDatosPersonaUpdate(ExpedientePersona expedientePersona) {
+        expedientePersonaDAO.expedienteDatosPersonaUpdate(expedientePersona);
+    }
     
 }

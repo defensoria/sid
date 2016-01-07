@@ -1257,8 +1257,103 @@
                                                                             <a onclick="confirmar4#{rowIn.rowIndex+1}()">
                                                                                 <span style="font-size: medium; color: red" class="glyphicon glyphicon-remove"></span>
                                                                             </a>
+                                                                            
+                                                                            <a jsf:action="#{registroController.seteaPersonaExpediente(per)}" jsf:onclick="loadingModal()">
+                                                                                            <span style="font-size: medium" class="glyphicon glyphicon-pencil"></span>  
+                                                                                            <f:ajax render=":idForm:idPanelRecurrentes" execute=":idForm:idPanelRecurrentes" onevent="openModalEditPersona"/>
+                                                                                        </a>
                                                                         </h:column>
                                                                     </h:dataTable>
+                                                                                                    <script>
+                                                    function openModalEditPersona(data) {
+                                                        if (data.status === 'success') {
+                                                            $("#loadModal").modal('hide');
+                                                            $('body').removeClass('modal-open');
+                                                            $(".modal-backdrop").removeClass("modal-backdrop");
+                                                            $("#idModalEditPersona").modal('show');
+                                                        }
+                                                    }
+                                                </script>
+                                                                <div class="modal fade" data-backdrop="static" data-keyboard="false" id="idModalEditPersona" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog" style="text-align: left">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <a type="button" class="close" data-dismiss="modal">
+                                                                    <span style="color:red" class="glyphicon glyphicon-remove"></span>
+                                                                </a>
+                                                                <span class="text-resalt-primary">Modificación de datos de persona</span>
+                                                            </div>
+                                                            <div class="modal-body" style="padding:5px">
+                                                                <div class="panel-body">
+                                                                    <table style="width: 100%">   
+                                                                            <tr>
+                                                                                <td colspan="2">
+                                                                                    <center>
+                                                                                        <span class="text-resalt-primary">#{registroController.expedientepersonaModalEdit.persona.nombre} #{registroController.expedientepersonaModalEdit.persona.apellidoPat} #{registroController.expedientepersonaModalEdit.persona.apellidoMat}</span>
+                                                                                           </center>
+                                                                                    
+                                                                                    <br/>
+                                                                                    <br/>
+                                                                                </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td><b>Dirección:</b></td>
+                                                                            <td style="padding-bottom: 10px">
+                                                                                <input type="text" placeholder="Dirección" jsf:value="#{registroController.expedientepersonaModalEdit.direccion}" style="width: 90%" maxlength="300"/><br/>
+                                                                                <h:panelGroup id="idUbigeoPersona2">
+                                                                                    <table style="width:90%">
+                                                                                        <tr>
+                                                                                            <td style="width:33%">
+                                                                                                <h:selectOneMenu value="#{registroController.expedientepersonaModalEdit.idDepartamento}">
+                                                                                                    <f:selectItem itemLabel="Departamento" itemValue="0"/>
+                                                                                                    <f:selectItems value="#{registroController.listaDepartamento}"/>
+                                                                                                    <f:ajax listener="#{registroController.comboProvinciaId(registroController.expedientepersonaModalEdit.idDepartamento)}" render="idUbigeoPersona2" />
+                                                                                                </h:selectOneMenu>
+                                                                                            </td>
+                                                                                            <td style="width:33%">
+                                                                                                <h:selectOneMenu value="#{registroController.expedientepersonaModalEdit.idProvincia}">
+                                                                                                    <f:selectItem itemLabel="Provincia" itemValue="0"/>
+                                                                                                    <f:selectItems value="#{registroController.listaProvincia}"  />
+                                                                                                    <f:ajax listener="#{registroController.comboDistritoId(registroController.expedientepersonaModalEdit.idProvincia)}" render="cmbDistrito2"/>
+                                                                                                </h:selectOneMenu>
+                                                                                            </td>
+                                                                                            <td style="width:34%">
+                                                                                                <h:selectOneMenu id="cmbDistrito2" value="#{registroController.expedientepersonaModalEdit.idDistrito}">
+                                                                                                    <f:selectItem itemLabel="Distrito" itemValue="0"/>
+                                                                                                    <f:selectItems value="#{registroController.listaDistrito}" />
+                                                                                                </h:selectOneMenu>
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                    </table>
+                                                                                </h:panelGroup>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td><b>Correo:</b></td>
+                                                                            <td style="padding-bottom: 10px">
+                                                                                <input type="text" placeholder="Correo electronico" jsf:value="#{registroController.expedientepersonaModalEdit.email}" style="width: 90%" maxlength="100"/>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td><b>Telefono:</b></td>
+                                                                            <td style="padding-bottom: 10px">
+                                                                                <input type="text" placeholder="Telefono 1" jsf:value="#{registroController.expedientepersonaModalEdit.telefono1}" style="width: 90%" maxlength="50"/>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <a  class="btn btn-default" data-dismiss="modal">
+                                                                        <span class="glyphicon glyphicon-remove"/>Cerrar
+                                                                    </a>
+                                                                    <a jsf:action="#{registroController.editaPersonaExpediente()}" class="btn btn-primary">
+                                                                        <span class="glyphicon glyphicon-floppy-disk" />Guardar
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                                                 </td>
                                                             </tr>
                                                         </table>

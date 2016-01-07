@@ -41,5 +41,10 @@ public class ExpedientePersonaDAOImpl extends SqlSessionDaoSupport implements Ex
     public List<ExpedientePersona> expedientePersonaBuscarXExpediente(long idExpediente) {
         return getSqlSession().selectList("gob.dp.sid.registro.dao.ExpedientePersonaDAO.expedientePersonaBuscarXExpediente", idExpediente);
     }
+
+    @Override
+    public void expedienteDatosPersonaUpdate(ExpedientePersona expedientePersona) {
+        getSqlSession().update("gob.dp.sid.registro.dao.ExpedientePersonaDAO.expedienteDatosPersonaUpdate", expedientePersona);
+    }
     
 }
