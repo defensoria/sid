@@ -255,6 +255,8 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     
     private List<Usuario> listaUsuarioOD;
     
+    private List<ExpedienteDerivacion> listaExpedienteDerivacion;
+    
     JasperPrint jasperPrint;
 
     @Autowired
@@ -805,7 +807,8 @@ public class RegistroController extends AbstractManagedBean implements Serializa
 
     private void defineBotonRegistro() {
         /*´para derivaciones*/
-        List<ExpedienteDerivacion> listaExpedienteDerivacion = expedienteDerivacionService.expedienteDerivacionSelectList(expediente.getId());
+        listaExpedienteDerivacion = null;
+        listaExpedienteDerivacion = expedienteDerivacionService.expedienteDerivacionSelectList(expediente.getId());
         if (listaExpedienteDerivacion.size() > 0) {
             setVerBotonRegistrarExpediente(false);
         } else {
@@ -866,7 +869,8 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     }
 
     public String inicioAccionesDerivacion() {
-        List<ExpedienteDerivacion> listaExpedienteDerivacion = expedienteDerivacionService.expedienteDerivacionSelectList(expediente.getId());
+        listaExpedienteDerivacion = null;
+        listaExpedienteDerivacion = expedienteDerivacionService.expedienteDerivacionSelectList(expediente.getId());
         expedienteDerivacionEnvia = null;
         expedienteDerivacionAprueba = null;
         expedienteDerivacionReasigna = null;
@@ -3167,6 +3171,14 @@ public class RegistroController extends AbstractManagedBean implements Serializa
 
     public void setExpedientepersonaModalEdit(ExpedientePersona expedientepersonaModalEdit) {
         this.expedientepersonaModalEdit = expedientepersonaModalEdit;
+    }
+
+    public List<ExpedienteDerivacion> getListaExpedienteDerivacion() {
+        return listaExpedienteDerivacion;
+    }
+
+    public void setListaExpedienteDerivacion(List<ExpedienteDerivacion> listaExpedienteDerivacion) {
+        this.listaExpedienteDerivacion = listaExpedienteDerivacion;
     }
 
 

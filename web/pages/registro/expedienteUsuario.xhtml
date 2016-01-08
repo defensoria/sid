@@ -58,7 +58,7 @@
                                                     <span class="glyphicon glyphicon-user"/>Nueva Persona
                                                     <f:ajax render=":idForm" onevent="openModalNuevaPersona"/>
                                                 </a>
-                                                
+
                                                 <script>
                                                     function openModalNuevaPersona(data) {
                                                         if (data.status === 'success') {
@@ -66,6 +66,12 @@
                                                             $('body').removeClass('modal-open');
                                                             $(".modal-backdrop").removeClass("modal-backdrop");
                                                             $("#idModalNuevaPersona").modal('show');
+                                                            $('.datepicker').datetimepicker({
+                                                                pickTime: false
+                                                            });
+                                                            $(".datepicker").on("changeDate", function (ev) {
+                                                                $(this).datetimepicker("hide");
+                                                            });
                                                         }
                                                     }
                                                 </script>
@@ -111,6 +117,22 @@
                                                                             <td><b>Apellido Materno:</b></td>
                                                                             <td style="padding-bottom: 10px">
                                                                                 <input type="text" placeholder="Apellido Materno" jsf:value="#{registroController.persona.apellidoMat}" style="width: 90%" maxlength="100"/>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td><b>Fecha de nacimiento:</b></td>
+                                                                            <td style="padding-bottom: 10px; padding-right: 200px;" >
+                                                                                <gc:calendar value="#{registroController.persona.fechaNacimiento}"/>
+                                                                            </td>
+
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td><b>Sexo:</b></td>
+                                                                            <td style="padding-bottom: 10px">
+                                                                                <h:selectOneRadio value="#{registroController.persona.sexo}">
+                                                                                    <f:selectItem itemLabel="Masculino" itemValue="M"/>
+                                                                                    <f:selectItem itemLabel="Femenino" itemValue="F"/>
+                                                                                </h:selectOneRadio>
                                                                             </td>
                                                                         </tr>
                                                                         <tr>
@@ -224,7 +246,7 @@
                                                     </table>
                                                     <br/>
                                                     <table style="width: 100%; text-align: left" class="table table-hover">
-                                                        
+
                                                         <tr>
                                                             <td><span class="text-bold">Nombre: </span><span >#{registroController.personaSeleccionada.nombre} #{registroController.personaSeleccionada.apellidoPat} #{registroController.personaSeleccionada.apellidoMat}</span></td>
                                                         </tr>
@@ -252,7 +274,7 @@
                                                 </h:panelGroup>
                                             </td>
                                             <td style="padding-left: 5px; vertical-align: top; text-align: right">
-                                                
+
                                                 <a style="text-decoration:none" class="btn btn-primary"  jsf:action="#{registroController.irOficio()}">
                                                     <span class="glyphicon glyphicon-folder-close"/>Expediente de Oficio
                                                 </a>

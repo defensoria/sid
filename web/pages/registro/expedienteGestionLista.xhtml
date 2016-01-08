@@ -38,7 +38,7 @@
                                 <td></td>
                                 <td></td>
                                 <td style="padding-bottom: 15px; float: right">
-                                    <a class="btn btn-primary" jsf:rendered="#{registroController.etapaEstado.idEtapa > 0}" jsf:action="#{registroController.cargarExpedienteGestion()}">
+                                    <a class="btn btn-primary" jsf:rendered="#{registroController.etapaEstado.idEtapa > 0 and registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo}" jsf:action="#{registroController.cargarExpedienteGestion()}">
                                         <span class="glyphicon glyphicon-list-alt" />&#160;Nueva Gestión
                                     </a>
                                 </td>
@@ -148,7 +148,7 @@
                                         </h:column>
                                         <h:column rendered="#{registroController.etapaEstado.verEtapa == 1}">
                                             <f:facet  name="header">Editar</f:facet>
-                                            <a jsf:action="#{registroController.setearExpedienteGestion(calificacion)}">
+                                            <a jsf:rendered="#{registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo}" jsf:action="#{registroController.setearExpedienteGestion(calificacion)}">
                                                 <span class="glyphicon glyphicon-pencil" />
                                             </a>
                                         </h:column>
@@ -201,7 +201,7 @@
                                         </h:column>
                                         <h:column rendered="#{registroController.etapaEstado.verEtapa == 2}">
                                             <f:facet name="header">Editar</f:facet>
-                                            <a jsf:action="#{registroController.setearExpedienteGestion(investigacion)}">
+                                            <a jsf:rendered="#{registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo}" jsf:action="#{registroController.setearExpedienteGestion(investigacion)}">
                                                 <span class="glyphicon glyphicon-pencil" />
                                             </a>
                                         </h:column>
@@ -254,7 +254,7 @@
                                         </h:column>
                                         <h:column rendered="#{registroController.etapaEstado.verEtapa == 3}">
                                             <f:facet name="header">Editar</f:facet>
-                                            <a jsf:action="#{registroController.setearExpedienteGestion(persuacion)}">
+                                            <a jsf:rendered="#{registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo}" jsf:action="#{registroController.setearExpedienteGestion(persuacion)}">
                                                 <span class="glyphicon glyphicon-pencil" />
                                             </a>
                                         </h:column>
@@ -308,7 +308,7 @@
                                         </h:column>
                                         <h:column rendered="#{registroController.etapaEstado.verEtapa == 4}">
                                             <f:facet name="header">Editar</f:facet>
-                                            <a jsf:action="#{registroController.setearExpedienteGestion(seguimiento)}">
+                                            <a jsf:rendered="#{registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo}" jsf:action="#{registroController.setearExpedienteGestion(seguimiento)}">
                                                 <span class="glyphicon glyphicon-pencil" />
                                             </a>
                                         </h:column>

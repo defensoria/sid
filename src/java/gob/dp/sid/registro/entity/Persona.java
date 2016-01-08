@@ -48,7 +48,11 @@ public class Persona implements Serializable{
     
     private String usuModificacion;
             
-    private Date fechaModificacion;        
+    private Date fechaModificacion;   
+    
+    private String sexo;
+    
+    private Date fechaNacimiento;
     /*temporales*/
     private String numeroExpediente;
     
@@ -272,6 +276,22 @@ public class Persona implements Serializable{
 
     public void setTipoDocumento(String tipoDocumento) {
         this.tipoDocumento = tipoDocumento;
+    }
+
+    public String getSexo() {
+        return sexo;
+    }
+
+    public void setSexo(String sexo) {
+        this.sexo = sexo;
+    }
+
+    public Date getFechaNacimiento() {
+        return fechaNacimiento;
+    }
+
+    public void setFechaNacimiento(Date fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
     }
     
     

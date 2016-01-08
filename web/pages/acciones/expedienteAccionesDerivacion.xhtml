@@ -22,7 +22,7 @@
                 function confirmar6() {
                     $(".confirmacion6").modal('show');
                 }
-                
+
                 function confirmar7() {
                     $(".confirmacion7").modal('show');
                 }
@@ -48,30 +48,30 @@
             <div class="panel panel-default">
 
                 <div class="panel-body">
-                    <div class="btn-group" role="group" style="float: right; width: 10%">
-                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="glyphicon glyphicon-th-list" /> Acciones
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a jsf:action="#{registroController.inicioAccionesDerivacion()}">
-                                    <span class="glyphicon glyphicon-export" />Derivar
-                                </a>
-                            </li>
-                            <li>
-                                <a jsf:action="#{registroController.inicioAccionesConsulta(0)}">
-                                    <span class="glyphicon glyphicon-question-sign" />Consultar
-                                </a>
-                            </li>
-                            <li><a href="#">Suspensión</a></li>
-                            <li><a href="#">Ampliación</a></li>
-                            <li><a href="#">Acumular</a></li>
-                        </ul>
-                    </div>
-
-                    <h:panelGroup rendered="#{seguridadUtilController.tieneRecurso('REC_EXP001')}">
-
+                    <h:panelGroup rendered="#{registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo}">
+                        <div class="btn-group" role="group" style="float: right; width: 10%">
+                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="glyphicon glyphicon-th-list" /> Acciones
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a jsf:action="#{registroController.inicioAccionesDerivacion()}">
+                                        <span class="glyphicon glyphicon-export" />Derivar
+                                    </a>
+                                </li>
+                                <li>
+                                    <a jsf:action="#{registroController.inicioAccionesConsulta(0)}">
+                                        <span class="glyphicon glyphicon-question-sign" />Consultar
+                                    </a>
+                                </li>
+                                <li><a href="#">Suspensión</a></li>
+                                <li><a href="#">Ampliación</a></li>
+                                <li><a href="#">Acumular</a></li>
+                            </ul>
+                        </div>
+                    </h:panelGroup>
+                    <h:panelGroup rendered="#{seguridadUtilController.tieneRecurso('REC_EXP001') or registroController.listaExpedienteDerivacion.size() == 0 }">
                         <table style="width: 100%">
                             <tr>
                                 <td colspan="2" ><br/>
@@ -92,7 +92,7 @@
                                         <div class="body">
                                             <div style="text-align: right">
                                                 <br/>
-                                                <h:panelGroup rendered="#{registroController.expedienteDerivacionEnvia.id == null and seguridadUtilController.tieneRol('ROL0000001')}">
+                                                <h:panelGroup rendered="#{registroController.expedienteDerivacionEnvia.id == null and seguridadUtilController.tieneRol('ROL0000001') or registroController.listaExpedienteDerivacion.size() == 0}">
                                                     <a class="btn btn-primary" onclick="confirmar7()">
                                                         <span class="glyphicon glyphicon-share-alt"/>Enviar
                                                     </a>
@@ -132,7 +132,7 @@
                             </tr>
                         </table>
                     </h:panelGroup>
-                    <h:panelGroup rendered="#{seguridadUtilController.tieneRecurso('REC_EXP002') and registroController.usuarioSession.codigo == registroController.expedienteDerivacionAprueba.codigoUsuario}">
+                    <h:panelGroup rendered="#{seguridadUtilController.tieneRecurso('REC_EXP002') and registroController.usuarioSession.codigo == registroController.expedienteDerivacionAprueba.codigoUsuario and registroController.listaExpedienteDerivacion.size() > 0}">
                         <br/>
                         <table style="width: 100%">
                             <tr>
@@ -207,21 +207,23 @@
                                                 <table style="width: 100%">
                                                     <tr>
                                                         <td style="padding-right: 30px; width: 50%">
-                                                            <h:selectOneRadio value="#{registroController.expedienteDerivacionAprueba.aprueba}">
-                                                                <f:selectItem itemLabel="Aprobar" itemValue="SI" />
-                                                                <f:selectItem itemLabel="Desaprobar" itemValue="NO" />
-                                                                <f:ajax render="idpanelGroupAPO" />
-                                                            </h:selectOneRadio>
-                                                            <br/>
                                                             <label>Motivo de la aprobación / desaprobación</label>
                                                             <textarea jsf:value="#{registroController.expedienteDerivacionAprueba.detalle}" rows="6" style="width: 100%" maxlength="1300" placeholder="Motivo"/>
                                                         </td>
                                                         <td style="vertical-align: top">
-                                                            <label jsf:rendered="#{registroController.expedienteDerivacionAprueba.aprueba == 'SI'}">Oficina Defensorial:</label>
-                                                            <h:selectOneMenu value="#{registroController.expedienteDerivacionAprueba.idOficinaDefensorial}" rendered="#{registroController.expedienteDerivacionAprueba.aprueba == 'SI'}">
-                                                                <f:selectItem itemLabel="Seleccione" itemValue="0" />
-                                                                <f:selectItems value="#{registroController.listaOficinaDefensoriales}" />
-                                                            </h:selectOneMenu>
+                                                            <h:panelGroup id="idPanelapob">
+                                                                <h:selectOneRadio value="#{registroController.expedienteDerivacionAprueba.aprueba}">
+                                                                    <f:selectItem itemLabel="Aprobar" itemValue="SI" />
+                                                                    <f:selectItem itemLabel="Desaprobar" itemValue="NO" />
+                                                                    <f:ajax render="idPanelapob" />
+                                                                </h:selectOneRadio>
+                                                                <br/>
+                                                                <label jsf:rendered="#{registroController.expedienteDerivacionAprueba.aprueba == 'SI'}">Oficina Defensorial:</label>
+                                                                <h:selectOneMenu value="#{registroController.expedienteDerivacionAprueba.idOficinaDefensorial}" rendered="#{registroController.expedienteDerivacionAprueba.aprueba == 'SI'}">
+                                                                    <f:selectItem itemLabel="Seleccione" itemValue="0" />
+                                                                    <f:selectItems value="#{registroController.listaOficinaDefensoriales}" />
+                                                                </h:selectOneMenu>
+                                                            </h:panelGroup>
                                                         </td>
                                                     </tr>
                                                 </table>
@@ -314,21 +316,23 @@
                                                 <table style="width: 100%">
                                                     <tr>
                                                         <td style="padding-right: 30px; width: 50%">
-                                                            <h:selectOneRadio value="#{registroController.expedienteDerivacionReasigna.aprueba}">
-                                                                <f:selectItem itemLabel="Aceptar Derivación" itemValue="SI" />
-                                                                <f:selectItem itemLabel="Rechazar Derivación" itemValue="NO" />
-                                                                <f:ajax render="idpanelGroupREA" />
-                                                            </h:selectOneRadio>
-                                                            <br/>
                                                             <label>Motivo de aceptar / rechazar</label>
                                                             <textarea jsf:value="#{registroController.expedienteDerivacionReasigna.detalle}" rows="6" style="width: 100%" maxlength="1300" placeholder="Motivo"/>
                                                         </td>
                                                         <td style="vertical-align: top">
-                                                            <label jsf:rendered="#{registroController.expedienteDerivacionReasigna.aprueba == 'SI'}">Comisionado:</label>
-                                                            <h:selectOneMenu value="#{registroController.expedienteDerivacionReasigna.codigoUsuarioDerivado}" rendered="#{registroController.expedienteDerivacionReasigna.aprueba == 'SI'}">
-                                                                <f:selectItem itemLabel="Seleccione" itemValue="0" />
-                                                                <f:selectItems value="#{registroController.listaUsuariosComisionadosPorOD}" />
-                                                            </h:selectOneMenu>
+                                                            <h:panelGroup id="idPanelrech">
+                                                                <h:selectOneRadio value="#{registroController.expedienteDerivacionReasigna.aprueba}">
+                                                                    <f:selectItem itemLabel="Aceptar Derivación" itemValue="SI" />
+                                                                    <f:selectItem itemLabel="Rechazar Derivación" itemValue="NO" />
+                                                                    <f:ajax render="idPanelrech" />
+                                                                </h:selectOneRadio>
+                                                                <br/>
+                                                                <label jsf:rendered="#{registroController.expedienteDerivacionReasigna.aprueba == 'SI'}">Comisionado:</label>
+                                                                <h:selectOneMenu value="#{registroController.expedienteDerivacionReasigna.codigoUsuarioDerivado}" rendered="#{registroController.expedienteDerivacionReasigna.aprueba == 'SI'}">
+                                                                    <f:selectItem itemLabel="Seleccione" itemValue="0" />
+                                                                    <f:selectItems value="#{registroController.listaUsuariosComisionadosPorOD}" />
+                                                                </h:selectOneMenu>
+                                                            </h:panelGroup>
                                                         </td>
                                                     </tr>
                                                 </table>

@@ -20,6 +20,8 @@
         <result property="fechaRegistro" column="D_FECHAREGISTRO"/>
         <result property="usuModificacion" column="C_USUMODIFICACION"/>
         <result property="fechaModificacion" column="D_FECHAMODIFICACION"/>
+        <result property="sexo" column="C_SEXO"/>
+        <result property="fechaNacimiento" column="D_FECHANACIMIENTO"/>
     </resultMap> 
     
     
@@ -77,6 +79,12 @@
         <if test="fechaModificacion != null">
             D_FECHAMODIFICACION,
         </if>
+        <if test="sexo != null">
+            C_SEXO,
+        </if>
+        <if test="fechaNacimiento != null">
+            D_FECHANACIMIENTO,
+        </if>
         N_IDPERSONA
         )
         VALUES 
@@ -126,11 +134,17 @@
         <if test="fechaRegistro != null">
             #{fechaRegistro},
         </if>
-         <if test="usuModificacion != null">
+        <if test="usuModificacion != null">
             #{usuModificacion},
         </if>
         <if test="fechaModificacion != null">
             #{fechaModificacion},
+        </if>
+        <if test="sexo != null">
+            #{sexo},
+        </if>
+        <if test="fechaNacimiento != null">
+            #{fechaNacimiento},
         </if>
         SEQ_SID_REG_PERSONA.NextVal
         )
@@ -143,49 +157,55 @@
     <update id="personaUpdate" parameterType="persona">
         UPDATE SID_REG_PERSONA
         <set>
-        <if test="apellidoPat != null">
-            C_APELLIDOPAT = UPPER(#{apellidoPat}),
-        </if>
-        <if test="apellidoMat != null">
-            C_APELLIDOMAT = UPPER(#{apellidoMat}),
-        </if>
-        <if test="numeroDocumento != null">
-            C_NUMERODOCUMENTO = #{numeroDocumento},
-        </if>
-        <if test="tipoDocumento != null">
-            C_TIPODOCUMENTO = #{tipoDocumento},
-        </if>
-        <if test="ruc != null">
-            C_RUC = #{ruc},
-        </if>
-        <if test="direccion != null">
-            C_DIRECCION = #{direccion},
-        </if>
-        <if test="email != null">
-            C_EMAIL = #{email},
-        </if>
-        <if test="telefono1 != null">
-            C_TELEFONO1 = #{telefono1},
-        </if>
-        <if test="telefono2 != null">
-            C_TELEFONO2 = #{telefono2},
-        </if>
-        <if test="idDepartamento != null">
-            N_IDDEPA = #{idDepartamento},
-        </if>
-        <if test="idProvincia != null">
-            N_IDPROV = #{idProvincia},
-        </if>
-        <if test="idDistrito != null">
-            N_IDDISTR = #{idDistrito},
-        </if>
-        <if test="fechaModificacion != null">
-            D_FECHAMODIFICACION = #{fechaModificacion},
-        </if>
-        <if test="usuModificacion != null">
-            C_USUMODIFICACION = #{usuModificacion},
-        </if>
-        C_NOMBRE = UPPER(#{nombre})
+            <if test="apellidoPat != null">
+                C_APELLIDOPAT = UPPER(#{apellidoPat}),
+            </if>
+            <if test="apellidoMat != null">
+                C_APELLIDOMAT = UPPER(#{apellidoMat}),
+            </if>
+            <if test="numeroDocumento != null">
+                C_NUMERODOCUMENTO = #{numeroDocumento},
+            </if>
+            <if test="tipoDocumento != null">
+                C_TIPODOCUMENTO = #{tipoDocumento},
+            </if>
+            <if test="ruc != null">
+                C_RUC = #{ruc},
+            </if>
+            <if test="direccion != null">
+                C_DIRECCION = #{direccion},
+            </if>
+            <if test="email != null">
+                C_EMAIL = #{email},
+            </if>
+            <if test="telefono1 != null">
+                C_TELEFONO1 = #{telefono1},
+            </if>
+            <if test="telefono2 != null">
+                C_TELEFONO2 = #{telefono2},
+            </if>
+            <if test="idDepartamento != null">
+                N_IDDEPA = #{idDepartamento},
+            </if>
+            <if test="idProvincia != null">
+                N_IDPROV = #{idProvincia},
+            </if>
+            <if test="idDistrito != null">
+                N_IDDISTR = #{idDistrito},
+            </if>
+            <if test="fechaModificacion != null">
+                D_FECHAMODIFICACION = #{fechaModificacion},
+            </if>
+            <if test="usuModificacion != null">
+                C_USUMODIFICACION = #{usuModificacion},
+            </if>
+            <if test="sexo != null">
+                C_SEXO = #{sexo},
+            </if>
+            <if test="fechaNacimiento != null">
+                D_FECHANACIMIENTO = #{fechaNacimiento},
+            </if>
+            C_NOMBRE = UPPER(#{nombre})
         </set>
         <where>
             N_IDPERSONA = #{id}
@@ -205,8 +225,8 @@
     
     <select id="personaBusarGeneral" resultMap="personaMap" parameterType="persona" >
         SELECT B.* FROM (
-SELECT A.*,ROWNUM numfila FROM (
-SELECT DISTINCT A.* FROM SID_REG_PERSONA A
+        SELECT A.*,ROWNUM numfila FROM (
+        SELECT DISTINCT A.* FROM SID_REG_PERSONA A
         LEFT JOIN SID_REG_EXPEDE_PERSONA B ON 
         A.N_IDPERSONA = B.N_IDPERSONA
         LEFT JOIN SID_REG_EXPEDIENTE C
@@ -228,8 +248,7 @@ SELECT DISTINCT A.* FROM SID_REG_PERSONA A
             AND A.C_NUMERODOCUMENTO LIKE '%'||#{numeroDocumento}||'%'
         </if>
         ORDER BY A.N_IDPERSONA
-) A
-
+        ) A
         ) B
         WHERE 1 = 1
         and B.numfila BETWEEN #{ini} AND #{fin}
