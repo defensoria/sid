@@ -50,6 +50,8 @@ public class CacheServiceImpl implements CacheService{
     private static final Integer CACHE_PARAMETRO_GRUPO_VULNERABLE = 130;
     
     private static final Integer CACHE_PARAMETRO_GRUPO_ESPECIAL = 140;
+    
+    private static final Integer CACHE_PARAMETRO_TIPO_ENTIDAD = 150;
 
     private volatile HashMap<Integer, Object> contenedor = null;
 
@@ -149,6 +151,11 @@ public class CacheServiceImpl implements CacheService{
         return buscarParametro(CACHE_PARAMETRO_GRUPO_ESPECIAL, CACHE_PARAMETRO_GRUPO_ESPECIAL);
     }
     
+    @Override
+    public List<Parametro> buscarTipoEntidad() {
+        return buscarParametro(CACHE_PARAMETRO_TIPO_ENTIDAD, CACHE_PARAMETRO_TIPO_ENTIDAD);
+    }
+    
     private Object getElemento(Integer key) {
         if (this.contenedor == null) {
             return null;
@@ -163,7 +170,5 @@ public class CacheServiceImpl implements CacheService{
         this.contenedor.put(key, objeto);
         notifyAll();
     }
-
-    
 
 }

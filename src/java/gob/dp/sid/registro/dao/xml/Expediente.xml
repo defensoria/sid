@@ -462,9 +462,36 @@
         <if test="usuarioRegistro != null">
         AND A.C_USUREGISTRO  = #{usuarioRegistro}     
         </if>
+        <if test="numero != null">
+        AND A.C_NUMEROEXPEDIENTE  LIKE '%'||#{numero}||'%'      
+        </if>
         ORDER BY A.N_IDEXPEDIENTE DESC
         ) B
         ) A WHERE a.numfila BETWEEN #{ini} AND #{fin}
+    </select>
+    
+    <select id="expedienteBuscarUsuarioCompleto" resultMap="expedienteMap" parameterType="expediente">
+        SELECT DISTINCT A.*, B.NOMBRE_PARAMETRO AS TIPOCLASIFICACION, C.C_INDICADORETAPA, C.N_ID_ETAPA, D.C_NOMBRE, J.C_NOMBRE NOMBRE_OD
+        FROM SID_REG_EXPEDIENTE A
+        INNER JOIN SID_PARAMETRO B ON A.C_TIPOCLASIFICACION = B.VALOR_PARAMETRO AND B.PADRE_PARAMETRO = 10
+        INNER JOIN SID_SEG_USUARIO L ON L.CODIGO_USUARIO = A.C_USUREGISTRO 
+        INNER JOIN SID_SEG_OFICINA_DEFENSORIAL J ON J.N_ID_OD = L.N_ID_OD
+        LEFT JOIN SID_REG_ETAPA_ESTADO C ON A.N_IDEXPEDIENTE = C.N_ID_EXPEDIENTE
+        LEFT JOIN SID_REG_ESTADO D ON C.N_ID_ESTADO = D.N_ID_ESTADO
+        LEFT JOIN SID_REG_EXPEDE_ENTIDAD E ON A.N_IDEXPEDIENTE = E.N_IDEXPEDIENTE
+        LEFT JOIN SID_REG_ENTIDAD F ON E.N_ID_ENTIDAD = F.N_ID_ENTIDAD
+        LEFT JOIN SID_REG_EXPEDE_PERSONA G ON G.N_IDEXPEDIENTE = A.N_IDEXPEDIENTE
+        LEFT JOIN SID_REG_PERSONA H ON G.N_IDPERSONA = H.N_IDPERSONA
+        WHERE A.C_ESTADO = 'A' 
+        AND A.C_ESTADOGENERAL = 'A'
+        AND A.C_TIPOCLASIFICACION IN ('01','03')
+        <if test="usuarioRegistro != null">
+        AND A.C_USUREGISTRO  = #{usuarioRegistro}     
+        </if>
+        <if test="numero != null">
+        AND A.C_NUMEROEXPEDIENTE  LIKE '%'||#{numero}||'%'      
+        </if>
+        ORDER BY A.N_IDEXPEDIENTE DESC
     </select>
     
     <select id="expedienteBuscarUsuarios" resultMap="expedienteMap" parameterType="expediente">

@@ -119,6 +119,8 @@ public class Expediente implements Serializable{
     private Integer indicadorDesestimiento;
     
     private Boolean indicadorOficio;
+    
+    private Boolean indReplica;
 
     public Long getId() {
         return id;
@@ -536,6 +538,14 @@ public class Expediente implements Serializable{
 
     public void setIndicadorOficio(Boolean indicadorOficio) {
         this.indicadorOficio = indicadorOficio;
+    }
+
+    public Boolean getIndReplica() {
+        return indReplica;
+    }
+
+    public void setIndReplica(Boolean indReplica) {
+        this.indReplica = indReplica;
     }
 
 }

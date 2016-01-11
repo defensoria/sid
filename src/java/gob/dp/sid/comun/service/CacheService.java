@@ -43,4 +43,6 @@ public interface CacheService {
     
     public List<Parametro> buscarGrupoEspecial();
     
+    public List<Parametro> buscarTipoEntidad();
+    
 }

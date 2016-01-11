@@ -529,14 +529,7 @@
                                                         </h:selectOneMenu>
                                                     </td>
                                                 </tr>
-                                                <tr>
-                                                    <td>
-                                                        <span class="text-bold">Expediente de oficio:</span>
-                                                    </td>
-                                                    <td>
-                                                        <h:selectBooleanCheckbox class="idChecExpedienteOficio" value="#{registroController.expediente.indicadorOficio}" style="background: #EEEEEE; pointer-events:none;"/>
-                                                    </td>
-                                                </tr>
+
                                             </table>
                                             <br/>
                                             <br/>
@@ -626,22 +619,22 @@
                                                                                     </div>
                                                                                     <div class="modal-body" style="padding:5px">
                                                                                         <div class="panel-body">
-
-                                                                                            <table style="width: 100%">
-                                                                                                <tr>
-                                                                                                    <td>
-                                                                                                        <input type="text" autocomplete="off" jsf:value="#{registroController.expedienteClasificacionBusqueda.nombre}" maxlength="100" />
-                                                                                                    </td>
-                                                                                                    <td>
-                                                                                                        <a class="btn btn-primary" jsf:action="#{registroController.buscarClasificacion(1)}">
-                                                                                                            <span class="glyphicon glyphicon-search" />
-                                                                                                            <f:ajax render="idPanelBusquedaClasificacion" execute="@form" />Buscar
-                                                                                                        </a>
-                                                                                                    </td>
-                                                                                                </tr>
-                                                                                            </table>
-                                                                                            <br/>
                                                                                             <h:panelGroup id="idPanelBusquedaClasificacion">
+                                                                                                <table style="width: 100%">
+                                                                                                    <tr>
+                                                                                                        <td>
+                                                                                                            <input type="text" autocomplete="off" jsf:value="#{registroController.expedienteClasificacionBusqueda.nombre}" maxlength="100" />
+                                                                                                        </td>
+                                                                                                        <td>
+                                                                                                            <a class="btn btn-primary" jsf:action="#{registroController.buscarClasificacion(1)}" jsf:onclick="loadingModal()">
+                                                                                                                <span class="glyphicon glyphicon-search" />
+                                                                                                                <f:ajax render="idPanelBusquedaClasificacion" execute="idPanelBusquedaClasificacion" onevent="closeModal"/>Buscar
+                                                                                                            </a>
+                                                                                                        </td>
+                                                                                                    </tr>
+                                                                                                </table>
+                                                                                                <br/>
+
                                                                                                 <c:forEach var="nivel" items="#{registroController.listaExpedienteNivelModal}">
                                                                                                     <div class="alert alert-warning fade in" style="margin-bottom: 3px">
                                                                                                         <table style="width: 100%">
@@ -825,51 +818,11 @@
                                                     </tr>
                                                 </table>
                                             </h:panelGroup>
+                                            <h:panelGroup id="idPanelEtiquetas">
                                             <table style="width: 100%">
                                                 <tr>
                                                     <td style="width: 50%"></td>
                                                     <td></td>
-                                                </tr>
-                                                <tr>
-                                                    <td style="padding-bottom: 10px" colspan="2">
-                                                        <br/>
-                                                        <span class="text-bold" style="font-size: 1.2em; color: red">Actuación o responsabilidad de Entidades del Estado</span>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td style="padding-bottom: 20px">
-                                                        <span class="text-bold">Actuación o responsabilidad :</span>
-                                                    </td>
-                                                    <td style="padding-bottom: 20px">
-                                                        <h:selectOneMenu value="#{registroController.expediente.tipoActuacionResponsabilidad}" style="width: 60%">
-                                                            <f:selectItem itemLabel="Seleccione" itemValue="0" />
-                                                            <f:selectItems value="#{listasComunesController.buscarActuacionResponsabilidad(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
-                                                        </h:selectOneMenu>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td style="padding-bottom: 10px" colspan="2">
-                                                        <br/>
-                                                        <span class="text-bold" style="font-size: 1.2em; color: red">Grupo Vulnerables y Especiales</span>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td style="padding-bottom: 20px">
-                                                        <span class="text-bold">Grupos vulnerables :</span>
-                                                    </td>
-                                                    <td style="padding-bottom: 20px">
-                                                        <gc:selectMultiBootstrap idSelect="idSelectGrupoViolencia" idHidden="idSelect1" 
-                                                                                 lista="#{listasComunesController.buscarGrupoVulnerable(false,false,false)}" value="#{registroController.expediente.tipoGrupoVulnerable}"/>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td style="padding-bottom: 20px">
-                                                        <span class="text-bold">Grupos especiales :</span>
-                                                    </td>
-                                                    <td style="padding-bottom: 20px">
-                                                        <gc:selectMultiBootstrap idSelect="idSelectGrupoEspecial" idHidden="idSelect32" 
-                                                                                 lista="#{listasComunesController.buscarGrupoEspecial(false,false,false)}" value="#{registroController.expediente.tipoGrupoEspecial}"/>
-                                                    </td>
                                                 </tr>
                                                 <tr>
                                                     <td style="padding-bottom: 10px">
@@ -881,7 +834,7 @@
                                                             <input type="hidden" id="idEtiqueta" jsf:value="#{registroController.expediente.idEtiqueta}" />
                                                             <a jsf:action="#{registroController.agregarEtiqueta()}">
                                                                 <span class="glyphicon glyphicon-plus form-control-feedback"/>
-                                                                <f:ajax render="@form" execute="@form" />
+                                                                <f:ajax render="idPanelEtiquetas" execute="idPanelEtiquetas" />
                                                             </a>
                                                         </div>
 
@@ -909,6 +862,7 @@
                                                     </div>             
                                                 </c:forEach>
                                             </div>
+                                                </h:panelGroup>
                                         </div>
                                     </div>
                                 </td>
@@ -962,7 +916,7 @@
                         <td colspan="2">
                             <table style="width: 100%">
                                 <tr>
-                                    <td style="vertical-align: top; padding-right: 2px; text-align: left; width: 40%">
+                                    <td style="vertical-align: top; padding-right: 2px; text-align: left; width: 40%; height: auto">
                                         <script>
                                             $(document).ready(function () {
                                                 if (parseInt($("#idPanel3").height()) > parseInt($("#idPanel4").height())) {
@@ -978,7 +932,9 @@
                                         <div class="panel panel-featured-top-silver" id="idPanel3">
                                             <div class="panel-body">
                                                 <br/>
-                                                <span class="text-resalt-primary">Recurrentes y afectados</span>
+
+                                                <h:outputText rendered="#{!registroController.expediente.indicadorOficio}" value="Recurrentes y afectados" class="text-resalt-primary" />
+                                                <h:outputText rendered="#{registroController.expediente.indicadorOficio}" value="Afectados" class="text-resalt-primary" />
                                                 <br/>
                                                 <h:panelGroup id="idPanelRecurrentes">
                                                     <table style="width: 100%">
@@ -1254,18 +1210,25 @@
                                                                     <h:column>
                                                                         <f:facet name="header">Reserva</f:facet>
                                                                         <h:selectBooleanCheckbox id="idCheckbox" value="#{per.indicadorReserva}" />
+                                                                        <br/><br/>
+                                                                        <span class="text-bold">Contacto:</span>
                                                                     </h:column>
                                                                     <h:column>
                                                                         <f:facet name="header">Nombre</f:facet>
                                                                         <h:outputText value="#{per.persona.nombre} #{per.persona.apellidoPat} #{per.persona.apellidoMat}"/>
+                                                                        <br/><br/>
+                                                                        <input type="text" jsf:value="#{per.contacto}" placeholder="Contacto" maxlength="180" />
                                                                     </h:column>
                                                                     <h:column>
                                                                         <f:facet name="header">Documento</f:facet>
                                                                         <h:outputText value="#{per.persona.numeroDocumento}"/>
                                                                     </h:column>
                                                                     <h:column>
-                                                                        <h:selectOneMenu value="#{per.tipo}">
+                                                                        <h:selectOneMenu rendered="#{!registroController.expediente.indicadorOficio}" value="#{per.tipo}">
                                                                             <f:selectItems value="#{listasComunesController.buscarExpedienteTipoActor(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
+                                                                        </h:selectOneMenu>
+                                                                        <h:selectOneMenu rendered="#{registroController.expediente.indicadorOficio}" value="#{per.tipo}">
+                                                                            <f:selectItem itemLabel="Afectado" itemValue="03" />
                                                                         </h:selectOneMenu>
                                                                     </h:column>
                                                                     <h:column>
@@ -1379,18 +1342,73 @@
                                                             </td>
                                                         </tr>
                                                     </table>
+                                                    <span class="text-bold">Expediente de oficio:</span>
+
+                                                    <h:selectBooleanCheckbox class="idChecExpedienteOficio" value="#{registroController.expediente.indicadorOficio}" style="background: #EEEEEE; pointer-events:none;"/>
+                                                    <br/><br/><br/>
+                                                    <table>
+                                                        <tr>
+                                                            <td style="padding-bottom: 10px" colspan="2">
+                                                                <br/>
+                                                                <span class="text-bold" style="font-size: 1.2em; color: red">Grupo Vulnerables y Especiales</span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="padding-bottom: 20px">
+                                                                <span class="text-bold">Grupos vulnerables :</span>
+                                                            </td>
+                                                            <td style="padding-bottom: 20px">
+                                                                <gc:selectMultiBootstrap idSelect="idSelectGrupoViolencia" idHidden="idSelect1" 
+                                                                                         lista="#{listasComunesController.buscarGrupoVulnerable(false,false,false)}" value="#{registroController.expediente.tipoGrupoVulnerable}"/>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="padding-bottom: 20px">
+                                                                <span class="text-bold">Grupos especiales :</span>
+                                                            </td>
+                                                            <td style="padding-bottom: 20px">
+                                                                <gc:selectMultiBootstrap idSelect="idSelectGrupoEspecial" idHidden="idSelect32" 
+                                                                                         lista="#{listasComunesController.buscarGrupoEspecial(false,false,false)}" value="#{registroController.expediente.tipoGrupoEspecial}"/>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
                                                 </h:panelGroup>
                                             </div>
                                         </div>
                                     </td>
                                     <td style="vertical-align: top; padding-left: 2px">
                                         <div class="panel panel-featured-top-silver" id="idPanel4">
-                                            <div class="panel-body">
+                                            <div class="panel-body" style="height: auto">
                                                 <br/>
                                                 <h:panelGroup id="idPanelEntidadesQue">
                                                     <table style="width: 100%">
                                                         <tr>
                                                             <td style="width: 85%">
+                                                                <table>
+                                                                    <tr>
+                                                                        <td colspan="2">
+                                                                            <table style="width: 100%">
+                                                                                <tr>
+                                                                                    <td style="padding-bottom: 10px" colspan="2">
+                                                                                        <br/>
+                                                                                        <span class="text-bold" style="font-size: 1.2em; color: red">Actuación o responsabilidad de Entidades del Estado</span>
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td style="padding-bottom: 20px">
+                                                                                        <span class="text-bold">Actuación o responsabilidad :</span>
+                                                                                    </td>
+                                                                                    <td style="padding-bottom: 20px">
+                                                                                        <h:selectOneMenu value="#{registroController.expediente.tipoActuacionResponsabilidad}" style="width: 60%">
+                                                                                            <f:selectItem itemLabel="Seleccione" itemValue="0" />
+                                                                                            <f:selectItems value="#{listasComunesController.buscarActuacionResponsabilidad(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
+                                                                                        </h:selectOneMenu>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </table>
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
                                                                 <table style="width: 100%">
                                                                     <tr>
                                                                         <td>
@@ -1404,11 +1422,11 @@
                                                                             <td>
                                                                                 <span class="text-resalt-primary">Tipo</span>
                                                                                 <h:selectOneMenu value="#{registroController.entidad.tipo}">
-                                                                                    <f:selectItem itemValue="0" itemLabel="Seleccione" />
-                                                                                    <f:selectItem itemValue="1" itemLabel="Centro médico" />
-                                                                                    <f:selectItem itemValue="2" itemLabel="Colegio" />
-                                                                                    <f:selectItem itemValue="3" itemLabel="Comisaría" />
-                                                                                </h:selectOneMenu>
+                                                            <f:selectItem itemLabel="Seleccione" itemValue="0" />
+                                                            <f:selectItems value="#{listasComunesController.buscarTipoEntidad(false, false, false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
+                                                        </h:selectOneMenu>
+                                                                                
+                                                                                
                                                                             </td>
                                                                         </td>
                                                                         <td>
@@ -1417,7 +1435,6 @@
                                                                         </td>
                                                                     </tr>
                                                                 </table>
-
                                                             </td>
                                                             <td style="vertical-align: bottom">
                                                                 <a style="vertical-align: bottom" href="#" class="trigger1" jsf:action="#{registroController.cargarPopoverEntidad(1)}" jsf:onclick="loadingModal()">
@@ -1558,6 +1575,7 @@
                                                                 </h:dataTable>
                                                             </td>
                                                         </tr>
+
                                                     </table>
                                                 </h:panelGroup>
                                             </div>

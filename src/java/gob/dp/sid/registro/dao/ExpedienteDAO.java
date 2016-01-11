@@ -45,4 +45,6 @@ public interface ExpedienteDAO {
     public Long expedienteCodigoPorOD(Long codigoOD);
     
     public void expedienteDesistir(Expediente expediente);
+    
+    public List<Expediente> expedienteBuscarUsuarioCompleto(Expediente expediente);
 }

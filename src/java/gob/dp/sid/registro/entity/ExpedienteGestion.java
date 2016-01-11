@@ -100,6 +100,8 @@ public class ExpedienteGestion implements Serializable{
     
     private String documentoGestion;
     
+    private String documentoGestionDetalle;
+    
     /**RESPUESTA**/
     private String nota;
     
@@ -133,6 +135,10 @@ public class ExpedienteGestion implements Serializable{
     private Integer verEtapa;
     
     private Long idExpediente;
+    
+    private String codigoGestionOrigen;
+    
+    
 
     public Long getId() {
         return id;
@@ -598,6 +604,22 @@ public class ExpedienteGestion implements Serializable{
 
     public void setIdExpediente(Long idExpediente) {
         this.idExpediente = idExpediente;
+    }
+
+    public String getCodigoGestionOrigen() {
+        return codigoGestionOrigen;
+    }
+
+    public void setCodigoGestionOrigen(String codigoGestionOrigen) {
+        this.codigoGestionOrigen = codigoGestionOrigen;
+    }
+
+    public String getDocumentoGestionDetalle() {
+        return documentoGestionDetalle;
+    }
+
+    public void setDocumentoGestionDetalle(String documentoGestionDetalle) {
+        this.documentoGestionDetalle = documentoGestionDetalle;
     }
     
 }

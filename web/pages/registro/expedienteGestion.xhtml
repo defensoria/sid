@@ -55,7 +55,109 @@
                             <td style="width: 50%; vertical-align: top; padding-right: 2px">
                                 <div class="panel panel-featured-top-silver">
                                     <div class="panel-body">
-                                        <span class="text-resalt-primary">Datos generales</span>
+                                        <table style="width: 100%">
+                                            <tr>
+                                                <td>
+                                                    <span class="text-resalt-primary">Datos generales</span>
+                                                </td>
+                                                <td style="text-align: right">
+                                                    <a class="btn btn-warning" jsf:action="#{registroController.cargarModalReplica()}" jsf:onclick="loadingModal()">
+                                                        <span class="glyphicon glyphicon-book" /> Replicar en otro expediente
+                                                        <f:ajax render="idPanelModalReplicar" execute="idPanelModalReplicar" onevent="modalReplicar" />
+                                                    </a>
+                                                    <script>
+
+                                                        function modalReplicar(data) {
+                                                            if (data.status === 'success') {
+                                                                $("#loadModal").modal('hide');
+                                                                $('body').removeClass('modal-open');
+                                                                $(".modal-backdrop").removeClass("modal-backdrop");
+                                                                $("#idModalReoplicar").modal('show');
+                                                            }
+                                                        }
+                                                    </script>
+                                                    <h:panelGroup id="idPanelModalReplicar">
+                                                        <div class="modal fade" data-backdrop="static" data-keyboard="false" id="idModalReoplicar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                            <div class="modal-dialog" style="text-align: left">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <a type="button" class="close" data-dismiss="modal">
+                                                                            <span style="color:red" class="glyphicon glyphicon-remove"></span>
+                                                                        </a>
+                                                                        <span class="text-resalt-primary">Replicar gestiones</span>
+                                                                    </div>
+                                                                    <div class="modal-body" style="padding:5px">
+                                                                        <h:panelGroup id="idPanelBusquedaReplic">
+                                                                            <table style="width: 100%">
+                                                                                <tr>
+                                                                                    <td style="width: 60%">
+                                                                                        <input type="text" id="idExpedienteNumero" jsf:value="#{registroController.expedienteBusquedaReplica.numero}" placeholder="Ingrese número de expediente" maxlength="50"/>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <a class="btn btn-primary" jsf:action="#{registroController.buscarModalReplica()}" jsf:onclick="loadingModal()">
+                                                                                <span class="glyphicon glyphicon-search" />Buscar 
+                                                                                <f:ajax render="idPanelBusquedaReplic" execute="idPanelBusquedaReplic" onevent="closeModal" />
+                                                                            </a>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </table>
+                                                                            <br/>
+                                                                            <h:dataTable id="idDatatableReplica" value="#{registroController.listaExpedienteXUsuarioPaginadoReplica.subList(registroController.inicioPaginado, registroController.finPaginado)}" var="exped" class="table table-hover" binding="#{ro5}">
+                                                                                <h:column>
+                                                                                    <f:facet name="header">Nro</f:facet>
+                                                                                    <h:outputText value="#{(ro5.rowIndex+1)+(registroController.nroPagina-1)*10}" />
+                                                                                </h:column>
+                                                                                <h:column>
+                                                                                    <f:facet name="header">Expediente</f:facet>
+                                                                                    <h:outputText value="#{exped.numero}" />
+                                                                                </h:column>
+                                                                                <h:column>
+                                                                                    <f:facet name="header">Tipo</f:facet>
+                                                                                    <h:outputText value="#{exped.clasificacionTipoNombre}" />
+                                                                                </h:column>
+                                                                                <h:column>
+                                                                                    <f:facet name="header">Etapa</f:facet>
+                                                                                    <h:outputText value="#{exped.etapaDetalle}" />
+                                                                                </h:column>
+                                                                                <h:column>
+                                                                                    <f:facet name="header">Estado expediente</f:facet>
+                                                                                    <h:outputText value="#{exped.estadoDetalle}" />
+                                                                                </h:column>
+                                                                                
+                                                                                <h:column>
+                                                                                    <h:selectBooleanCheckbox value="#{exped.indReplica}"/>
+                                                                                </h:column>
+                                                                            </h:dataTable>
+
+                                                                            <ul class="pager">
+                                                                                <li>
+                                                                                    <a jsf:action="#{registroController.listarExpedienteUsuarioPaginadoCompletoPagina(registroController.nroPagina -1)}" jsf:rendered="#{!empty registroController.listaExpedienteXUsuarioPaginado}" jsf:onclick="loadingModal()">Anterior
+                                                                                        <f:ajax render="idPanelBusquedaReplic" execute="idPanelBusquedaReplic" onevent="closeModal"/>
+                                                                                    </a>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <a jsf:action="#{registroController.listarExpedienteUsuarioPaginadoCompletoPagina(registroController.nroPagina +1)}" jsf:rendered="#{!empty registroController.listaExpedienteXUsuarioPaginado}" jsf:onclick="loadingModal()">Siguiente
+                                                                                        <f:ajax render="idPanelBusquedaReplic" execute="idPanelBusquedaReplic" onevent="closeModal"/>
+                                                                                    </a>
+                                                                                </li>
+                                                                            </ul>
+                                                                        </h:panelGroup>
+                                                                        <div class="modal-footer">
+                                                                            <a  class="btn btn-default" data-dismiss="modal">
+                                                                                <span class="glyphicon glyphicon-remove"/>Cerrar
+                                                                            </a>
+                                                                            <a class="btn btn-primary" data-dismiss="modal" jsf:action="#{registroController.insertarReplicaGestion1()}">
+                                                                                <span class="glyphicon glyphicon-floppy-disk"/>Guardar
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </h:panelGroup>
+                                                </td>
+                                            </tr>
+                                        </table>
                                         <br/><br/>
 
                                         <table style="width: 100%">
@@ -90,8 +192,6 @@
                                                         <label>Fecha de recepción:</label>
                                                         <gc:calendar value="#{registroController.expedienteGestion.fechaRecepcion}" />
                                                     </div>
-
-
                                                 </td>
                                             </tr>
                                         </table>
@@ -131,168 +231,166 @@
                                             <tr>
                                                 <td colspan="2">
                                                     <h:panelGroup id="idPanerl">
-                                                    <table style="width: 100%">
-                                                        <tr>
-                                                            <td style="width: 70%;padding-bottom: 10px;padding-right: 10px">
-                                                                <label>Institución:</label>
+                                                        <table style="width: 100%">
+                                                            <tr>
+                                                                <td style="width: 70%;padding-bottom: 10px;padding-right: 10px">
+                                                                    <label>Institución:</label>
 
 
-                                                                
-                                                                <table style="width: 100%">
-                                                                    <tr>
-                                                                        <td style="width: 85%">
+
+                                                                    <table style="width: 100%">
+                                                                        <tr>
+                                                                            <td style="width: 100%">
                                                                                 <table style="width: 100%">
                                                                                     <tr>
+
                                                                                         <td>
-                                                                                            <td>
-                                                                                                <span class="text-resalt-primary">Región</span>
-                                                                                                <h:selectOneMenu value="#{registroController.entidad.idDepartamento}">
-                                                                                                    <f:selectItem itemValue="#{registroController.usuarioSession.idDepartamento}" itemLabel="#{registroController.usuarioSession.nombreDepartamento}" />
-                                                                                                    <f:selectItem itemValue="0" itemLabel="Todas las regiones" />
-                                                                                                </h:selectOneMenu>
-                                                                                            </td>
-                                                                                            <td>
-                                                                                                <span class="text-resalt-primary">Tipo</span>
-                                                                                                <h:selectOneMenu value="#{registroController.entidad.tipo}">
-                                                                                                    <f:selectItem itemValue="0" itemLabel="Seleccione" />
-                                                                                                    <f:selectItem itemValue="1" itemLabel="Centro médico" />
-                                                                                                    <f:selectItem itemValue="2" itemLabel="Colegio" />
-                                                                                                    <f:selectItem itemValue="3" itemLabel="Comisaría" />
-                                                                                                </h:selectOneMenu>
-                                                                                            </td>
+                                                                                            <span class="text-resalt-primary">Región</span>
+                                                                                            <h:selectOneMenu value="#{registroController.entidad.idDepartamento}">
+                                                                                                <f:selectItem itemValue="#{registroController.usuarioSession.idDepartamento}" itemLabel="#{registroController.usuarioSession.nombreDepartamento}" />
+                                                                                                <f:selectItem itemValue="0" itemLabel="Todas las regiones" />
+                                                                                            </h:selectOneMenu>
                                                                                         </td>
+                                                                                        <td>
+                                                                                            <span class="text-resalt-primary">Tipo</span>
+                                                                                            <h:selectOneMenu value="#{registroController.entidad.tipo}">
+                                                                                                <f:selectItem itemLabel="Seleccione" itemValue="0" />
+                                                                                                <f:selectItems value="#{listasComunesController.buscarTipoEntidad(false, false, false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
+                                                                                            </h:selectOneMenu>
+                                                                                        </td>
+
                                                                                         <td>
                                                                                             <span class="text-resalt-primary">Entidad</span>
                                                                                             <input type="text" id="idBusquedaEntidad" style="width: 100%" placeholder="Ingrese nombre de la Entidad" jsf:value="#{registroController.entidad.nombre}"/>
                                                                                         </td>
                                                                                     </tr>
                                                                                 </table>
-                                                                            
-                                                                        </td>
-                                                                        <td style="vertical-align: bottom">
-                                                                            <a style="vertical-align: bottom" href="#" class="trigger1" jsf:action="#{registroController.cargarPopoverEntidad(1)}" jsf:onclick="loadingModal()">
-                                                                                <span style="color: #3183B9; font-size: large;" class="glyphicon glyphicon-search"></span>
-                                                                                <f:ajax render="idPanerl" onevent="popove1" execute="idPanerl"/>
-                                                                            </a>
-                                                                            <div class="popover-markup" style="float: right"> 
-                                                                                <div class="head hide ">
-                                                                                    <table style="width: 100%">
-                                                                                        <tr>
-                                                                                            <td>
-                                                                                                <b class="text-primary">Resultado</b>
-                                                                                            </td>
-                                                                                            <td style="text-align: right">
-                                                                                                <a style="cursor: pointer"  onclick="cerrarBusquedaEntidad()">
-                                                                                                    <span class="glyphicon glyphicon-remove" style="color: red" />
-                                                                                                </a>
-                                                                                            </td>
-                                                                                        </tr>
-                                                                                    </table>
-                                                                                </div>
 
-                                                                                <h:panelGroup id="idPanel1">
-                                                                                    <div class="content hide">
-
-                                                                                        <h:dataTable value="#{registroController.entidadPopover}" id="idDatableBusquedaEntida" var="entidades" class="table table-hover">
-                                                                                            <h:column>
-                                                                                                <f:facet name="header">Nombre</f:facet>
-                                                                                                <h:outputText value="#{entidades.nombre}"/>
-                                                                                            </h:column>
-                                                                                            <h:column>
-                                                                                                <f:facet name="header">Tipo</f:facet>
-                                                                                                <h:outputText value="#{entidades.tipoDetalle}"/>
-                                                                                            </h:column>
-                                                                                            <h:column>
-                                                                                                <f:facet name="header">Región</f:facet>
-                                                                                                <h:outputText value="#{entidades.nombreDepartamento}"/>
-                                                                                            </h:column>
-                                                                                            <h:column>
-                                                                                                <a jsf:action="#{registroController.addEntidadQuejada(entidades)}" jsf:onclick="loadingModal()">
-                                                                                                    <span style="font-size: medium" class="glyphicon glyphicon-share-alt"></span>  
-                                                                                                    <f:ajax render=":idFormTemplate:idPanerl" onevent="closeModal"/>
-                                                                                                </a>
-                                                                                            </h:column>
-                                                                                        </h:dataTable>
-                                                                                        <ul class="pager">
-                                                                                            <li>
-                                                                                                <a jsf:action="#{registroController.cargarPopoverEntidad(registroController.nroPaginaPersona -1)}" jsf:rendered="#{!empty registroController.entidadPopover}" jsf:onclick="loadingModal()">Anterior
-                                                                                                    <f:ajax render="idDatableBusquedaEntida" onevent="closeModal"/>
-                                                                                                </a>
-                                                                                            </li>
-                                                                                            <li>
-                                                                                                <a jsf:action="#{registroController.cargarPopoverEntidad(registroController.nroPaginaPersona +1)}" jsf:rendered="#{!empty registroController.entidadPopover}" jsf:onclick="loadingModal()">Siguiente
-                                                                                                    <f:ajax render="idDatableBusquedaEntida" onevent="closeModal"/>
-                                                                                                </a>
-                                                                                            </li>
-                                                                                        </ul>
+                                                                            </td>
+                                                                            <td style="vertical-align: bottom">
+                                                                                <a style="vertical-align: bottom" href="#" class="trigger1" jsf:action="#{registroController.cargarPopoverEntidad(1)}" jsf:onclick="loadingModal()">
+                                                                                    <span style="color: #3183B9; font-size: large;" class="glyphicon glyphicon-search"></span>
+                                                                                    <f:ajax render="idPanerl" onevent="popove1" execute="idPanerl"/>
+                                                                                </a>
+                                                                                <div class="popover-markup" style="float: right"> 
+                                                                                    <div class="head hide ">
+                                                                                        <table style="width: 100%">
+                                                                                            <tr>
+                                                                                                <td>
+                                                                                                    <b class="text-primary">Resultado</b>
+                                                                                                </td>
+                                                                                                <td style="text-align: right">
+                                                                                                    <a style="cursor: pointer"  onclick="cerrarBusquedaEntidad()">
+                                                                                                        <span class="glyphicon glyphicon-remove" style="color: red" />
+                                                                                                    </a>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                        </table>
                                                                                     </div>
 
-                                                                                    <style>
-                                                                                        .alink:hover {
-                                                                                            text-decoration: none;
-                                                                                        }
-                                                                                        .alink:link {
-                                                                                            text-decoration: none;
-                                                                                        }
+                                                                                    <h:panelGroup id="idPanel1">
+                                                                                        <div class="content hide">
 
-                                                                                        .alink:active {
-                                                                                            text-decoration: none;
-                                                                                        }
-                                                                                    </style>
-                                                                                    <script>
-                                                                                        $('#idBusquedaEntidad').focus(function () {
-                                                                                            $('.trigger1').popover('destroy');
-                                                                                        });
+                                                                                            <h:dataTable value="#{registroController.entidadPopover}" id="idDatableBusquedaEntida" var="entidades" class="table table-hover">
+                                                                                                <h:column>
+                                                                                                    <f:facet name="header">Nombre</f:facet>
+                                                                                                    <h:outputText value="#{entidades.nombre}"/>
+                                                                                                </h:column>
+                                                                                                <h:column>
+                                                                                                    <f:facet name="header">Tipo</f:facet>
+                                                                                                    <h:outputText value="#{entidades.tipoDetalle}"/>
+                                                                                                </h:column>
+                                                                                                <h:column>
+                                                                                                    <f:facet name="header">Región</f:facet>
+                                                                                                    <h:outputText value="#{entidades.nombreDepartamento}"/>
+                                                                                                </h:column>
+                                                                                                <h:column>
+                                                                                                    <a jsf:action="#{registroController.addEntidadQuejada(entidades)}" jsf:onclick="loadingModal()">
+                                                                                                        <span style="font-size: medium" class="glyphicon glyphicon-share-alt"></span>  
+                                                                                                        <f:ajax render=":idFormTemplate:idPanerl" onevent="closeModal"/>
+                                                                                                    </a>
+                                                                                                </h:column>
+                                                                                            </h:dataTable>
+                                                                                            <ul class="pager">
+                                                                                                <li>
+                                                                                                    <a jsf:action="#{registroController.cargarPopoverEntidad(registroController.nroPaginaPersona -1)}" jsf:rendered="#{!empty registroController.entidadPopover}" jsf:onclick="loadingModal()">Anterior
+                                                                                                        <f:ajax render="idDatableBusquedaEntida" onevent="closeModal"/>
+                                                                                                    </a>
+                                                                                                </li>
+                                                                                                <li>
+                                                                                                    <a jsf:action="#{registroController.cargarPopoverEntidad(registroController.nroPaginaPersona +1)}" jsf:rendered="#{!empty registroController.entidadPopover}" jsf:onclick="loadingModal()">Siguiente
+                                                                                                        <f:ajax render="idDatableBusquedaEntida" onevent="closeModal"/>
+                                                                                                    </a>
+                                                                                                </li>
+                                                                                            </ul>
+                                                                                        </div>
 
-                                                                                        function cerrarBusquedaEntidad() {
-                                                                                            $('.trigger1').popover('destroy');
-                                                                                        }
-
-                                                                                        var i = 0;
-                                                                                        function popove1(data) {
-                                                                                            if (data.status === 'success') {
-                                                                                                i++;
-                                                                                                $('.trigger1').popover({
-                                                                                                    html: true,
-                                                                                                    placement: 'bottom',
-                                                                                                    tabindex: '0',
-                                                                                                    trigger: 'focus',
-                                                                                                    title: function () {
-                                                                                                        return $(this).parent().find('.head').html();
-                                                                                                    },
-                                                                                                    content: function () {
-                                                                                                        return $(this).parent().find('.content').html();
-                                                                                                    }
-                                                                                                });
-
-                                                                                                if (i === 1) {
-                                                                                                    $('.trigger1').popover('show');
-                                                                                                }
-                                                                                                $("#loadModal").modal('hide');
-                                                                                                $('body').removeClass('modal-open');
-                                                                                                $(".modal-backdrop").removeClass("modal-backdrop");
+                                                                                        <style>
+                                                                                            .alink:hover {
+                                                                                                text-decoration: none;
                                                                                             }
-                                                                                        }
-                                                                                    </script> 
-                                                                                </h:panelGroup>
-                                                                            </div>
-                                                                        </td>
-                                                                    </tr>
-                                                                </table>
+                                                                                            .alink:link {
+                                                                                                text-decoration: none;
+                                                                                            }
 
-                                                                <br/>
+                                                                                            .alink:active {
+                                                                                                text-decoration: none;
+                                                                                            }
+                                                                                        </style>
+                                                                                        <script>
+                                                                                            $('#idBusquedaEntidad').focus(function () {
+                                                                                                $('.trigger1').popover('destroy');
+                                                                                            });
 
-                                                                <h:inputHidden value="#{registroController.expedienteGestion.idEntidad}" />
-                                                                <input type="text" jsf:value="#{registroController.expedienteGestion.nombreEntidad}" placeholder="Institución" readonly="true"/>
-                                                            </td>
-                                                            <td style="vertical-align: bottom;padding-bottom: 10px">
-                                                                Entidad quejada
-                                                                <h:selectBooleanCheckbox value="#{registroController.expedienteGestion.indEntidadQuejada}" >
-                                                                    <f:ajax render="idPanerl" listener="#{registroController.entidadQuejada()}" />
-                                                                </h:selectBooleanCheckbox>
-                                                            </td>
-                                                        </tr>
-                                                    </table>
+                                                                                            function cerrarBusquedaEntidad() {
+                                                                                                $('.trigger1').popover('destroy');
+                                                                                            }
+
+                                                                                            var i = 0;
+                                                                                            function popove1(data) {
+                                                                                                if (data.status === 'success') {
+                                                                                                    i++;
+                                                                                                    $('.trigger1').popover({
+                                                                                                        html: true,
+                                                                                                        placement: 'bottom',
+                                                                                                        tabindex: '0',
+                                                                                                        trigger: 'focus',
+                                                                                                        title: function () {
+                                                                                                            return $(this).parent().find('.head').html();
+                                                                                                        },
+                                                                                                        content: function () {
+                                                                                                            return $(this).parent().find('.content').html();
+                                                                                                        }
+                                                                                                    });
+
+                                                                                                    if (i === 1) {
+                                                                                                        $('.trigger1').popover('show');
+                                                                                                    }
+                                                                                                    $("#loadModal").modal('hide');
+                                                                                                    $('body').removeClass('modal-open');
+                                                                                                    $(".modal-backdrop").removeClass("modal-backdrop");
+                                                                                                }
+                                                                                            }
+                                                                                        </script> 
+                                                                                    </h:panelGroup>
+                                                                                </div>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+
+                                                                    <br/>
+
+                                                                    <h:inputHidden value="#{registroController.expedienteGestion.idEntidad}" />
+                                                                    <input type="text" jsf:value="#{registroController.expedienteGestion.nombreEntidad}" placeholder="Institución" readonly="true"/>
+                                                                </td>
+                                                                <td style="vertical-align: bottom;padding-bottom: 10px">
+                                                                    Entidad quejada
+                                                                    <h:selectBooleanCheckbox value="#{registroController.expedienteGestion.indEntidadQuejada}" >
+                                                                        <f:ajax render="idPanerl" listener="#{registroController.entidadQuejada()}" />
+                                                                    </h:selectBooleanCheckbox>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
                                                     </h:panelGroup>
                                                 </td>
                                             </tr>
@@ -322,7 +420,7 @@
                                                         <tr>
                                                             <td colspan="2" style="padding-top: 10px">
                                                                 <label>Documento de la gestión:</label>
-                                                                <input type="text" placeholder="Documento de la gestión"/>
+                                                                <input type="text" placeholder="Documento de la gestión" jsf:value="#{registroController.expedienteGestion.documentoGestionDetalle}" maxlength="100"/>
                                                             </td>
                                                             <td></td>
                                                         </tr>
@@ -349,7 +447,120 @@
                             <td style="vertical-align: top;  padding-left: 2px;">
                                 <div class="panel panel-featured-top-silver">
                                     <div class="panel-body">
-                                        <span class="text-resalt-primary">Información de respuesta</span>
+                                        <table style="width: 100%">
+                                            <tr>
+                                                <td>
+                                                    <span class="text-resalt-primary">Información de respuesta</span>
+                                                </td>
+                                                <td style="text-align: right">
+                                                    <a class="btn btn-warning" jsf:action="#{registroController.cargarModalReplica()}" jsf:onclick="loadingModal()">
+                                                        <span class="glyphicon glyphicon-book" /> Replicar en otro expediente
+                                                        <f:ajax render="idPanelModalReplicar2" execute="idPanelModalReplicar2" onevent="modalReplicar2" />
+                                                    </a>
+                                                    <script>
+
+                                                        function modalReplicar2(data) {
+                                                            if (data.status === 'success') {
+                                                                $("#loadModal").modal('hide');
+                                                                $('body').removeClass('modal-open');
+                                                                $(".modal-backdrop").removeClass("modal-backdrop");
+                                                                $("#idModalReoplicar2").modal('show');
+                                                            }
+                                                        }
+                                                    </script>
+                                                    <h:panelGroup id="idPanelModalReplicar2">
+                                                        <div class="modal fade" data-backdrop="static" data-keyboard="false" id="idModalReoplicar2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                            <div class="modal-dialog" style="text-align: left">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <a type="button" class="close" data-dismiss="modal">
+                                                                            <span style="color:red" class="glyphicon glyphicon-remove"></span>
+                                                                        </a>
+                                                                        <span class="text-resalt-primary">Replicar gestiones</span>
+                                                                    </div>
+                                                                    <div class="modal-body" style="padding:5px">
+                                                                        <h:panelGroup id="idPanelBusquedaReplic2">
+                                                                            <table style="width: 100%">
+                                                                                <tr>
+                                                                                    <td style="width: 60%">
+                                                                                        <input type="text" id="idExpedienteNumero" jsf:value="#{registroController.expedienteBusquedaReplica.numero}" placeholder="Ingrese número de expediente" maxlength="50"/>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <a class="btn btn-primary" jsf:action="#{registroController.buscarModalReplica()}" jsf:onclick="loadingModal()">
+                                                                                <span class="glyphicon glyphicon-search" />Buscar 
+                                                                                <f:ajax render="idPanelBusquedaReplic2" execute="idPanelBusquedaReplic2" onevent="closeModal" />
+                                                                            </a>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </table>
+                                                                            <br/>
+                                                                            <h:dataTable id="idDatatableReplica2" value="#{registroController.listaExpedienteXUsuarioPaginadoReplica.subList(registroController.inicioPaginado, registroController.finPaginado)}" var="exped" class="table table-hover" binding="#{ro6}">
+                                                                                <h:column>
+                                                                                    <f:facet name="header">Nro</f:facet>
+                                                                                    <h:outputText value="#{(ro6.rowIndex+1)+(registroController.nroPagina-1)*10}" />
+                                                                                </h:column>
+                                                                                <h:column>
+                                                                                    <f:facet name="header">Expediente</f:facet>
+                                                                                    <h:outputText value="#{exped.numero}" />
+                                                                                </h:column>
+                                                                                <h:column>
+                                                                                    <f:facet name="header">Tipo</f:facet>
+                                                                                    <h:outputText value="#{exped.clasificacionTipoNombre}" />
+                                                                                </h:column>
+                                                                                <h:column>
+                                                                                    <f:facet name="header">Etapa</f:facet>
+                                                                                    <h:outputText value="#{exped.etapaDetalle}" />
+                                                                                </h:column>
+                                                                                <h:column>
+                                                                                    <f:facet name="header">Estado expediente</f:facet>
+                                                                                    <h:outputText value="#{exped.estadoDetalle}" />
+                                                                                </h:column>
+                                                                                
+                                                                                <h:column>
+                                                                                    <a class="btn btn-primary" jsf:action="#{registroController.gestionesPorExpediente(exped.numero)}">
+                                                                                        <span class="glyphicon glyphicon-circle-arrow-right" />
+                                                                                        <f:ajax render=":idFormTemplate:idPanelBusquedaReplic2" />
+                                                                                    </a>
+                                                                                </h:column>
+                                                                            </h:dataTable>
+
+                                                                            <ul class="pager">
+                                                                                <li>
+                                                                                    <a jsf:action="#{registroController.listarExpedienteUsuarioPaginadoCompletoPagina(registroController.nroPagina -1)}" jsf:rendered="#{!empty registroController.listaExpedienteXUsuarioPaginado}" jsf:onclick="loadingModal()">Anterior
+                                                                                        <f:ajax render="idPanelBusquedaReplic2" execute="idPanelBusquedaReplic2" onevent="closeModal"/>
+                                                                                    </a>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <a jsf:action="#{registroController.listarExpedienteUsuarioPaginadoCompletoPagina(registroController.nroPagina +1)}" jsf:rendered="#{!empty registroController.listaExpedienteXUsuarioPaginado}" jsf:onclick="loadingModal()">Siguiente
+                                                                                        <f:ajax render="idPanelBusquedaReplic2" execute="idPanelBusquedaReplic2" onevent="closeModal"/>
+                                                                                    </a>
+                                                                                </li>
+                                                                            </ul>
+                                                                        </h:panelGroup>
+                                                                        <br/><br/>
+                                                                        <h:panelGroup rendered="#{registroController.listaGestionesParaReplica.size() > 0}">
+                                                                        <label>Seleccione las gestiones del expediente seleccionado:</label>
+                                                                        <h:selectOneMenu>
+                                                                            <f:selectItems value="#{registroController.listaGestionesParaReplica}" var="x" itemValue="#{x.id}" itemLabel="#{x.codigoGestion}" />
+                                                                        </h:selectOneMenu>
+                                                                        </h:panelGroup>
+                                                                        <div class="modal-footer">
+                                                                            <a  class="btn btn-default" data-dismiss="modal">
+                                                                                <span class="glyphicon glyphicon-remove"/>Cerrar
+                                                                            </a>
+                                                                            <a class="btn btn-primary" data-dismiss="modal" jsf:action="#{registroController.insertarReplicaGestion1()}">
+                                                                                <span class="glyphicon glyphicon-floppy-disk"/>Guardar
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </h:panelGroup>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        
                                         <br/><br/>
                                         <table style="width: 100%">
                                             <tr>

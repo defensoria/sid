@@ -47,5 +47,7 @@ public interface ExpedienteService {
     public void expedienteAsignar(Expediente expediente);
     
     public void expedienteDesistir(Expediente expediente);
+    
+    public List<Expediente> expedienteBuscarUsuarioCompleto(Expediente expediente);
 
 }

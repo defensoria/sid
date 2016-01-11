@@ -17,6 +17,8 @@
         <result property="idDepartamento" column="N_IDDEPA"/>
         <result property="idProvincia" column="N_IDPROV"/>
         <result property="idDistrito" column="N_IDDISTR"/>
+        <result property="telefono2" column="C_TELEFONO2"/>
+        <result property="contacto" column="C_CONTACTO"/>
     </resultMap> 
     
     
@@ -47,6 +49,12 @@
         <if test="idDistrito != null">
             N_IDDISTR,
         </if>
+        <if test="telefono2 != null">
+            C_TELEFONO2,
+        </if>
+        <if test="contacto != null">
+            C_CONTACTO,
+        </if>
         N_IDEXPEDIENTE,
         N_IDPERSONA
         )
@@ -75,6 +83,12 @@
         </if>
         <if test="idDistrito != null">
             #{idDistrito},   
+        </if>
+        <if test="telefono2 != null">
+            #{telefono2},
+        </if>
+        <if test="contacto != null">
+            #{contacto},
         </if>
         #{expediente.id},
         #{persona.id}
@@ -111,6 +125,12 @@
         </if>
         <if test="idDistrito != null">
             N_IDDISTR = #{idDistrito},
+        </if>
+        <if test="telefono2 != null">
+            C_TELEFONO2 = #{telefono2},
+        </if>
+        <if test="contacto != null">
+            C_CONTACTO = #{contacto},
         </if>
             C_DIRECCION = #{direccion}
         </set>

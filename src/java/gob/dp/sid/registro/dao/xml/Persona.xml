@@ -158,10 +158,10 @@
         UPDATE SID_REG_PERSONA
         <set>
             <if test="apellidoPat != null">
-                C_APELLIDOPAT = UPPER(#{apellidoPat}),
+                C_APELLIDOPAT =#{apellidoPat},
             </if>
             <if test="apellidoMat != null">
-                C_APELLIDOMAT = UPPER(#{apellidoMat}),
+                C_APELLIDOMAT = #{apellidoMat},
             </if>
             <if test="numeroDocumento != null">
                 C_NUMERODOCUMENTO = #{numeroDocumento},
@@ -205,7 +205,7 @@
             <if test="fechaNacimiento != null">
                 D_FECHANACIMIENTO = #{fechaNacimiento},
             </if>
-            C_NOMBRE = UPPER(#{nombre})
+            C_NOMBRE = #{nombre}
         </set>
         <where>
             N_IDPERSONA = #{id}

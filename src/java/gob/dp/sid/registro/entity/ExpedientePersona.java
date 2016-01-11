@@ -33,11 +33,15 @@ public class ExpedientePersona implements Serializable{
     
     private String telefono1;
     
+    private String telefono2;
+    
     private Integer idDepartamento;
     
     private Integer idProvincia;
     
     private Integer idDistrito;
+    
+    private String contacto;
 
     public ExpedientePersona(Expediente expediente, Persona persona) {
         this.expediente = expediente;
@@ -149,6 +153,22 @@ public class ExpedientePersona implements Serializable{
 
     public void setIdDistrito(Integer idDistrito) {
         this.idDistrito = idDistrito;
+    }
+
+    public String getContacto() {
+        return contacto;
+    }
+
+    public void setContacto(String contacto) {
+        this.contacto = contacto;
+    }
+
+    public String getTelefono2() {
+        return telefono2;
+    }
+
+    public void setTelefono2(String telefono2) {
+        this.telefono2 = telefono2;
     }
     
     

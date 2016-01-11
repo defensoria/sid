@@ -128,5 +128,10 @@ public class ExpedienteServiceImpl implements ExpedienteService{
     public void expedienteDesistir(Expediente expediente) {
         expedienteDAO.expedienteDesistir(expediente);
     }
+
+    @Override
+    public List<Expediente> expedienteBuscarUsuarioCompleto(Expediente expediente) {
+        return expedienteDAO.expedienteBuscarUsuarioCompleto(expediente);
+    }
     
 }
