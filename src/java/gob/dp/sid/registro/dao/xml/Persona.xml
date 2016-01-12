@@ -259,4 +259,8 @@
         SELECT COUNT(*) FROM SID_REG_PERSONA WHERE C_NUMERODOCUMENTO =  #{value}
     </select>
     
+    <select id="personaBusquedaOne" resultMap="personaMap" parameterType="Long" >
+        SELECT * FROM SID_REG_PERSONA WHERE N_IDPERSONA =  #{id}
+    </select>
+    
 </mapper>

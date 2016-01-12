@@ -23,4 +23,7 @@ public interface PersonaDAO {
     public List<Persona> personaBusarGeneral(Persona persona);
     
     public Long personaValidaDNI(String dni);
+    
+    public Persona personaBusquedaOne(long idPersona);
+    
 }

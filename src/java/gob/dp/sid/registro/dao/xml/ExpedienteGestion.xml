@@ -47,6 +47,7 @@
         <result property="fechaRecepcion" column="D_FECHARECEPCION"/>
         <result property="codigoONP" column="C_CODIGOONP"/>
         <result property="codigoGestionOrigen" column="C_CODIGOGESTIONORIGEN"/>
+        <result property="codigoGestionRespuesta" column="C_CODIGOGESTIONRESPUESTA"/>
         <result property="documentoGestionDetalle" column="C_DOCUMENTOGESTIONDETALLE"/>
         <!--adionales-->
         <result property="nombreParametroTipo" column="NOMBRE_PARAMETRO"/>
@@ -442,11 +443,14 @@
                 C_USUMODIFICACION = #{usuarioModificacion},
             </if>
             <if test="codigoGestionOrigen != null">
-            C_CODIGOGESTIONORIGEN = #{codigoGestionOrigen},
-        </if>
-        <if test="documentoGestionDetalle != null">
-            C_DOCUMENTOGESTIONDETALLE = #{documentoGestionDetalle},
-        </if>
+                C_CODIGOGESTIONORIGEN = #{codigoGestionOrigen},
+            </if>
+            <if test="codigoGestionRespuesta != null">
+                C_CODIGOGESTIONRESPUESTA = #{codigoGestionRespuesta},
+            </if>
+            <if test="documentoGestionDetalle != null">
+                C_DOCUMENTOGESTIONDETALLE = #{documentoGestionDetalle},
+            </if>
             D_FECHAMODIFICACION = SYSDATE
         </set>
         <where>
@@ -466,7 +470,7 @@
         WHERE B.N_IDEXPEDIENTE = #{id}
     </select>
     
-    <select id="expedienteGestionOne" resultMap="expedienteGestionMap" parameterType="Long" >
+    <select id="expedienteGestionBuscarOne" resultMap="expedienteGestionMap" parameterType="Long" >
         SELECT * FROM SID_REG_GESTION WHERE N_ID_GESTION = #{id}
     </select>
     

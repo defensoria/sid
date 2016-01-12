@@ -138,7 +138,7 @@ public class ExpedienteGestion implements Serializable{
     
     private String codigoGestionOrigen;
     
-    
+    private String codigoGestionRespuesta;
 
     public Long getId() {
         return id;
@@ -620,6 +620,14 @@ public class ExpedienteGestion implements Serializable{
 
     public void setDocumentoGestionDetalle(String documentoGestionDetalle) {
         this.documentoGestionDetalle = documentoGestionDetalle;
+    }
+
+    public String getCodigoGestionRespuesta() {
+        return codigoGestionRespuesta;
+    }
+
+    public void setCodigoGestionRespuesta(String codigoGestionRespuesta) {
+        this.codigoGestionRespuesta = codigoGestionRespuesta;
     }
     
 }

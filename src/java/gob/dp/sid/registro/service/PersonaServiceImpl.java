@@ -50,5 +50,10 @@ public class PersonaServiceImpl implements PersonaService{
     public Long personaValidaDNI(String dni) {
         return personaDAO.personaValidaDNI(dni);
     }
+
+    @Override
+    public Persona personaBusquedaOne(long idPersona) {
+        return personaDAO.personaBusquedaOne(idPersona);
+    }
     
 }

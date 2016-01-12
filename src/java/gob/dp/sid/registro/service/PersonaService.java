@@ -24,4 +24,6 @@ public interface PersonaService {
     
     public Long personaValidaDNI(String dni);
     
+    public Persona personaBusquedaOne(long idPersona);
+    
 }

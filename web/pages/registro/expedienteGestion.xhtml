@@ -95,9 +95,9 @@
                                                                                     </td>
                                                                                     <td>
                                                                                         <a class="btn btn-primary" jsf:action="#{registroController.buscarModalReplica()}" jsf:onclick="loadingModal()">
-                                                                                <span class="glyphicon glyphicon-search" />Buscar 
-                                                                                <f:ajax render="idPanelBusquedaReplic" execute="idPanelBusquedaReplic" onevent="closeModal" />
-                                                                            </a>
+                                                                                            <span class="glyphicon glyphicon-search" />Buscar 
+                                                                                            <f:ajax render="idPanelBusquedaReplic" execute="idPanelBusquedaReplic" onevent="closeModal" />
+                                                                                        </a>
                                                                                     </td>
                                                                                 </tr>
                                                                             </table>
@@ -123,7 +123,7 @@
                                                                                     <f:facet name="header">Estado expediente</f:facet>
                                                                                     <h:outputText value="#{exped.estadoDetalle}" />
                                                                                 </h:column>
-                                                                                
+
                                                                                 <h:column>
                                                                                     <h:selectBooleanCheckbox value="#{exped.indReplica}"/>
                                                                                 </h:column>
@@ -487,9 +487,9 @@
                                                                                     </td>
                                                                                     <td>
                                                                                         <a class="btn btn-primary" jsf:action="#{registroController.buscarModalReplica()}" jsf:onclick="loadingModal()">
-                                                                                <span class="glyphicon glyphicon-search" />Buscar 
-                                                                                <f:ajax render="idPanelBusquedaReplic2" execute="idPanelBusquedaReplic2" onevent="closeModal" />
-                                                                            </a>
+                                                                                            <span class="glyphicon glyphicon-search" />Buscar 
+                                                                                            <f:ajax render="idPanelBusquedaReplic2" execute="idPanelBusquedaReplic2" onevent="closeModal" />
+                                                                                        </a>
                                                                                     </td>
                                                                                 </tr>
                                                                             </table>
@@ -515,7 +515,7 @@
                                                                                     <f:facet name="header">Estado expediente</f:facet>
                                                                                     <h:outputText value="#{exped.estadoDetalle}" />
                                                                                 </h:column>
-                                                                                
+
                                                                                 <h:column>
                                                                                     <a class="btn btn-primary" jsf:action="#{registroController.gestionesPorExpediente(exped.numero)}">
                                                                                         <span class="glyphicon glyphicon-circle-arrow-right" />
@@ -536,22 +536,31 @@
                                                                                     </a>
                                                                                 </li>
                                                                             </ul>
+
+                                                                            <br/><br/>
+                                                                            <h:panelGroup id="idPanelListaGestiones" rendered="#{registroController.listaGestionesParaReplica.size() > 0}">
+                                                                                
+                                                                                                <label>Seleccione las gestiones del expediente:</label>
+                                                                                                <h:selectOneMenu value="#{registroController.idGestionReplica}">
+                                                                                                    <f:selectItems value="#{registroController.listaGestionesParaReplica}" var="x" itemValue="#{x.id}" itemLabel="#{x.codigoGestion}" />
+                                                                                                </h:selectOneMenu>
+                                                                                           
+                                                                                
+
+                                                                            </h:panelGroup>
+                                                                            <div class="modal-footer">
+                                                                                    
+                                                                                                <a  class="btn btn-default" data-dismiss="modal">
+                                                                                                    <span class="glyphicon glyphicon-remove"/>Cerrar
+                                                                                                </a>
+                                                                                                <a class="btn btn-primary" data-dismiss="modal" jsf:action="#{registroController.actualizarReplicaGestion()}">
+                                                                                                    <span class="glyphicon glyphicon-floppy-disk"/>Guardar
+                                                                                                </a>
+                                                                                           
+
+                                                                                </div>
                                                                         </h:panelGroup>
-                                                                        <br/><br/>
-                                                                        <h:panelGroup rendered="#{registroController.listaGestionesParaReplica.size() > 0}">
-                                                                        <label>Seleccione las gestiones del expediente seleccionado:</label>
-                                                                        <h:selectOneMenu>
-                                                                            <f:selectItems value="#{registroController.listaGestionesParaReplica}" var="x" itemValue="#{x.id}" itemLabel="#{x.codigoGestion}" />
-                                                                        </h:selectOneMenu>
-                                                                        </h:panelGroup>
-                                                                        <div class="modal-footer">
-                                                                            <a  class="btn btn-default" data-dismiss="modal">
-                                                                                <span class="glyphicon glyphicon-remove"/>Cerrar
-                                                                            </a>
-                                                                            <a class="btn btn-primary" data-dismiss="modal" jsf:action="#{registroController.insertarReplicaGestion1()}">
-                                                                                <span class="glyphicon glyphicon-floppy-disk"/>Guardar
-                                                                            </a>
-                                                                        </div>
+
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -560,7 +569,7 @@
                                                 </td>
                                             </tr>
                                         </table>
-                                        
+
                                         <br/><br/>
                                         <table style="width: 100%">
                                             <tr>

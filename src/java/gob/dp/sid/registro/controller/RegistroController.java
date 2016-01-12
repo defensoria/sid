@@ -268,6 +268,8 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     private Integer finPaginado;
     
     private List<ExpedienteGestion> listaGestionesParaReplica;
+    
+    private Long idGestionReplica;
 
     @Autowired
     private ExpedienteService expedienteService;
@@ -1333,6 +1335,30 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         }
         msg.messageInfo("Se realizaron las replicas", null);
     }
+    
+    public void actualizarReplicaGestion() {
+        try {
+            if(idGestionReplica != null){
+                ExpedienteGestion eg = expedienteGestionService.expedienteGestionBuscarOne(idGestionReplica);
+                eg.setFechaModificacion(new Date());
+                eg.setUsuarioModificacion(usuarioSession.getCodigo());
+                eg.setRespuesta(expedienteGestion.getRespuesta());
+                eg.setFechaRespuesta(expedienteGestion.getFechaRespuesta());
+                eg.setDocumentoRespuesta(expedienteGestion.getDocumentoRespuesta());
+                eg.setTipoCalidad(expedienteGestion.getTipoCalidad());
+                eg.setDetalleRespuesta(expedienteGestion.getDetalleRespuesta());
+                eg.setObservacionRespuesta(expedienteGestion.getObservacionRespuesta());
+                eg.setRuta2(expedienteGestion.getRuta2());
+                eg.setCodigoGestionRespuesta(expedienteGestion.getCodigoGestion());
+                expedienteGestionService.expedienteGestionUpdate(eg);
+            }
+            msg.messageInfo("Se actualizo la respuesta", null);
+        } catch (Exception e) {
+            log.error(e);
+        }
+        
+    }
+    
 
     public boolean listarExpedienteUsuarioPaginadoCompletoPagina(Integer pagina) {
         if (pagina > 0) {
@@ -1779,6 +1805,8 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     }
 
     public boolean seteaPersonaExpediente(ExpedientePersona ep) {
+        Persona p = personaService.personaBusquedaOne(ep.getPersona().getId());
+        ep.setPersona(p);
         setExpedientepersonaModalEdit(ep);
         if (ep.getIdDepartamento() != null && ep.getIdDepartamento() != 0) {
             comboProvinciaId(ep.getIdDepartamento());
@@ -2645,6 +2673,8 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     public void cargarModalReplica() {
         expedienteBusquedaReplica = new Expediente();
         listaExpedienteXUsuarioPaginadoReplica = null;
+        listaGestionesParaReplica = null;
+        idGestionReplica = null;
     }
 
     public void buscarModalReplica() {
@@ -3533,6 +3563,14 @@ public class RegistroController extends AbstractManagedBean implements Serializa
 
     public void setListaGestionesParaReplica(List<ExpedienteGestion> listaGestionesParaReplica) {
         this.listaGestionesParaReplica = listaGestionesParaReplica;
+    }
+
+    public Long getIdGestionReplica() {
+        return idGestionReplica;
+    }
+
+    public void setIdGestionReplica(Long idGestionReplica) {
+        this.idGestionReplica = idGestionReplica;
     }
 
 }
