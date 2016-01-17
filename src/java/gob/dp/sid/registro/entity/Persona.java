@@ -16,6 +16,8 @@ public class Persona implements Serializable{
     
     private Long id;
     
+    private String tipo;
+    
     private String nombre;
     
     private String apellidoPat;
@@ -53,6 +55,8 @@ public class Persona implements Serializable{
     private String sexo;
     
     private Date fechaNacimiento;
+    
+    private String contacto;
     /*temporales*/
     private String numeroExpediente;
     
@@ -292,6 +296,22 @@ public class Persona implements Serializable{
 
     public void setFechaNacimiento(Date fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
+    public String getContacto() {
+        return contacto;
+    }
+
+    public void setContacto(String contacto) {
+        this.contacto = contacto;
     }
     
     

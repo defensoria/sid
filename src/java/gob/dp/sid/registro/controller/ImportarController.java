@@ -32,7 +32,6 @@ import java.util.List;
 import java.util.Objects;
 import javax.inject.Named;
 import javax.servlet.http.Part;
-import javax.swing.table.DefaultTableModel;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -83,7 +82,6 @@ public class ImportarController extends AbstractManagedBean implements Serializa
 
     private void importar(File archivo) {
         Integer i = 0;
-        DefaultTableModel modeloT = new DefaultTableModel();
         List<Object[]> listaObjetos = new ArrayList<>();
         try {
             wb = WorkbookFactory.create(new FileInputStream(archivo));
@@ -101,7 +99,7 @@ public class ImportarController extends AbstractManagedBean implements Serializa
                     indiceColumna++;
                     Cell celda = (Cell) columnaIterator.next();
                     if (indiceFila == 0) {
-                        modeloT.addColumn(celda.getStringCellValue());
+                        
                     } else {
                         if (celda != null) {
                             switch (celda.getCellType()) {
@@ -137,10 +135,11 @@ public class ImportarController extends AbstractManagedBean implements Serializa
         listaGestionesONP = new ArrayList<>();
         for (Object[] os : lista) {
             ExpedienteGestion eg = new ExpedienteGestion();
-            eg.setNumeroExpediente(os[0] == null ? null : os[0].toString());
-            eg.setCodigoONP(os[1] == null ? null : os[1].toString());
-            eg.setNombreEntidad(os[2] == null ? null : os[2].toString());
-            eg.setFecha((Date) os[3]);
+            eg.setNumeroExpediente(os[0] == null ? null : os[0].toString().trim().substring(0, 4)+"-"+os[0].toString().trim().substring(4, 8)+"-"+os[0].toString().trim().substring(8, 14));
+            eg.setCodigoONP(os[1] == null ? null : os[1].toString().trim());
+            eg.setDestinoONP(os[2] == null ? null : os[2].toString());
+            eg.setIdEntidad(4455);
+            eg.setFechaONP((Date) os[3]);
             eg.setFechaModificacion((Date) os[4]);
             eg.setDocumentoRespuesta(os[5] == null ? null : os[5].toString());
             eg.setFechaRespuesta((Date) os[6]);
@@ -179,11 +178,18 @@ public class ImportarController extends AbstractManagedBean implements Serializa
                     if (eg.getVerEtapa() > 0) {
                         if (StringUtils.equals(eg.getExisteGestion(), "NO")) {
                             DateFormat format = new SimpleDateFormat("yyMMddHHmmss");
+                            DateFormat format2 = new SimpleDateFormat("dd/MM/yyyy");
                             String formato = format.format(new Date());
                             i++;
-                            eg.setDescripcion("Oficio ONP");
+                            eg.setDescripcion("Se realizó la consulta periódica sobre el estado del expediente administrativo en ONP, atravéz del mecanismo de "
+                                    + "intercambio de información con ONP vía google apps");
                             eg.setCodigoGestion("GES" + i + formato);
                             eg.setFechaRegistro(new Date());
+                            eg.setFecha(eg.getFechaONP());
+                            eg.setFechaRespuesta(eg.getFechaONP());
+                            eg.setDetalleRespuesta("El expediente se encuentra en "+eg.getDestinoONP()+" desde la fecha "+format2.format(eg.getFechaONP()));
+                            eg.setTipoCalidad("01");
+                            eg.setTipo("02");
                             expedienteGestionService.expedienteGestionInsertar(eg);
                             GestionEtapa ge = new GestionEtapa();
                             ge.setIdEtapa(eg.getVerEtapa());
@@ -192,9 +198,17 @@ public class ImportarController extends AbstractManagedBean implements Serializa
                             ge.setNumeroExpediente(eg.getNumeroExpediente());
                             gestionEtapaService.gestionEtapaInsertar(ge);
                         } else {
-                            expedienteGestionService.expedienteGestionUpdate(eg);
+                            ExpedienteGestion eg1 = expedienteGestionService.expedienteGestionPorONP(eg.getCodigoONP());
+                            if(StringUtils.equals(eg.getFechaONP().toString(), eg1.getFechaONP().toString()) && StringUtils.equals(eg.getDestinoONP(), eg1.getDestinoONP())){
+                                eg1.setTipoCalidad("02");
+                            }else{
+                                eg1.setTipoCalidad("01");
+                                eg1.setFechaONP(eg.getFechaONP());
+                                eg1.setDestinoONP(eg.getDestinoONP());
+                            }
+                            eg1.setCodigoONP(null);
+                            expedienteGestionService.expedienteGestionUpdate(eg1);
                         }
-
                     }else{
                         egs.add(eg);
                     }
@@ -205,8 +219,8 @@ public class ImportarController extends AbstractManagedBean implements Serializa
                 egs.add(eg);
                 log.error(e);
             }
-            msg.messageInfo("Se cargaron las gestiones", null);
         }
+        msg.messageInfo("Se cargaron las gestiones", null);
         listaGestionesONP = new ArrayList<>();
         listaGestionesONP = egs;
     }

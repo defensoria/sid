@@ -42,8 +42,15 @@
                             <span style="font-weight: bold; font-size: 1em; color: #007ACC">Remitente:</span>
                             <span style="color: #767778; text-align: justify">#{bandejaController.mensajeBandeja.nombreRemitente}</span>
                             <br/><br/>
+                            
+                            <h:panelGroup rendered="#{bandejaController.mensajeBandeja.tipo == 1}">
                             <span style="font-weight: bold; font-size: 1em; color: #007ACC"></span>
-                            <a title="ir al expediente" jsf:action="#{bandejaController.cargarExpedientePorMensaje(bandejaController.mensajeBandeja.tipo)}">Ir al expediente</a>
+                            <a title="ir al expediente" jsf:action="#{bandejaController.cargarExpedientePorDeriva()}">Ir al expediente</a>
+                            </h:panelGroup>
+                            <h:panelGroup rendered="#{bandejaController.mensajeBandeja.tipo == 2}">
+                            <span style="font-weight: bold; font-size: 1em; color: #007ACC"></span>
+                            <a title="ir al expediente" jsf:action="#{bandejaController.cargarExpedientePorMensa(bandejaController.mensajeBandeja.codigoConsulta)}">Ir al expediente</a>
+                            </h:panelGroup>
                         </div>
                     </td>
                 </table>

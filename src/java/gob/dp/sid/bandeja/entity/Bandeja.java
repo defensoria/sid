@@ -46,6 +46,7 @@ public class Bandeja implements Serializable{
     
     private String tituloMensaje;
     
+    private String codigoConsulta;
 
     public Long getId() {
         return id;
@@ -173,6 +174,14 @@ public class Bandeja implements Serializable{
 
     public void setTituloMensaje(String tituloMensaje) {
         this.tituloMensaje = tituloMensaje;
+    }
+
+    public String getCodigoConsulta() {
+        return codigoConsulta;
+    }
+
+    public void setCodigoConsulta(String codigoConsulta) {
+        this.codigoConsulta = codigoConsulta;
     }
     
 }

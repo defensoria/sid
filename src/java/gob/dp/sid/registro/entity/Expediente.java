@@ -121,6 +121,12 @@ public class Expediente implements Serializable{
     private Boolean indicadorOficio;
     
     private Boolean indReplica;
+    
+    private String anhoBusqueda;
+    
+    private String ODBusqueda;
+    
+    private String cadenaBusqueda;
 
     public Long getId() {
         return id;
@@ -546,6 +552,30 @@ public class Expediente implements Serializable{
 
     public void setIndReplica(Boolean indReplica) {
         this.indReplica = indReplica;
+    }
+
+    public String getAnhoBusqueda() {
+        return anhoBusqueda;
+    }
+
+    public void setAnhoBusqueda(String anhoBusqueda) {
+        this.anhoBusqueda = anhoBusqueda;
+    }
+
+    public String getODBusqueda() {
+        return ODBusqueda;
+    }
+
+    public void setODBusqueda(String ODBusqueda) {
+        this.ODBusqueda = ODBusqueda;
+    }
+
+    public String getCadenaBusqueda() {
+        return cadenaBusqueda;
+    }
+
+    public void setCadenaBusqueda(String cadenaBusqueda) {
+        this.cadenaBusqueda = cadenaBusqueda;
     }
 
 }

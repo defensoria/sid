@@ -19,6 +19,7 @@
         <result property="idExpediente" column="N_IDEXPEDIENTE"/>
         <result property="idAccion" column="N_ID_ACCION"/>
         <result property="tituloMensaje" column="C_TITULOMENSAJE"/>
+        <result property="codigoConsulta" column="C_CODIGOCONSULTA"/>
     </resultMap> 
     
     
@@ -70,6 +71,9 @@
         <if test="tituloMensaje != null">
             C_TITULOMENSAJE,
         </if>
+        <if test="codigoConsulta != null">
+            C_CODIGOCONSULTA,
+        </if>
         
         N_ID_BANDEJA
         )
@@ -119,6 +123,9 @@
         </if>
         <if test="tituloMensaje != null">
             #{tituloMensaje},
+        </if>
+        <if test="codigoConsulta != null">
+            #{codigoConsulta},
         </if>
         SEQ_SID_MSG_BANDEJA.NextVal
         )

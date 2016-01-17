@@ -462,8 +462,8 @@
         <if test="usuarioRegistro != null">
         AND A.C_USUREGISTRO  = #{usuarioRegistro}     
         </if>
-        <if test="numero != null">
-        AND A.C_NUMEROEXPEDIENTE  LIKE '%'||#{numero}||'%'      
+        <if test="cadenaBusqueda != null">
+        AND A.C_NUMEROEXPEDIENTE  LIKE '%'||#{cadenaBusqueda}||'%'      
         </if>
         ORDER BY A.N_IDEXPEDIENTE DESC
         ) B

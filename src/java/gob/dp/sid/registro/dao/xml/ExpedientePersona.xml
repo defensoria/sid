@@ -11,6 +11,7 @@
         <result property="persona.apellidoPat" column="C_APELLIDOPAT"/>
         <result property="persona.apellidoMat" column="C_APELLIDOMAT"/>
         <result property="persona.numeroDocumento" column="C_NUMERODOCUMENTO"/>
+        <result property="persona.tipo" column="TIPOPERSONA"/>
         <result property="direccion" column="C_DIRECCION"/>
         <result property="email" column="C_EMAIL"/>
         <result property="telefono1" column="C_TELEFONO1"/>
@@ -154,7 +155,7 @@
     </select>
     
     <select id="expedientePersonaBuscarXExpediente" resultMap="expedientePersonaMap"  parameterType="long">
-        SELECT A.*, B.C_NOMBRE, B.C_APELLIDOPAT, B.C_APELLIDOMAT, B.C_NUMERODOCUMENTO 
+        SELECT A.*, B.C_NOMBRE, B.C_APELLIDOPAT, B.C_APELLIDOMAT, B.C_NUMERODOCUMENTO, B.C_TIPO TIPOPERSONA
         FROM SID_REG_EXPEDE_PERSONA A
         INNER JOIN SID_REG_PERSONA B ON A.N_IDPERSONA = B.N_IDPERSONA
         WHERE A.N_IDEXPEDIENTE = #{id}

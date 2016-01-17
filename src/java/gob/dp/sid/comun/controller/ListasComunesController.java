@@ -46,7 +46,17 @@ public class ListasComunesController {
     }
     
     public List<Parametro> buscarExpedienteTipoActor(boolean insertarTODOS, boolean insertarNINGUNO, boolean insertarSELECCIONE) {
-        return insertarValoresDefectoParametro(cacheService.buscarExpedientetTipoActor(), insertarTODOS, insertarNINGUNO, insertarSELECCIONE);
+        List<Parametro> lista = insertarValoresDefectoParametro(cacheService.buscarExpedientetTipoActor(), insertarTODOS, insertarNINGUNO, insertarSELECCIONE);
+        
+        Collections.sort(lista, new Comparator<Parametro>() {
+
+			@Override
+			public int compare(Parametro o1, Parametro o2) {
+				return o1.getCodigoParametro().compareTo(o2.getCodigoParametro());
+			}
+
+		});
+        return lista;
     }
     
     public List<Parametro> buscarExpedienteEtiquetas(boolean insertarTODOS, boolean insertarNINGUNO, boolean insertarSELECCIONE) {
@@ -108,6 +118,10 @@ public class ListasComunesController {
     
     public List<Parametro> buscarGrupoEspecial(boolean insertarTODOS, boolean insertarNINGUNO, boolean insertarSELECCIONE) {
         return insertarValoresDefectoParametro(cacheService.buscarGrupoEspecial(), insertarTODOS, insertarNINGUNO, insertarSELECCIONE);
+    }
+    
+    public List<Parametro> buscarListaADOD(boolean insertarTODOS, boolean insertarNINGUNO, boolean insertarSELECCIONE) {
+        return insertarValoresDefectoParametro(cacheService.buscarListaADOD(), insertarTODOS, insertarNINGUNO, insertarSELECCIONE);
     }
 
     private List insertarValoresDefectoParametro(List lst, boolean insertarTODOS, boolean insertarNINGUNO, boolean insertarSELECCIONE) {

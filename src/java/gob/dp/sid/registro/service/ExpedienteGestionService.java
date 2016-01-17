@@ -26,4 +26,6 @@ public interface ExpedienteGestionService {
     
     public Integer expedienteGestionCountONP(String codigoONP);
     
+    public ExpedienteGestion expedienteGestionPorONP(String codigoONP);
+    
 }

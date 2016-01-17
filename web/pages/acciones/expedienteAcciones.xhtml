@@ -33,6 +33,7 @@
             <div class="panel panel-default">
 
                 <div class="panel-body">
+                    <h:panelGroup rendered="#{registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo}">
                     <div class="btn-group" role="group" style="float: right; width: 10%">
                         <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="glyphicon glyphicon-th-list" /> Acciones
@@ -54,6 +55,7 @@
                             <li><a href="#">Acumular</a></li>
                         </ul>
                     </div>
+                        </h:panelGroup>
                     <table style="width: 100%">
                         <td style="width: 20%; vertical-align: top">
 

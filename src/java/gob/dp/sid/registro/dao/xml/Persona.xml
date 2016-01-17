@@ -22,6 +22,8 @@
         <result property="fechaModificacion" column="D_FECHAMODIFICACION"/>
         <result property="sexo" column="C_SEXO"/>
         <result property="fechaNacimiento" column="D_FECHANACIMIENTO"/>
+        <result property="tipo" column="C_TIPO"/>
+        <result property="contacto" column="C_CONTACTO"/>
     </resultMap> 
     
     
@@ -85,6 +87,12 @@
         <if test="fechaNacimiento != null">
             D_FECHANACIMIENTO,
         </if>
+        <if test="tipo != null">
+            C_TIPO,
+        </if>
+        <if test="contacto != null">
+            C_CONTACTO,
+        </if>
         N_IDPERSONA
         )
         VALUES 
@@ -146,6 +154,12 @@
         <if test="fechaNacimiento != null">
             #{fechaNacimiento},
         </if>
+        <if test="tipo != null">
+            #{tipo},
+        </if>
+        <if test="contacto != null">
+            #{contacto},
+        </if>
         SEQ_SID_REG_PERSONA.NextVal
         )
         <selectKey keyProperty="id" resultType="Long">
@@ -204,6 +218,12 @@
             </if>
             <if test="fechaNacimiento != null">
                 D_FECHANACIMIENTO = #{fechaNacimiento},
+            </if>
+            <if test="tipo != null">
+                C_TIPO = #{tipo},
+            </if>
+            <if test="contacto != null">
+                C_CONTACTO = #{contacto},
             </if>
             C_NOMBRE = #{nombre}
         </set>

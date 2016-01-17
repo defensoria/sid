@@ -117,6 +117,28 @@ public class BandejaController extends AbstractManagedBean implements Serializab
         guardarMensajeConsulta(ec, listaDestinatarios, 0L);
     }
     
+    public void mensajeEnviaConsultaResponde(ExpedienteConsulta ec){
+        usuarioSession();
+        mensajeBandeja = new Bandeja();
+        mensajeBandeja.setTituloMensaje(MensajeType.MENSAJE_CONSULTA.getDetalle()+" exp: "+ec.getNumeroExpediente());
+        Usuario usuario = new Usuario();
+        usuario.setCodigo(ec.getCodigoUsuarioRetorno());
+        List<Usuario> listaDestinatarios = new ArrayList<>();
+        listaDestinatarios.add(usuario);
+        guardarMensajeConsulta(ec, listaDestinatarios, 0L);
+    }
+    
+    public void mensajeEnviaReasignaRespuesta(ExpedienteConsulta ec){
+        usuarioSession();
+        mensajeBandeja = new Bandeja();
+        mensajeBandeja.setTituloMensaje(MensajeType.MENSAJE_CONSULTA.getDetalle()+" exp: "+ec.getNumeroExpediente());
+        Usuario usuario = new Usuario();
+        usuario.setCodigo(ec.getCodigoUsuarioRetorno());
+        List<Usuario> listaDestinatarios = new ArrayList<>();
+        listaDestinatarios.add(usuario);
+        guardarMensajeConsulta(ec, listaDestinatarios, 0L);
+    }
+    
     public void mensajeEnviaAprobacion(ExpedienteDerivacion ed){
         mensajeBandeja = new Bandeja();
         OficinaDefensorial of = oficinaDefensorialService.obtenerOficinaDefensorial(ed.getIdOficinaDefensorial().longValue());
@@ -172,6 +194,7 @@ public class BandejaController extends AbstractManagedBean implements Serializab
             mensajeBandeja.setColorTipo(MensajeType.MENSAJE_CONSULTA.getColor());
             mensajeBandeja.setMotivo(ec.getDetalle());
             mensajeBandeja.setNumeroExpediente(ec.getNumeroExpediente());
+            mensajeBandeja.setCodigoConsulta(ec.getCodigo());
             if(idExp > 0)
                 mensajeBandeja.setIdExpediente(idExp);
             else
@@ -238,12 +261,12 @@ public class BandejaController extends AbstractManagedBean implements Serializab
         return registroController.cargarExpedientePorId(mensajeBandeja.getIdExpediente());
     }
     
-    public String cargarExpedientePorMensaje(Integer tipo){
-        if(Objects.equals(tipo, MensajeType.MENSAJE_DERIVACION.getKey()))
-            return cargarDerivacionPorId();
-        if(Objects.equals(tipo, MensajeType.MENSAJE_CONSULTA.getKey()))
-            return cargarMensajePorNumero();
-        return "";
+    public String cargarExpedientePorDeriva(){
+        return cargarDerivacionPorId();
+    }
+    
+    public String cargarExpedientePorMensa(String codigoConsulta){
+        return cargarMensajePorNumero(codigoConsulta);
     }
     
     private String cargarDerivacionPorId() {
@@ -253,11 +276,11 @@ public class BandejaController extends AbstractManagedBean implements Serializab
         return registroController.inicioAccionesDerivacion();
     }
     
-    private String cargarMensajePorNumero() {
+    private String cargarMensajePorNumero(String codigoConsulta) {
         FacesContext context = FacesContext.getCurrentInstance();
         RegistroController registroController = (RegistroController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "registroController");
         registroController.cargarExpedientePorNumero(mensajeBandeja.getNumeroExpediente());
-        return registroController.inicioAccionesConsulta(mensajeBandeja.getIdAccion());
+        return registroController.inicioAccionesConsulta(mensajeBandeja.getIdAccion(),codigoConsulta);
     }
 
     private List<Usuario> buscarDestinatarios(Usuario u) {

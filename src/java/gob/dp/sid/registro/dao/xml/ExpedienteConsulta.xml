@@ -127,7 +127,7 @@
     
     <select id="expedienteConsultaPorExpediente" resultMap="expedienteConsultaMap"  parameterType="String">
         SELECT A.*, B.C_NOMBRE ADJUNTIA FROM SID_REG_EXPEDIENTE_CONSULTA A
-        INNER JOIN SID_SEG_OFICINA_DEFENSORIAL B ON A.N_ID_AD = B.N_ID_OD
+        LEFT JOIN SID_SEG_OFICINA_DEFENSORIAL B ON A.N_ID_AD = B.N_ID_OD
         WHERE A.C_NUMEROEXPEDIENTE = #{value}
         ORDER BY A.N_ID_CONSULTA DESC
     </select>

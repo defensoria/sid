@@ -16,16 +16,18 @@ import org.springframework.stereotype.Service;
  * @author carlos
  */
 @Service
-public class PersonaServiceImpl implements PersonaService{
-    
+public class PersonaServiceImpl implements PersonaService {
+
     @Autowired
     private PersonaDAO personaDAO;
 
     @Override
     public boolean personaInsertar(Persona persona) {
-        Long valid = personaValidaDNI(persona.getNumeroDocumento());
-        if(valid > 0){
-            return false;
+        if (persona.getNumeroDocumento() != null) {
+            Long valid = personaValidaDNI(persona.getNumeroDocumento());
+            if (valid > 0) {
+                return false;
+            }
         }
         personaDAO.personaInsertar(persona);
         return true;
@@ -55,5 +57,5 @@ public class PersonaServiceImpl implements PersonaService{
     public Persona personaBusquedaOne(long idPersona) {
         return personaDAO.personaBusquedaOne(idPersona);
     }
-    
+
 }

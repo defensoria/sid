@@ -4,7 +4,8 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:jsf="http://xmlns.jcp.org/jsf"
       xmlns:c="http://java.sun.com/jsp/jstl/core"
-      class="fixed" id="idHtml">
+      class="fixed" id="idHtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <h:head>
 
@@ -221,8 +222,25 @@
                         </td>
 
                         <td  style="width: 25%">
-                            <div class="content">
-                                <div id="idDivRegistro" class="form-group has-feedback" style="width: 100%" >
+                            <table>
+                                        <tr>
+                                            <td>
+                                                <h:selectOneMenu value="#{busquedaController.expediente.anhoBusqueda}">
+                                                    <f:selectItem itemLabel="Seleccione" itemValue="" />
+                                                    <f:selectItem itemLabel="2015" itemValue="2015" />
+                                                    <f:selectItem itemLabel="2016" itemValue="2016" />
+                                                </h:selectOneMenu>
+                                            </td>
+                                            <td>
+                                                <h:selectOneMenu value="#{busquedaController.expediente.ODBusqueda}">
+                                                    <f:selectItem itemLabel="Seleccione" itemValue="" />
+                                                    <f:selectItems value="#{listasComunesController.buscarListaADOD(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
+                                                </h:selectOneMenu>
+                                            </td>
+                                            <td>
+                                                <div class="content">
+                                <div id="idDivRegistro" class="form-group has-feedback" style="width: 100%">
+                                    
                                     <input type="text" jsf:value="#{busquedaController.expediente.observacion}" class="form-control input-sm"  placeholder="Buscar"/>
 
                                     <a style="margin: auto" jsf:action="#{busquedaController.listarExpedientesPaginado(1)}" >
@@ -232,6 +250,10 @@
                                 </div>
 
                             </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                            
                         </td>
                         <td style="width: 47%">
 

@@ -35,5 +35,10 @@ public class ExpedienteClasificacionServiceImpl implements ExpedienteClasificaci
     public ExpedienteClasificacion expedienteClasificacionOne(Integer id) {
         return expedienteClasificacionDAO.expedienteClasificacionOne(id);
     }
+
+    @Override
+    public List<ExpedienteClasificacion> expedienteClasificacionBusquedaGrupo1(ExpedienteClasificacion expedienteClasificacion) {
+        return expedienteClasificacionDAO.expedienteClasificacionBusquedaGrupo1(expedienteClasificacion);
+    }
     
 }

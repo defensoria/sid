@@ -45,4 +45,6 @@ public interface CacheService {
     
     public List<Parametro> buscarTipoEntidad();
     
+    public List<Parametro> buscarListaADOD();
+    
 }

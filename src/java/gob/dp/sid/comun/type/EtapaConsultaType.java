@@ -12,7 +12,11 @@ public enum EtapaConsultaType {
         
         CONSULTA_ETAPA_APRUEBA(2, "Se aprueba o desaprueba el envio de la consulta"),
         
-        CONSULTA_ETAPA_REASIGNA(3, "Se aprueba o desaprueba la recepcion de la consulta");
+        CONSULTA_ETAPA_REASIGNA(3, "Se aprueba o desaprueba la recepcion de la consulta"),
+        
+        CONSULTA_ETAPA_RESPONDE(4, "Se responde la consulta"),
+        
+        CONSULTA_ETAPA_RESPONDE_REASIGNA(5, "Se reasigna la respuesta de la consulta");
         
         
 	/** La Constante list. */
@@ -26,7 +30,6 @@ public enum EtapaConsultaType {
 			list.add(s);
 			lookup.put(s.getKey(), s);
 		}
-
 	}
 	
 	/** El key. */

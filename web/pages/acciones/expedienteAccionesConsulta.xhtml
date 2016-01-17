@@ -11,6 +11,8 @@
         <ui:define name="content2">
             <gc:confirmSubmit bean="#{registroController.aprobarConsulta()}" classGC="confirmacion6" mensaje="Esta seguro de enviar la consulta?" />
             <gc:confirmSubmit bean="#{registroController.reasignarConsulta()}" classGC="confirmacion7" mensaje="Esta seguro de aprobar la consulta?" />
+            <gc:confirmSubmit bean="#{registroController.responderConsulta()}" classGC="confirmacion8" mensaje="Esta seguro responder la consulta?" />
+            <gc:confirmSubmit bean="#{registroController.reasignaRespuesta()}" classGC="confirmacion9" mensaje="Esta seguro responder la consulta?" />
             <script>
                 function confirmar6() {
                     $(".confirmacion6").modal('show');
@@ -18,6 +20,14 @@
 
                 function confirmar7() {
                     $(".confirmacion7").modal('show');
+                }
+                
+                function confirmar8() {
+                    $(".confirmacion8").modal('show');
+                }
+                
+                function confirmar9() {
+                    $(".confirmacion9").modal('show');
                 }
             </script>
 
@@ -64,7 +74,7 @@
                             </ul>
                         </div>
                     </h:panelGroup>
-                    <h:panelGroup rendered="#{seguridadUtilController.tieneRecurso('REC_EXP004') or registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo}">
+                    <h:panelGroup rendered="#{seguridadUtilController.tieneRecurso('REC_EXP004') and registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo}">
 
                         <table style="width: 100%">
                             <tr>
@@ -256,15 +266,16 @@
                             </tr>
                         </table>
                     </h:panelGroup>
-                    <h:panelGroup rendered="#{seguridadUtilController.tieneRecurso('REC_EXP006') and registroController.usuarioSession.codigo == registroController.expedienteConsultaReasigna.codigoUsuario and registroController.expediente.usuarioRegistro != registroController.usuarioSession.codigo}">
+                    <h:panelGroup rendered="#{seguridadUtilController.tieneRecurso('REC_EXP006') and registroController.usuarioSession.codigo == registroController.expedienteConsultaReasigna.codigoUsuario and registroController.expediente.usuarioRegistro != registroController.usuarioSession.codigo and registroController.expedienteConsultaResponde.id == null}">
                         <br/>
+                        
                         <table style="width: 100%">
                             <tr>
                                 <td colspan="2"><br/><br/></td>
                             </tr>
                             <tr>
                                 <td style="width: 20%; vertical-align: top">
-                                    <h3>Asignar Consulta</h3>
+                                    <h3>Asignar ConsultaYYYYY</h3>
                                     <span style="color: gray; font-weight: bold">#{registroController.expedienteConsultaAprueba.nombreUsuario}</span>
                                 </td>
                                 <td>
@@ -299,7 +310,7 @@
                             </tr>
                             <tr>
                                 <td style="width: 20%; vertical-align: top">
-                                    <h3>Asignar consulta</h3>
+                                    <h3>Asignar consultaXXXX</h3>
                                 </td>
                                 <td>
                                     <div class="panel panel-featured-top-primary">
@@ -342,8 +353,156 @@
                             </tr>
                         </table>
                     </h:panelGroup>
+                    <h:panelGroup rendered="#{seguridadUtilController.tieneRecurso('REC_EXP004') and registroController.usuarioSession.codigo == registroController.expedienteConsultaResponde.codigoUsuario and registroController.expediente.usuarioRegistro != registroController.usuarioSession.codigo}">
+                        <br/>
+                        <table style="width: 100%">
+                            <tr>
+                                <td colspan="2"><br/><br/></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 20%; vertical-align: top">
+                                    <h3>Asignar Consulta</h3>
+                                    <span style="color: gray; font-weight: bold">#{registroController.expedienteConsultaReasigna.nombreUsuario}</span>
+                                </td>
+                                <td>
+                                    <div class="panel panel-featured-top-primary">
+                                        <div class="body">
+                                            <div style="text-align: right">
+                                                <br/>
+                                            </div>
+                                            <table style="width: 100%">
+                                                <tr>
+                                                    <td style="padding-right: 30px; width: 50%">
+                                                        <label>Motivo de la aprobación / desaprobación</label>
+                                                        <textarea jsf:value="#{registroController.expedienteConsultaReasigna.detalle}" rows="6" style="width: 100%" maxlength="1300" placeholder="Motivo"/>
+                                                        <br/>
+                                                        <h:selectOneRadio value="#{registroController.expedienteConsultaReasigna.aprueba}">
+                                                            <f:selectItem itemLabel="Aprobar" itemValue="SI" />
+                                                            <f:selectItem itemLabel="Desaprobar" itemValue="NO" />
+                                                        </h:selectOneRadio>
+                                                    </td>
+                                                    <td style="vertical-align: top">
+                                                        <label>Comisionado:</label>
+                                                        <h:selectOneMenu value="#{registroController.expedienteConsultaReasigna.codigoUsuarioReasignado}">
+                                                            <f:selectItem itemLabel="Seleccione" itemValue="0" />
+                                                            <f:selectItems value="#{registroController.listaUsuariosComisionadosPorAD}" />
+                                                        </h:selectOneMenu>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 20%; vertical-align: top">
+                                    <h3>Responder consulta</h3>
+                                    
+                                </td>
+                                <td>
+                                    <div class="panel panel-featured-top-primary">
+                                        <div class="body">
+                                            <div style="text-align: right">
+                                                <br/>
+                                                <h:panelGroup rendered="#{registroController.expedienteConsultaResponde.id == null}">
+                                                    <a class="btn btn-primary" onclick="confirmar8()">
+                                                        <span class="glyphicon glyphicon-share-alt"/>Enviar
+                                                    </a>
+                                                </h:panelGroup>    
+                                                <br/>
+                                            </div>
+                                            <table style="width: 100%">
+                                                <tr>
+                                                    <td style="padding-right: 30px; width: 50%">
+                                                        <label>Respuesta a la consulta</label>
+                                                        <textarea jsf:value="#{registroController.expedienteConsultaResponde.detalle}" rows="6" style="width: 100%" maxlength="1300" placeholder="Motivo"/>
+                                                    </td>
+                                                    <td style="vertical-align: top">
+                                                        
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </h:panelGroup>
+                    
+                    <h:panelGroup rendered="#{seguridadUtilController.tieneRecurso('REC_EXP005') and registroController.usuarioSession.codigo == registroController.expedienteConsultaRespondeReasigna.codigoUsuario and registroController.expediente.usuarioRegistro != registroController.usuarioSession.codigo}">
+                        <br/>
+                        <table style="width: 100%">
+                            <tr>
+                                <td colspan="2"><br/><br/></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 20%; vertical-align: top">
+                                    
+                                    <h3>Asignar Consultass</h3>
+                                    <span style="color: gray; font-weight: bold">#{registroController.expedienteConsultaResponde.nombreUsuario}</span>
+                                </td>
+                                <td>
+                                    <div class="panel panel-featured-top-primary">
+                                        <div class="body">
+                                            <div style="text-align: right">
+                                                <br/>
+                                            </div>
+                                            <table style="width: 100%">
+                                                <tr>
+                                                    <td style="padding-right: 30px; width: 50%">
+                                                        <label>Respuesta</label>
+                                                        <textarea jsf:value="#{registroController.expedienteConsultaResponde.detalle}" rows="6" style="width: 100%" maxlength="1300" placeholder="Motivo"/>
+                                                        <br/>
+                                                        
+                                                    </td>
+                                                    <td style="vertical-align: top">
+                                                        
+                                                        
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 20%; vertical-align: top">
+                                    <h3>Responder consulta</h3>
+                                </td>
+                                <td>
+                                    <div class="panel panel-featured-top-primary">
+                                        <div class="body">
+                                            <div style="text-align: right">
+                                                <br/>
+                                                <h:panelGroup rendered="#{registroController.expedienteConsultaRespondeReasigna.id == null}">
+                                                    <a class="btn btn-primary" onclick="confirmar9()">
+                                                        <span class="glyphicon glyphicon-share-alt"/>Enviar
+                                                    </a>
+                                                </h:panelGroup>    
+                                                <br/>
+                                            </div>
+                                            <table style="width: 100%">
+                                                <tr>
+                                                    <td style="padding-right: 30px; width: 50%">
+                                                        <label>Respuesta a la consulta</label>
+                                                        <textarea jsf:value="#{registroController.expedienteConsultaRespondeReasigna.detalle}" rows="6" style="width: 100%" maxlength="1300" placeholder="Motivo"/>
+                                                    </td>
+                                                    <td style="vertical-align: top">
+                                                        <h:selectOneRadio value="#{registroController.expedienteConsultaRespondeReasigna.aprueba}">
+                                                            <f:selectItem itemLabel="Aceptar" itemValue="SI" />
+                                                            <f:selectItem itemLabel="Rechazar" itemValue="NO" />
+                                                        </h:selectOneRadio>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </h:panelGroup>
                 </div>
             </div>
         </ui:define>
     </ui:composition>
-</html>            
+</html>

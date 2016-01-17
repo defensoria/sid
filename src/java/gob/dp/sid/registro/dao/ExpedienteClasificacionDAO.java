@@ -18,6 +18,8 @@ public interface ExpedienteClasificacionDAO {
     
     public List<ExpedienteClasificacion> expedienteClasificacionBusqueda(ExpedienteClasificacion expedienteClasificacion);
     
+    public List<ExpedienteClasificacion> expedienteClasificacionBusquedaGrupo1(ExpedienteClasificacion expedienteClasificacion); 
+    
     public ExpedienteClasificacion expedienteClasificacionOne(Integer id);
     
 }

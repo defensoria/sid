@@ -104,6 +104,17 @@ public class BusquedaController implements Serializable{
                 ini = 1;
                 fin = 20;
             }
+            StringBuilder sb = new StringBuilder();
+            if(StringUtils.isNotBlank(expediente.getODBusqueda())){
+                sb.append(expediente.getODBusqueda()+"-");
+            }
+            if(StringUtils.isNotBlank(expediente.getAnhoBusqueda())){
+                sb.append(expediente.getAnhoBusqueda()+"-");
+            }
+            if(StringUtils.isNotBlank(expediente.getNumero())){
+                sb.append(expediente.getNumero());
+            }
+            expediente.setCadenaBusqueda(sb.toString());
             expediente.setUsuarioRegistro(null);
             expediente.setIni(ini);
             expediente.setFin(fin);

@@ -52,6 +52,8 @@ public class CacheServiceImpl implements CacheService{
     private static final Integer CACHE_PARAMETRO_GRUPO_ESPECIAL = 140;
     
     private static final Integer CACHE_PARAMETRO_TIPO_ENTIDAD = 150;
+    
+    private static final Integer CACHE_PARAMETRO_LISTA_ADOD = 160;
 
     private volatile HashMap<Integer, Object> contenedor = null;
 
@@ -156,6 +158,11 @@ public class CacheServiceImpl implements CacheService{
         return buscarParametro(CACHE_PARAMETRO_TIPO_ENTIDAD, CACHE_PARAMETRO_TIPO_ENTIDAD);
     }
     
+    @Override
+    public List<Parametro> buscarListaADOD() {
+        return buscarParametro(CACHE_PARAMETRO_LISTA_ADOD, CACHE_PARAMETRO_LISTA_ADOD);
+    }
+    
     private Object getElemento(Integer key) {
         if (this.contenedor == null) {
             return null;
@@ -170,5 +177,7 @@ public class CacheServiceImpl implements CacheService{
         this.contenedor.put(key, objeto);
         notifyAll();
     }
+
+    
 
 }

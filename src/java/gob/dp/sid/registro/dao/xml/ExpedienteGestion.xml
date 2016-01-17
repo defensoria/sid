@@ -49,6 +49,8 @@
         <result property="codigoGestionOrigen" column="C_CODIGOGESTIONORIGEN"/>
         <result property="codigoGestionRespuesta" column="C_CODIGOGESTIONRESPUESTA"/>
         <result property="documentoGestionDetalle" column="C_DOCUMENTOGESTIONDETALLE"/>
+        <result property="destinoONP" column="C_DESTINOONP"/>
+        <result property="fechaONP" column="D_FECHAONP"/>
         <!--adionales-->
         <result property="nombreParametroTipo" column="NOMBRE_PARAMETRO"/>
         <result property="idEtapa" column="N_ID_ETAPA"/>
@@ -187,6 +189,13 @@
         <if test="documentoGestionDetalle != null">
             C_DOCUMENTOGESTIONDETALLE,
         </if>
+        <if test="destinoONP != null">
+            C_DESTINOONP,
+        </if>
+        <if test="fechaONP != null">
+            D_FECHAONP,
+        </if>
+        
         N_ID_GESTION
         )
         VALUES 
@@ -316,6 +325,12 @@
         </if>
         <if test="documentoGestionDetalle != null">
             #{documentoGestionDetalle},
+        </if>
+        <if test="destinoONP != null">
+            #{destinoONP},
+        </if>
+        <if test="fechaONP != null">
+            #{fechaONP},
         </if>
         SEQ_SID_REG_GESTION.NextVal
         )
@@ -451,6 +466,12 @@
             <if test="documentoGestionDetalle != null">
                 C_DOCUMENTOGESTIONDETALLE = #{documentoGestionDetalle},
             </if>
+            <if test="destinoONP != null">
+                C_DESTINOONP = #{destinoONP},
+            </if>
+            <if test="fechaONP != null">
+                D_FECHAONP = #{fechaONP},
+            </if>
             D_FECHAMODIFICACION = SYSDATE
         </set>
         <where>
@@ -476,6 +497,10 @@
     
     <select id="expedienteGestionCountONP" resultType="java.lang.Integer" parameterType="String" >
         SELECT COUNT(*) FROM SID_REG_GESTION WHERE C_CODIGOONP = #{value}
+    </select>
+    
+    <select id="expedienteGestionPorONP" resultMap="expedienteGestionMap" parameterType="String" >
+        SELECT * FROM SID_REG_GESTION WHERE C_CODIGOONP = #{value}
     </select>
     
     <select id="expedienteGestionListaXexpediente" resultMap="expedienteGestionMap" parameterType="String" >

@@ -146,6 +146,10 @@
                                             <f:facet name="header">Se programo alerta</f:facet>
                                             <h:outputText value="#{calificacion.indAlertar? 'NO' : 'SI'}" />
                                         </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Origen</f:facet>
+                                            <h:outputText value="#{calificacion.codigoGestionOrigen}" />
+                                        </h:column>
                                         <h:column rendered="#{registroController.etapaEstado.verEtapa == 1}">
                                             <f:facet  name="header">Editar</f:facet>
                                             <a jsf:rendered="#{registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo}" jsf:action="#{registroController.setearExpedienteGestion(calificacion)}">
@@ -198,6 +202,10 @@
                                         <h:column>
                                             <f:facet name="header">Se programo alerta</f:facet>
                                             <h:outputText value="#{investigacion.indAlertar? 'NO' : 'SI'}" />
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Origen</f:facet>
+                                            <h:outputText value="#{investigacion.codigoGestionOrigen}" />
                                         </h:column>
                                         <h:column rendered="#{registroController.etapaEstado.verEtapa == 2}">
                                             <f:facet name="header">Editar</f:facet>
@@ -252,6 +260,10 @@
                                             <f:facet name="header">Se programo alerta</f:facet>
                                             <h:outputText value="#{persuacion.indAlertar? 'NO' : 'SI'}" />
                                         </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Origen</f:facet>
+                                            <h:outputText value="#{persuacion.codigoGestionOrigen}" />
+                                        </h:column>
                                         <h:column rendered="#{registroController.etapaEstado.verEtapa == 3}">
                                             <f:facet name="header">Editar</f:facet>
                                             <a jsf:rendered="#{registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo}" jsf:action="#{registroController.setearExpedienteGestion(persuacion)}">
@@ -305,6 +317,10 @@
                                         <h:column>
                                             <f:facet name="header">Se programo alerta</f:facet>
                                             <h:outputText value="#{seguimiento.indAlertar? 'NO' : 'SI'}" />
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Origen</f:facet>
+                                            <h:outputText value="#{seguimiento.codigoGestionOrigen}" />
                                         </h:column>
                                         <h:column rendered="#{registroController.etapaEstado.verEtapa == 4}">
                                             <f:facet name="header">Editar</f:facet>
@@ -361,6 +377,10 @@
                                             <f:facet name="header">Se programo alerta</f:facet>
                                             <h:outputText value="#{calificacion.indAlertar? 'NO' : 'SI'}" />
                                         </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Origen</f:facet>
+                                            <h:outputText value="#{calificacion.codigoGestionOrigen}" />
+                                        </h:column>
                                         <h:column rendered="#{registroController.etapaEstado.verEtapa == 5}">
                                             <f:facet  name="header">Editar</f:facet>
                                             <a jsf:action="#{registroController.setearExpedienteGestion(calificacion)}">
@@ -414,6 +434,10 @@
                                             <f:facet name="header">Se programo alerta</f:facet>
                                             <h:outputText value="#{gestion.indAlertar? 'NO' : 'SI'}" />
                                         </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Origen</f:facet>
+                                            <h:outputText value="#{gestion.codigoGestionOrigen}" />
+                                        </h:column>
                                         <h:column rendered="#{registroController.etapaEstado.verEtapa == 6}">
                                             <f:facet name="header">Editar</f:facet>
                                             <a jsf:action="#{registroController.setearExpedienteGestion(gestion)}">
@@ -466,6 +490,10 @@
                                         <h:column>
                                             <f:facet name="header">Se programo alerta</f:facet>
                                             <h:outputText value="#{persuacion.indAlertar? 'NO' : 'SI'}" />
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Origen</f:facet>
+                                            <h:outputText value="#{persuacion.codigoGestionOrigen}" />
                                         </h:column>
                                         <h:column rendered="#{registroController.etapaEstado.verEtapa == 7}">
                                             <f:facet name="header">Editar</f:facet>

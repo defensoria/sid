@@ -122,6 +122,8 @@ public class ExpedienteGestion implements Serializable{
     
     private String fechaString;
     
+    private String destino;
+    
     private String tipoAccionString;
     
     private String nro;
@@ -139,6 +141,10 @@ public class ExpedienteGestion implements Serializable{
     private String codigoGestionOrigen;
     
     private String codigoGestionRespuesta;
+    
+    private String destinoONP;
+    
+    private Date fechaONP;
 
     public Long getId() {
         return id;
@@ -628,6 +634,30 @@ public class ExpedienteGestion implements Serializable{
 
     public void setCodigoGestionRespuesta(String codigoGestionRespuesta) {
         this.codigoGestionRespuesta = codigoGestionRespuesta;
+    }
+
+    public String getDestino() {
+        return destino;
+    }
+
+    public void setDestino(String destino) {
+        this.destino = destino;
+    }
+
+    public String getDestinoONP() {
+        return destinoONP;
+    }
+
+    public void setDestinoONP(String destinoONP) {
+        this.destinoONP = destinoONP;
+    }
+
+    public Date getFechaONP() {
+        return fechaONP;
+    }
+
+    public void setFechaONP(Date fechaONP) {
+        this.fechaONP = fechaONP;
     }
     
 }

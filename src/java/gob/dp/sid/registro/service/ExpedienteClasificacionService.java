@@ -20,4 +20,6 @@ public interface ExpedienteClasificacionService {
     
     public ExpedienteClasificacion expedienteClasificacionOne(Integer id);
     
+    public List<ExpedienteClasificacion> expedienteClasificacionBusquedaGrupo1(ExpedienteClasificacion expedienteClasificacion);
+    
 }

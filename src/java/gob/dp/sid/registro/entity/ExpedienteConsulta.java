@@ -45,6 +45,8 @@ public class ExpedienteConsulta implements Serializable{
     private String nombreAdjuntia;
     
     private Date fecha;
+    
+    private String codigoUsuarioRetorno;
 
     public Long getId() {
         return id;
@@ -172,6 +174,14 @@ public class ExpedienteConsulta implements Serializable{
 
     public void setFecha(Date fecha) {
         this.fecha = fecha;
+    }
+
+    public String getCodigoUsuarioRetorno() {
+        return codigoUsuarioRetorno;
+    }
+
+    public void setCodigoUsuarioRetorno(String codigoUsuarioRetorno) {
+        this.codigoUsuarioRetorno = codigoUsuarioRetorno;
     }
 
 }

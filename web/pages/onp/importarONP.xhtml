@@ -60,8 +60,8 @@
                         <h:outputText value="#{onp.codigoONP}" />
                     </h:column>
                     <h:column>
-                        <f:facet name="header">Fecha gestión</f:facet>
-                        <h:outputText value="#{onp.fecha}" >
+                        <f:facet name="header">Fecha ONP</f:facet>
+                        <h:outputText value="#{onp.fechaONP}" >
                             <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
                         </h:outputText>
                     </h:column>
@@ -72,14 +72,8 @@
                         </h:outputText>
                     </h:column>
                     <h:column>
-                        <f:facet name="header">Oficio ONP</f:facet>
-                        <h:outputText value="#{onp.documentoRespuesta}" />
-                    </h:column>
-                    <h:column>
-                        <f:facet name="header">Fecha de oficio</f:facet>
-                        <h:outputText value="#{onp.fechaRespuesta}" >
-                            <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
-                        </h:outputText>
+                        <f:facet name="header">Destino</f:facet>
+                        <h:outputText value="#{onp.destinoONP}" />
                     </h:column>
                     <h:column>
                         <f:facet name="header">Existe expediente</f:facet>
