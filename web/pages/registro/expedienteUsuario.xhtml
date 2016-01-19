@@ -122,6 +122,12 @@
                                                                                     <input type="text" placeholder="Nombre" jsf:value="#{registroController.persona.nombre}" style="width: 90%" maxlength="200"/>
                                                                                 </td>
                                                                             </tr>
+                                                                            <tr jsf:rendered="#{registroController.persona.tipo == 'ORG'}">
+                                                                                <td><b>Contacto:</b></td>
+                                                                                <td style="padding-bottom: 10px">
+                                                                                    <input type="text" placeholder="Contacto" jsf:value="#{registroController.persona.contacto}" style="width: 90%" maxlength="50"/>
+                                                                                </td>
+                                                                            </tr>
                                                                             <tr jsf:rendered="#{registroController.persona.tipo == 'PER'}">
                                                                                 <td><b>Apellido paterno:</b></td>
                                                                                 <td style="padding-bottom: 10px;">
@@ -200,12 +206,7 @@
                                                                                     <input type="text" placeholder="Telefono 2" jsf:value="#{registroController.persona.telefono2}" style="width: 90%" maxlength="50"/>
                                                                                 </td>
                                                                             </tr>
-                                                                            <tr jsf:rendered="#{registroController.persona.tipo == 'ORG'}">
-                                                                                <td><b>Contacto:</b></td>
-                                                                                <td style="padding-bottom: 10px">
-                                                                                    <input type="text" placeholder="Contacto" jsf:value="#{registroController.persona.contacto}" style="width: 90%" maxlength="50"/>
-                                                                                </td>
-                                                                            </tr>
+                                                                            
                                                                         </table>
                                                                     </h:panelGroup>
                                                                 </div>

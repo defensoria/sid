@@ -34,7 +34,8 @@
                     }
                 </script>
 
-                <gc:confirmSubmit classGC="confirmacion3" bean="#{registroController.concluir()}" mensaje="Está seguro que desea concluir la etapa?"/>
+                <gc:confirmSubmit rendered="#{registroController.etapaEstado.verEtapa != 2}" classGC="confirmacion3" bean="#{registroController.concluir()}" mensaje="Está seguro que desea concluir la etapa?"/>
+                <gc:confirmSubmit rendered="#{registroController.etapaEstado.verEtapa == 2}" classGC="confirmacion3" bean="#{registroController.concluir()}" mensaje="Está seguro de haber completado la clasificación temática?      Está seguro que desea concluir la etapa?"/>
                 <gc:confirmSubmitRemove classGC="confirmacion0" bean="#{registroController.desistirExpediente()}"  mensaje="Está seguro que desea desistir expediente?"/>
 
                 <table style="width: 100%">
@@ -46,6 +47,8 @@
                                         <tr>
                                             <td>
                                                 <span style="font-size: 2em" class="text-resalt-primary">Expediente: #{registroController.expediente.numero}</span>
+                                                
+                                                <h:outputText value=" (CONCLUIDO)" rendered="#{registroController.expediente.general == 'C'}"  style="color: red; font-weight: bold; font-size: 1.5em" />
                                             </td>
                                             <td style="text-align: right">
                                                 <a jsf:action="#{registroController.pdf()}">
@@ -424,7 +427,7 @@
                                                                 </a>
                                                             </h:panelGroup>
                                                             &#160;&#160;
-                                                            <h:panelGroup rendered="#{registroController.expediente.general != 'C' and registroController.verBotonRegistrarExpediente and registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo}">
+                                                            <h:panelGroup rendered="#{(registroController.expediente.general != 'C' and registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo) or (registroController.expediente.usuarioRegistro == null) }">
                                                                 <a class="btn btn-primary" jsf:action="#{registroController.guardarVersion()}">
                                                                     <span class="glyphicon glyphicon-floppy-disk" />Guardar
                                                                 </a>
@@ -667,7 +670,7 @@
                                                             </table>
                                                         </td>
                                                     </tr>
-                                                    <tr jsf:rendered="#{registroController.expediente.id != null}">
+                                                    <tr>
                                                         <td style="padding-bottom: 10px">
                                                             <span class="text-bold">Tema:</span>
                                                         </td>
@@ -1096,6 +1099,12 @@
                                                                                                     <input type="text" placeholder="Nombre" jsf:value="#{registroController.persona.nombre}" style="width: 90%" maxlength="200"/>
                                                                                                 </td>
                                                                                             </tr>
+                                                                                            <tr jsf:rendered="#{registroController.persona.tipo == 'ORG'}">
+                                                                                                <td><b>Contacto:</b></td>
+                                                                                                <td style="padding-bottom: 10px">
+                                                                                                    <input type="text" placeholder="Contacto" jsf:value="#{registroController.persona.contacto}" style="width: 90%" maxlength="50"/>
+                                                                                                </td>
+                                                                                            </tr>
                                                                                             <tr jsf:rendered="#{registroController.persona.tipo == 'PER'}">
                                                                                                 <td><b>Apellido paterno:</b></td>
                                                                                                 <td style="padding-bottom: 10px;">
@@ -1172,12 +1181,6 @@
                                                                                                 <td><b>Segundo teléfono:</b></td>
                                                                                                 <td style="padding-bottom: 10px">
                                                                                                     <input type="text" placeholder="Telefono 2" jsf:value="#{registroController.persona.telefono2}" style="width: 90%" maxlength="50"/>
-                                                                                                </td>
-                                                                                            </tr>
-                                                                                            <tr jsf:rendered="#{registroController.persona.tipo == 'ORG'}">
-                                                                                                <td><b>Contacto:</b></td>
-                                                                                                <td style="padding-bottom: 10px">
-                                                                                                    <input type="text" placeholder="Contacto" jsf:value="#{registroController.persona.contacto}" style="width: 90%" maxlength="50"/>
                                                                                                 </td>
                                                                                             </tr>
                                                                                         </table>

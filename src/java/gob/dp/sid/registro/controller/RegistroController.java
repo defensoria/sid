@@ -1800,7 +1800,10 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         listarNiveles();
         defineBotonRegistro();
         expedienteClasificacionBusqueda = new ExpedienteClasificacion();
-        return "expedienteEdit";
+        if(Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_PETITORIO.getKey()) || Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_QUEJA.getKey()) || etapaEstado.getVerEtapa() == null){
+            return "expedienteEdit";
+        }
+        return "expedienteGestionLista";
     }
 
     private void listarNiveles() {
@@ -1877,16 +1880,18 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                     if (list.size() > 0) {
                         listaPersonaGeneral = list;
                         nroPaginaPersona = pagina;
+                    }else {
+                    if (personaBusqueda.getIni() == 1) {
+                        listaPersonaGeneral = null;
+                        msg.messageAlert("No se han encontrado Personas", null);
                     }
+                }
                 } catch (Exception e) {
                     log.error("ERROR : BusquedaUsuarioController.listarPaginado: " + e.getMessage());
                 }
             }
 
             //listaPersonaGeneral = personaService.personaBusarGeneral(personaBusqueda);
-        }
-        if (listaPersonaGeneral.isEmpty()) {
-            msg.messageAlert("No se han encontrado Personas", null);
         }
         indSeleccion = true;
         personaBusqueda = new Persona();
@@ -1956,13 +1961,15 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 if (list.size() > 0) {
                     personasPopover = list;
                     nroPaginaPersona = pagina;
+                }else {
+                    if (persona.getIni() == 1) {
+                        personasPopover = null;
+                        msg.messageAlert("No se han encontrado Personas", null);
+                    }
                 }
             } catch (Exception e) {
                 log.error("ERROR : BusquedaUsuarioController.listarPaginado: " + e.getMessage());
             }
-        }
-        if (personasPopover.isEmpty()) {
-            msg.messageAlert("No se han encontrado Personas", null);
         }
         return true;
     }
@@ -2402,10 +2409,10 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         }
     }
 
-    public boolean concluir() {
+    public String concluir() {
         Long idExpedienteOld = expediente.getId();
         if (idExpedienteOld == null) {
-            return false;
+            return null;
         }
         /**
          * QUEJA
@@ -2414,25 +2421,25 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_QUEJA.getKey())) {
                 if (expediente.getEstadoCalificacion() == null) {
                     msg.messageAlert("El expediente no cuenta con ningun estado, por favor seleccione si esta admitido o no admitido", null);
-                    return false;
+                    return null;
                 }
             }
             if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.INVESTIGACION_QUEJA.getKey())) {
                 if (expediente.getEstadoInvestigacion() == null) {
                     msg.messageAlert("El expediente no cuenta con ningun estado, por favor seleccione si esta fundado o infundado", null);
-                    return false;
+                    return null;
                 }
             }
             if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.PERSUACION_QUEJA.getKey())) {
                 if (expediente.getEstadoPersuacion() == null) {
                     msg.messageAlert("El expediente no cuenta con ningun estado, por favor seleccione si esta acogido o no acogido", null);
-                    return false;
+                    return null;
                 }
             }
             if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.SEGUIMIENTO_QUEJA.getKey())) {
                 if (expediente.getEstadoSeguimiento() == null) {
                     msg.messageAlert("El expediente no cuenta con ningun estado, por favor seleccione si esta acogido o no acogido", null);
-                    return false;
+                    return null;
                 }
             }
         }
@@ -2444,19 +2451,19 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_PETITORIO.getKey())) {
                 if (expediente.getEstadoCalificacion() == null) {
                     msg.messageAlert("El expediente no cuenta con ningun estado, por favor seleccione si esta admitido o no admitido", null);
-                    return false;
+                    return null;
                 }
             }
             if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.GESTION_PETITORIO.getKey())) {
                 if (expediente.getEstadoGestion() == null) {
                     msg.messageAlert("El expediente no cuenta con ningun estado, por favor seleccione si esta solucionado o no solucionado", null);
-                    return false;
+                    return null;
                 }
             }
             if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.PERSUASION_PETITORIO.getKey())) {
                 if (expediente.getEstadoPersuacion() == null) {
                     msg.messageAlert("El expediente no cuenta con ningun estado, por favor seleccione si devienen en solucionados, por negativa expresa o falta de respuesta", null);
-                    return false;
+                    return null;
                 }
             }
         }
@@ -2470,7 +2477,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
          */
 
         msg.messageInfo("Se concluyó la etapa", null);
-        return true;
+        return "expedienteGestionLista";
     }
 
     private void guardarEtapaEstado(Long idExpedienteOld) {
