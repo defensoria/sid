@@ -143,6 +143,17 @@
                                                                             <tr jsf:rendered="#{registroController.persona.tipo == 'PER'}">
                                                                                 <td><b>Fecha de nacimiento:</b></td>
                                                                                 <td style="padding-bottom: 10px; padding-right: 200px;" >
+                                                                                    <script>
+                                                                                                $(document).ready(function(){
+                                                                                                    $('.datepicker').datetimepicker({
+                    pickTime: false
+                });
+                $(".datepicker").on("changeDate", function (ev) {
+                    $(this).datetimepicker("hide");
+                });
+                                                                                                });
+                                                                                                    
+                                                                                                    </script>
                                                                                     <gc:calendar value="#{registroController.persona.fechaNacimiento}"/>
                                                                                 </td>
 

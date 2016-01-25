@@ -66,6 +66,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -274,6 +276,8 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     private List<ExpedienteGestion> listaGestionesParaReplica;
     
     private Long idGestionReplica;
+    
+    private Integer tipoBusqueda;
 
     @Autowired
     private ExpedienteService expedienteService;
@@ -325,7 +329,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
 
     @Autowired
     private ExpedienteNivelService expedienteNivelService;
-
+    
     public String cargarNuevoExpediente() {
         cargarObjetoExpediente();
         expedienteNivel = new ExpedienteNivel();
@@ -349,6 +353,10 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     }
 
     public String iniciarExpedienteNuevo() {
+        if(StringUtils.equals(personaSeleccionada.getTipoExpediente(),"0")){
+            msg.messageAlert("Debe selecionar un tipo de expediente", null);
+            return null;
+        }
         persona = new Persona();
         expedientepersonaModalEdit = new ExpedientePersona();
         entidad = new Entidad();
@@ -530,6 +538,18 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 new HashMap(), beanCollectionDataSource);
 
     }
+    
+    public void ordenar(int tipo){
+    
+    Collections.sort(listaExpedienteXUsuarioPaginado, new Comparator<Expediente>() {
+
+			@Override
+			public int compare(Expediente o1, Expediente o2) {
+				return o1.getId().compareTo(o2.getId());
+			}
+
+		});
+    }
 
     public void pdf() throws JRException, IOException {
         Date date = new Date();
@@ -619,7 +639,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     public void inicio() {
         usuarioSession();
         listaExpedienteXUsuario = expedienteService.expedienteBuscarUsuario(usuarioSession.getCodigo());
-        listarExpedienteUsuarioPaginado(1);
+        listarExpedienteUsuarioPaginadoOrder(1,1);
         cargarGraficos001();
         cargarGraficos002();
         cargarGraficos003();
@@ -1429,6 +1449,45 @@ public class RegistroController extends AbstractManagedBean implements Serializa
 
     public void listarExpedienteUsuarioPaginado(Integer pagina) {
         Expediente e = new Expediente();
+        e.setTipoBusqueda(tipoBusqueda);
+        if (pagina > 0) {
+            int paginado = ConstantesUtil.PAGINADO_10;
+            Integer ini = paginado * (pagina - 1) + 1;
+            Integer fin = paginado * pagina;
+            if (pagina == 0) {
+                ini = 1;
+                fin = 10;
+            }
+            e.setUsuarioRegistro(usuarioSession.getCodigo());
+            e.setIni(ini);
+            e.setFin(fin);
+
+            List<Expediente> list = expedienteService.expedienteBuscarUsuarioPaginado(e);
+            if (list.size() > 0) {
+                for (Expediente e1 : list) {
+                    e1.setEtapaDetalle(devolverEtapa(e1));
+                    if (StringUtils.isNoneBlank(e1.getNumero())) {
+                        e1.setEstadoDetalle(detalleUltimoEstado(e1.getNumero()));
+                    }
+                }
+                listaExpedienteXUsuarioPaginado = list;
+                nroPagina = pagina;
+            }
+        }
+    }
+    
+    public void listarExpedienteUsuarioPaginadoOrder(Integer pagina, int tipo) {
+        if(tipoBusqueda != null){
+            if(tipo == tipoBusqueda){
+                tipoBusqueda = tipo*(-1);
+            }else{
+                tipoBusqueda = tipo;
+            }
+        }else{
+            tipoBusqueda = tipo;
+        }
+        Expediente e = new Expediente();
+        e.setTipoBusqueda(tipoBusqueda);
         if (pagina > 0) {
             int paginado = ConstantesUtil.PAGINADO_10;
             Integer ini = paginado * (pagina - 1) + 1;
@@ -2279,6 +2338,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         expediente.setEstado("A");
         expediente.setEtiqueta(encadenarEtiquetas());
         expediente.setUsuarioRegistro(usuarioSession.getCodigo());
+        expediente.setNumero(" ");
         if (expediente.getId() == null) {
             expedienteService.expedienteInsertar(expediente);
             insertUpdateListasPersonaEntidad();
@@ -2463,6 +2523,16 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.PERSUASION_PETITORIO.getKey())) {
                 if (expediente.getEstadoPersuacion() == null) {
                     msg.messageAlert("El expediente no cuenta con ningun estado, por favor seleccione si devienen en solucionados, por negativa expresa o falta de respuesta", null);
+                    return null;
+                }
+            }
+        }
+        
+        
+        if (StringUtils.equals(expediente.getTipoClasificion(), ExpedienteType.QUEJA.getKey())) {
+            if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_QUEJA.getKey())) {
+                if (expediente.getListaExpedienteNivel().size()  == 0) {
+                    msg.messageAlert("Debe ingresar al menos una clasificación", null);
                     return null;
                 }
             }
@@ -3825,6 +3895,14 @@ public class RegistroController extends AbstractManagedBean implements Serializa
 
     public void setExpedienteConsultaRespondeReasigna(ExpedienteConsulta expedienteConsultaRespondeReasigna) {
         this.expedienteConsultaRespondeReasigna = expedienteConsultaRespondeReasigna;
+    }
+
+    public Integer getTipoBusqueda() {
+        return tipoBusqueda;
+    }
+
+    public void setTipoBusqueda(Integer tipoBusqueda) {
+        this.tipoBusqueda = tipoBusqueda;
     }
 
 }

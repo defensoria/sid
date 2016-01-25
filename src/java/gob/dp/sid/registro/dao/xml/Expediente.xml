@@ -465,7 +465,42 @@
         <if test="cadenaBusqueda != null">
         AND A.C_NUMEROEXPEDIENTE  LIKE '%'||#{cadenaBusqueda}||'%'      
         </if>
-        ORDER BY A.N_IDEXPEDIENTE DESC
+        <if test="tipoBusqueda == 1">
+            ORDER BY A.N_IDEXPEDIENTE DESC
+        </if>
+        <if test="tipoBusqueda == -1">
+            ORDER BY A.N_IDEXPEDIENTE DESC
+        </if>
+        <if test="tipoBusqueda == 2">
+            ORDER BY A.C_NUMEROEXPEDIENTE DESC
+        </if>
+        <if test="tipoBusqueda == -2">
+            ORDER BY A.C_NUMEROEXPEDIENTE ASC
+        </if>
+        <if test="tipoBusqueda == 3">
+            ORDER BY A.C_TIPOCLASIFICACION DESC
+        </if>
+        <if test="tipoBusqueda == -3">
+            ORDER BY A.C_TIPOCLASIFICACION ASC
+        </if>
+        <if test="tipoBusqueda == 4">
+            ORDER BY A.D_FECHAREGISTRO DESC
+        </if>
+        <if test="tipoBusqueda == -4">
+            ORDER BY A.D_FECHAREGISTRO ASC
+        </if>
+        <if test="tipoBusqueda == 5">
+            ORDER BY A.C_ESTADOGENERAL DESC
+        </if>
+        <if test="tipoBusqueda == -5">
+            ORDER BY A.C_ESTADOGENERAL ASC
+        </if>
+        <if test="tipoBusqueda == 6">
+            ORDER BY A.N_VERSION DESC
+        </if>
+        <if test="tipoBusqueda == -6">
+            ORDER BY A.N_VERSION ASC
+        </if>
         ) B
         ) A WHERE a.numfila BETWEEN #{ini} AND #{fin}
     </select>

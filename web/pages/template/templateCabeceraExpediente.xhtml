@@ -28,8 +28,10 @@
                         
                     }
                 </script>
+                <gc:confirmSubmit rendered="#{registroController.etapaEstado.verEtapa != 2}" classGC="confirmacion3" bean="#{registroController.concluir()}" mensaje="Está seguro que desea concluir la etapa?"/>
+                <gc:confirmSubmit rendered="#{registroController.etapaEstado.verEtapa == 2}" classGC="confirmacion3" bean="#{registroController.concluir()}" mensaje="Está seguro de haber completado la clasificación temática?      Está seguro que desea concluir la etapa?"/>
                 
-                <gc:confirmSubmit classGC="confirmacion3" bean="#{registroController.concluir()}" mensaje="Está seguro que desea concluir la etapa?"/>
+                
                 <gc:confirmSubmitRemove classGC="confirmacion0" bean="#{registroController.desistirExpediente()}"  mensaje="Está seguro que desea desistir expediente?"/>
                 <table style="width: 100%">
                     <tr>
@@ -351,13 +353,13 @@
                                                         <td style="text-align: right">
                                                             
                                                             <h:panelGroup  id="idPanel3" rendered="#{registroController.expediente.id == null || registroController.expediente.version == 0}">
-                                                                <a class="btn btn-info" jsf:action="#{registroController.guardarBorrador()}">
+                                                                <a class="btn btn-info" jsf:action="#{registroController.guardarBorrador()}"  jsf:onclick="loadingModal()">
                                                                     <span class="glyphicon glyphicon-floppy-disk" />Borrador
                                                                 </a>
                                                             </h:panelGroup>
                                                             &#160;&#160;
-                                                            <h:panelGroup rendered="#{registroController.expediente.general != 'C' and registroController.verBotonRegistrarExpediente and registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo}">
-                                                                <a class="btn btn-primary" jsf:action="#{registroController.guardarVersion()}">
+                                                            <h:panelGroup rendered="#{registroController.expediente.general != 'C' and registroController.verBotonRegistrarExpediente and registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo}" >
+                                                                <a class="btn btn-primary" jsf:action="#{registroController.guardarVersion()}"  jsf:onclick="loadingModal()">
                                                                     <span class="glyphicon glyphicon-floppy-disk" />Guardar
                                                                 </a>
                                                             </h:panelGroup>
@@ -368,9 +370,11 @@
                                                                 </a>
                                                             </h:panelGroup>
                                                             &#160;&#160;
+                                                            <h:panelGroup rendered="#{registroController.etapaEstado.verEtapa == 1 or registroController.etapaEstado.verEtapa == 5 }">
                                                             <a class="btn btn-info">
-                                                                    <span class="glyphicon glyphicon-link" />Mayor información
-                                                                </a>
+                                                                <span class="glyphicon glyphicon-link" />Mayor información
+                                                            </a>
+                                                             </h:panelGroup> 
                                                             &#160;&#160;
                                                             <h:panelGroup rendered="#{registroController.expediente.id != null and registroController.expediente.version > 0 and registroController.expediente.general != 'C' and registroController.verBotonRegistrarExpediente and registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo}">
                                                             <a class="btn btn-danger" onclick="confirmar0()" >

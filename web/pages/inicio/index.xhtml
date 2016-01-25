@@ -36,15 +36,15 @@
                                                     <h:outputText value="#{(row3.rowIndex+1)+(registroController.nroPagina-1)*10}" />
                                                 </h:column>
                                                 <h:column>
-                                                    <f:facet name="header">Expediente</f:facet>
+                                                    <f:facet name="header"><a jsf:action="#{registroController.listarExpedienteUsuarioPaginadoOrder(1,2)}">Expediente</a></f:facet>
                                                     <h:outputText value="#{exped.numero}" />
                                                 </h:column>
                                                 <h:column>
-                                                    <f:facet name="header">Tipo</f:facet>
+                                                    <f:facet name="header"><a jsf:action="#{registroController.listarExpedienteUsuarioPaginadoOrder(1,3)}">Tipo</a></f:facet>
                                                     <h:outputText value="#{exped.clasificacionTipoNombre}" />
                                                 </h:column>
                                                 <h:column>
-                                                    <f:facet name="header">Fecha Registro</f:facet>
+                                                    <f:facet name="header"><a jsf:action="#{registroController.listarExpedienteUsuarioPaginadoOrder(1,4)}">Fecha Registro</a></f:facet>
                                                     <h:outputText value="#{exped.fechaRegistro}" >
                                                         <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
                                                     </h:outputText>
@@ -58,13 +58,13 @@
                                                     <h:outputText value="#{exped.estadoDetalle}" />
                                                 </h:column>
                                                 <h:column>
-                                                    <f:facet name="header">Estado general</f:facet>
+                                                    <f:facet name="header"><a jsf:action="#{registroController.listarExpedienteUsuarioPaginadoOrder(1,5)}">Estado general</a></f:facet>
                                                     <h:outputText rendered="#{exped.general == 'A'}" value="Trámite" />
                                                     <h:outputText rendered="#{exped.general == 'C' and exped.indicadorDesestimiento == null}" value="Concluido" />
                                                     <h:outputText rendered="#{exped.general == 'C' and exped.indicadorDesestimiento == 1}" value="Desistido" />
                                                 </h:column>
                                                 <h:column>
-                                                    <f:facet name="header">Estado registro</f:facet>
+                                                    <f:facet name="header"><a jsf:action="#{registroController.listarExpedienteUsuarioPaginadoOrder(1,6)}">Estado registro</a></f:facet>
                                                     <h:outputText value="#{exped.version == 0? 'Borrador' : 'En registro' }" />
                                                 </h:column>
                                                 <h:column>

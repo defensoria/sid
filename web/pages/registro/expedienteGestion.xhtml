@@ -577,14 +577,14 @@
                                         <br/><br/>
                                         <table style="width: 100%">
                                             <tr>
-                                                <td style="width: 34%; padding-bottom: 10px">
+                                                <td style="width: 28%; padding-bottom: 10px">
                                                     <label>Hubo respuesta?</label>
                                                     <h:selectOneRadio value="#{registroController.expedienteGestion.respuesta}">
                                                         <f:selectItem itemValue="SI" itemLabel="Si" />
                                                         <f:selectItem itemValue="NO" itemLabel="No" />
                                                     </h:selectOneRadio>
                                                 </td>
-                                                <td style="width: 34%;padding-bottom: 10px">
+                                                <td style="width: 40%;padding-bottom: 10px">
                                                     <label>Fecha respuesta:</label>
                                                     <gc:calendar value="#{registroController.expedienteGestion.fechaRespuesta}" />
                                                 </td>
@@ -592,6 +592,8 @@
                                                     <span>(*)De darse la respuesta despues de los 30 dias de entregado el documento, se considerará fuera de plazo automaticamente.</span>
                                                 </td>
                                             </tr>
+                                        </table>    
+                                        <table style="width: 100%">    
                                             <tr>
                                                 <td colspan="2" style="padding-bottom: 20px">
                                                     <h:panelGroup id="idSelectAcogimiento" rendered="#{registroController.etapaEstado.verEtapa == 3 or registroController.etapaEstado.verEtapa == 7}">

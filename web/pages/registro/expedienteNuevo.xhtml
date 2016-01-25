@@ -33,7 +33,6 @@
 
                     }
                 </script>
-
                 <gc:confirmSubmit rendered="#{registroController.etapaEstado.verEtapa != 2}" classGC="confirmacion3" bean="#{registroController.concluir()}" mensaje="Está seguro que desea concluir la etapa?"/>
                 <gc:confirmSubmit rendered="#{registroController.etapaEstado.verEtapa == 2}" classGC="confirmacion3" bean="#{registroController.concluir()}" mensaje="Está seguro de haber completado la clasificación temática?      Está seguro que desea concluir la etapa?"/>
                 <gc:confirmSubmitRemove classGC="confirmacion0" bean="#{registroController.desistirExpediente()}"  mensaje="Está seguro que desea desistir expediente?"/>
@@ -422,13 +421,13 @@
                                                         </td>
                                                         <td style="text-align: right">
                                                             <h:panelGroup  id="idPanel3" rendered="#{registroController.expediente.id == null || registroController.expediente.version == 0}">
-                                                                <a class="btn btn-info" jsf:action="#{registroController.guardarBorrador()}">
+                                                                <a class="btn btn-info" jsf:action="#{registroController.guardarBorrador()}" jsf:onclick="loadingModal()">
                                                                     <span class="glyphicon glyphicon-floppy-disk" />Borrador
                                                                 </a>
                                                             </h:panelGroup>
                                                             &#160;&#160;
                                                             <h:panelGroup rendered="#{(registroController.expediente.general != 'C' and registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo) or (registroController.expediente.usuarioRegistro == null) }">
-                                                                <a class="btn btn-primary" jsf:action="#{registroController.guardarVersion()}">
+                                                                <a class="btn btn-primary" jsf:action="#{registroController.guardarVersion()}"  jsf:onclick="loadingModal()">
                                                                     <span class="glyphicon glyphicon-floppy-disk" />Guardar
                                                                 </a>
                                                             </h:panelGroup>
@@ -439,9 +438,11 @@
                                                                 </a>
                                                             </h:panelGroup>
                                                             &#160;&#160;
+                                                            <h:panelGroup rendered="#{registroController.etapaEstado.verEtapa == 1 or registroController.etapaEstado.verEtapa == 5 }">
                                                             <a class="btn btn-info">
                                                                 <span class="glyphicon glyphicon-link" />Mayor información
                                                             </a>
+                                                             </h:panelGroup>   
                                                             &#160;&#160;
                                                             <h:panelGroup rendered="#{registroController.expediente.id != null and registroController.expediente.version > 0 and registroController.expediente.general != 'C' and registroController.verBotonRegistrarExpediente and registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo}">
                                                                 <a class="btn btn-danger" onclick="confirmar0()" >
@@ -774,7 +775,7 @@
                                                                                     <span class="glyphicon glyphicon-remove"  style="color: red"/>
                                                                                 </a>
 
-                                                                                <gc:confirmAjax classGC="confirmacion4#{nivel.id}" bean="#{registroController.inactivarNivel(nivel)}" mensaje="Está seguro de eliminar la clasificación?"/>
+                                                                                <gc:confirmSubmit classGC="confirmacion4#{nivel.id}" bean="#{registroController.inactivarNivel(nivel)}" mensaje="Está seguro de eliminar la clasificación?"/>
                                                                                 <script>
                                                                                     function confirmar4#{nivel.id}() {
                                                                                         $(".confirmacion4#{nivel.id}").modal('show');
@@ -1120,6 +1121,17 @@
                                                                                             <tr jsf:rendered="#{registroController.persona.tipo == 'PER'}">
                                                                                                 <td><b>Fecha de nacimiento:</b></td>
                                                                                                 <td style="padding-bottom: 10px; padding-right: 200px;" >
+                                                                                                    <script>
+                                                                                                $(document).ready(function(){
+                                                                                                    $('.datepicker').datetimepicker({
+                    pickTime: false
+                });
+                $(".datepicker").on("changeDate", function (ev) {
+                    $(this).datetimepicker("hide");
+                });
+                                                                                                });
+                                                                                                    
+                                                                                                    </script>
                                                                                                     <gc:calendar value="#{registroController.persona.fechaNacimiento}"/>
                                                                                                 </td>
 

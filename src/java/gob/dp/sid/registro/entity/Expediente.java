@@ -127,6 +127,8 @@ public class Expediente implements Serializable{
     private String ODBusqueda;
     
     private String cadenaBusqueda;
+    
+    private Integer tipoBusqueda;
 
     public Long getId() {
         return id;
@@ -576,6 +578,14 @@ public class Expediente implements Serializable{
 
     public void setCadenaBusqueda(String cadenaBusqueda) {
         this.cadenaBusqueda = cadenaBusqueda;
+    }
+
+    public Integer getTipoBusqueda() {
+        return tipoBusqueda;
+    }
+
+    public void setTipoBusqueda(Integer tipoBusqueda) {
+        this.tipoBusqueda = tipoBusqueda;
     }
 
 }
