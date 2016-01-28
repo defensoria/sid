@@ -3,24 +3,24 @@
 <mapper namespace="gob.dp.sid.comun.dao.DepartamentoDao">
     
     <resultMap id="departamentoMap" type="departamento">
-        <id property="id" column="N_ID_DPTO" />
+        <id property="idDepartamento" column="C_ID_DPTO" />
         <result property="descripcion" column="C_DESCDPTO"/>
         <result property="coordenadax" column="C_COORDENADAX"/>
         <result property="coordenaday" column="C_COORDENADAY"/>
         <result property="zoom" column="N_ZOOM"/>
     </resultMap>  
 
-    <select id="departamentoLista" resultMap="departamentoMap" parameterType="long">
+    <select id="departamentoLista" resultMap="departamentoMap">
         select 
         *
         FROM SID_UBIGEO_DPTO 
-        ORDER BY N_ID_DPTO
+        ORDER BY C_ID_DPTO
     </select>   
     
-    <select id="departamentoOne" resultMap="departamentoMap" parameterType="long">
+    <select id="departamentoOne" resultMap="departamentoMap" parameterType="String">
         select 
         *
         FROM SID_UBIGEO_DPTO 
-        WHERE N_ID_DPTO = #{id}
+        WHERE C_ID_DPTO = #{value}
     </select>  
 </mapper>

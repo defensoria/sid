@@ -13,7 +13,7 @@ import java.io.Serializable;
  */
 public class Departamento implements Serializable{
     
-    private int id;
+    private String idDepartamento;
     
     private String descripcion;
     
@@ -23,13 +23,15 @@ public class Departamento implements Serializable{
     
     private int zoom;
 
-    public int getId() {
-        return id;
+    public String getIdDepartamento() {
+        return idDepartamento;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setIdDepartamento(String idDepartamento) {
+        this.idDepartamento = idDepartamento;
     }
+
+
 
     public String getDescripcion() {
         return descripcion;

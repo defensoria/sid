@@ -88,19 +88,19 @@
                                                                 <div class="panel-body">
                                                                     <h:panelGroup id="idPanelTipoPersona">
                                                                         <table>
-                                                                                            <tr>
-                                                                                                <td>
-                                                                                                    <span class="text-bold">Tipo:</span>
-                                                                                                </td>
-                                                                                                <td>
-                                                                                                    <h:selectOneRadio value="#{registroController.persona.tipo}">
-                                                                                                        <f:selectItem itemLabel="Persona" itemValue="PER"/>
-                                                                                                        <f:selectItem itemLabel="Organización" itemValue="ORG"/>
-                                                                                                        <f:ajax render="idPanelTipoPersona" execute="idPanelTipoPersona" />
-                                                                                                    </h:selectOneRadio>
-                                                                                                </td>
-                                                                                            </tr>
-                                                                                        </table>
+                                                                            <tr>
+                                                                                <td>
+                                                                                    <span class="text-bold">Tipo:</span>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <h:selectOneRadio value="#{registroController.persona.tipo}">
+                                                                                        <f:selectItem itemLabel="Persona" itemValue="PER"/>
+                                                                                        <f:selectItem itemLabel="Organización" itemValue="ORG"/>
+                                                                                        <f:ajax render="idPanelTipoPersona" execute="idPanelTipoPersona" />
+                                                                                    </h:selectOneRadio>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </table>
                                                                         <table style="width: 100%">
                                                                             <tr jsf:rendered="#{registroController.persona.tipo == 'PER'}">
                                                                                 <td style="width: 20%"><b>Tipo de documento:</b></td>
@@ -114,6 +114,10 @@
                                                                                 <td style="width: 20%"><b>Número documento</b></td>
                                                                                 <td style="padding-bottom: 10px;">
                                                                                     <input type="text" placeholder="Número documento" jsf:value="#{registroController.persona.numeroDocumento}" style="width: 50%" maxlength="8"/>
+                                                                                    <a class="btn btn-primary" jsf:action="#{registroController.consultarReniec()}">
+                                                                                        <span class="glyphicon glyphicon-search" />Reniec
+                                                                                        <f:ajax render="idPanelTipoPersona" execute="idPanelTipoPersona" />
+                                                                                    </a>
                                                                                 </td>
                                                                             </tr>
                                                                             <tr>
@@ -144,16 +148,16 @@
                                                                                 <td><b>Fecha de nacimiento:</b></td>
                                                                                 <td style="padding-bottom: 10px; padding-right: 200px;" >
                                                                                     <script>
-                                                                                                $(document).ready(function(){
-                                                                                                    $('.datepicker').datetimepicker({
-                    pickTime: false
-                });
-                $(".datepicker").on("changeDate", function (ev) {
-                    $(this).datetimepicker("hide");
-                });
-                                                                                                });
-                                                                                                    
-                                                                                                    </script>
+                                                                                        $(document).ready(function () {
+                                                                                            $('.datepicker').datetimepicker({
+                                                                                                pickTime: false
+                                                                                            });
+                                                                                            $(".datepicker").on("changeDate", function (ev) {
+                                                                                                $(this).datetimepicker("hide");
+                                                                                            });
+                                                                                        });
+
+                                                                                    </script>
                                                                                     <gc:calendar value="#{registroController.persona.fechaNacimiento}"/>
                                                                                 </td>
 
@@ -217,7 +221,7 @@
                                                                                     <input type="text" placeholder="Telefono 2" jsf:value="#{registroController.persona.telefono2}" style="width: 90%" maxlength="50"/>
                                                                                 </td>
                                                                             </tr>
-                                                                            
+
                                                                         </table>
                                                                     </h:panelGroup>
                                                                 </div>

@@ -48,7 +48,7 @@ public class Usuario implements Serializable
     
     private String nombreOD;
     
-    private Integer idDepartamento;
+    private String idDepartamento;
     
     private String nombreDepartamento;
 
@@ -277,11 +277,11 @@ public class Usuario implements Serializable
         this.rol = rol;
     }
 
-    public Integer getIdDepartamento() {
+    public String getIdDepartamento() {
         return idDepartamento;
     }
 
-    public void setIdDepartamento(Integer idDepartamento) {
+    public void setIdDepartamento(String idDepartamento) {
         this.idDepartamento = idDepartamento;
     }
 

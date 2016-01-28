@@ -21,13 +21,13 @@ public class ProvinciaDaoImpl extends SqlSessionDaoSupport implements ProvinciaD
     private static final Logger log = Logger.getLogger(ProvinciaDaoImpl.class);
 
     @Override
-    public List<Provincia> provinciaLista(int idDepartamento) {
+    public List<Provincia> provinciaLista(String idDepartamento) {
         log.debug("METODO : ProvinciaDaoImpl.provinciaLista");
         return getSqlSession().selectList("gob.dp.sid.comun.dao.ProvinciaDao.provinciaLista",idDepartamento);
     }
 
     @Override
-    public Provincia provinciaOne(int idProvincia) {
+    public Provincia provinciaOne(String idProvincia) {
         return getSqlSession().selectOne("gob.dp.sid.comun.dao.ProvinciaDao.provinciaOne",idProvincia);
     }
 }

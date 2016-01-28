@@ -18,15 +18,15 @@ public interface UbigeoService {
     
     public List<Departamento> departamentoLista();
     
-    public List<Provincia> provinciaLista(int idDepartamento);
+    public List<Provincia> provinciaLista(String idDepartamento);
     
-    public List<Distrito> distritoLista(int idProvincia);
+    public List<Distrito> distritoLista(Distrito distrito);
     
-    public Departamento departamentoOne(long idDepartamento);
+    public Departamento departamentoOne(String idDepartamento);
     
-    public Provincia provinciaOne(int idProvincia);
+    public Provincia provinciaOne(String idProvincia);
     
-    public Distrito distritoOne(int idDistrito);
+    public Distrito distritoOne(Distrito distrito);
     
     public String arrayDepartamento();
 }

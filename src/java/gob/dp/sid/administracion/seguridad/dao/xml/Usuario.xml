@@ -22,7 +22,7 @@
         c_sexo             as sexo,
         n_nivel            as nivel,
         N_ID_OD            as codigoOD,
-        n_iddepartamento   as idDepartamento
+        c_iddepartamento   as idDepartamento
         from sid_seg_usuario
         where
         1=1
@@ -74,7 +74,7 @@
         flag_clave_inicial as flagClaveInicial,
         c_cargo            as cargo,
         c_ruta             as ruta,
-        n_iddepartamento   as idDepartamento 
+        c_iddepartamento   as idDepartamento 
         FROM (
         SELECT codigo_usuario,
         nom_usuario,
@@ -89,7 +89,7 @@
         flag_clave_inicial,
         c_cargo,
         c_ruta,
-        n_iddepartamento,
+        c_iddepartamento,
         ROWNUM numfila
         FROM (
         select codigo_usuario,
@@ -105,7 +105,7 @@
         flag_clave_inicial,
         c_cargo,
         c_ruta,
-        N_IDDEPARTAMENTO
+        C_IDDEPARTAMENTO
         from sid_seg_usuario
         where 1=1
         order by codigo_usuario
@@ -245,7 +245,7 @@
         u.c_cargo            as cargo,
         u.c_ruta             as ruta,
         u.N_ID_OD            as codigoOD,
-        u.n_iddepartamento   as idDepartamento,
+        u.c_iddepartamento   as idDepartamento,
         a.C_NOMBRE           as nombreOD
         from 
         sid_seg_usuario u

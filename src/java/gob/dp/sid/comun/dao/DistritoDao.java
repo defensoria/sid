@@ -14,8 +14,8 @@ import java.util.List;
  */
 public interface DistritoDao {
     
-    public List<Distrito> distritoLista(int idProvincia);
+    public List<Distrito> distritoLista(Distrito distrito);
     
-    public Distrito distritoOne(int idDistrito);
+    public Distrito distritoOne(Distrito distrito);
     
 }

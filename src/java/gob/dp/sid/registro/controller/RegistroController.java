@@ -63,6 +63,7 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.nio.file.Files;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -88,6 +89,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import pe.gob.defensoria.wsdl.service.ServiceReniec;
 
 /**
  *
@@ -369,6 +371,29 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         setVerBotonRegistrarExpediente(true);
         expedienteClasificacionBusqueda = new ExpedienteClasificacion();
         return "expedienteNuevo";
+    }
+    
+    public void consultarReniec() throws ParseException{
+        String proxyHost = "172.30.1.250";
+String proxyPort = "8080";
+System.out.println("Setting up with proxy: " + proxyHost + ":" + proxyPort);
+System.setProperty("http.proxyHost", proxyHost);
+System.setProperty("http.proxyPort", proxyPort);
+System.setProperty("http.nonProxyHosts", "localhost|127.0.0.1");
+        ServiceReniec reniec = new ServiceReniec();
+        List<String> list = reniec.getConsultarServicio("DEPUWS", "DEPUWS!=",null, "08715701","41945677");
+        persona.setApellidoPat(list.get(1));
+        persona.setApellidoMat(list.get(2));
+        persona.setNombre(list.get(4));
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+        Date date = formatter.parse(list.get(20));
+        persona.setFechaNacimiento(date);
+        if(StringUtils.equals(list.get(13), "1"))
+            persona.setSexo("M");
+        else
+            persona.setSexo("F");
+        persona.setDireccion(list.get(11));
+        
     }
 
     public String cargarNuevaBusqueda() {
@@ -1808,14 +1833,17 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     }
 
     public void setearPersonaSeleccionada(Persona perso) {
-        if (perso.getIdDepartamento() != null && perso.getIdDepartamento() != 0) {
+        if (StringUtils.isNotBlank(perso.getIdDepartamento()) && StringUtils.equals(perso.getIdDepartamento(), "0")) {
             perso.setNombreDepartamento(ubigeoService.departamentoOne(perso.getIdDepartamento()).getDescripcion());
         }
-        if (perso.getIdProvincia() != null && perso.getIdProvincia() != 0) {
+        if (StringUtils.isNotBlank(perso.getIdProvincia()) && StringUtils.equals(perso.getIdProvincia(), "0")) {
             perso.setNombreProvincia(ubigeoService.provinciaOne(perso.getIdProvincia()).getDescripcion());
         }
-        if (perso.getIdDistrito() != null && perso.getIdDistrito() != 0) {
-            perso.setNombreDistrito(ubigeoService.distritoOne(perso.getIdDistrito()).getDescripcion());
+        if (StringUtils.isNotBlank(perso.getIdDistrito()) && StringUtils.equals(perso.getIdDistrito(), "0")) {
+            Distrito d = new Distrito();
+            d.setIdDepartamento(perso.getIdDepartamento());
+            d.setIdProvincia(perso.getIdProvincia());
+            perso.setNombreDistrito(ubigeoService.distritoOne(d).getDescripcion());
         }
         listarExpedientexPersona(perso.getId());
         setPersonaSeleccionada(perso);
@@ -2086,11 +2114,11 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         Persona p = personaService.personaBusquedaOne(ep.getPersona().getId());
         ep.setPersona(p);
         setExpedientepersonaModalEdit(ep);
-        if (ep.getIdDepartamento() != null && ep.getIdDepartamento() != 0) {
+        if (StringUtils.isNotBlank(ep.getIdDepartamento()) && StringUtils.equals(ep.getIdDepartamento(), "0")) {
             comboProvinciaId(ep.getIdDepartamento());
         }
-        if (ep.getIdProvincia() != null && ep.getIdProvincia() != 0) {
-            comboDistritoId(ep.getIdProvincia());
+        if (StringUtils.isNotBlank(ep.getIdProvincia()) && StringUtils.equals(ep.getIdProvincia(), "0")) {
+            comboDistritoId(ep.getIdProvincia(), ep.getIdDepartamento());
         }
         return true;
     }
@@ -3028,60 +3056,65 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     public void comboProvincia() {
         listaProvincia = new ArrayList<>();
         listaDistrito = new ArrayList<>();
-        int id = persona.getIdDepartamento();
-        if (id == 0) {
-            listaProvincia.clear();
-        } else {
-            List<Provincia> list = ubigeoService.provinciaLista(id);
-            if (list.size() > 0) {
-                for (Provincia provincia : list) {
-                    listaProvincia.add(new SelectItem(provincia.getId(), provincia.getDescripcion()));
-                }
-            }
-            //Departamento dep = ubigeoService.departamentoOne(id);
-        }
-    }
-
-    public void comboDistrito() {
-        listaDistrito = new ArrayList<>();
-        int id = persona.getIdProvincia();
-        if (id == 0) {
-            listaDistrito.clear();
-        } else {
-            List<Distrito> list = ubigeoService.distritoLista(id);
-            if (list.size() > 0) {
-                for (Distrito distrito : list) {
-                    listaDistrito.add(new SelectItem(distrito.getId(), distrito.getDescripcion()));
-                }
-            }
-            //Provincia prov = ubigeoService.provinciaOne(id);
-        }
-    }
-
-    public void comboProvinciaId(Integer idDepartamento) {
-        listaProvincia = new ArrayList<>();
-        listaDistrito = new ArrayList<>();
-        if (idDepartamento == 0) {
+        String idDepartamento = persona.getIdDepartamento();
+        if (StringUtils.equals(idDepartamento, "0")) {
             listaProvincia.clear();
         } else {
             List<Provincia> list = ubigeoService.provinciaLista(idDepartamento);
             if (list.size() > 0) {
                 for (Provincia provincia : list) {
-                    listaProvincia.add(new SelectItem(provincia.getId(), provincia.getDescripcion()));
+                    listaProvincia.add(new SelectItem(provincia.getIdProvincia(), provincia.getDescripcion()));
                 }
             }
         }
     }
 
-    public void comboDistritoId(Integer idProvincia) {
+    public void comboDistrito() {
         listaDistrito = new ArrayList<>();
-        if (idProvincia == 0) {
+        String idProvincia = persona.getIdProvincia();
+        String idDepartamento = persona.getIdDepartamento();
+        if (StringUtils.equals(idProvincia, "0") || StringUtils.equals(idDepartamento, "0")) {
             listaDistrito.clear();
         } else {
-            List<Distrito> list = ubigeoService.distritoLista(idProvincia);
+            Distrito d = new Distrito();
+            d.setIdDepartamento(idDepartamento);
+            d.setIdProvincia(idProvincia);
+            List<Distrito> list = ubigeoService.distritoLista(d);
             if (list.size() > 0) {
                 for (Distrito distrito : list) {
-                    listaDistrito.add(new SelectItem(distrito.getId(), distrito.getDescripcion()));
+                    listaDistrito.add(new SelectItem(distrito.getIdDistrito(), distrito.getDescripcion()));
+                }
+            }
+        }
+    }
+
+    public void comboProvinciaId(String idDepartamento) {
+        listaProvincia = new ArrayList<>();
+        listaDistrito = new ArrayList<>();
+        if (StringUtils.equals(idDepartamento, "0")) {
+            listaProvincia.clear();
+        } else {
+            List<Provincia> list = ubigeoService.provinciaLista(idDepartamento);
+            if (list.size() > 0) {
+                for (Provincia provincia : list) {
+                    listaProvincia.add(new SelectItem(provincia.getIdProvincia(), provincia.getDescripcion()));
+                }
+            }
+        }
+    }
+
+    public void comboDistritoId(String idProvincia, String idDepartamento) {
+        listaDistrito = new ArrayList<>();
+        if (StringUtils.equals(idProvincia, "0")) {
+            listaDistrito.clear();
+        } else {
+            Distrito d = new Distrito();
+            d.setIdDepartamento(idDepartamento);
+            d.setIdProvincia(idProvincia);
+            List<Distrito> list = ubigeoService.distritoLista(d);
+            if (list.size() > 0) {
+                for (Distrito distrito : list) {
+                    listaDistrito.add(new SelectItem(distrito.getIdDistrito(), distrito.getDescripcion()));
                 }
             }
         }
@@ -3271,7 +3304,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         List<Departamento> list = ubigeoService.departamentoLista();
         if (list.size() > 0) {
             for (Departamento departamento : list) {
-                listaDepartamento.add(new SelectItem(departamento.getId(), departamento.getDescripcion()));
+                listaDepartamento.add(new SelectItem(departamento.getIdDepartamento(), departamento.getDescripcion()));
             }
         }
         return listaDepartamento;

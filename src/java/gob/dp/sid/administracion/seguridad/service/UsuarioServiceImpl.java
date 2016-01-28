@@ -97,10 +97,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public Usuario consultarUsuario(FiltroUsuario filtro) throws Exception {
-        log.debug("METODO XXXXXXXX : UsuarioServiceImpl.consultarUsuario");
-        log.debug("METODO XXXXXXXX : UsuarioServiceImpl.consultarUsuario");
         Usuario u = usuarioDao.consultarUsuario(filtro);
-        log.debug("METODO XXXXXXXX : UsuarioServiceImpl.consultarUsuario");
         if (u != null) {
             if (filtro.isIncluirLstRol()) {
                 u.setListaRol(rolService.buscarRolSegunUsuario(u));

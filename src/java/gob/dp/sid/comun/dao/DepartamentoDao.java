@@ -16,7 +16,7 @@ public interface DepartamentoDao {
     
     public List<Departamento> departamentoLista();
     
-    public Departamento departamentoOne(long idDepartamento);
+    public Departamento departamentoOne(String idDepartamento);
     
     
 }

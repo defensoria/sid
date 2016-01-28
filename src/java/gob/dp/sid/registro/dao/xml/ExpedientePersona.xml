@@ -15,9 +15,9 @@
         <result property="direccion" column="C_DIRECCION"/>
         <result property="email" column="C_EMAIL"/>
         <result property="telefono1" column="C_TELEFONO1"/>
-        <result property="idDepartamento" column="N_IDDEPA"/>
-        <result property="idProvincia" column="N_IDPROV"/>
-        <result property="idDistrito" column="N_IDDISTR"/>
+        <result property="idDepartamento" column="C_IDDEPA"/>
+        <result property="idProvincia" column="C_IDPROV"/>
+        <result property="idDistrito" column="C_IDDISTR"/>
         <result property="telefono2" column="C_TELEFONO2"/>
         <result property="contacto" column="C_CONTACTO"/>
     </resultMap> 
@@ -42,13 +42,13 @@
             C_TELEFONO1,
         </if>
         <if test="idDepartamento != null">
-            N_IDDEPA,
+            C_IDDEPA,
         </if>
         <if test="idProvincia != null">
-            N_IDPROV,
+            C_IDPROV,
         </if>
         <if test="idDistrito != null">
-            N_IDDISTR,
+            C_IDDISTR,
         </if>
         <if test="telefono2 != null">
             C_TELEFONO2,
@@ -119,13 +119,13 @@
             C_TELEFONO1 = #{telefono1},
         </if>
         <if test="idDepartamento != null">
-            N_IDDEPA = #{idDepartamento},
+            C_IDDEPA = #{idDepartamento},
         </if>
         <if test="idProvincia != null">
-            N_IDPROV = #{idProvincia},
+            C_IDPROV = #{idProvincia},
         </if>
         <if test="idDistrito != null">
-            N_IDDISTR = #{idDistrito},
+            C_IDDISTR = #{idDistrito},
         </if>
         <if test="telefono2 != null">
             C_TELEFONO2 = #{telefono2},

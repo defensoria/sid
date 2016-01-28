@@ -13,9 +13,9 @@ import java.io.Serializable;
  */
 public class Provincia implements Serializable{
     
-    private int id;
+    private String idProvincia;
     
-    private int departamento;
+    private String idDepartamento;
     
     private String descripcion;
     
@@ -25,20 +25,20 @@ public class Provincia implements Serializable{
     
     private Integer zoom;
 
-    public int getId() {
-        return id;
+    public String getIdProvincia() {
+        return idProvincia;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setIdProvincia(String idProvincia) {
+        this.idProvincia = idProvincia;
     }
 
-    public int getDepartamento() {
-        return departamento;
+    public String getIdDepartamento() {
+        return idDepartamento;
     }
 
-    public void setDepartamento(int departamento) {
-        this.departamento = departamento;
+    public void setIdDepartamento(String idDepartamento) {
+        this.idDepartamento = idDepartamento;
     }
 
     public String getDescripcion() {

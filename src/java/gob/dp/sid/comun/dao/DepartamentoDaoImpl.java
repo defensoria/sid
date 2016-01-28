@@ -27,7 +27,7 @@ public class DepartamentoDaoImpl extends SqlSessionDaoSupport implements Departa
     }
 
     @Override
-    public Departamento departamentoOne(long idDepartamento) {
+    public Departamento departamentoOne(String idDepartamento) {
         return getSqlSession().selectOne("gob.dp.sid.comun.dao.DepartamentoDao.departamentoOne",idDepartamento);
     }
     

@@ -14,8 +14,8 @@ import java.util.List;
  */
 public interface ProvinciaDao {
     
-    public List<Provincia> provinciaLista(int idDepartamento);
+    public List<Provincia> provinciaLista(String idDepartamento);
     
-    public Provincia provinciaOne(int idProvincia);
+    public Provincia provinciaOne(String idProvincia);
     
 }

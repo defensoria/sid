@@ -42,30 +42,30 @@ public class UbigeoServiceImpl implements UbigeoService{
     }
 
     @Override
-    public List<Provincia> provinciaLista(int idDepartamento) {
+    public List<Provincia> provinciaLista(String idDepartamento) {
         log.debug("METODO : UbigeoServiceImpl.provinciaLista");
         return provinciaDao.provinciaLista(idDepartamento);
     }
 
     @Override
-    public List<Distrito> distritoLista(int idProvincia) {
+    public List<Distrito> distritoLista(Distrito distrito) {
         log.debug("METODO : UbigeoServiceImpl.distritoLista");
-        return distritoDao.distritoLista(idProvincia);
+        return distritoDao.distritoLista(distrito);
     }
 
     @Override
-    public Departamento departamentoOne(long idDepartamento) {
+    public Departamento departamentoOne(String idDepartamento) {
         return departamentoDao.departamentoOne(idDepartamento);
     }
 
     @Override
-    public Provincia provinciaOne(int idProvincia) {
+    public Provincia provinciaOne(String idProvincia) {
         return provinciaDao.provinciaOne(idProvincia);
     }
 
     @Override
-    public Distrito distritoOne(int idDistrito) {
-        return distritoDao.distritoOne(idDistrito);
+    public Distrito distritoOne(Distrito distrito) {
+        return distritoDao.distritoOne(distrito);
     }
     
     @Override
@@ -77,7 +77,7 @@ public class UbigeoServiceImpl implements UbigeoService{
             int i = 0;
             for(Departamento departamento : departamentos){
                 i++;
-                sb.append("departamento["+i+"] = new slctr('"+departamento.getId()+"','"+departamento.getDescripcion()+"') ");
+                sb.append("departamento["+i+"] = new slctr('"+departamento.getIdDepartamento()+"','"+departamento.getDescripcion()+"') ");
             }
         }
         return sb.toString();

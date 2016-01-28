@@ -21,14 +21,14 @@ public class DistritoDaoImpl extends SqlSessionDaoSupport implements DistritoDao
     private static final Logger log = Logger.getLogger(DistritoDaoImpl.class);
 
     @Override
-    public List<Distrito> distritoLista(int idProvincia) {
+    public List<Distrito> distritoLista(Distrito distrito) {
         log.debug("METODO : DistritoDaoImpl.distritoLista");
-        return getSqlSession().selectList("gob.dp.sid.comun.dao.DistritoDao.distritoLista",idProvincia);
+        return getSqlSession().selectList("gob.dp.sid.comun.dao.DistritoDao.distritoLista",distrito);
     }
 
     @Override
-    public Distrito distritoOne(int idDistrito) {
-        return getSqlSession().selectOne("gob.dp.sid.comun.dao.DistritoDao.distritoOne",idDistrito);
+    public Distrito distritoOne(Distrito distrito) {
+        return getSqlSession().selectOne("gob.dp.sid.comun.dao.DistritoDao.distritoOne",distrito);
     }
     
 }
