@@ -16,6 +16,6 @@ public interface ProvinciaDao {
     
     public List<Provincia> provinciaLista(String idDepartamento);
     
-    public Provincia provinciaOne(String idProvincia);
+    public Provincia provinciaOne(Provincia provincia);
     
 }

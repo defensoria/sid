@@ -1848,16 +1848,20 @@ System.setProperty("http.nonProxyHosts", "localhost|127.0.0.1");*/
     }
 
     public void setearPersonaSeleccionada(Persona perso) {
-        if (StringUtils.isNotBlank(perso.getIdDepartamento()) && StringUtils.equals(perso.getIdDepartamento(), "0")) {
+        if (StringUtils.isNotBlank(perso.getIdDepartamento()) && !StringUtils.equals(perso.getIdDepartamento(), "0")) {
             perso.setNombreDepartamento(ubigeoService.departamentoOne(perso.getIdDepartamento()).getDescripcion());
         }
-        if (StringUtils.isNotBlank(perso.getIdProvincia()) && StringUtils.equals(perso.getIdProvincia(), "0")) {
-            perso.setNombreProvincia(ubigeoService.provinciaOne(perso.getIdProvincia()).getDescripcion());
+        if (StringUtils.isNotBlank(perso.getIdProvincia()) && !StringUtils.equals(perso.getIdProvincia(), "0")) {
+            Provincia p = new Provincia();
+            p.setIdDepartamento(perso.getIdDepartamento());
+            p.setIdProvincia(perso.getIdProvincia());
+            perso.setNombreProvincia(ubigeoService.provinciaOne(p).getDescripcion());
         }
-        if (StringUtils.isNotBlank(perso.getIdDistrito()) && StringUtils.equals(perso.getIdDistrito(), "0")) {
+        if (StringUtils.isNotBlank(perso.getIdDistrito()) && !StringUtils.equals(perso.getIdDistrito(), "0")) {
             Distrito d = new Distrito();
             d.setIdDepartamento(perso.getIdDepartamento());
             d.setIdProvincia(perso.getIdProvincia());
+            d.setIdDistrito(perso.getIdDistrito());
             perso.setNombreDistrito(ubigeoService.distritoOne(d).getDescripcion());
         }
         listarExpedientexPersona(perso.getId());

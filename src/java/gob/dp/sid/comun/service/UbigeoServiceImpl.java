@@ -59,8 +59,8 @@ public class UbigeoServiceImpl implements UbigeoService{
     }
 
     @Override
-    public Provincia provinciaOne(String idProvincia) {
-        return provinciaDao.provinciaOne(idProvincia);
+    public Provincia provinciaOne(Provincia provincia) {
+        return provinciaDao.provinciaOne(provincia);
     }
 
     @Override

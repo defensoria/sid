@@ -114,16 +114,16 @@
                                                                             <tr jsf:rendered="#{registroController.persona.tipo == 'PER'}">
                                                                                 <td style="width: 20%"><b>Número documento</b></td>
                                                                                 <td style="padding-bottom: 10px;">
-                                                                                    <table style="width: 100%">
+                                                                                    <table>
                                                                                         <tr>
                                                                                             <td>
-                                                                                                <input type="text" placeholder="Número documento" jsf:value="#{registroController.persona.numeroDocumento}" style="width: 50%" maxlength="8"/>
+                                                                                                <input type="text" placeholder="Número documento" jsf:value="#{registroController.persona.numeroDocumento}" maxlength="8"/>
                                                                                             </td>
-                                                                                            <td>
+                                                                                            <td style="text-align: left">
                                                                                                 <a class="btn btn-primary" jsf:action="#{registroController.consultarReniec()}">
-                                                                                        <span class="glyphicon glyphicon-search" />Reniec
-                                                                                        <f:ajax render="idPanelTipoPersona" execute="idPanelTipoPersona" />
-                                                                                    </a>
+                                                                                                    <span class="glyphicon glyphicon-search" />Reniec
+                                                                                                    <f:ajax render="idPanelTipoPersona" execute="idPanelTipoPersona" />
+                                                                                                </a>
                                                                                             </td>
                                                                                         </tr>
                                                                                     </table>
@@ -253,7 +253,7 @@
                                                     <h:dataTable value="#{registroController.listaPersonaGeneral}" var="per" binding="#{row}" class="table table-hover" rendered="#{registroController.listaPersonaGeneral.size() > 0}">
                                                         <h:column>
                                                             <f:facet name="header">Nro</f:facet>
-                                                            <h:outputText value="#{row.rowIndex+1+(registroController.nroPaginaPersona -1)*10}" />
+                                                            <h:outputText value="#{row.rowIndex+1+(registroController.nroPaginaPersona -1)*5}" />
                                                         </h:column>
                                                         <h:column>
                                                             <f:facet name="header">Nombre completo</f:facet>

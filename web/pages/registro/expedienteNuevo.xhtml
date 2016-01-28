@@ -46,7 +46,7 @@
                                         <tr>
                                             <td>
                                                 <span style="font-size: 2em" class="text-resalt-primary">Expediente: #{registroController.expediente.numero}</span>
-                                                
+
                                                 <h:outputText value=" (CONCLUIDO)" rendered="#{registroController.expediente.general == 'C'}"  style="color: red; font-weight: bold; font-size: 1.5em" />
                                             </td>
                                             <td style="text-align: right">
@@ -439,10 +439,10 @@
                                                             </h:panelGroup>
                                                             &#160;&#160;
                                                             <h:panelGroup rendered="#{registroController.etapaEstado.verEtapa == 1 or registroController.etapaEstado.verEtapa == 5 }">
-                                                            <a class="btn btn-info">
-                                                                <span class="glyphicon glyphicon-link" />Mayor información
-                                                            </a>
-                                                             </h:panelGroup>   
+                                                                <a class="btn btn-info">
+                                                                    <span class="glyphicon glyphicon-link" />Mayor información
+                                                                </a>
+                                                            </h:panelGroup>   
                                                             &#160;&#160;
                                                             <h:panelGroup rendered="#{registroController.expediente.id != null and registroController.expediente.version > 0 and registroController.expediente.general != 'C' and registroController.verBotonRegistrarExpediente and registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo}">
                                                                 <a class="btn btn-danger" onclick="confirmar0()" >
@@ -1091,7 +1091,19 @@
                                                                                             <tr jsf:rendered="#{registroController.persona.tipo == 'PER'}">
                                                                                                 <td style="width: 20%"><b>Número documento:</b></td>
                                                                                                 <td style="padding-bottom: 10px;">
-                                                                                                    <input type="text" placeholder="Número documento" jsf:value="#{registroController.persona.numeroDocumento}" style="width: 50%" maxlength="50"/>
+                                                                                                    <table>
+                                                                                                        <tr>
+                                                                                                            <td>
+                                                                                                                <input type="text" placeholder="Número documento" jsf:value="#{registroController.persona.numeroDocumento}" maxlength="8"/>
+                                                                                                            </td>
+                                                                                                            <td style="text-align: left">
+                                                                                                                <a class="btn btn-primary" jsf:action="#{registroController.consultarReniec()}">
+                                                                                                                    <span class="glyphicon glyphicon-search" />Reniec
+                                                                                                                    <f:ajax render="idPanelTipoPersona" execute="idPanelTipoPersona" />
+                                                                                                                </a>
+                                                                                                            </td>
+                                                                                                        </tr>
+                                                                                                    </table>
                                                                                                 </td>
                                                                                             </tr>
                                                                                             <tr>
@@ -1122,15 +1134,15 @@
                                                                                                 <td><b>Fecha de nacimiento:</b></td>
                                                                                                 <td style="padding-bottom: 10px; padding-right: 200px;" >
                                                                                                     <script>
-                                                                                                $(document).ready(function(){
-                                                                                                    $('.datepicker').datetimepicker({
-                    pickTime: false
-                });
-                $(".datepicker").on("changeDate", function (ev) {
-                    $(this).datetimepicker("hide");
-                });
-                                                                                                });
-                                                                                                    
+                                                                                                        $(document).ready(function () {
+                                                                                                            $('.datepicker').datetimepicker({
+                                                                                                                pickTime: false
+                                                                                                            });
+                                                                                                            $(".datepicker").on("changeDate", function (ev) {
+                                                                                                                $(this).datetimepicker("hide");
+                                                                                                            });
+                                                                                                        });
+
                                                                                                     </script>
                                                                                                     <gc:calendar value="#{registroController.persona.fechaNacimiento}"/>
                                                                                                 </td>
@@ -1222,7 +1234,7 @@
                                                                     <h:column>
                                                                         <f:facet name="header">Reserva</f:facet>
                                                                         <h:selectBooleanCheckbox id="idCheckbox" value="#{per.indicadorReserva}" />
-                                                                        
+
                                                                     </h:column>
                                                                     <h:column>
                                                                         <f:facet name="header">Nombre</f:facet>

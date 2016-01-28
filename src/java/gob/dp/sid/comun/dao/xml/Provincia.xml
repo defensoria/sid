@@ -20,7 +20,7 @@
         WHERE C_ID_DPTO = #{value}
     </select> 
     
-    <select id="provinciaOne" resultMap="provinciaMap" parameterType="String">
+    <select id="provinciaOne" resultMap="provinciaMap" parameterType="provincia">
         select 
         C_ID_PROV, 
         C_ID_DPTO, 
@@ -29,6 +29,7 @@
         C_COORDENADAY,
         N_ZOOM 
         FROM SID_UBIGEO_PROV
-        WHERE C_ID_PROV = #{value}
+        WHERE C_ID_PROV = #{idProvincia} AND
+        C_ID_DPTO = #{idDepartamento}
     </select>    
 </mapper>

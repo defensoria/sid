@@ -5,7 +5,7 @@
     <resultMap id="entidadMap" type="entidad">
         <id property="id" column="N_ID_ENTIDAD" />
         <result property="nombre" column="C_NOMENTIDAD"/>
-        <result property="idDepartamento" column="N_IDDEPARTAMENTO"/>
+        <result property="idDepartamento" column="C_IDDEPARTAMENTO"/>
         <result property="nombreDepartamento" column="C_DESCDPTO"/>
         <result property="estado" column="C_ESTADO"/>
         <result property="tipo" column="N_TIPO"/>
@@ -17,11 +17,11 @@
         SELECT B.* FROM (
         SELECT A.*,ROWNUM numfila FROM (
         SELECT A.*, B.C_DESCDPTO, C.C_DETALLE FROM SID_REG_ENTIDAD A
-        INNER JOIN SID_UBIGEO_DPTO B ON A.N_IDDEPARTAMENTO = B.N_ID_DPTO
+        INNER JOIN SID_UBIGEO_DPTO B ON A.C_IDDEPARTAMENTO = B.C_ID_DPTO
         INNER JOIN SID_REG_ENTIDAD_TIPO C ON A.N_TIPO = C.N_ID_TIP
         WHERE UPPER(A.C_NOMENTIDAD) LIKE '%'||UPPER(#{nombre})||'%' 
         <if test="idDepartamento != 0">
-            AND A.N_IDDEPARTAMENTO = #{idDepartamento}
+            AND A.C_IDDEPARTAMENTO = #{idDepartamento}
         </if>
         <if test="tipo != 0">
             AND A.N_TIPO = #{tipo}

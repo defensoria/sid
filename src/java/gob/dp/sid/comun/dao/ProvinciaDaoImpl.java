@@ -27,7 +27,7 @@ public class ProvinciaDaoImpl extends SqlSessionDaoSupport implements ProvinciaD
     }
 
     @Override
-    public Provincia provinciaOne(String idProvincia) {
-        return getSqlSession().selectOne("gob.dp.sid.comun.dao.ProvinciaDao.provinciaOne",idProvincia);
+    public Provincia provinciaOne(Provincia provincia) {
+        return getSqlSession().selectOne("gob.dp.sid.comun.dao.ProvinciaDao.provinciaOne",provincia);
     }
 }

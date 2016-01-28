@@ -24,7 +24,7 @@ public interface UbigeoService {
     
     public Departamento departamentoOne(String idDepartamento);
     
-    public Provincia provinciaOne(String idProvincia);
+    public Provincia provinciaOne(Provincia provincia);
     
     public Distrito distritoOne(Distrito distrito);
     
