@@ -374,26 +374,41 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     }
     
     public void consultarReniec() throws ParseException{
-        String proxyHost = "172.30.1.250";
+       /* String proxyHost = "172.30.1.250";
 String proxyPort = "8080";
 System.out.println("Setting up with proxy: " + proxyHost + ":" + proxyPort);
 System.setProperty("http.proxyHost", proxyHost);
 System.setProperty("http.proxyPort", proxyPort);
-System.setProperty("http.nonProxyHosts", "localhost|127.0.0.1");
+System.setProperty("http.nonProxyHosts", "localhost|127.0.0.1");*/
         ServiceReniec reniec = new ServiceReniec();
-        List<String> list = reniec.getConsultarServicio("DEPUWS", "DEPUWS!=",null, "08715701","41945677");
-        persona.setApellidoPat(list.get(1));
-        persona.setApellidoMat(list.get(2));
-        persona.setNombre(list.get(4));
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
-        Date date = formatter.parse(list.get(20));
-        persona.setFechaNacimiento(date);
-        if(StringUtils.equals(list.get(13), "1"))
-            persona.setSexo("M");
-        else
-            persona.setSexo("F");
-        persona.setDireccion(list.get(11));
-        
+        List<String> list = reniec.getConsultarServicio("DEPUWS", "DEPUWS!=",null, "08715701",persona.getNumeroDocumento());
+        if(list != null){
+            persona.setApellidoPat(list.get(1));
+            persona.setApellidoMat(list.get(2));
+            persona.setNombre(list.get(4));
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+            Date date = formatter.parse(list.get(20));
+            persona.setFechaNacimiento(date);
+            if(StringUtils.equals(list.get(13), "1"))
+                persona.setSexo("M");
+            else
+                persona.setSexo("F");
+            persona.setDireccion(list.get(11));
+            persona.setIdDepartamento(list.get(5));
+            persona.setIdProvincia(list.get(6));
+            persona.setIdDistrito(list.get(7));
+            
+            if(StringUtils.isNotBlank(persona.getIdDepartamento())){
+                comboProvincia();
+            }
+            if(StringUtils.isNotBlank(persona.getIdProvincia()) && StringUtils.isNotBlank(persona.getIdDepartamento())){
+                comboDistrito();
+            }
+            
+        }else{
+            msg.messageAlert("No se encontraron datos en la RENIEC con el DNI ingresado", null);
+            persona = new Persona();
+        }
     }
 
     public String cargarNuevaBusqueda() {

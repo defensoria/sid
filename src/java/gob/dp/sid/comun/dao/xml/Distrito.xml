@@ -19,7 +19,8 @@
         C_ID_DPTO, 
         C_DESCDSTRO
         FROM SID_UBIGEO_DSTRO
-        WHERE C_ID_PROV = #{id}
+        WHERE C_ID_PROV = #{idProvincia}
+        AND C_ID_DPTO = #{idDepartamento}
     </select>   
     
     <select id="distritoOne" resultMap="distritoMap" parameterType="distrito">

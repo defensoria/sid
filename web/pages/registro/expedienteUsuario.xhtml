@@ -87,6 +87,7 @@
                                                             <div class="modal-body" style="padding:5px">
                                                                 <div class="panel-body">
                                                                     <h:panelGroup id="idPanelTipoPersona">
+                                                                        <h:messages />
                                                                         <table>
                                                                             <tr>
                                                                                 <td>
@@ -113,11 +114,19 @@
                                                                             <tr jsf:rendered="#{registroController.persona.tipo == 'PER'}">
                                                                                 <td style="width: 20%"><b>Número documento</b></td>
                                                                                 <td style="padding-bottom: 10px;">
-                                                                                    <input type="text" placeholder="Número documento" jsf:value="#{registroController.persona.numeroDocumento}" style="width: 50%" maxlength="8"/>
-                                                                                    <a class="btn btn-primary" jsf:action="#{registroController.consultarReniec()}">
+                                                                                    <table style="width: 100%">
+                                                                                        <tr>
+                                                                                            <td>
+                                                                                                <input type="text" placeholder="Número documento" jsf:value="#{registroController.persona.numeroDocumento}" style="width: 50%" maxlength="8"/>
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                <a class="btn btn-primary" jsf:action="#{registroController.consultarReniec()}">
                                                                                         <span class="glyphicon glyphicon-search" />Reniec
                                                                                         <f:ajax render="idPanelTipoPersona" execute="idPanelTipoPersona" />
                                                                                     </a>
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                    </table>
                                                                                 </td>
                                                                             </tr>
                                                                             <tr>
