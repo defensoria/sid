@@ -13,7 +13,6 @@ import gob.dp.sid.bandeja.controller.BandejaController;
 import gob.dp.sid.comun.ConstantesUtil;
 import gob.dp.sid.comun.SelectVO;
 import gob.dp.sid.comun.controller.AbstractManagedBean;
-import gob.dp.sid.comun.entity.Departamento;
 import gob.dp.sid.comun.entity.Distrito;
 import gob.dp.sid.comun.entity.FiltroParametro;
 import gob.dp.sid.comun.entity.Parametro;
@@ -124,8 +123,6 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     private List<Entidad> entidadPopover;
 
     private List<ExpedienteEntidad> entidadSeleccionadas;
-
-    private List<SelectItem> listaDepartamento;
 
     private List<SelectItem> listaProvincia;
 
@@ -246,8 +243,6 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     private Part file5;
 
     private boolean verBotonRegistrarExpediente = true;
-
-    private List<SelectItem> listaClasificacionPrimerLevel;
 
     private List<SelectItem> listaClasificacionSegundoLevel;
 
@@ -3318,21 +3313,6 @@ System.setProperty("http.nonProxyHosts", "localhost|127.0.0.1");*/
         this.indSeleccion = indSeleccion;
     }
 
-    public List<SelectItem> getListaDepartamento() {
-        listaDepartamento = new ArrayList<>();
-        List<Departamento> list = ubigeoService.departamentoLista();
-        if (list.size() > 0) {
-            for (Departamento departamento : list) {
-                listaDepartamento.add(new SelectItem(departamento.getIdDepartamento(), departamento.getDescripcion()));
-            }
-        }
-        return listaDepartamento;
-    }
-
-    public void setListaDepartamento(List<SelectItem> listaDepartamento) {
-        this.listaDepartamento = listaDepartamento;
-    }
-
     public List<SelectItem> getListaProvincia() {
         return listaProvincia;
     }
@@ -3414,6 +3394,7 @@ System.setProperty("http.nonProxyHosts", "localhost|127.0.0.1");*/
     }
 
     public List<SelectItem> getListaTiempo() {
+        System.out.println("getListaTiempo");
         try {
             listaTiempo = new ArrayList<>();
             List<SelectVO> tiposTiempo = TiempoType.getList();
@@ -3435,6 +3416,7 @@ System.setProperty("http.nonProxyHosts", "localhost|127.0.0.1");*/
     }
 
     public List<SelectItem> getListaAntesDespues() {
+        System.out.println("getListaAntesDespues");
         try {
             listaAntesDespues = new ArrayList<>();
             List<SelectVO> tiposAntesDespues = AntesDespuesType.getList();
@@ -3456,6 +3438,7 @@ System.setProperty("http.nonProxyHosts", "localhost|127.0.0.1");*/
     }
 
     public List<SelectItem> getListaRepeticion() {
+        System.out.println("getListaRepeticion");
         try {
             listaRepeticion = new ArrayList<>();
             List<SelectVO> tiposRepeticion = RepeticionType.getList();
@@ -3592,7 +3575,7 @@ System.setProperty("http.nonProxyHosts", "localhost|127.0.0.1");*/
     }
 
     public List<SelectItem> getListaOficinaDefensoriales() {
-        System.out.println("lista oficina defensorial");
+        System.out.println("getListaOficinaDefensoriales");
         List<SelectItem> listaOficinaDef = new ArrayList<>();
         try {
             List<OficinaDefensorial> list = oficinaDefensorialService.listaOficinasDefensoriales();
@@ -3627,6 +3610,7 @@ System.setProperty("http.nonProxyHosts", "localhost|127.0.0.1");*/
     }
 
     public List<SelectItem> getListaUsuariosComisionadosPorOD() {
+        System.out.println("getListaUsuariosComisionadosPorOD");
         List<SelectItem> listaUsuario = new ArrayList<>();
         try {
             Usuario u = new Usuario();
@@ -3684,6 +3668,7 @@ System.setProperty("http.nonProxyHosts", "localhost|127.0.0.1");*/
     }
 
     public List<SelectItem> getListaAdjuntiaDefensoriales() {
+        System.out.println("getListaAdjuntiaDefensoriales");
         List<SelectItem> listaAdjuntiaDef = new ArrayList<>();
         try {
             List<OficinaDefensorial> list = oficinaDefensorialService.listaAdjuntiasDefensoriales();
@@ -3711,21 +3696,6 @@ System.setProperty("http.nonProxyHosts", "localhost|127.0.0.1");*/
 
     public void setListaExpedienteConsultaEnvia(List<ExpedienteConsulta> listaExpedienteConsultaEnvia) {
         this.listaExpedienteConsultaEnvia = listaExpedienteConsultaEnvia;
-    }
-
-    public List<SelectItem> getListaClasificacionPrimerLevel() {
-        List<SelectItem> listaPrimerLevel = new ArrayList<>();
-        try {
-            List<ExpedienteClasificacion> listaClasiPrimerLevel = expedienteClasificacionService.listaExpedienteClasificacion(new ExpedienteClasificacion(0, 1, "ACT"));
-            listaPrimerLevel.add(new SelectItem(0, "Seleccione"));
-            for (ExpedienteClasificacion ec : listaClasiPrimerLevel) {
-                listaPrimerLevel.add(new SelectItem(ec.getId(), ec.getNombre()));
-            }
-            listaClasificacionPrimerLevel = listaPrimerLevel;
-        } catch (Exception e) {
-            log.debug(e.getMessage());
-        }
-        return listaClasificacionPrimerLevel;
     }
 
     public List<SelectItem> getListaClasificacionSegundoLevel() {
@@ -3785,6 +3755,7 @@ System.setProperty("http.nonProxyHosts", "localhost|127.0.0.1");*/
     }
 
     public List<SelectItem> getListaUsuariosComisionadosPorAD() {
+        System.out.println("getListaUsuariosComisionadosPorAD");
         List<SelectItem> listaUsuario = new ArrayList<>();
         try {
             Usuario u = new Usuario();

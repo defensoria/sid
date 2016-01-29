@@ -29,8 +29,7 @@
         AND A.C_ESTADO = 'ACT' ORDER BY C_NOMENTIDAD
         ) A
         ) B
-        WHERE 1 = 1
-        and B.numfila BETWEEN #{ini} AND #{fin}
+        WHERE B.numfila BETWEEN #{ini} AND #{fin}
         
     </select>
     

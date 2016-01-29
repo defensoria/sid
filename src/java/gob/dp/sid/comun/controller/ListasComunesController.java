@@ -123,6 +123,14 @@ public class ListasComunesController {
     public List<Parametro> buscarListaADOD(boolean insertarTODOS, boolean insertarNINGUNO, boolean insertarSELECCIONE) {
         return insertarValoresDefectoParametro(cacheService.buscarListaADOD(), insertarTODOS, insertarNINGUNO, insertarSELECCIONE);
     }
+    
+    public List<Parametro> listaDepartamentos(boolean insertarTODOS, boolean insertarNINGUNO, boolean insertarSELECCIONE) {
+        return insertarValoresDefectoParametro(cacheService.listaDepartamentos(), insertarTODOS, insertarNINGUNO, insertarSELECCIONE);
+    }
+    
+    public List<Parametro> listaPrimerNivel(boolean insertarTODOS, boolean insertarNINGUNO, boolean insertarSELECCIONE) {
+        return insertarValoresDefectoParametro(cacheService.listaPrimerNivel(), insertarTODOS, insertarNINGUNO, insertarSELECCIONE);
+    }
 
     private List insertarValoresDefectoParametro(List lst, boolean insertarTODOS, boolean insertarNINGUNO, boolean insertarSELECCIONE) {
         if (insertarTODOS) {

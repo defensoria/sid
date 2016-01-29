@@ -47,4 +47,8 @@ public interface CacheService {
     
     public List<Parametro> buscarListaADOD();
     
+    public List<Parametro> listaDepartamentos();
+    
+    public List<Parametro> listaPrimerNivel();
+    
 }

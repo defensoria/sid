@@ -220,46 +220,34 @@
                                                                             <td style="padding-right: 10px; width: 70%;">
                                                                                 <h:selectOneRadio rendered="#{registroController.etapaEstado.verEtapa == 1}"  value="#{registroController.expediente.estadoCalificacion}">
                                                                                     <f:selectItems value="#{registroController.listaEstadoCalificacionQueja}"  />
-                                                                                    <f:ajax render="idPanelEstado" execute="@form"/>
                                                                                 </h:selectOneRadio>
 
                                                                                 <h:selectOneRadio rendered="#{registroController.etapaEstado.verEtapa == 2}"  value="#{registroController.expediente.estadoInvestigacion}">
                                                                                     <f:selectItems value="#{registroController.listaEstadoInvestigacionQueja}"  />
-                                                                                    <f:ajax render="idPanelEstado" execute="@form"/>
                                                                                 </h:selectOneRadio>
 
                                                                                 <h:selectOneRadio rendered="#{registroController.etapaEstado.verEtapa == 3}"  value="#{registroController.expediente.estadoPersuacion}">
                                                                                     <f:selectItems value="#{registroController.listaEstadoPersuacionQueja}"  />
-                                                                                    <f:ajax render="idPanelEstado" execute="@form"/>
                                                                                 </h:selectOneRadio>
 
                                                                                 <h:selectOneRadio rendered="#{registroController.etapaEstado.verEtapa == 4}"  value="#{registroController.expediente.estadoSeguimiento}">
                                                                                     <f:selectItems value="#{registroController.listaEstadoSeguimientoQueja}"  />
-                                                                                    <f:ajax render="idPanelEstado" execute="@form"/>
                                                                                 </h:selectOneRadio>
+
                                                                                 <h:selectOneRadio rendered="#{registroController.etapaEstado.verEtapa == 5}"  value="#{registroController.expediente.estadoCalificacion}">
                                                                                     <f:selectItems value="#{registroController.listaEstadoCalificacionPetitorio}"  />
-                                                                                    <f:ajax render="idPanelEstado" execute="@form"/>
                                                                                 </h:selectOneRadio>
 
                                                                                 <h:selectOneRadio rendered="#{registroController.etapaEstado.verEtapa == 6}"  value="#{registroController.expediente.estadoGestion}">
                                                                                     <f:selectItems value="#{registroController.listaEstadoGestionPetitorio}"  />
-                                                                                    <f:ajax render="idPanelEstado" execute="@form"/>
                                                                                 </h:selectOneRadio>            
 
                                                                                 <h:selectOneRadio rendered="#{registroController.etapaEstado.verEtapa == 7}"  value="#{registroController.expediente.estadoPersuacion}">
                                                                                     <f:selectItems value="#{registroController.listaEstadoPersuacionPetitorio}"  />
-                                                                                    <f:ajax render="idPanelEstado" execute="@form"/>
-                                                                                </h:selectOneRadio>            
-
-
-
+                                                                                </h:selectOneRadio>
                                                                             </td>
                                                                             <td style="vertical-align: top">
-                                                                                <textarea rows="3" jsf:rendered="#{registroController.expediente.estadoCalificacion != null and registroController.etapaEstado.verEtapa == 1}" style="width: 100%" placeholder="Justificación"/>
-                                                                                <textarea rows="3" jsf:rendered="#{registroController.expediente.estadoInvestigacion != null and registroController.etapaEstado.verEtapa == 2}" style="width: 100%" placeholder="Justificación"/>
-                                                                                <textarea rows="3" jsf:rendered="#{registroController.expediente.estadoPersuacion != null and registroController.etapaEstado.verEtapa == 3}" style="width: 100%" placeholder="Justificación"/>
-                                                                                <textarea rows="3" jsf:rendered="#{registroController.expediente.estadoSeguimiento != null and registroController.etapaEstado.verEtapa == 4}" style="width: 100%" placeholder="Justificación"/>
+
                                                                             </td>
                                                                         </tr>
                                                                     </table>
@@ -575,7 +563,7 @@
                                                                     <td>
                                                                         <a jsf:rendered="#{registroController.expediente.numero != null}" style="cursor: pointer" jsf:action="#{registroController.limpiarModalBusquedaClasificacion()}" jsf:onclick="loadingModal()">
                                                                             <span class="glyphicon glyphicon-search" style="font-size: large" />
-                                                                            <f:ajax render="@form" onevent="openModalBusquedaClasificacion" />
+                                                                            <f:ajax render="idPanelModalBusquedaClasificacion" onevent="openModalBusquedaClasificacion" />
                                                                         </a>
                                                                         <script>
                                                                             function openModalBusquedaClasificacion(data) {
@@ -587,85 +575,87 @@
                                                                                 }
                                                                             }
                                                                         </script>
-                                                                        <div class="modal fade" data-backdrop="static" data-keyboard="false" id="idModalBusquedaClasificacion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                                                            <div class="modal-dialog" style="text-align: left">
-                                                                                <div class="modal-content">
-                                                                                    <div class="modal-header">
-                                                                                        <a type="button" class="close" data-dismiss="modal">
-                                                                                            <span style="color:red" class="glyphicon glyphicon-remove"></span>
-                                                                                        </a>
-                                                                                        <span class="text-resalt-primary">Búsqueda de clasificación</span>
-                                                                                    </div>
-                                                                                    <div class="modal-body" style="padding:5px">
-                                                                                        <div class="panel-body">
-                                                                                            <h:panelGroup id="idPanelBusquedaClasificacion">
-                                                                                                <table style="width: 100%">
-                                                                                                    <tr>
-                                                                                                        <td>
-                                                                                                            <input type="text" autocomplete="off" jsf:value="#{registroController.expedienteClasificacionBusqueda.nombre}" maxlength="100" />
-                                                                                                        </td>
-                                                                                                        <td>
-                                                                                                            <a class="btn btn-primary" jsf:action="#{registroController.buscarClasificacion(1)}" jsf:onclick="loadingModal()">
-                                                                                                                <span class="glyphicon glyphicon-search" />
-                                                                                                                <f:ajax render="idPanelBusquedaClasificacion" execute="idPanelBusquedaClasificacion" onevent="closeModal"/>Buscar
-                                                                                                            </a>
-                                                                                                        </td>
-                                                                                                    </tr>
-                                                                                                </table>
-                                                                                                <br/>
-
-                                                                                                <c:forEach var="nivel" items="#{registroController.listaExpedienteNivelModal}">
-                                                                                                    <div class="alert alert-warning fade in" style="margin-bottom: 3px">
-                                                                                                        <table style="width: 100%">
-                                                                                                            <tr>
-                                                                                                                <td>
-                                                                                                                    <h:outputText style="font-weight: bold" value="#{nivel.primerNivel}"/>
-                                                                                                                    <h:outputText style="color: gray; font-weight: bold;" value=" > " rendered="#{nivel.segundoNivel != null}"/>
-                                                                                                                    <h:outputText style="font-weight: bold" value="#{nivel.segundoNivel}" />
-                                                                                                                    <h:outputText style="color: gray; font-weight: bold;" value=" > " rendered="#{nivel.tercerNivel != null}"/>
-                                                                                                                    <h:outputText style="font-weight: bold" value="#{nivel.tercerNivel}" />
-                                                                                                                    <h:outputText style="color: gray; font-weight: bold;" value=" > " rendered="#{nivel.cuartoNivel != null}"/>
-                                                                                                                    <h:outputText style="font-weight: bold" value="#{nivel.cuartoNivel}" />
-                                                                                                                    <h:outputText style="color: gray; font-weight: bold;" value=" > " rendered="#{nivel.quintoNivel != null}"/>
-                                                                                                                    <h:outputText style="font-weight: bold" value="#{nivel.quintoNivel}" />
-                                                                                                                    <h:outputText style="color: gray; font-weight: bold;" value=" > " rendered="#{nivel.sextoNivel != null}"/>
-                                                                                                                    <h:outputText style="font-weight: bold" value="#{nivel.sextoNivel}" />
-                                                                                                                </td>
-                                                                                                                <td>
-                                                                                                                    <a jsf:action="#{registroController.guardarNivel(nivel)}" jsf:onclick="loadingModal()">
-                                                                                                                        <span class="glyphicon glyphicon-check"  style="color: #007ACC; font-size: medium"/>
-                                                                                                                        <f:ajax render="@form" onevent="closeModal" />
-                                                                                                                    </a>
-                                                                                                                </td>
-                                                                                                            </tr>
-                                                                                                        </table>    
-                                                                                                    </div>             
-                                                                                                </c:forEach>
-                                                                                                <br/>
-                                                                                                <ul class="pager">
-                                                                                                    <li>
-                                                                                                        <a jsf:action="#{registroController.buscarClasificacion(registroController.nroPaginaModal -1)}" jsf:rendered="#{!empty registroController.listaExpedienteNivelModal}" jsf:onclick="loadingModal()">Anterior
-                                                                                                            <f:ajax render="idPanelBusquedaClasificacion" onevent="closeModal"/>
-                                                                                                        </a>
-                                                                                                    </li>
-                                                                                                    <li>
-                                                                                                        <a jsf:action="#{registroController.buscarClasificacion(registroController.nroPaginaModal +1)}" jsf:rendered="#{!empty registroController.listaExpedienteNivelModal}" jsf:onclick="loadingModal()">Siguiente
-                                                                                                            <f:ajax render="idPanelBusquedaClasificacion" onevent="closeModal"/>
-                                                                                                        </a>
-                                                                                                    </li>
-                                                                                                </ul>
-
-                                                                                            </h:panelGroup>
-                                                                                        </div>
-                                                                                        <div class="modal-footer">
-                                                                                            <a  class="btn btn-default" data-dismiss="modal">
-                                                                                                <span class="glyphicon glyphicon-remove"/>Cerrar
+                                                                        <h:panelGroup id="idPanelModalBusquedaClasificacion">
+                                                                            <div class="modal fade" data-backdrop="static" data-keyboard="false" id="idModalBusquedaClasificacion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                                                <div class="modal-dialog" style="text-align: left">
+                                                                                    <div class="modal-content">
+                                                                                        <div class="modal-header">
+                                                                                            <a type="button" class="close" data-dismiss="modal">
+                                                                                                <span style="color:red" class="glyphicon glyphicon-remove"></span>
                                                                                             </a>
+                                                                                            <span class="text-resalt-primary">Búsqueda de clasificación</span>
+                                                                                        </div>
+                                                                                        <div class="modal-body" style="padding:5px">
+                                                                                            <div class="panel-body">
+                                                                                                <h:panelGroup id="idPanelBusquedaClasificacion">
+                                                                                                    <table style="width: 100%">
+                                                                                                        <tr>
+                                                                                                            <td>
+                                                                                                                <input type="text" autocomplete="off" jsf:value="#{registroController.expedienteClasificacionBusqueda.nombre}" maxlength="100" />
+                                                                                                            </td>
+                                                                                                            <td>
+                                                                                                                <a class="btn btn-primary" jsf:action="#{registroController.buscarClasificacion(1)}" jsf:onclick="loadingModal()">
+                                                                                                                    <span class="glyphicon glyphicon-search" />
+                                                                                                                    <f:ajax render="idPanelBusquedaClasificacion" execute="idPanelBusquedaClasificacion" onevent="closeModal"/>Buscar
+                                                                                                                </a>
+                                                                                                            </td>
+                                                                                                        </tr>
+                                                                                                    </table>
+                                                                                                    <br/>
+
+                                                                                                    <c:forEach var="nivel" items="#{registroController.listaExpedienteNivelModal}">
+                                                                                                        <div class="alert alert-warning fade in" style="margin-bottom: 3px">
+                                                                                                            <table style="width: 100%">
+                                                                                                                <tr>
+                                                                                                                    <td style="width: 90%">
+                                                                                                                        <h:outputText style="font-weight: bold" value="#{nivel.primerNivel}"/>
+                                                                                                                        <h:outputText style="color: gray; font-weight: bold;" value=" > " rendered="#{nivel.segundoNivel != null}"/>
+                                                                                                                        <h:outputText style="font-weight: bold" value="#{nivel.segundoNivel}" />
+                                                                                                                        <h:outputText style="color: gray; font-weight: bold;" value=" > " rendered="#{nivel.tercerNivel != null}"/>
+                                                                                                                        <h:outputText style="font-weight: bold" value="#{nivel.tercerNivel}" />
+                                                                                                                        <h:outputText style="color: gray; font-weight: bold;" value=" > " rendered="#{nivel.cuartoNivel != null}"/>
+                                                                                                                        <h:outputText style="font-weight: bold" value="#{nivel.cuartoNivel}" />
+                                                                                                                        <h:outputText style="color: gray; font-weight: bold;" value=" > " rendered="#{nivel.quintoNivel != null}"/>
+                                                                                                                        <h:outputText style="font-weight: bold" value="#{nivel.quintoNivel}" />
+                                                                                                                        <h:outputText style="color: gray; font-weight: bold;" value=" > " rendered="#{nivel.sextoNivel != null}"/>
+                                                                                                                        <h:outputText style="font-weight: bold" value="#{nivel.sextoNivel}" />
+                                                                                                                    </td>
+                                                                                                                    <td>
+                                                                                                                        <a jsf:action="#{registroController.guardarNivel(nivel)}" jsf:onclick="loadingModal()">
+                                                                                                                            <span class="glyphicon glyphicon-plus"  style="color: #007ACC; font-size: medium"/>
+                                                                                                                            <f:ajax render="idPanelClasificacionTem" onevent="closeModal" />
+                                                                                                                        </a>
+                                                                                                                    </td>
+                                                                                                                </tr>
+                                                                                                            </table>    
+                                                                                                        </div>             
+                                                                                                    </c:forEach>
+                                                                                                    <br/>
+                                                                                                    <ul class="pager">
+                                                                                                        <li>
+                                                                                                            <a jsf:action="#{registroController.buscarClasificacion(registroController.nroPaginaModal -1)}" jsf:rendered="#{!empty registroController.listaExpedienteNivelModal}" jsf:onclick="loadingModal()">Anterior
+                                                                                                                <f:ajax render="idPanelBusquedaClasificacion" onevent="closeModal"/>
+                                                                                                            </a>
+                                                                                                        </li>
+                                                                                                        <li>
+                                                                                                            <a jsf:action="#{registroController.buscarClasificacion(registroController.nroPaginaModal +1)}" jsf:rendered="#{!empty registroController.listaExpedienteNivelModal}" jsf:onclick="loadingModal()">Siguiente
+                                                                                                                <f:ajax render="idPanelBusquedaClasificacion" onevent="closeModal"/>
+                                                                                                            </a>
+                                                                                                        </li>
+                                                                                                    </ul>
+
+                                                                                                </h:panelGroup>
+                                                                                            </div>
+                                                                                            <div class="modal-footer">
+                                                                                                <a  class="btn btn-default" data-dismiss="modal">
+                                                                                                    <span class="glyphicon glyphicon-remove"/>Cerrar
+                                                                                                </a>
+                                                                                            </div>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
-                                                                        </div>
+                                                                        </h:panelGroup>
                                                                     </td>
                                                                 </tr>
                                                             </table>
@@ -676,8 +666,9 @@
                                                             <span class="text-bold">Tema:</span>
                                                         </td>
                                                         <td style="padding-bottom: 10px">
-                                                            <h:selectOneMenu value="#{registroController.expedienteNivel.idPrimerNivel}" onchange="loadingModal()">
-                                                                <f:selectItems value="#{registroController.listaClasificacionPrimerLevel}" />
+                                                            <h:selectOneMenu value="#{registroController.expedienteNivel.idPrimerNivel}" id="idSelectPrimerNivel" style="width: 50%" onchange="loadingModal()">
+                                                                <f:selectItem itemLabel="Seleccione" itemValue="0" />
+                                                                <f:selectItems value="#{listasComunesController.listaPrimerNivel(false, false, false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
                                                                 <f:ajax listener="#{registroController.cargarNivelesClasificacion(registroController.expedienteNivel.idPrimerNivel, 2)}" 
                                                                         render="idSelectSegundoNivel idSelectTercerNivel idSelectCuartoNivel idSelectQuintoNivel idSelectSextoNivel" onevent="closeModal"/>
                                                             </h:selectOneMenu>
@@ -753,50 +744,74 @@
                                                             <span class="text-bold">Clasificación:</span>
                                                         </td>
                                                         <td style="padding-bottom: 20px">
-                                                            <c:forEach var="nivel" items="#{registroController.expediente.listaExpedienteNivel}">
-                                                                <div class="alert alert-warning fade in" style="margin-bottom: 3px">
-                                                                    <table style="width: 100%">
-                                                                        <tr>
-                                                                            <td style="width: 90%">
-                                                                                <h:outputText style="font-weight: bold" value="#{nivel.primerNivel}"/>
-                                                                                <h:outputText style="color: gray; font-weight: bold;" value=" > " rendered="#{nivel.segundoNivel != null}"/>
-                                                                                <h:outputText style="font-weight: bold" value="#{nivel.segundoNivel}" />
-                                                                                <h:outputText style="color: gray; font-weight: bold;" value=" > " rendered="#{nivel.tercerNivel != null}"/>
-                                                                                <h:outputText style="font-weight: bold" value="#{nivel.tercerNivel}" />
-                                                                                <h:outputText style="color: gray; font-weight: bold;" value=" > " rendered="#{nivel.cuartoNivel != null}"/>
-                                                                                <h:outputText style="font-weight: bold" value="#{nivel.cuartoNivel}" />
-                                                                                <h:outputText style="color: gray; font-weight: bold;" value=" > " rendered="#{nivel.quintoNivel != null}"/>
-                                                                                <h:outputText style="font-weight: bold" value="#{nivel.quintoNivel}" />
-                                                                                <h:outputText style="color: gray; font-weight: bold;" value=" > " rendered="#{nivel.sextoNivel != null}"/>
-                                                                                <h:outputText style="font-weight: bold" value="#{nivel.sextoNivel}" />
-                                                                            </td>
-                                                                            <td>
-                                                                                <a onclick="confirmar4#{nivel.id}()">
-                                                                                    <span class="glyphicon glyphicon-remove"  style="color: red"/>
-                                                                                </a>
 
-                                                                                <gc:confirmSubmit classGC="confirmacion4#{nivel.id}" bean="#{registroController.inactivarNivel(nivel)}" mensaje="Está seguro de eliminar la clasificación?"/>
-                                                                                <script>
-                                                                                    function confirmar4#{nivel.id}() {
-                                                                                        $(".confirmacion4#{nivel.id}").modal('show');
-                                                                                    }
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="2">
+                                                            <table style="width: 100%">
+                                                                <tr>
+                                                                    <td style="width: 100%">
+                                                                        <c:forEach var="nivel" items="#{registroController.expediente.listaExpedienteNivel}">
+                                                                            <table style="width: 100%">
+                                                                                <tr>
+                                                                                    <td style="width: 85%; padding-right: 3px">
+                                                                                        <div class="alert alert-warning fade in" style="margin-bottom: 3px; padding: 5px">
+                                                                                            <table style="width: 100%">
+                                                                                                <tr>
+                                                                                                    <td style="width: 100%">
+                                                                                                        <h:outputText style="font-weight: bold" value="#{nivel.primerNivel}"/>
+                                                                                                        <h:outputText style="color: red; font-weight: bold;" value=" > " rendered="#{nivel.segundoNivel != null}"/>
+                                                                                                        <h:outputText style="font-weight: bold" value="#{nivel.segundoNivel}" />
+                                                                                                        <h:outputText style="color: red; font-weight: bold;" value=" > " rendered="#{nivel.tercerNivel != null}"/>
+                                                                                                        <h:outputText style="font-weight: bold" value="#{nivel.tercerNivel}" />
+                                                                                                        <h:outputText style="color: red; font-weight: bold;" value=" > " rendered="#{nivel.cuartoNivel != null}"/>
+                                                                                                        <h:outputText style="font-weight: bold" value="#{nivel.cuartoNivel}" />
+                                                                                                        <h:outputText style="color: red; font-weight: bold;" value=" > " rendered="#{nivel.quintoNivel != null}"/>
+                                                                                                        <h:outputText style="font-weight: bold" value="#{nivel.quintoNivel}" />
+                                                                                                        <h:outputText style="color: red; font-weight: bold;" value=" > " rendered="#{nivel.sextoNivel != null}"/>
+                                                                                                        <h:outputText style="font-weight: bold" value="#{nivel.sextoNivel}" />
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                            </table>
+                                                                                        </div> 
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <table>
+                                                                                            <tr>
+                                                                                                <td>
+                                                                                                    <a onclick="confirmar4#{nivel.id}()">
+                                                                                                        <span class="glyphicon glyphicon-remove" style="color: red; font-size: 1.7em"/>
+                                                                                                    </a>
 
-                                                                                </script>
-                                                                            </td>
-                                                                            <td style="padding-left: 10px">
-                                                                                <a jsf:action="#{registroController.editarNivel(nivel)}" jsf:onclick="loadingModal()">
-                                                                                    <span class="glyphicon glyphicon-pencil"/>
-                                                                                    <f:ajax render="@form" onevent="closeModal" />
-                                                                                </a>
-                                                                            </td>
-                                                                        </tr>
-                                                                    </table>    
-                                                                </div>             
-                                                            </c:forEach>
+                                                                                                    <gc:confirmSubmit classGC="confirmacion4#{nivel.id}" bean="#{registroController.inactivarNivel(nivel)}" mensaje="Está seguro de eliminar la clasificación?"/>
+                                                                                                    <script>
+                                                                                                        function confirmar4#{nivel.id}() {
+                                                                                                            $(".confirmacion4#{nivel.id}").modal('show');
+                                                                                                        }
+
+                                                                                                    </script>
+                                                                                                </td>
+                                                                                                <td style="padding-left: 10px">
+                                                                                                    <a jsf:action="#{registroController.editarNivel(nivel)}" style="font-size: 1.7em" jsf:onclick="loadingModal()">
+                                                                                                        <span class="glyphicon glyphicon-pencil"/>
+                                                                                                        <f:ajax render="idSelectPrimerNivel idSelectSegundoNivel idSelectTercerNivel idSelectCuartoNivel idSelectQuintoNivel idSelectSextoNivel" onevent="closeModal" />
+                                                                                                    </a>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                        </table>                
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </table>
+                                                                        </c:forEach>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
                                                         </td>
                                                     </tr>
                                                 </table>
                                             </h:panelGroup>
+                                            <br/><br/>
                                             <h:panelGroup id="idPanelEtiquetas">
                                                 <table style="width: 100%">
                                                     <tr>
@@ -1165,10 +1180,9 @@
                                                                                                         <table style="width:90%">
                                                                                                             <tr>
                                                                                                                 <td style="width:33%">
-                                                                                                                    <h:selectOneMenu value="#{registroController.persona.idDepartamento}">
+                                                                                                                    <h:selectOneMenu value="#{registroController.persona.idDepartamento}" style="width: 50%">
                                                                                                                         <f:selectItem itemLabel="Departamento" itemValue="0"/>
-                                                                                                                        <f:selectItems value="#{registroController.listaDepartamento}" var="y" itemLabel="#{y.value}" itemValue="#{y.label}" />
-                                                                                                                        <f:ajax listener="#{registroController.comboProvincia()}" render="idUbigeoPersona" />
+                                                                                                                        <f:selectItems value="#{listasComunesController.listaDepartamentos(false,false,false)}" var="y" itemLabel="#buscarTipoDocumento(false,false,false){y.nombreParametro}" itemValue="#{y.valorParametro}" />
                                                                                                                     </h:selectOneMenu>
                                                                                                                 </td>
                                                                                                                 <td style="width:33%">
@@ -1316,17 +1330,17 @@
                                                                                                     <table style="width:90%">
                                                                                                         <tr>
                                                                                                             <td style="width:33%">
-                                                                                                                <h:selectOneMenu value="#{registroController.expedientepersonaModalEdit.idDepartamento}">
+                                                                                                                <h:selectOneMenu value="#{registroController.expedientepersonaModalEdit.idDepartamento}" style="width: 50%" onchange="loadingModal()">
                                                                                                                     <f:selectItem itemLabel="Departamento" itemValue="0"/>
-                                                                                                                    <f:selectItems value="#{registroController.listaDepartamento}"/>
-                                                                                                                    <f:ajax listener="#{registroController.comboProvinciaId(registroController.expedientepersonaModalEdit.idDepartamento)}" render="idUbigeoPersona2" />
+                                                                                                                    <f:selectItems value="#{listasComunesController.listaDepartamentos(false,false,false)}" var="y" itemLabel="#buscarTipoDocumento(false,false,false){y.nombreParametro}" itemValue="#{y.valorParametro}" />
+                                                                                                                    <f:ajax listener="#{registroController.comboProvinciaId(registroController.expedientepersonaModalEdit.idDepartamento)}" render="idUbigeoPersona2" onevent="closeModal"/>
                                                                                                                 </h:selectOneMenu>
                                                                                                             </td>
                                                                                                             <td style="width:33%">
                                                                                                                 <h:selectOneMenu value="#{registroController.expedientepersonaModalEdit.idProvincia}">
                                                                                                                     <f:selectItem itemLabel="Provincia" itemValue="0"/>
                                                                                                                     <f:selectItems value="#{registroController.listaProvincia}"  />
-                                                                                                                    <f:ajax listener="#{registroController.comboDistritoId(registroController.expedientepersonaModalEdit.idProvincia)}" render="cmbDistrito2"/>
+                                                                                                                    <f:ajax listener="#{registroController.comboDistritoId(registroController.expedientepersonaModalEdit.idProvincia , registroController.expedientepersonaModalEdit.idDepartamento)}" render="cmbDistrito2"/>
                                                                                                                 </h:selectOneMenu>
                                                                                                             </td>
                                                                                                             <td style="width:34%">
