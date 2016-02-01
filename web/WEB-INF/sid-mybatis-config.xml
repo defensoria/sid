@@ -45,6 +45,8 @@
         <typeAlias type="gob.dp.sid.registro.entity.ExpedienteConsulta" alias="expedienteConsulta"/>
         <typeAlias type="gob.dp.sid.registro.entity.ExpedienteClasificacion" alias="expedienteClasificacion"/>
         <typeAlias type="gob.dp.sid.registro.entity.ExpedienteNivel" alias="expedienteNivel"/>
+        <typeAlias type="gob.dp.sid.registro.entity.ExpedienteClasificacionTipo" alias="expedienteClasificacionTipo"/>
+        <typeAlias type="gob.dp.sid.registro.entity.ExpedienteClasificacionTipo" alias="expedienteClasiTipo"/>
         
         <typeAlias type="gob.dp.sid.reporte.entity.Reporte" alias="reporte"/>
         
@@ -78,6 +80,8 @@
         <mapper resource="gob/dp/sid/registro/dao/xml/ExpedienteClasificacion.xml" />
         <mapper resource="gob/dp/sid/registro/dao/xml/ExpedienteClasificacion.xml" />
         <mapper resource="gob/dp/sid/registro/dao/xml/ExpedienteNivel.xml" />
+        <mapper resource="gob/dp/sid/registro/dao/xml/ExpedienteClasificacionTipo.xml" />
+        <mapper resource="gob/dp/sid/registro/dao/xml/ExpedienteClasiTipo.xml" />
         
         <mapper resource="gob/dp/sid/bandeja/dao/xml/Bandeja.xml" />
     </mappers>

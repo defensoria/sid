@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD iBatis Mapper 3.0 //EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="gob.dp.sid.registro.dao.ExpedienteClasiTipoDAO">
+    
+    <resultMap id="expedienteClasiTipoMap" type="ExpedienteClasiTipo">
+        <id property="idClasi" column="N_ID_EXPEDIENTECLASI" />
+        <id property="idTipo" column="N_ID_CLASIFICACIONTIPO" />
+    </resultMap> 
+    
+    <insert id="expedienteClasiTipoInsertar" parameterType="expedienteClasiTipo">
+        INSERT INTO SID_REG_EXPEDIENTE_CLASI_TIPO
+        (
+            N_ID_EXPEDIENTECLASI,
+            N_ID_CLASIFICACIONTIPO
+        )
+        VALUES 
+        (
+            #{idClasi},
+            #{idTipo}
+        )
+    </insert>
+    
+    <delete id="expedienteClasiTipoEliminar" parameterType="catalogo">
+        delete from SID_REG_EXPEDIENTE_CLASI_TIPO
+        where N_ID_EXPEDIENTECLASI = #{idClasi}
+        and N_ID_CLASIFICACIONTIPO = #{idTipo}
+    </delete>
+    
+</mapper>

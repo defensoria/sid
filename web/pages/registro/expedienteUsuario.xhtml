@@ -190,7 +190,7 @@
                                                                                                 <td style="width:33%">
                                                                                                     <h:selectOneMenu value="#{registroController.persona.idDepartamento}">
                                                                                                         <f:selectItem itemLabel="Departamento" itemValue="0"/>
-                                                                                                        <f:selectItems value="#{registroController.listaDepartamento}" var="y" itemLabel="#{y.value}" itemValue="#{y.label}" />
+                                                                                                        <f:selectItems value="#{listasComunesController.listaDepartamentos(false,false,false)}" var="y" itemLabel="#buscarTipoDocumento(false,false,false){y.nombreParametro}" itemValue="#{y.valorParametro}" />
                                                                                                         <f:ajax listener="#{registroController.comboProvincia()}" render="idUbigeoPersona" />
                                                                                                     </h:selectOneMenu>
                                                                                                 </td>

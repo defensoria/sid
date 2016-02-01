@@ -6,6 +6,7 @@
 package gob.dp.sid.registro.entity;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  *
@@ -45,6 +46,8 @@ public class ExpedienteNivel implements Serializable{
     private String quintoNivel;
     
     private String sextoNivel;
+    
+    private List<ExpedienteClasificacionTipo> listaClasificacionTipo;
 
     public Long getId() {
         return id;
@@ -164,6 +167,14 @@ public class ExpedienteNivel implements Serializable{
 
     public void setSextoNivel(String sextoNivel) {
         this.sextoNivel = sextoNivel;
+    }
+
+    public List<ExpedienteClasificacionTipo> getListaClasificacionTipo() {
+        return listaClasificacionTipo;
+    }
+
+    public void setListaClasificacionTipo(List<ExpedienteClasificacionTipo> listaClasificacionTipo) {
+        this.listaClasificacionTipo = listaClasificacionTipo;
     }
     
 }

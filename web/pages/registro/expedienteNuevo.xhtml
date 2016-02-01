@@ -471,7 +471,7 @@
                     <div class="panel-body">
                         <table style="width: 100%">
                             <tr>
-                                <td style="width: 50%; vertical-align: top; padding-right: 2px">
+                                <td style="width: 60%; vertical-align: top; padding-right: 2px">
                                     <div class="panel panel-featured-top-silver" id="idPanel1" style="min-height: 700px">
                                         <div class="panel-body" >
                                             <span class="text-resalt-primary">Información de ingreso</span>
@@ -511,7 +511,7 @@
                                                             <h:panelGroup rendered="#{registroController.expediente.numero != null}">
                                                                 <a jsf:action="#{registroController.guardarNivel()}" jsf:onclick="loadingModal()">
                                                                     <span class="glyphicon glyphicon-plus" style="font-size: 1.3em" />Agregar/Actualizar clasificación
-                                                                    <f:ajax render="idPanelClasificacionTem" execute="idPanelClasificacionTem" onevent="closeModal"/>
+                                                                        
                                                                 </a>
                                                             </h:panelGroup>
                                                         </td>
@@ -755,12 +755,45 @@
                                                                         <c:forEach var="nivel" items="#{registroController.expediente.listaExpedienteNivel}">
                                                                             <table style="width: 100%">
                                                                                 <tr>
-                                                                                    <td style="width: 85%; padding-right: 3px">
+                                                                                    <td style="width: 55%; padding-right: 2px; vertical-align: top">
                                                                                         <div class="alert alert-warning fade in" style="margin-bottom: 3px; padding: 5px">
                                                                                             <table style="width: 100%">
                                                                                                 <tr>
                                                                                                     <td style="width: 100%">
-                                                                                                        <h:outputText style="font-weight: bold" value="#{nivel.primerNivel}"/>
+                                                                                                        <table class="table table-hover">
+                                                                                                            <tr>
+                                                                                                                <td>
+                                                                                                                    <label style="color: red">Clasificación:</label>
+                                                                                                                </td>
+                                                                                                                <td>
+                                                                                                                    <table>
+                                                                                                            <tr>
+                                                                                                                <td>
+                                                                                                                    <a onclick="confirmar4#{nivel.id}()">
+                                                                                                                        <span class="glyphicon glyphicon-remove" style="color: red; font-size: 1.2em"/>
+                                                                                                                    </a>
+
+                                                                                                                    <gc:confirmSubmit classGC="confirmacion4#{nivel.id}" bean="#{registroController.inactivarNivel(nivel)}" mensaje="Está seguro de eliminar la clasificación?"/>
+                                                                                                                    <script>
+                                                                                                                        function confirmar4#{nivel.id}() {
+                                                                                                                            $(".confirmacion4#{nivel.id}").modal('show');
+                                                                                                                        }
+
+                                                                                                                    </script>
+                                                                                                                </td>
+                                                                                                                <td style="padding-left: 5px">
+                                                                                                                    <a jsf:action="#{registroController.editarNivel(nivel)}" style="font-size: 1.2em" jsf:onclick="loadingModal()">
+                                                                                                                        <span class="glyphicon glyphicon-pencil"/>
+                                                                                                                        <f:ajax render="idSelectPrimerNivel idSelectSegundoNivel idSelectTercerNivel idSelectCuartoNivel idSelectQuintoNivel idSelectSextoNivel" onevent="closeModal" />
+                                                                                                                    </a>
+                                                                                                                </td>
+                                                                                                            </tr>
+                                                                                                        </table>
+                                                                                                                </td>
+                                                                                                            </tr>
+                                                                                                            <tr>
+                                                                                                                <td colspan="2">
+                                                                                                                    <h:outputText style="font-weight: bold" value="#{nivel.primerNivel}"/>
                                                                                                         <h:outputText style="color: red; font-weight: bold;" value=" > " rendered="#{nivel.segundoNivel != null}"/>
                                                                                                         <h:outputText style="font-weight: bold" value="#{nivel.segundoNivel}" />
                                                                                                         <h:outputText style="color: red; font-weight: bold;" value=" > " rendered="#{nivel.tercerNivel != null}"/>
@@ -771,39 +804,152 @@
                                                                                                         <h:outputText style="font-weight: bold" value="#{nivel.quintoNivel}" />
                                                                                                         <h:outputText style="color: red; font-weight: bold;" value=" > " rendered="#{nivel.sextoNivel != null}"/>
                                                                                                         <h:outputText style="font-weight: bold" value="#{nivel.sextoNivel}" />
+                                                                                                                </td>
+                                                                                                            </tr>
+                                                                                                        </table>
                                                                                                     </td>
+                                                                                                    
                                                                                                 </tr>
                                                                                             </table>
                                                                                         </div> 
                                                                                     </td>
-                                                                                    <td>
-                                                                                        <table>
-                                                                                            <tr>
-                                                                                                <td>
-                                                                                                    <a onclick="confirmar4#{nivel.id}()">
-                                                                                                        <span class="glyphicon glyphicon-remove" style="color: red; font-size: 1.7em"/>
-                                                                                                    </a>
+                                                                                    <td style="vertical-align: top">
+                                                                                        <div class="alert alert-info fade in" style="margin-bottom: 3px; padding: 5px">
+                                                                                            <style>
+                                                                                                .columnRed{
+                                                                                                    color: red;
+                                                                                                    font-weight: bold;
+                                                                                                }
 
-                                                                                                    <gc:confirmSubmit classGC="confirmacion4#{nivel.id}" bean="#{registroController.inactivarNivel(nivel)}" mensaje="Está seguro de eliminar la clasificación?"/>
-                                                                                                    <script>
-                                                                                                        function confirmar4#{nivel.id}() {
-                                                                                                            $(".confirmacion4#{nivel.id}").modal('show');
-                                                                                                        }
+                                                                                                .columnSise1{
+                                                                                                    width: 50%
+                                                                                                }
+                                                                                            </style>
+                                                                                            <table style="width: 100%">
+                                                                                                <tr>
+                                                                                                    <td style="width: 95%">
+                                                                                                        <h:dataTable value="#{nivel.listaClasificacionTipo}" var="cla" class="table table-hover" columnClasses="columnSise1" headerClass="columnRed">
+                                                                                                            <h:column>
+                                                                                                                <f:facet name="header" class="columnRed">Tipo</f:facet>
+                                                                                                                <h:outputText value="#{cla.nombrePadre}" />
+                                                                                                            </h:column>
 
-                                                                                                    </script>
-                                                                                                </td>
-                                                                                                <td style="padding-left: 10px">
-                                                                                                    <a jsf:action="#{registroController.editarNivel(nivel)}" style="font-size: 1.7em" jsf:onclick="loadingModal()">
-                                                                                                        <span class="glyphicon glyphicon-pencil"/>
-                                                                                                        <f:ajax render="idSelectPrimerNivel idSelectSegundoNivel idSelectTercerNivel idSelectCuartoNivel idSelectQuintoNivel idSelectSextoNivel" onevent="closeModal" />
-                                                                                                    </a>
-                                                                                                </td>
-                                                                                            </tr>
-                                                                                        </table>                
+                                                                                                            <h:column>
+                                                                                                                <f:facet name="header">Estado</f:facet>
+                                                                                                                <h:outputText value="#{cla.detalle}" />
+                                                                                                            </h:column>
+                                                                                                        </h:dataTable>
+                                                                                                    </td>
+                                                                                                    <td style="vertical-align: top; ">
+                                                                                                        <a jsf:action="#{registroController.cargarSegundaClasificacion(nivel.id, nivel.idPrimerNivel)}" style="font-size: 1.2em" jsf:onclick="loadingModal()">
+                                                                                                            <span class="glyphicon glyphicon-pencil" style="color: black"/>
+                                                                                                            <f:ajax render="idPanelSegundaClasificacion" onevent="openModalSegundaClasificacion" />
+                                                                                                        </a>
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                            </table>
+                                                                                        </div>            
                                                                                     </td>
                                                                                 </tr>
                                                                             </table>
                                                                         </c:forEach>
+                                                                        <script>
+                                                                            function openModalSegundaClasificacion(data) {
+                                                                                if (data.status === 'success') {
+                                                                                    $("#loadModal").modal('hide');
+                                                                                    $('body').removeClass('modal-open');
+                                                                                    $(".modal-backdrop").removeClass("modal-backdrop");
+                                                                                    $("#idModalSegundaClasificacion").modal('show');
+
+                                                                                }
+                                                                            }
+
+                                                                        </script>
+                                                                        <h:panelGroup id="idPanelSegundaClasificacion">
+                                                                            <div class="modal fade" data-backdrop="static" data-keyboard="false" id="idModalSegundaClasificacion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                                                <div class="modal-dialog" style="text-align: left">
+                                                                                    <div class="modal-content">
+                                                                                        <div class="modal-header">
+                                                                                            <a type="button" class="close" data-dismiss="modal">
+                                                                                                <span style="color:red" class="glyphicon glyphicon-remove"></span>
+                                                                                            </a>
+                                                                                            <span class="text-resalt-primary">Tipo de clasificación</span>
+                                                                                        </div>
+                                                                                        <div class="modal-body" style="padding:5px">
+                                                                                            <div class="panel-body">
+                                                                                                <h:panelGroup id="idPanelSegundaSeleccion">
+                                                                                                    <h:messages />
+                                                                                                    <table style="width: 100%">
+                                                                                                        <tr>
+                                                                                                            <td>
+                                                                                                                <label>Tipo:</label>
+                                                                                                            </td>
+                                                                                                            <td>
+                                                                                                                <script>
+                                                                                                                    $(document).ready(function () {
+                                                                                                                        $("#idSelectSegundaClasificacion").change(function () {
+                                                                                                                            $("#idSegundaClasificacion").val($(this).val());
+                                                                                                                        });
+                                                                                                                    });
+                                                                                                                </script>
+                                                                                                                <input type="hidden" jsf:value="#{registroController.idSegundaClasificacion}" id="idSegundaClasificacion" />
+                                                                                                                <select id="idSelectSegundaClasificacion">
+                                                                                                                    <option class="classItemGroup" value="0">Seleccione</option>
+                                                                                                                    <c:forEach var="cabecera" items="#{registroController.listadoClasificacionTipo}">
+                                                                                                                        <optgroup class="classOutGroup" label="#{cabecera.titulo}">
+                                                                                                                            <c:forEach var="ite" items="#{cabecera.items}">
+                                                                                                                                <option class="classItemGroup" value="#{ite.id}">#{ite.detalle}</option>
+                                                                                                                            </c:forEach>
+                                                                                                                        </optgroup>    
+                                                                                                                    </c:forEach>
+                                                                                                                </select>
+                                                                                                            </td>
+                                                                                                            <td>
+                                                                                                                <a class="btn btn-primary" jsf:action="#{registroController.addSegundaClasificacion()}" >
+                                                                                                                    <span class="glyphicon glyphicon-share-alt" />Guardar
+
+                                                                                                                </a>
+                                                                                                            </td>
+                                                                                                        </tr>
+                                                                                                    </table>
+                                                                                                    <h:dataTable value="#{registroController.listaExpedienteClasificacion}" var="ec" id="datableSegundaSeleccion" class="table table-hover">
+                                                                                                        <h:column>
+                                                                                                            <f:facet name="header">Tipo</f:facet>
+                                                                                                            <h:outputText value="#{ec.nombrePadre}" />
+                                                                                                        </h:column>
+                                                                                                        <h:column>
+                                                                                                            <f:facet name="header">Cabecera</f:facet>
+                                                                                                            <h:outputText value="#{ec.detalle}" />
+                                                                                                        </h:column>
+                                                                                                        <h:column>
+                                                                                                            <f:facet name="header">Eliminar</f:facet>
+                                                                                                            <a jsf:action="#{registroController.removeSegundaClasificacion(ec)}" jsf:onclick="loadingModal()">
+                                                                                                                <span class="glyphicon glyphicon-remove" style="color: red" />
+
+                                                                                                            </a>
+                                                                                                        </h:column>
+                                                                                                    </h:dataTable>
+                                                                                                </h:panelGroup>
+                                                                                            </div>
+                                                                                            <div class="modal-footer">
+                                                                                                <a  class="btn btn-default" data-dismiss="modal">
+                                                                                                    <span class="glyphicon glyphicon-remove"/>Cerrar
+                                                                                                </a>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </h:panelGroup>    
+                                                                        <style>
+                                                                            .classOutGroup{
+                                                                                color: #007ACC;
+                                                                                font-weight: bold;
+                                                                            }
+                                                                            .classItemGroup{
+                                                                                color: #767778;
+                                                                            }
+                                                                        </style>
                                                                     </td>
                                                                 </tr>
                                                             </table>

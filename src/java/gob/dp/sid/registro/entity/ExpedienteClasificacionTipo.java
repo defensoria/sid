@@ -12,76 +12,66 @@ package gob.dp.sid.registro.entity;
  */
 public class ExpedienteClasificacionTipo{
     
-    private Long id;
+    private Integer id;
     
-    private Long idExpedienteClasificacion;
+    private Integer idClasificacion;
             
-    private Long idCodigoA;
+    private String detalle;
             
-    private Long idCodigoB;
+    private Integer nivel;
                     
-    private Long idCodigoC;
-                            
-    private Long idPadre;
-                            
-    private String estado;
-
-    public Long getId() {
+    private Integer idPadre;
+    
+    /**agregados*/
+    private String nombrePadre;
+    
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public Long getIdExpedienteClasificacion() {
-        return idExpedienteClasificacion;
+    public Integer getIdClasificacion() {
+        return idClasificacion;
     }
 
-    public void setIdExpedienteClasificacion(Long idExpedienteClasificacion) {
-        this.idExpedienteClasificacion = idExpedienteClasificacion;
+    public void setIdClasificacion(Integer idClasificacion) {
+        this.idClasificacion = idClasificacion;
     }
 
-    public Long getIdCodigoA() {
-        return idCodigoA;
+    public String getDetalle() {
+        return detalle;
     }
 
-    public void setIdCodigoA(Long idCodigoA) {
-        this.idCodigoA = idCodigoA;
+    public void setDetalle(String detalle) {
+        this.detalle = detalle;
     }
 
-    public Long getIdCodigoB() {
-        return idCodigoB;
+    public Integer getNivel() {
+        return nivel;
     }
 
-    public void setIdCodigoB(Long idCodigoB) {
-        this.idCodigoB = idCodigoB;
+    public void setNivel(Integer nivel) {
+        this.nivel = nivel;
     }
 
-    public Long getIdCodigoC() {
-        return idCodigoC;
-    }
-
-    public void setIdCodigoC(Long idCodigoC) {
-        this.idCodigoC = idCodigoC;
-    }
-
-    public Long getIdPadre() {
+    public Integer getIdPadre() {
         return idPadre;
     }
 
-    public void setIdPadre(Long idPadre) {
+    public void setIdPadre(Integer idPadre) {
         this.idPadre = idPadre;
     }
 
-    public String getEstado() {
-        return estado;
+    public String getNombrePadre() {
+        return nombrePadre;
     }
 
-    public void setEstado(String estado) {
-        this.estado = estado;
+    public void setNombrePadre(String nombrePadre) {
+        this.nombrePadre = nombrePadre;
     }
-            
-    
+
     
 }

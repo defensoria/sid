@@ -11,6 +11,7 @@ import gob.dp.sid.administracion.seguridad.entity.Usuario;
 import gob.dp.sid.administracion.seguridad.service.UsuarioService;
 import gob.dp.sid.bandeja.controller.BandejaController;
 import gob.dp.sid.comun.ConstantesUtil;
+import gob.dp.sid.comun.ListadoClasificacion;
 import gob.dp.sid.comun.SelectVO;
 import gob.dp.sid.comun.controller.AbstractManagedBean;
 import gob.dp.sid.comun.entity.Distrito;
@@ -32,7 +33,9 @@ import gob.dp.sid.comun.type.TiempoType;
 import gob.dp.sid.registro.entity.Entidad;
 import gob.dp.sid.registro.entity.EtapaEstado;
 import gob.dp.sid.registro.entity.Expediente;
+import gob.dp.sid.registro.entity.ExpedienteClasiTipo;
 import gob.dp.sid.registro.entity.ExpedienteClasificacion;
+import gob.dp.sid.registro.entity.ExpedienteClasificacionTipo;
 import gob.dp.sid.registro.entity.ExpedienteConsulta;
 import gob.dp.sid.registro.entity.ExpedienteDerivacion;
 import gob.dp.sid.registro.entity.ExpedienteEntidad;
@@ -44,7 +47,9 @@ import gob.dp.sid.registro.entity.OficinaDefensorial;
 import gob.dp.sid.registro.entity.Persona;
 import gob.dp.sid.registro.service.EntidadService;
 import gob.dp.sid.registro.service.EtapaEstadoService;
+import gob.dp.sid.registro.service.ExpedienteClasiTipoService;
 import gob.dp.sid.registro.service.ExpedienteClasificacionService;
+import gob.dp.sid.registro.service.ExpedienteClasificacionTipoService;
 import gob.dp.sid.registro.service.ExpedienteConsultaService;
 import gob.dp.sid.registro.service.ExpedienteDerivacionService;
 import gob.dp.sid.registro.service.ExpedienteEntidadService;
@@ -221,13 +226,13 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     private List<ExpedienteConsulta> listaExpedienteConsultaEnvia;
 
     private ExpedienteConsulta expedienteConsultaEnvia;
-    
+
     private ExpedienteConsulta expedienteConsultaAprueba;
 
     private ExpedienteConsulta expedienteConsultaReasigna;
-    
+
     private ExpedienteConsulta expedienteConsultaResponde;
-    
+
     private ExpedienteConsulta expedienteConsultaRespondeReasigna;
 
     private ExpedienteClasificacion expedienteClasificacionBusqueda;
@@ -269,12 +274,20 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     private Integer inicioPaginado;
 
     private Integer finPaginado;
-    
+
     private List<ExpedienteGestion> listaGestionesParaReplica;
-    
+
     private Long idGestionReplica;
-    
+
     private Integer tipoBusqueda;
+
+    private List<ListadoClasificacion> listadoClasificacionTipo;
+
+    private Integer idSegundaClasificacion;
+
+    private List<ExpedienteClasificacionTipo> listaExpedienteClasificacion;
+    
+    private Long idClasificacion;
 
     @Autowired
     private ExpedienteService expedienteService;
@@ -326,7 +339,13 @@ public class RegistroController extends AbstractManagedBean implements Serializa
 
     @Autowired
     private ExpedienteNivelService expedienteNivelService;
-    
+
+    @Autowired
+    private ExpedienteClasificacionTipoService expedienteClasificacionTipoService;
+
+    @Autowired
+    private ExpedienteClasiTipoService expedienteClasiTipoService;
+
     public String cargarNuevoExpediente() {
         cargarObjetoExpediente();
         expedienteNivel = new ExpedienteNivel();
@@ -350,7 +369,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     }
 
     public String iniciarExpedienteNuevo() {
-        if(StringUtils.equals(personaSeleccionada.getTipoExpediente(),"0")){
+        if (StringUtils.equals(personaSeleccionada.getTipoExpediente(), "0")) {
             msg.messageAlert("Debe selecionar un tipo de expediente", null);
             return null;
         }
@@ -367,43 +386,93 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         expedienteClasificacionBusqueda = new ExpedienteClasificacion();
         return "expedienteNuevo";
     }
-    
-    public void consultarReniec() throws ParseException{
-       /* String proxyHost = "172.30.1.250";
-String proxyPort = "8080";
-System.out.println("Setting up with proxy: " + proxyHost + ":" + proxyPort);
-System.setProperty("http.proxyHost", proxyHost);
-System.setProperty("http.proxyPort", proxyPort);
-System.setProperty("http.nonProxyHosts", "localhost|127.0.0.1");*/
+
+    public void consultarReniec() throws ParseException {
+        /* String proxyHost = "172.30.1.250";
+         String proxyPort = "8080";
+         System.out.println("Setting up with proxy: " + proxyHost + ":" + proxyPort);
+         System.setProperty("http.proxyHost", proxyHost);
+         System.setProperty("http.proxyPort", proxyPort);
+         System.setProperty("http.nonProxyHosts", "localhost|127.0.0.1");*/
         ServiceReniec reniec = new ServiceReniec();
-        List<String> list = reniec.getConsultarServicio("DEPUWS", "DEPUWS!=",null, "08715701",persona.getNumeroDocumento());
-        if(list != null){
+        List<String> list = reniec.getConsultarServicio("DEPUWS", "DEPUWS!=", null, "08715701", persona.getNumeroDocumento());
+        if (list != null) {
             persona.setApellidoPat(list.get(1));
             persona.setApellidoMat(list.get(2));
             persona.setNombre(list.get(4));
             SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
             Date date = formatter.parse(list.get(20));
             persona.setFechaNacimiento(date);
-            if(StringUtils.equals(list.get(13), "1"))
+            if (StringUtils.equals(list.get(13), "1")) {
                 persona.setSexo("M");
-            else
+            } else {
                 persona.setSexo("F");
+            }
             persona.setDireccion(list.get(11));
             persona.setIdDepartamento(list.get(5));
             persona.setIdProvincia(list.get(6));
             persona.setIdDistrito(list.get(7));
-            
-            if(StringUtils.isNotBlank(persona.getIdDepartamento())){
+
+            if (StringUtils.isNotBlank(persona.getIdDepartamento())) {
                 comboProvincia();
             }
-            if(StringUtils.isNotBlank(persona.getIdProvincia()) && StringUtils.isNotBlank(persona.getIdDepartamento())){
+            if (StringUtils.isNotBlank(persona.getIdProvincia()) && StringUtils.isNotBlank(persona.getIdDepartamento())) {
                 comboDistrito();
             }
-            
-        }else{
+
+        } else {
             msg.messageAlert("No se encontraron datos en la RENIEC con el DNI ingresado", null);
             persona = new Persona();
         }
+    }
+
+    public void cargarSegundaClasificacion(long idClasifica, int idPrimerNivel) {
+        idClasificacion = idClasifica;
+        idSegundaClasificacion = null;
+        listaExpedienteClasificacion = expedienteClasificacionTipoService.clasificacioneExpedienteClasiTipo(idClasificacion);
+        if(listaExpedienteClasificacion.isEmpty())
+            listaExpedienteClasificacion = new ArrayList<>();
+        
+        listadoClasificacionTipo = new ArrayList<>();
+        List<ExpedienteClasificacionTipo> list = expedienteClasificacionTipoService.clasificacionCabecera(idPrimerNivel);
+        if (list.size() > 0) {
+            for (ExpedienteClasificacionTipo tipo : list) {
+                ListadoClasificacion lc = new ListadoClasificacion();
+                lc.setTitulo(tipo.getDetalle());
+                lc.setItems(expedienteClasificacionTipoService.clasificacionPorIdPadre(tipo.getId()));
+                listadoClasificacionTipo.add(lc);
+            }
+        }
+    }
+
+    public boolean addSegundaClasificacion() {
+        if (idSegundaClasificacion != null && idSegundaClasificacion != 0) {
+            ExpedienteClasificacionTipo ect = expedienteClasificacionTipoService.clasificacionOne(idSegundaClasificacion);
+            listaExpedienteClasificacion =expedienteClasificacionTipoService.clasificacioneExpedienteClasiTipo(idClasificacion);
+            if (listaExpedienteClasificacion.size() > 0) {
+                for (ExpedienteClasificacionTipo ect1 : listaExpedienteClasificacion) {
+                    if (Objects.equals(ect1.getId(), ect.getId())) {
+                        return true;
+                    }
+                }
+                expedienteClasiTipoService.expedienteClasiTipoInsertar(new ExpedienteClasiTipo(idClasificacion, ect.getId()));
+            } else {
+                expedienteClasiTipoService.expedienteClasiTipoInsertar(new ExpedienteClasiTipo(idClasificacion, ect.getId()));
+            }
+            listaExpedienteClasificacion = expedienteClasificacionTipoService.clasificacioneExpedienteClasiTipo(idClasificacion);
+            
+        } else {
+            msg.messageAlert("Debe seleccionar una clasificación", null);
+        }
+        idSegundaClasificacion = null;
+        listarNiveles();
+        return false;
+    }
+    
+    public void removeSegundaClasificacion(ExpedienteClasificacionTipo ect) {
+        expedienteClasiTipoService.expedienteClasiTipoEliminar(new ExpedienteClasiTipo(idClasificacion, ect.getId()));
+        listaExpedienteClasificacion = expedienteClasificacionTipoService.clasificacioneExpedienteClasiTipo(idClasificacion);
+        listarNiveles();
     }
 
     public String cargarNuevaBusqueda() {
@@ -573,17 +642,17 @@ System.setProperty("http.nonProxyHosts", "localhost|127.0.0.1");*/
                 new HashMap(), beanCollectionDataSource);
 
     }
-    
-    public void ordenar(int tipo){
-    
-    Collections.sort(listaExpedienteXUsuarioPaginado, new Comparator<Expediente>() {
 
-			@Override
-			public int compare(Expediente o1, Expediente o2) {
-				return o1.getId().compareTo(o2.getId());
-			}
+    public void ordenar(int tipo) {
 
-		});
+        Collections.sort(listaExpedienteXUsuarioPaginado, new Comparator<Expediente>() {
+
+            @Override
+            public int compare(Expediente o1, Expediente o2) {
+                return o1.getId().compareTo(o2.getId());
+            }
+
+        });
     }
 
     public void pdf() throws JRException, IOException {
@@ -674,7 +743,7 @@ System.setProperty("http.nonProxyHosts", "localhost|127.0.0.1");*/
     public void inicio() {
         usuarioSession();
         listaExpedienteXUsuario = expedienteService.expedienteBuscarUsuario(usuarioSession.getCodigo());
-        listarExpedienteUsuarioPaginadoOrder(1,1);
+        listarExpedienteUsuarioPaginadoOrder(1, 1);
         cargarGraficos001();
         cargarGraficos002();
         cargarGraficos003();
@@ -728,53 +797,52 @@ System.setProperty("http.nonProxyHosts", "localhost|127.0.0.1");*/
             expedienteClasificacionBusqueda.setIni(ini);
             expedienteClasificacionBusqueda.setFin(fin);
 
-            if(StringUtils.equals(expediente.getTipoClasificion(), "01")){
-            List<ExpedienteClasificacion> list = expedienteClasificacionService.expedienteClasificacionBusqueda(expedienteClasificacionBusqueda);
-            for (ExpedienteClasificacion ec : list) {
-                ExpedienteNivel en = new ExpedienteNivel();
-                clasificarNivel(ec, en);
-                Integer idPadre = ec.getPadre();
+            if (StringUtils.equals(expediente.getTipoClasificion(), "01")) {
+                List<ExpedienteClasificacion> list = expedienteClasificacionService.expedienteClasificacionBusqueda(expedienteClasificacionBusqueda);
+                for (ExpedienteClasificacion ec : list) {
+                    ExpedienteNivel en = new ExpedienteNivel();
+                    clasificarNivel(ec, en);
+                    Integer idPadre = ec.getPadre();
 
-                while (idPadre != 0) {
-                    ExpedienteClasificacion ec1 = expedienteClasificacionService.expedienteClasificacionOne(idPadre);
-                    idPadre = ec1.getPadre();
-                    clasificarNivel(ec1, en);
+                    while (idPadre != 0) {
+                        ExpedienteClasificacion ec1 = expedienteClasificacionService.expedienteClasificacionOne(idPadre);
+                        idPadre = ec1.getPadre();
+                        clasificarNivel(ec1, en);
+                    }
+                    ens.add(en);
                 }
-                ens.add(en);
-            }
-            if (list.size() > 0) {
-                listaExpedienteNivelModal = ens;
-                nroPaginaModal = pagina;
+                if (list.size() > 0) {
+                    listaExpedienteNivelModal = ens;
+                    nroPaginaModal = pagina;
+                } else {
+                    if (expedienteClasificacionBusqueda.getIni() == 1) {
+                        listaExpedienteNivelModal = null;
+                    }
+                }
             } else {
-                if (expedienteClasificacionBusqueda.getIni() == 1) {
-                    listaExpedienteNivelModal = null;
-                }
-            }
-            }else{
                 List<ExpedienteClasificacion> list = expedienteClasificacionService.expedienteClasificacionBusquedaGrupo1(expedienteClasificacionBusqueda);
-            for (ExpedienteClasificacion ec : list) {
-                ExpedienteNivel en = new ExpedienteNivel();
-                clasificarNivel(ec, en);
-                Integer idPadre = ec.getPadre();
+                for (ExpedienteClasificacion ec : list) {
+                    ExpedienteNivel en = new ExpedienteNivel();
+                    clasificarNivel(ec, en);
+                    Integer idPadre = ec.getPadre();
 
-                while (idPadre != 0) {
-                    ExpedienteClasificacion ec1 = expedienteClasificacionService.expedienteClasificacionOne(idPadre);
-                    idPadre = ec1.getPadre();
-                    clasificarNivel(ec1, en);
+                    while (idPadre != 0) {
+                        ExpedienteClasificacion ec1 = expedienteClasificacionService.expedienteClasificacionOne(idPadre);
+                        idPadre = ec1.getPadre();
+                        clasificarNivel(ec1, en);
+                    }
+                    ens.add(en);
                 }
-                ens.add(en);
-            }
-            if (list.size() > 0) {
-                listaExpedienteNivelModal = ens;
-                nroPaginaModal = pagina;
-            } else {
-                if (expedienteClasificacionBusqueda.getIni() == 1) {
-                    listaExpedienteNivelModal = null;
+                if (list.size() > 0) {
+                    listaExpedienteNivelModal = ens;
+                    nroPaginaModal = pagina;
+                } else {
+                    if (expedienteClasificacionBusqueda.getIni() == 1) {
+                        listaExpedienteNivelModal = null;
+                    }
                 }
             }
-            }
-            
-            
+
         }
         return true;
     }
@@ -865,6 +933,7 @@ System.setProperty("http.nonProxyHosts", "localhost|127.0.0.1");*/
             expediente.setListaExpedienteNivel(nivels);
             expedienteNivel = new ExpedienteNivel();
         }
+        listarNiveles();
     }
 
     public void guardarNivel(ExpedienteNivel en) {
@@ -882,6 +951,7 @@ System.setProperty("http.nonProxyHosts", "localhost|127.0.0.1");*/
         expedienteNivelService.expedienteNivelUpdate(en.getId());
         List<ExpedienteNivel> nivels = expedienteNivelService.expedienteNivelPorExpediente(expediente.getNumero());
         expediente.setListaExpedienteNivel(nivels);
+        listarNiveles();
     }
 
     public void editarNivel(ExpedienteNivel en) {
@@ -938,14 +1008,14 @@ System.setProperty("http.nonProxyHosts", "localhost|127.0.0.1");*/
 
     public String inicioAccionesConsulta(Long idExpedienteConsulta, String codigoConsulta) {
         expedienteConsultaEnvia = null;
-        expedienteConsultaAprueba  = null;
-        expedienteConsultaReasigna  = null;
-        expedienteConsultaResponde  = null;
-        expedienteConsultaRespondeReasigna  = null;
+        expedienteConsultaAprueba = null;
+        expedienteConsultaReasigna = null;
+        expedienteConsultaResponde = null;
+        expedienteConsultaRespondeReasigna = null;
         List<ExpedienteConsulta> list1 = new ArrayList<>();
         List<ExpedienteConsulta> list = expedienteConsultaService.expedienteConsultaPorExpediente(expediente.getNumero());
-        for(ExpedienteConsulta ec : list){
-            if(StringUtils.equals(ec.getCodigo(), codigoConsulta)){
+        for (ExpedienteConsulta ec : list) {
+            if (StringUtils.equals(ec.getCodigo(), codigoConsulta)) {
                 list1.add(ec);
             }
         }
@@ -959,38 +1029,38 @@ System.setProperty("http.nonProxyHosts", "localhost|127.0.0.1");*/
             expedienteConsultaEnvia = new ExpedienteConsulta();
         } else {
             //ExpedienteConsulta consulta = expedienteConsultaService.expedienteConsultaSelectOne(idExpedienteConsulta);
-            for(ExpedienteConsulta ec : list1){
+            for (ExpedienteConsulta ec : list1) {
                 if (ec != null) {
-                if (ec.getEtapa() == EtapaConsultaType.CONSULTA_ETAPA_ENVIA.getKey()) {
-                    expedienteConsultaEnvia = ec;
-                }
-                if (ec.getEtapa() == EtapaConsultaType.CONSULTA_ETAPA_APRUEBA.getKey()) {
-                    expedienteConsultaAprueba = ec;
-                }
-                if (ec.getEtapa() == EtapaConsultaType.CONSULTA_ETAPA_REASIGNA.getKey()) {
-                    expedienteConsultaReasigna = ec;
-                }
-                
-                if (ec.getEtapa() == EtapaConsultaType.CONSULTA_ETAPA_RESPONDE.getKey()) {
-                    expedienteConsultaResponde = ec;
-                }
-                
-                if (ec.getEtapa() == EtapaConsultaType.CONSULTA_ETAPA_RESPONDE_REASIGNA.getKey()) {
-                    expedienteConsultaRespondeReasigna = ec;
+                    if (ec.getEtapa() == EtapaConsultaType.CONSULTA_ETAPA_ENVIA.getKey()) {
+                        expedienteConsultaEnvia = ec;
+                    }
+                    if (ec.getEtapa() == EtapaConsultaType.CONSULTA_ETAPA_APRUEBA.getKey()) {
+                        expedienteConsultaAprueba = ec;
+                    }
+                    if (ec.getEtapa() == EtapaConsultaType.CONSULTA_ETAPA_REASIGNA.getKey()) {
+                        expedienteConsultaReasigna = ec;
+                    }
+
+                    if (ec.getEtapa() == EtapaConsultaType.CONSULTA_ETAPA_RESPONDE.getKey()) {
+                        expedienteConsultaResponde = ec;
+                    }
+
+                    if (ec.getEtapa() == EtapaConsultaType.CONSULTA_ETAPA_RESPONDE_REASIGNA.getKey()) {
+                        expedienteConsultaRespondeReasigna = ec;
+                    }
                 }
             }
-            }
-            
+
             if (expedienteConsultaAprueba == null) {
                 expedienteConsultaAprueba = new ExpedienteConsulta();
                 expedienteConsultaAprueba.setCodigoUsuario(usuarioSession.getCodigo());
                 expedienteConsultaAprueba.setCodigo(expedienteConsultaEnvia.getCodigo());
                 return "expedienteAccionesConsulta";
             } /*else {
-                if (StringUtils.equals(expedienteConsultaAprueba.getCodigoUsuario(), usuarioSession.getCodigo())) {
-                    return "expedienteAccionesConsulta";
-                }
-            }*/
+             if (StringUtils.equals(expedienteConsultaAprueba.getCodigoUsuario(), usuarioSession.getCodigo())) {
+             return "expedienteAccionesConsulta";
+             }
+             }*/
 
             if (expedienteConsultaReasigna == null) {
                 expedienteConsultaReasigna = new ExpedienteConsulta();
@@ -998,39 +1068,40 @@ System.setProperty("http.nonProxyHosts", "localhost|127.0.0.1");*/
                 expedienteConsultaReasigna.setCodigo(expedienteConsultaAprueba.getCodigo());
                 return "expedienteAccionesConsulta";
             } /*else {
-                if (StringUtils.equals(expedienteConsultaReasigna.getCodigoUsuario(), usuarioSession.getCodigo())) {
-                    return "expedienteAccionesConsulta";
-                }
-            }*/
-            
+             if (StringUtils.equals(expedienteConsultaReasigna.getCodigoUsuario(), usuarioSession.getCodigo())) {
+             return "expedienteAccionesConsulta";
+             }
+             }*/
+
             if (expedienteConsultaResponde == null) {
                 expedienteConsultaResponde = new ExpedienteConsulta();
                 expedienteConsultaResponde.setCodigoUsuario(usuarioSession.getCodigo());
                 expedienteConsultaResponde.setCodigo(expedienteConsultaReasigna.getCodigo());
                 return "expedienteAccionesConsulta";
             } /*else {
-                if (StringUtils.equals(expedienteConsultaResponde.getCodigoUsuario(), usuarioSession.getCodigo())) {
-                    return "expedienteAccionesConsulta";
-                }
-            }*/
-            
+             if (StringUtils.equals(expedienteConsultaResponde.getCodigoUsuario(), usuarioSession.getCodigo())) {
+             return "expedienteAccionesConsulta";
+             }
+             }*/
+
             if (expedienteConsultaRespondeReasigna == null) {
                 expedienteConsultaRespondeReasigna = new ExpedienteConsulta();
                 expedienteConsultaRespondeReasigna.setCodigoUsuario(usuarioSession.getCodigo());
                 expedienteConsultaRespondeReasigna.setCodigo(expedienteConsultaResponde.getCodigo());
                 return "expedienteAccionesConsulta";
             }/* else {
-                if (StringUtils.equals(expedienteConsultaRespondeReasigna.getCodigoUsuario(), usuarioSession.getCodigo())) {
-                    return "expedienteAccionesConsulta";
-                }
-            }*/
+             if (StringUtils.equals(expedienteConsultaRespondeReasigna.getCodigoUsuario(), usuarioSession.getCodigo())) {
+             return "expedienteAccionesConsulta";
+             }
+             }*/
+
         }
         return "expedienteAccionesConsulta";
     }
-    
+
     public String inicioAccionesConsulta(Long idExpedienteConsulta) {
         List<ExpedienteConsulta> list = expedienteConsultaService.expedienteConsultaPorExpediente(expediente.getNumero());
-        
+
         if (idExpedienteConsulta == 0) {
             listaExpedienteConsultaEnvia = new ArrayList<>();
             for (ExpedienteConsulta ec : list) {
@@ -1041,38 +1112,38 @@ System.setProperty("http.nonProxyHosts", "localhost|127.0.0.1");*/
             expedienteConsultaEnvia = new ExpedienteConsulta();
         } else {
             //ExpedienteConsulta consulta = expedienteConsultaService.expedienteConsultaSelectOne(idExpedienteConsulta);
-            for(ExpedienteConsulta ec : list){
+            for (ExpedienteConsulta ec : list) {
                 if (ec != null) {
-                if (ec.getEtapa() == EtapaConsultaType.CONSULTA_ETAPA_ENVIA.getKey()) {
-                    expedienteConsultaEnvia = ec;
-                }
-                if (ec.getEtapa() == EtapaConsultaType.CONSULTA_ETAPA_APRUEBA.getKey()) {
-                    expedienteConsultaAprueba = ec;
-                }
-                if (ec.getEtapa() == EtapaConsultaType.CONSULTA_ETAPA_REASIGNA.getKey()) {
-                    expedienteConsultaReasigna = ec;
-                }
-                
-                if (ec.getEtapa() == EtapaConsultaType.CONSULTA_ETAPA_RESPONDE.getKey()) {
-                    expedienteConsultaResponde = ec;
-                }
-                
-                if (ec.getEtapa() == EtapaConsultaType.CONSULTA_ETAPA_RESPONDE_REASIGNA.getKey()) {
-                    expedienteConsultaRespondeReasigna = ec;
+                    if (ec.getEtapa() == EtapaConsultaType.CONSULTA_ETAPA_ENVIA.getKey()) {
+                        expedienteConsultaEnvia = ec;
+                    }
+                    if (ec.getEtapa() == EtapaConsultaType.CONSULTA_ETAPA_APRUEBA.getKey()) {
+                        expedienteConsultaAprueba = ec;
+                    }
+                    if (ec.getEtapa() == EtapaConsultaType.CONSULTA_ETAPA_REASIGNA.getKey()) {
+                        expedienteConsultaReasigna = ec;
+                    }
+
+                    if (ec.getEtapa() == EtapaConsultaType.CONSULTA_ETAPA_RESPONDE.getKey()) {
+                        expedienteConsultaResponde = ec;
+                    }
+
+                    if (ec.getEtapa() == EtapaConsultaType.CONSULTA_ETAPA_RESPONDE_REASIGNA.getKey()) {
+                        expedienteConsultaRespondeReasigna = ec;
+                    }
                 }
             }
-            }
-            
+
             if (expedienteConsultaAprueba == null) {
                 expedienteConsultaAprueba = new ExpedienteConsulta();
                 expedienteConsultaAprueba.setCodigoUsuario(usuarioSession.getCodigo());
                 expedienteConsultaAprueba.setCodigo(expedienteConsultaEnvia.getCodigo());
                 return "expedienteAccionesConsulta";
             } /*else {
-                if (StringUtils.equals(expedienteConsultaAprueba.getCodigoUsuario(), usuarioSession.getCodigo())) {
-                    return "expedienteAccionesConsulta";
-                }
-            }*/
+             if (StringUtils.equals(expedienteConsultaAprueba.getCodigoUsuario(), usuarioSession.getCodigo())) {
+             return "expedienteAccionesConsulta";
+             }
+             }*/
 
             if (expedienteConsultaReasigna == null) {
                 expedienteConsultaReasigna = new ExpedienteConsulta();
@@ -1080,32 +1151,33 @@ System.setProperty("http.nonProxyHosts", "localhost|127.0.0.1");*/
                 expedienteConsultaReasigna.setCodigo(expedienteConsultaAprueba.getCodigo());
                 return "expedienteAccionesConsulta";
             } /*else {
-                if (StringUtils.equals(expedienteConsultaReasigna.getCodigoUsuario(), usuarioSession.getCodigo())) {
-                    return "expedienteAccionesConsulta";
-                }
-            }*/
-            
+             if (StringUtils.equals(expedienteConsultaReasigna.getCodigoUsuario(), usuarioSession.getCodigo())) {
+             return "expedienteAccionesConsulta";
+             }
+             }*/
+
             if (expedienteConsultaResponde == null) {
                 expedienteConsultaResponde = new ExpedienteConsulta();
                 expedienteConsultaResponde.setCodigoUsuario(usuarioSession.getCodigo());
                 expedienteConsultaResponde.setCodigo(expedienteConsultaReasigna.getCodigo());
                 return "expedienteAccionesConsulta";
             } /*else {
-                if (StringUtils.equals(expedienteConsultaResponde.getCodigoUsuario(), usuarioSession.getCodigo())) {
-                    return "expedienteAccionesConsulta";
-                }
-            }*/
-            
+             if (StringUtils.equals(expedienteConsultaResponde.getCodigoUsuario(), usuarioSession.getCodigo())) {
+             return "expedienteAccionesConsulta";
+             }
+             }*/
+
             if (expedienteConsultaRespondeReasigna == null) {
                 expedienteConsultaRespondeReasigna = new ExpedienteConsulta();
                 expedienteConsultaRespondeReasigna.setCodigoUsuario(usuarioSession.getCodigo());
                 expedienteConsultaRespondeReasigna.setCodigo(expedienteConsultaResponde.getCodigo());
                 return "expedienteAccionesConsulta";
             }/* else {
-                if (StringUtils.equals(expedienteConsultaRespondeReasigna.getCodigoUsuario(), usuarioSession.getCodigo())) {
-                    return "expedienteAccionesConsulta";
-                }
-            }*/
+             if (StringUtils.equals(expedienteConsultaRespondeReasigna.getCodigoUsuario(), usuarioSession.getCodigo())) {
+             return "expedienteAccionesConsulta";
+             }
+             }*/
+
         }
         return "expedienteAccionesConsulta";
     }
@@ -1244,7 +1316,7 @@ System.setProperty("http.nonProxyHosts", "localhost|127.0.0.1");*/
         }
         return true;
     }
-    
+
     public void enviarConsulta(int tipo) {
         String ruta1 = uploadArchive(file3);
         expedienteConsultaEnvia.setRuta(ruta1);
@@ -1265,7 +1337,7 @@ System.setProperty("http.nonProxyHosts", "localhost|127.0.0.1");*/
         inicioAccionesConsulta(0L);
         msg.messageInfo("Se envio la Consulta", null);
     }
-    
+
     public boolean aprobarConsulta() {
         if (StringUtils.isBlank(expedienteConsultaAprueba.getAprueba())) {
             msg.messageAlert("Debe aprobar o desaprobar consulta", null);
@@ -1335,7 +1407,7 @@ System.setProperty("http.nonProxyHosts", "localhost|127.0.0.1");*/
         }
         return true;
     }
-    
+
     public boolean responderConsulta() {
         if (StringUtils.isBlank(expedienteConsultaResponde.getDetalle())) {
             msg.messageAlert("Debe responder la consulta", null);
@@ -1349,13 +1421,13 @@ System.setProperty("http.nonProxyHosts", "localhost|127.0.0.1");*/
         expedienteConsultaResponde.setNombreUsuario(usuarioSession.getNombre() + " " + usuarioSession.getApellidoPaterno() + " " + usuarioSession.getApellidoMaterno());
         expedienteConsultaResponde.setFecha(new Date());
         expedienteConsultaService.expedienteConsultaInsertar(expedienteConsultaResponde);
-        
-            enviarMensajeRespondeConsulta();
-            msg.messageInfo("Se reasigno por derivación el expediente", null);
-        
+
+        enviarMensajeRespondeConsulta();
+        msg.messageInfo("Se reasigno por derivación el expediente", null);
+
         return true;
     }
-    
+
     public boolean reasignaRespuesta() {
         if (StringUtils.isBlank(expedienteConsultaRespondeReasigna.getDetalle())) {
             msg.messageAlert("Debe responder la consulta", null);
@@ -1369,10 +1441,10 @@ System.setProperty("http.nonProxyHosts", "localhost|127.0.0.1");*/
         expedienteConsultaRespondeReasigna.setNombreUsuario(usuarioSession.getNombre() + " " + usuarioSession.getApellidoPaterno() + " " + usuarioSession.getApellidoMaterno());
         expedienteConsultaRespondeReasigna.setFecha(new Date());
         expedienteConsultaService.expedienteConsultaInsertar(expedienteConsultaRespondeReasigna);
-        
-            enviarMensajeReasignaRespuesta();
-            msg.messageInfo("Se reasigno por derivación el expediente", null);
-        
+
+        enviarMensajeReasignaRespuesta();
+        msg.messageInfo("Se reasigno por derivación el expediente", null);
+
         return true;
     }
 
@@ -1393,14 +1465,14 @@ System.setProperty("http.nonProxyHosts", "localhost|127.0.0.1");*/
         BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
         bandejaController.mensajeEnviaConsultaReasignacion(expedienteConsultaReasigna);
     }
-    
+
     private void enviarMensajeRespondeConsulta() {
         FacesContext context = FacesContext.getCurrentInstance();
         BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
         expedienteConsultaResponde.setCodigoUsuarioRetorno(expedienteConsultaReasigna.getCodigoUsuario());
         bandejaController.mensajeEnviaConsultaResponde(expedienteConsultaResponde);
     }
-    
+
     private void enviarMensajeReasignaRespuesta() {
         FacesContext context = FacesContext.getCurrentInstance();
         BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
@@ -1510,15 +1582,15 @@ System.setProperty("http.nonProxyHosts", "localhost|127.0.0.1");*/
             }
         }
     }
-    
+
     public void listarExpedienteUsuarioPaginadoOrder(Integer pagina, int tipo) {
-        if(tipoBusqueda != null){
-            if(tipo == tipoBusqueda){
-                tipoBusqueda = tipo*(-1);
-            }else{
+        if (tipoBusqueda != null) {
+            if (tipo == tipoBusqueda) {
+                tipoBusqueda = tipo * (-1);
+            } else {
                 tipoBusqueda = tipo;
             }
-        }else{
+        } else {
             tipoBusqueda = tipo;
         }
         Expediente e = new Expediente();
@@ -1592,8 +1664,8 @@ System.setProperty("http.nonProxyHosts", "localhost|127.0.0.1");*/
             }
         }
     }
-    
-    public void gestionesPorExpediente(String numeroExpediente){
+
+    public void gestionesPorExpediente(String numeroExpediente) {
         listaGestionesParaReplica = null;
         listaGestionesParaReplica = expedienteGestionService.expedienteGestionListaXexpediente(numeroExpediente);
     }
@@ -1640,10 +1712,10 @@ System.setProperty("http.nonProxyHosts", "localhost|127.0.0.1");*/
         listarExpedienteUsuarioPaginadoCompleto(1, expedienteBusquedaReplica);
         msg.messageInfo("Se realizaron las replicas", null);
     }
-    
+
     public void actualizarReplicaGestion() {
         try {
-            if(idGestionReplica != null){
+            if (idGestionReplica != null) {
                 ExpedienteGestion eg = expedienteGestionService.expedienteGestionBuscarOne(idGestionReplica);
                 eg.setFechaModificacion(new Date());
                 eg.setUsuarioModificacion(usuarioSession.getCodigo());
@@ -1661,9 +1733,8 @@ System.setProperty("http.nonProxyHosts", "localhost|127.0.0.1");*/
         } catch (Exception e) {
             log.error(e);
         }
-        
+
     }
-    
 
     public boolean listarExpedienteUsuarioPaginadoCompletoPagina(Integer pagina) {
         if (pagina > 0) {
@@ -1777,9 +1848,9 @@ System.setProperty("http.nonProxyHosts", "localhost|127.0.0.1");*/
                 petitorio++;
             }
         }
-        sb.append("{x: 'Queja', y: " + queja + "},");
-        sb.append("{x: 'Petitorio', y: " + petitorio + "},");
-        sb.append("{x: 'Consulta', y: " + consulta + "}");
+        sb.append("{x: 'Queja', y: ").append(queja).append("},");
+        sb.append("{x: 'Petitorio', y: ").append(petitorio).append("},");
+        sb.append("{x: 'Consulta', y: ").append(consulta).append("}");
         grafico001 = sb.toString();
     }
 
@@ -1831,13 +1902,13 @@ System.setProperty("http.nonProxyHosts", "localhost|127.0.0.1");*/
         e.setTipoClasificion("03");
         List<Expediente> list003 = expedienteService.expedienteReporteMesUsuario(e);
         for (Expediente e1 : list001) {
-            sb.append("{'period': '" + e1.getMes() + "', 'queja': " + e1.getCount() + "},");
+            sb.append("{'period': '").append(e1.getMes()).append("', 'queja': ").append(e1.getCount()).append("},");
         }
         for (Expediente e1 : list002) {
-            sb.append("{'period': '" + e1.getMes() + "', 'consulta': " + e1.getCount() + "},");
+            sb.append("{'period': '").append(e1.getMes()).append("', 'consulta': ").append(e1.getCount()).append("},");
         }
         for (Expediente e1 : list003) {
-            sb.append("{'period': '" + e1.getMes() + "', 'petitorio': " + e1.getCount() + "},");
+            sb.append("{'period': '").append(e1.getMes()).append("', 'petitorio': ").append(e1.getCount()).append("},");
         }
         grafico003 = sb.toString();
     }
@@ -1901,7 +1972,7 @@ System.setProperty("http.nonProxyHosts", "localhost|127.0.0.1");*/
         listarNiveles();
         defineBotonRegistro();
         expedienteClasificacionBusqueda = new ExpedienteClasificacion();
-        if(Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_PETITORIO.getKey()) || Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_QUEJA.getKey()) || etapaEstado.getVerEtapa() == null){
+        if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_PETITORIO.getKey()) || Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_QUEJA.getKey()) || etapaEstado.getVerEtapa() == null) {
             return "expedienteEdit";
         }
         return "expedienteGestionLista";
@@ -1910,6 +1981,10 @@ System.setProperty("http.nonProxyHosts", "localhost|127.0.0.1");*/
     private void listarNiveles() {
         if (StringUtils.isNotBlank(expediente.getNumero())) {
             List<ExpedienteNivel> list = expedienteNivelService.expedienteNivelPorExpediente(expediente.getNumero());
+            for(ExpedienteNivel en : list){
+                listaExpedienteClasificacion = expedienteClasificacionTipoService.clasificacioneExpedienteClasiTipo(en.getId());
+                en.setListaClasificacionTipo(listaExpedienteClasificacion);
+            }
             expediente.setListaExpedienteNivel(list);
         }
     }
@@ -1981,12 +2056,12 @@ System.setProperty("http.nonProxyHosts", "localhost|127.0.0.1");*/
                     if (list.size() > 0) {
                         listaPersonaGeneral = list;
                         nroPaginaPersona = pagina;
-                    }else {
-                    if (personaBusqueda.getIni() == 1) {
-                        listaPersonaGeneral = null;
-                        msg.messageAlert("No se han encontrado Personas", null);
+                    } else {
+                        if (personaBusqueda.getIni() == 1) {
+                            listaPersonaGeneral = null;
+                            msg.messageAlert("No se han encontrado Personas", null);
+                        }
                     }
-                }
                 } catch (Exception e) {
                     log.error("ERROR : BusquedaUsuarioController.listarPaginado: " + e.getMessage());
                 }
@@ -2062,7 +2137,7 @@ System.setProperty("http.nonProxyHosts", "localhost|127.0.0.1");*/
                 if (list.size() > 0) {
                     personasPopover = list;
                     nroPaginaPersona = pagina;
-                }else {
+                } else {
                     if (persona.getIni() == 1) {
                         personasPopover = null;
                         msg.messageAlert("No se han encontrado Personas", null);
@@ -2149,9 +2224,9 @@ System.setProperty("http.nonProxyHosts", "localhost|127.0.0.1");*/
         expedientepersonaModalEdit.getPersona().setContacto(expedientepersonaModalEdit.getContacto());
         personaService.personaUpdate(expedientepersonaModalEdit.getPersona());
         expedientePersonaService.expedienteDatosPersonaUpdate(expedientepersonaModalEdit);
-        if(StringUtils.equals(expedientepersonaModalEdit.getPersona().getTipo(), "PER")){
+        if (StringUtils.equals(expedientepersonaModalEdit.getPersona().getTipo(), "PER")) {
             msg.messageInfo("Se actualizo los datos de la persona", null);
-        }else{
+        } else {
             msg.messageInfo("Se actualizo los datos de la organización", null);
         }
         return true;
@@ -2569,11 +2644,10 @@ System.setProperty("http.nonProxyHosts", "localhost|127.0.0.1");*/
                 }
             }
         }
-        
-        
+
         if (StringUtils.equals(expediente.getTipoClasificion(), ExpedienteType.QUEJA.getKey())) {
             if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_QUEJA.getKey())) {
-                if (expediente.getListaExpedienteNivel().size()  == 0) {
+                if (expediente.getListaExpedienteNivel().size() == 0) {
                     msg.messageAlert("Debe ingresar al menos una clasificación", null);
                     return null;
                 }
@@ -2932,10 +3006,11 @@ System.setProperty("http.nonProxyHosts", "localhost|127.0.0.1");*/
             return false;
         }
         setearPersonaSeleccionada(persona);
-        if(StringUtils.equals(persona.getTipo(), "PER"))
+        if (StringUtils.equals(persona.getTipo(), "PER")) {
             msg.messageInfo("Se registro la Persona", null);
-        else
+        } else {
             msg.messageInfo("Se registro la Organización", null);
+        }
         return true;
     }
 
@@ -2959,10 +3034,11 @@ System.setProperty("http.nonProxyHosts", "localhost|127.0.0.1");*/
             return false;
         }
         addPersona(persona);
-        if(StringUtils.equals(persona.getTipo(), "PER"))
+        if (StringUtils.equals(persona.getTipo(), "PER")) {
             msg.messageInfo("Se registro la Persona", null);
-        else
+        } else {
             msg.messageInfo("Se registro la Organización", null);
+        }
         return true;
     }
 
@@ -3926,6 +4002,38 @@ System.setProperty("http.nonProxyHosts", "localhost|127.0.0.1");*/
 
     public void setTipoBusqueda(Integer tipoBusqueda) {
         this.tipoBusqueda = tipoBusqueda;
+    }
+
+    public List<ListadoClasificacion> getListadoClasificacionTipo() {
+        return listadoClasificacionTipo;
+    }
+
+    public void setListadoClasificacionTipo(List<ListadoClasificacion> listadoClasificacionTipo) {
+        this.listadoClasificacionTipo = listadoClasificacionTipo;
+    }
+
+    public Integer getIdSegundaClasificacion() {
+        return idSegundaClasificacion;
+    }
+
+    public void setIdSegundaClasificacion(Integer idSegundaClasificacion) {
+        this.idSegundaClasificacion = idSegundaClasificacion;
+    }
+
+    public List<ExpedienteClasificacionTipo> getListaExpedienteClasificacion() {
+        return listaExpedienteClasificacion;
+    }
+
+    public void setListaExpedienteClasificacion(List<ExpedienteClasificacionTipo> listaExpedienteClasificacion) {
+        this.listaExpedienteClasificacion = listaExpedienteClasificacion;
+    }
+
+    public Long getIdClasificacion() {
+        return idClasificacion;
+    }
+
+    public void setIdClasificacion(Long idClasificacion) {
+        this.idClasificacion = idClasificacion;
     }
 
 }
