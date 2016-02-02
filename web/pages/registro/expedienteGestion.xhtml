@@ -689,39 +689,6 @@
                                                                     <h:outputText value="Inicio" />
                                                                 </td>
                                                                 <td>
-                                                                    <!--<table style="width:100%">
-                                                                        <tr>
-                                                                            <td style="width:8%">
-                                                                                <div id="idDivTxtNumeroInicial">
-                                                                                    <input type="text" id="txtNumeroInicial" onkeypress="return soloNumbero(event)" jsf:value="#{registroController.expedienteGestion.numeroInicial}"/>
-                                                                                </div>
-                                                                            </td>
-                                                                            <td style="width:30%">
-                                                                                <div id="idDivSelTipoTiempoIni">
-                                                                                    <h:selectOneMenu id="selTipoTiempoIni" value="#{registroController.expedienteGestion.tipoTiempoIni}">
-                                                                                        <f:selectItems value="#{registroController.listaTiempo}" var="y" itemLabel="#{y.label}" itemValue="#{y.value}" />
-                                                                                    </h:selectOneMenu>
-                                                                                </div>
-                                                                            </td>
-                                                                            <td style="width:30%">
-                                                                                <div id="idDivSelIndicadorAntesDespuesIni">
-                                                                                    <h:selectOneMenu id="selIndicadorAntesDespuesIni" value="#{registroController.expedienteGestion.indicadorAntesDespuesIni}">
-                                                                                        <f:selectItems value="#{registroController.listaAntesDespues}" var="y" itemLabel="#{y.label}" itemValue="#{y.value}" />
-                                                                                    </h:selectOneMenu>
-                                                                                </div>
-                                                                            </td>
-                                                                            <td style="width:32%">
-                                                                                <div class="input-group datepicker" id="idDivTxtInicioSeguimiento">
-                                                                                    <div class="input-group-addon add-on">
-                                                                                        <span class="glyphicon glyphicon-calendar"></span>
-                                                                                    </div>
-                                                                                    <input type="text" id="txtInicioSeguimiento" data-format="dd/MM/yyyy" jsf:value="#{registroController.expedienteGestion.inicioSeguimiento}">
-                                                                                        <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
-                                                                                    </input>
-                                                                                </div>
-                                                                            </td>
-                                                                        </tr>
-                                                                    </table>-->
                                                                     <table style="width: 100%">
                                                                         <tr>
                                                                             <td colspan="2">
@@ -730,7 +697,7 @@
                                                                         </tr>
                                                                         <tr>
                                                                             <td style="width:5%">
-                                                                                <!--<h:selectBooleanCheckbox id="checkIndicadorSeleccionHoraIni" value="#{registroController.expedienteGestion.indicadorSeleccionHoraIni}"/>-->
+                                                                                
                                                                             </td>
                                                                             <td style="width:25%">
                                                                                 <div class="input-group datepicker" id="idDivTxtInicioDefinitivo">
@@ -755,39 +722,6 @@
                                                                     <h:outputText value="Finaliza" />
                                                                 </td>
                                                                 <td>
-                                                                    <!--<table style="width:100%">
-                                                                        <tr>
-                                                                            <td style="width:8%">
-                                                                                <div id="idDivTxtNumeroFinal">
-                                                                                    <input type="text" id="txtNumeroFinal" onkeypress="return soloNumbero(event)" jsf:value="#{registroController.expedienteGestion.numeroFinal}" />
-                                                                                </div>
-                                                                            </td>
-                                                                            <td style="width:30%">
-                                                                                <div id="idDivSelTipoTiempoFin">
-                                                                                    <h:selectOneMenu id="selTipoTiempoFin" value="#{registroController.expedienteGestion.tipoTiempoFin}">
-                                                                                        <f:selectItems value="#{registroController.listaTiempo}" var="y" itemLabel="#{y.label}" itemValue="#{y.value}" />
-                                                                                    </h:selectOneMenu>
-                                                                                </div>
-                                                                            </td>
-                                                                            <td style="width:30%">
-                                                                                <div id="idDivSelIndicadorAntesDespuesFin">
-                                                                                    <h:selectOneMenu id="selIndicadorAntesDespuesFin" value="#{registroController.expedienteGestion.indicadorAntesDespuesFin}">
-                                                                                        <f:selectItems value="#{registroController.listaAntesDespues}" var="y" itemLabel="#{y.label}" itemValue="#{y.value}" />
-                                                                                    </h:selectOneMenu>
-                                                                                </div>
-                                                                            </td>
-                                                                            <td style="width:32%">
-                                                                                <div class="input-group datepicker" id="idDivTxtFinSeguimiento">
-                                                                                    <div class="input-group-addon add-on">
-                                                                                        <span class="glyphicon glyphicon-calendar"></span>
-                                                                                    </div>
-                                                                                    <input type="text" data-format="dd/MM/yyyy" id="txtFinSeguimiento" jsf:value="#{registroController.expedienteGestion.finSeguimiento}">
-                                                                                        <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
-                                                                                    </input>
-                                                                                </div>
-                                                                            </td>
-                                                                        </tr>
-                                                                    </table>-->
                                                                     <table style="width: 100%">
                                                                         <tr>
                                                                             <td colspan="2">
@@ -796,7 +730,7 @@
                                                                         </tr>
                                                                         <tr>
                                                                             <td style="width:5%">
-                                                                                <!--<h:selectBooleanCheckbox id="checkIndicadorSeleccionHoraFin" value="#{registroController.expedienteGestion.indicadorSeleccionHoraFin}"/>-->
+                                                                                
                                                                             </td>
                                                                             <td style="width:25%">
                                                                                 <div class="input-group datepicker" id="idDivTxtFinDefinitivo">
@@ -815,21 +749,6 @@
                                                             </tr>
                                                         </table>
                                                         <br/>
-                                                        <!--<table style="width:100%">
-                                                            <tr>
-                                                                <td style="width:10%">
-                                                                    <h:outputText value="Repetir" />
-                                                                </td>
-                                                                <td style="width:30%">
-                                                                    <div id="idDivSelIndiceRepeticion">
-                                                                        <h:selectOneMenu id="selIndiceRepeticion" value="#{registroController.expedienteGestion.indiceRepeticion}">
-                                                                            <f:selectItems value="#{registroController.listaRepeticion}" var="y" itemLabel="#{y.label}" itemValue="#{y.value}" />
-                                                                        </h:selectOneMenu>
-                                                                    </div>
-                                                                </td>
-                                                                <td style="width:60%"></td>
-                                                            </tr>
-                                                        </table>-->
                                                     </div>
                                                 </td>
                                                 <td style="vertical-align: top;  padding-left: 2px">

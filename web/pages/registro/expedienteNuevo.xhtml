@@ -511,7 +511,7 @@
                                                             <h:panelGroup rendered="#{registroController.expediente.numero != null}">
                                                                 <a jsf:action="#{registroController.guardarNivel()}" jsf:onclick="loadingModal()">
                                                                     <span class="glyphicon glyphicon-plus" style="font-size: 1.3em" />Agregar/Actualizar clasificación
-                                                                        
+
                                                                 </a>
                                                             </h:panelGroup>
                                                         </td>
@@ -767,48 +767,48 @@
                                                                                                                 </td>
                                                                                                                 <td>
                                                                                                                     <table>
-                                                                                                            <tr>
-                                                                                                                <td>
-                                                                                                                    <a onclick="confirmar4#{nivel.id}()">
-                                                                                                                        <span class="glyphicon glyphicon-remove" style="color: red; font-size: 1.2em"/>
-                                                                                                                    </a>
+                                                                                                                        <tr>
+                                                                                                                            <td>
+                                                                                                                                <a onclick="confirmar4#{nivel.id}()">
+                                                                                                                                    <span class="glyphicon glyphicon-remove" style="color: red; font-size: 1.2em"/>
+                                                                                                                                </a>
 
-                                                                                                                    <gc:confirmSubmit classGC="confirmacion4#{nivel.id}" bean="#{registroController.inactivarNivel(nivel)}" mensaje="Está seguro de eliminar la clasificación?"/>
-                                                                                                                    <script>
-                                                                                                                        function confirmar4#{nivel.id}() {
-                                                                                                                            $(".confirmacion4#{nivel.id}").modal('show');
-                                                                                                                        }
+                                                                                                                                <gc:confirmSubmit classGC="confirmacion4#{nivel.id}" bean="#{registroController.inactivarNivel(nivel)}" mensaje="Está seguro de eliminar la clasificación?"/>
+                                                                                                                                <script>
+                                                                                                                                    function confirmar4#{nivel.id}() {
+                                                                                                                                        $(".confirmacion4#{nivel.id}").modal('show');
+                                                                                                                                    }
 
-                                                                                                                    </script>
-                                                                                                                </td>
-                                                                                                                <td style="padding-left: 5px">
-                                                                                                                    <a jsf:action="#{registroController.editarNivel(nivel)}" style="font-size: 1.2em" jsf:onclick="loadingModal()">
-                                                                                                                        <span class="glyphicon glyphicon-pencil"/>
-                                                                                                                        <f:ajax render="idSelectPrimerNivel idSelectSegundoNivel idSelectTercerNivel idSelectCuartoNivel idSelectQuintoNivel idSelectSextoNivel" onevent="closeModal" />
-                                                                                                                    </a>
-                                                                                                                </td>
-                                                                                                            </tr>
-                                                                                                        </table>
+                                                                                                                                </script>
+                                                                                                                            </td>
+                                                                                                                            <td style="padding-left: 5px">
+                                                                                                                                <a jsf:action="#{registroController.editarNivel(nivel)}" style="font-size: 1.2em" jsf:onclick="loadingModal()">
+                                                                                                                                    <span class="glyphicon glyphicon-pencil"/>
+                                                                                                                                    <f:ajax render="idSelectPrimerNivel idSelectSegundoNivel idSelectTercerNivel idSelectCuartoNivel idSelectQuintoNivel idSelectSextoNivel" onevent="closeModal" />
+                                                                                                                                </a>
+                                                                                                                            </td>
+                                                                                                                        </tr>
+                                                                                                                    </table>
                                                                                                                 </td>
                                                                                                             </tr>
                                                                                                             <tr>
                                                                                                                 <td colspan="2">
                                                                                                                     <h:outputText style="font-weight: bold" value="#{nivel.primerNivel}"/>
-                                                                                                        <h:outputText style="color: red; font-weight: bold;" value=" > " rendered="#{nivel.segundoNivel != null}"/>
-                                                                                                        <h:outputText style="font-weight: bold" value="#{nivel.segundoNivel}" />
-                                                                                                        <h:outputText style="color: red; font-weight: bold;" value=" > " rendered="#{nivel.tercerNivel != null}"/>
-                                                                                                        <h:outputText style="font-weight: bold" value="#{nivel.tercerNivel}" />
-                                                                                                        <h:outputText style="color: red; font-weight: bold;" value=" > " rendered="#{nivel.cuartoNivel != null}"/>
-                                                                                                        <h:outputText style="font-weight: bold" value="#{nivel.cuartoNivel}" />
-                                                                                                        <h:outputText style="color: red; font-weight: bold;" value=" > " rendered="#{nivel.quintoNivel != null}"/>
-                                                                                                        <h:outputText style="font-weight: bold" value="#{nivel.quintoNivel}" />
-                                                                                                        <h:outputText style="color: red; font-weight: bold;" value=" > " rendered="#{nivel.sextoNivel != null}"/>
-                                                                                                        <h:outputText style="font-weight: bold" value="#{nivel.sextoNivel}" />
+                                                                                                                    <h:outputText style="color: red; font-weight: bold;" value=" > " rendered="#{nivel.segundoNivel != null}"/>
+                                                                                                                    <h:outputText style="font-weight: bold" value="#{nivel.segundoNivel}" />
+                                                                                                                    <h:outputText style="color: red; font-weight: bold;" value=" > " rendered="#{nivel.tercerNivel != null}"/>
+                                                                                                                    <h:outputText style="font-weight: bold" value="#{nivel.tercerNivel}" />
+                                                                                                                    <h:outputText style="color: red; font-weight: bold;" value=" > " rendered="#{nivel.cuartoNivel != null}"/>
+                                                                                                                    <h:outputText style="font-weight: bold" value="#{nivel.cuartoNivel}" />
+                                                                                                                    <h:outputText style="color: red; font-weight: bold;" value=" > " rendered="#{nivel.quintoNivel != null}"/>
+                                                                                                                    <h:outputText style="font-weight: bold" value="#{nivel.quintoNivel}" />
+                                                                                                                    <h:outputText style="color: red; font-weight: bold;" value=" > " rendered="#{nivel.sextoNivel != null}"/>
+                                                                                                                    <h:outputText style="font-weight: bold" value="#{nivel.sextoNivel}" />
                                                                                                                 </td>
                                                                                                             </tr>
                                                                                                         </table>
                                                                                                     </td>
-                                                                                                    
+
                                                                                                 </tr>
                                                                                             </table>
                                                                                         </div> 
@@ -1786,13 +1786,196 @@
                     </tr>
                     <tr>
                         <td colspan="2">
+                            <h:panelGroup rendered="#{registroController.expedienteONP != null}" >
+                                <div class="panel panel-featured-top-warning">
+                                    <div class="panel-body">
+                                        <table style="width: 100%">
+                                                    <tr>
+                                                            <td style="width: 50%">
+                                                    <span class="text-resalt-primary">Datos O.N.P</span>
+                                                        </td>
+                                                        <td style="text-align: right">
+                                                            <a class="btn btn-primary" jsf:action="#{registroController.guardarExpedienteONP()}">
+                                                                    <span class="glyphicon glyphicon-floppy-disk"/>Guardar 
+                                                                </a>
+                                                        </td>
+                                                </tr>
+                                        </table>
+                                        <br/>
+                                        <table style="width: 100%">
+                                            <tr>
+                                                <td style="padding-right: 5px; vertical-align: top">
+                                                    <table style="width: 100%">
+                                                        <tr>
+                                                            <td style="padding-bottom: 5px">
+                                                                <b>Nro. Exp. ONP:</b>
+                                                            </td>
+                                                            <td style="padding-right: 5px;padding-bottom: 5px">
+                                                                <input type="text" jsf:value="#{registroController.expedienteONP.codigoExpedienteONP}" maxlength="30"/>
+                                                            </td>
+                                                            <td style="padding-left: 5px;padding-bottom: 5px">
+                                                                <b>Motivo:</b>
+                                                            </td>
+                                                            <td style="padding-bottom: 5px">
+                                                                <input type="text" jsf:value="#{registroController.expedienteONP.motivo}" maxlength="200"/>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="padding-bottom: 5px;padding-bottom: 5px">
+                                                                <b>Nombre del causante:</b>
+                                                            </td>
+                                                            <td colspan="3" style="padding-bottom: 5px">
+                                                                <input type="text" jsf:value="#{registroController.expedienteONP.nombreCausante}" maxlength="200"/>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="padding-bottom: 5px">
+                                                                <b>Regimen:</b>
+                                                            </td>
+                                                            <td  style="padding-right: 5px;padding-bottom: 5px">
+                                                                <h:selectOneMenu value="#{registroController.expedienteONP.tipoRegimen}" >
+                                                                    <f:selectItem itemValue="0" itemLabel="Seleccione" />
+                                                                    <f:selectItems value="#{listasComunesController.listaONPRegimen(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
+                                                                </h:selectOneMenu>
+                                                            </td>
+                                                            <td  style="padding-left: 5px; padding-bottom: 5px">
+                                                                <b>Sub origen:</b>
+                                                            </td>
+                                                            <td style="padding-bottom: 5px">
+                                                                <h:selectOneMenu value="#{registroController.expedienteONP.tipoSubOrigen}" >
+                                                                    <f:selectItem itemValue="0" itemLabel="Seleccione" />
+                                                                    <f:selectItems value="#{listasComunesController.listaONPSubOrigen(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
+                                                                </h:selectOneMenu>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="padding-bottom: 5px">
+                                                                <b>Tipo de solicitud:</b>
+                                                            </td>
+                                                            <td colspan="3" style="padding-bottom: 5px">
+                                                                <h:selectOneMenu value="#{registroController.expedienteONP.tipoSolicitud}">
+                                                                    <f:selectItem itemValue="0" itemLabel="Seleccione" />
+                                                                    <f:selectItems value="#{listasComunesController.listaONPTipoSolicitud(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
+                                                                </h:selectOneMenu>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <b>Enviado a ONP:</b>
+                                                            </td>
+                                                            <td>
+                                                                <h:selectBooleanCheckbox value="#{registroController.expedienteONP.indiceEnvidadoONP}"/>
+                                                            </td>
+                                                            <td colspan="2">
+
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                                <td style="padding-left: 5px; vertical-align: top">
+                                                    <table style="width: 100%">
+                                                        <tr>
+                                                            <td style="padding-bottom: 5px">
+                                                                <b>Fecha ONP:</b>
+                                                            </td>
+                                                            <td style="padding-bottom: 5px;padding-right: 5px;">
+                                                                <gc:calendar value="#{registroController.expedienteONP.fechaONP}" />
+                                                            </td>
+                                                            <td style="padding-bottom: 5px;padding-left: 5px;">
+                                                                <b>Concluido por ONP:</b>
+                                                            </td>
+                                                            <td style="padding-bottom: 5px">
+                                                                <h:selectBooleanCheckbox value="#{registroController.expedienteONP.indiceConcluidoONP}" />
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="padding-bottom: 5px">
+                                                                <b>Nro Documento:</b>
+                                                            </td>
+                                                            <td style="padding-bottom: 5px; padding-right: 5px">
+                                                                <input type="text" jsf:value="#{registroController.expedienteONP.documento}" maxlength="100"/>
+                                                            </td>
+                                                            <td style="padding-bottom: 5px; padding-left: 5px">
+                                                                <b>Fecha:</b>
+                                                            </td>
+                                                            <td style="padding-bottom: 5px">
+                                                                <gc:calendar value="#{registroController.expedienteONP.fechaRegistro}" />
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <b>Observación:</b>
+                                                            </td>
+                                                            <td colspan="3">
+                                                                <textarea rows="5" jsf:value="#{registroController.expedienteONP.observacion}" style="width: 100%" placeholder="Observacion"  maxlength="1950"/>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <br/>
+                                        <br/>
+                                        <span class="text-resalt-primary">Lista de gestiones ONP</span>
+                                        <div class="panel panel-primary">
+                                                <div class="panel-heading">
+                                                    <span>Lista de gestiones ONP</span>
+                                            </div>
+                                            <div class="panel-body">
+                                        <h:dataTable value="#{registroController.listaGestionesONP}" var="onp" class="table table-hover" binding="#{rowONP}">
+                                            <h:column>
+                                            <f:facet name="header">N°</f:facet>
+                                            <h:outputText value="#{rowONP.rowIndex+1}" />
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Codigo de gestión</f:facet>
+                                            <h:outputText value="#{onp.codigoGestion}" />
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Tipo de acción</f:facet>
+                                            <h:outputText value="#{onp.detalleTipo}" />
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Fecha registro</f:facet>
+                                            <h:outputText value="#{onp.fechaRegistro}" >
+                                                <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
+                                            </h:outputText>
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Fecha modificación</f:facet>
+                                            <h:outputText value="#{onp.fechaModificacion}" >
+                                                <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
+                                            </h:outputText>
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Hubo respuesta</f:facet>
+                                            <h:outputText value="#{onp.respuesta}" />
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Se programo alerta</f:facet>
+                                            <h:outputText value="#{onp.indAlertar? 'NO' : 'SI'}" />
+                                        </h:column>
+                                        
+                                        
+                                            
+                                        </h:dataTable>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                            </h:panelGroup>
+                        </td>                    
+                    </tr>
+                    <tr>
+                        <td colspan="2">
                             <div class="panel panel-featured-top-warning" style="height: 100px">
                                 <div class="panel-body">
-                                    <span class="text-resalt-primary">Responsables del caso</span>
-                                    <span class="text-resalt-primary"><b>#{registroController.usuarioSession.nombre} #{registroController.usuarioSession.apellidoPaterno} #{registroController.usuarioSession.apellidoMaterno} - #{registroController.usuarioSession.cargo}</b></span>
+                                    <span class="text-resalt-primary">Responsables del caso, ususario : </span>
+                                    <span class="text-resalt-primary"><b>#{registroController.expediente.usuarioRegistro} </b></span>
                                 </div>
                             </div>
-                        </td>                    
+                        </td>                  
                     </tr>
                     <tr>
                         <td colspan="2" style="text-align: center">

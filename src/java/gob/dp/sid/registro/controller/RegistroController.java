@@ -12,7 +12,6 @@ import gob.dp.sid.administracion.seguridad.service.UsuarioService;
 import gob.dp.sid.bandeja.controller.BandejaController;
 import gob.dp.sid.comun.ConstantesUtil;
 import gob.dp.sid.comun.ListadoClasificacion;
-import gob.dp.sid.comun.SelectVO;
 import gob.dp.sid.comun.controller.AbstractManagedBean;
 import gob.dp.sid.comun.entity.Distrito;
 import gob.dp.sid.comun.entity.FiltroParametro;
@@ -21,15 +20,12 @@ import gob.dp.sid.comun.entity.Provincia;
 import gob.dp.sid.comun.service.CacheService;
 import gob.dp.sid.comun.service.ParametroService;
 import gob.dp.sid.comun.service.UbigeoService;
-import gob.dp.sid.comun.type.AntesDespuesType;
 import gob.dp.sid.comun.type.EstadoExpedienteType;
 import gob.dp.sid.comun.type.EtapaConsultaType;
 import gob.dp.sid.comun.type.EtapaDerivacionType;
 import gob.dp.sid.comun.type.EtapaType;
 import gob.dp.sid.comun.type.ExpedienteType;
-import gob.dp.sid.comun.type.RepeticionType;
 import gob.dp.sid.comun.type.RolType;
-import gob.dp.sid.comun.type.TiempoType;
 import gob.dp.sid.registro.entity.Entidad;
 import gob.dp.sid.registro.entity.EtapaEstado;
 import gob.dp.sid.registro.entity.Expediente;
@@ -41,6 +37,7 @@ import gob.dp.sid.registro.entity.ExpedienteDerivacion;
 import gob.dp.sid.registro.entity.ExpedienteEntidad;
 import gob.dp.sid.registro.entity.ExpedienteGestion;
 import gob.dp.sid.registro.entity.ExpedienteNivel;
+import gob.dp.sid.registro.entity.ExpedienteONP;
 import gob.dp.sid.registro.entity.ExpedientePersona;
 import gob.dp.sid.registro.entity.GestionEtapa;
 import gob.dp.sid.registro.entity.OficinaDefensorial;
@@ -55,6 +52,7 @@ import gob.dp.sid.registro.service.ExpedienteDerivacionService;
 import gob.dp.sid.registro.service.ExpedienteEntidadService;
 import gob.dp.sid.registro.service.ExpedienteGestionService;
 import gob.dp.sid.registro.service.ExpedienteNivelService;
+import gob.dp.sid.registro.service.ExpedienteONPService;
 import gob.dp.sid.registro.service.ExpedientePersonaService;
 import gob.dp.sid.registro.service.ExpedienteService;
 import gob.dp.sid.registro.service.GestionEtapaService;
@@ -288,6 +286,10 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     private List<ExpedienteClasificacionTipo> listaExpedienteClasificacion;
     
     private Long idClasificacion;
+    
+    private ExpedienteONP expedienteONP;
+    
+    private List<ExpedienteGestion> listaGestionesONP;
 
     @Autowired
     private ExpedienteService expedienteService;
@@ -345,6 +347,9 @@ public class RegistroController extends AbstractManagedBean implements Serializa
 
     @Autowired
     private ExpedienteClasiTipoService expedienteClasiTipoService;
+    
+    @Autowired
+    private ExpedienteONPService expedienteONPService;
 
     public String cargarNuevoExpediente() {
         cargarObjetoExpediente();
@@ -385,6 +390,33 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         setVerBotonRegistrarExpediente(true);
         expedienteClasificacionBusqueda = new ExpedienteClasificacion();
         return "expedienteNuevo";
+    }
+    
+    private void cargarFichaONP(){
+        listaGestionesONP = new ArrayList<>();
+        List<ExpedienteGestion> list = expedienteGestionService.expedienteGestionListaXexpediente(expediente.getNumero());
+        for(ExpedienteGestion eg : list){
+            if(StringUtils.isNotBlank(eg.getCodigoONP())){
+                listaGestionesONP.add(eg);
+            }
+        }
+        if(listaGestionesONP.size() >  0){
+            expedienteONP = expedienteONPService.expedienteONPBuscarExpediente(expediente.getNumero());
+            if(expedienteONP == null)
+                expedienteONP = new ExpedienteONP();
+        }else{
+            expedienteONP = null;
+        }
+    }
+    
+    public void guardarExpedienteONP(){
+        if(expedienteONP.getId() == null){
+            expedienteONP.setNumeroExpediente(expediente.getNumero());
+            expedienteONPService.expedienteONPInsertar(expedienteONP);
+        }else{
+            expedienteONPService.expedienteONPUpdate(expedienteONP);
+        }
+        msg.messageInfo("Se realizaron los cambios", null);
     }
 
     public void consultarReniec() throws ParseException {
@@ -1527,6 +1559,9 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         } else {
             expedienteGestion.setUsuarioModificacion(usuarioSession.getCodigo());
             expedienteGestion.setFechaModificacion(new Date());
+            if(StringUtils.isNotBlank(expedienteGestion.getCodigoONP())){
+                expedienteGestion.setCodigoONP(null);
+            }
             expedienteGestionService.expedienteGestionUpdate(expedienteGestion);
             msg.messageInfo("Se actualizo la gestión", null);
         }
@@ -1972,6 +2007,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         listarNiveles();
         defineBotonRegistro();
         expedienteClasificacionBusqueda = new ExpedienteClasificacion();
+        cargarFichaONP();
         if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_PETITORIO.getKey()) || Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_QUEJA.getKey()) || etapaEstado.getVerEtapa() == null) {
             return "expedienteEdit";
         }
@@ -3469,7 +3505,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         this.expedienteGestion = expedienteGestion;
     }
 
-    public List<SelectItem> getListaTiempo() {
+    /*public List<SelectItem> getListaTiempo() {
         System.out.println("getListaTiempo");
         try {
             listaTiempo = new ArrayList<>();
@@ -3485,13 +3521,13 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             log.debug(e.getMessage());
         }
         return listaTiempo;
-    }
+    }*/
 
     public void setListaTiempo(List<SelectItem> listaTiempo) {
         this.listaTiempo = listaTiempo;
     }
 
-    public List<SelectItem> getListaAntesDespues() {
+    /*public List<SelectItem> getListaAntesDespues() {
         System.out.println("getListaAntesDespues");
         try {
             listaAntesDespues = new ArrayList<>();
@@ -3507,13 +3543,13 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             log.debug(e.getMessage());
         }
         return listaAntesDespues;
-    }
+    }*/
 
     public void setListaAntesDespues(List<SelectItem> listaAntesDespues) {
         this.listaAntesDespues = listaAntesDespues;
     }
 
-    public List<SelectItem> getListaRepeticion() {
+    /*public List<SelectItem> getListaRepeticion() {
         System.out.println("getListaRepeticion");
         try {
             listaRepeticion = new ArrayList<>();
@@ -3529,7 +3565,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             log.debug(e.getMessage());
         }
         return listaRepeticion;
-    }
+    }*/
 
     public void setListaRepeticion(List<SelectItem> listaRepeticion) {
         this.listaRepeticion = listaRepeticion;
@@ -4034,6 +4070,22 @@ public class RegistroController extends AbstractManagedBean implements Serializa
 
     public void setIdClasificacion(Long idClasificacion) {
         this.idClasificacion = idClasificacion;
+    }
+
+    public ExpedienteONP getExpedienteONP() {
+        return expedienteONP;
+    }
+
+    public void setExpedienteONP(ExpedienteONP expedienteONP) {
+        this.expedienteONP = expedienteONP;
+    }
+
+    public List<ExpedienteGestion> getListaGestionesONP() {
+        return listaGestionesONP;
+    }
+
+    public void setListaGestionesONP(List<ExpedienteGestion> listaGestionesONP) {
+        this.listaGestionesONP = listaGestionesONP;
     }
 
 }

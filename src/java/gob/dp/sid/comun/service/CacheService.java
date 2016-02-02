@@ -51,4 +51,10 @@ public interface CacheService {
     
     public List<Parametro> listaPrimerNivel();
     
+    public List<Parametro> listaONPRegimen();
+    
+    public List<Parametro> listaONPSubOrigen();
+    
+    public List<Parametro> listaONPTipoSolicitud();
+    
 }

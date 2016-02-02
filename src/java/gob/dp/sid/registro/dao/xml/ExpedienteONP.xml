@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD iBatis Mapper 3.0 //EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="gob.dp.sid.registro.dao.ExpedienteONPDAO">
+    
+    <resultMap id="expedienteONPMap" type="expedienteONP">
+        <id property="id" column="N_ID_ONP" />
+        <result property="numeroExpediente" column="C_NUMEROEXPEDIENTE"/>
+        <result property="codigoExpedienteONP" column="C_CODIGOEXPEDIENTEONP"/>
+        <result property="nombreCausante" column="C_NOMBRECAUSANTE"/>
+        <result property="tipoRegimen" column="C_TIPOREGIMEN"/>
+        <result property="tipoSubOrigen" column="C_TIPOSUBORIGEN"/>
+        <result property="tipoSolicitud" column="C_TIPOSOLICITUD"/>
+        <result property="indiceEnvidadoONP" column="C_INDENVIADOONP"/>
+        <result property="indiceConcluidoONP" column="C_INDCONCLUIDOONP"/>
+        <result property="fechaRegistro" column="D_FECHAREGISTRO"/>
+        <result property="fechaONP" column="D_FECHAONP"/>
+        <result property="observacion" column="C_OBSERVACION"/>
+        <result property="motivo" column="C_MOTIVO"/>
+        <result property="documento" column="C_NRODOCUMENTO"/>
+    </resultMap> 
+    
+    
+    <insert id="expedienteONPInsertar" parameterType="expedienteONP">
+        INSERT INTO SID_REG_EXPEDIENTE_ONP
+        (
+        <if test="numeroExpediente != null">
+            C_NUMEROEXPEDIENTE,
+        </if>
+        <if test="codigoExpedienteONP != null">
+            C_CODIGOEXPEDIENTEONP,
+        </if>
+        <if test="nombreCausante != null">
+            C_NOMBRECAUSANTE,
+        </if>
+        <if test="tipoRegimen != null">
+            C_TIPOREGIMEN,
+        </if>
+        <if test="tipoSubOrigen != null">
+            C_TIPOSUBORIGEN,
+        </if>
+        <if test="tipoSolicitud != null">
+            C_TIPOSOLICITUD,
+        </if>
+        <if test="indiceEnvidadoONP != null">
+            C_INDENVIADOONP,
+        </if>
+        <if test="indiceConcluidoONP != null">
+            C_INDCONCLUIDOONP,
+        </if>
+        <if test="fechaRegistro != null">
+            D_FECHAREGISTRO,
+        </if>
+        <if test="fechaONP != null">
+            D_FECHAONP,
+        </if>
+        <if test="observacion != null">
+            C_OBSERVACION,
+        </if>
+        <if test="motivo != null">
+            C_MOTIVO,
+        </if>
+        <if test="documento != null">
+            C_NRODOCUMENTO,
+        </if>
+        N_ID_ONP
+        )
+        VALUES 
+        (
+        <if test="numeroExpediente != null">
+            #{numeroExpediente},
+        </if>
+        <if test="codigoExpedienteONP != null">
+            #{codigoExpedienteONP},
+        </if>
+        <if test="nombreCausante != null">
+            #{nombreCausante},
+        </if>
+        <if test="tipoRegimen != null">
+            #{tipoRegimen},
+        </if>
+        <if test="tipoSubOrigen != null">
+            #{tipoSubOrigen},
+        </if>
+        <if test="tipoSolicitud != null">
+            #{tipoSolicitud},
+        </if>
+        <if test="indiceEnvidadoONP != null">
+            #{indiceEnvidadoONP},
+        </if>
+        <if test="indiceConcluidoONP != null">
+            #{indiceConcluidoONP},
+        </if>
+        <if test="fechaRegistro != null">
+            #{fechaRegistro},
+        </if>
+        <if test="fechaONP != null">
+            #{fechaONP},
+        </if>
+        <if test="observacion != null">
+            #{observacion},
+        </if>
+        <if test="motivo != null">
+            #{motivo},
+        </if>
+        <if test="documento != null">
+            #{documento},
+        </if>
+        SEQ_SID_REG_EXPEDIENTE_ONP.NextVal
+        )
+        <selectKey keyProperty="id" resultType="Long">
+            SELECT SEQ_SID_REG_EXPEDIENTE_ONP.CURRVAL FROM DUAL
+        </selectKey>
+    </insert>
+    
+    <update id="expedienteONPUpdate" parameterType="expedienteONP">
+        UPDATE SID_REG_EXPEDIENTE_ONP
+        <set>
+        <if test="codigoExpedienteONP != null">
+            C_CODIGOEXPEDIENTEONP = #{codigoExpedienteONP},
+        </if>
+        <if test="nombreCausante != null">
+            C_NOMBRECAUSANTE = #{nombreCausante},
+        </if>
+        <if test="tipoRegimen != null">
+            C_TIPOREGIMEN = #{tipoRegimen},
+        </if>
+        <if test="tipoSubOrigen != null">
+            C_TIPOSUBORIGEN = #{tipoSubOrigen},
+        </if>
+        <if test="tipoSolicitud != null">
+            C_TIPOSOLICITUD = #{tipoSolicitud},
+        </if>
+        <if test="indiceEnvidadoONP != null">
+            C_INDENVIADOONP = #{indiceEnvidadoONP},
+        </if>
+        <if test="indiceConcluidoONP != null">
+            C_INDCONCLUIDOONP = #{indiceConcluidoONP},
+        </if>
+        <if test="fechaRegistro != null">
+            D_FECHAREGISTRO = #{fechaRegistro},
+        </if>
+        <if test="fechaONP != null">
+            D_FECHAONP = #{fechaONP},
+        </if>
+        <if test="observacion != null">
+            C_OBSERVACION = #{observacion},
+        </if>
+        <if test="motivo != null">
+            C_MOTIVO = #{motivo},
+        </if>
+        <if test="documento != null">
+            C_NRODOCUMENTO = #{documento},
+        </if>
+        C_NUMEROEXPEDIENTE = #{numeroExpediente}
+        </set>
+        <where>
+            N_ID_ONP = #{id}
+        </where>
+    </update>
+    
+    <select id="expedienteONPBuscarId" resultMap="expedienteONPMap" parameterType="long" >
+        SELECT * FROM SID_REG_EXPEDIENTE_ONP WHERE N_ID_ONP = #{id}
+    </select>
+    
+    <select id="expedienteONPBuscarExpediente" resultMap="expedienteONPMap" parameterType="String" >
+        SELECT * FROM SID_REG_EXPEDIENTE_ONP WHERE C_NUMEROEXPEDIENTE = #{value}
+    </select>
+</mapper>
