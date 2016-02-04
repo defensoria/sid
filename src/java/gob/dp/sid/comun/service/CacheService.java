@@ -57,4 +57,6 @@ public interface CacheService {
     
     public List<Parametro> listaONPTipoSolicitud();
     
+    public List<Parametro> listaLenguaMaterna();
+    
 }

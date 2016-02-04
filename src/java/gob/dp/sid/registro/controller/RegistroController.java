@@ -17,7 +17,6 @@ import gob.dp.sid.comun.entity.Distrito;
 import gob.dp.sid.comun.entity.FiltroParametro;
 import gob.dp.sid.comun.entity.Parametro;
 import gob.dp.sid.comun.entity.Provincia;
-import gob.dp.sid.comun.service.CacheService;
 import gob.dp.sid.comun.service.ParametroService;
 import gob.dp.sid.comun.service.UbigeoService;
 import gob.dp.sid.comun.type.EstadoExpedienteType;
@@ -181,12 +180,6 @@ public class RegistroController extends AbstractManagedBean implements Serializa
 
     private Integer nroPaginaModal = 1;
 
-    private List<SelectItem> listaTiempo;
-
-    private List<SelectItem> listaAntesDespues;
-
-    private List<SelectItem> listaRepeticion;
-
     private List<SelectItem> listaEstadoCalificacionQueja;
 
     private List<SelectItem> listaEstadoInvestigacionQueja;
@@ -299,9 +292,6 @@ public class RegistroController extends AbstractManagedBean implements Serializa
 
     @Autowired
     private EntidadService entidadService;
-
-    @Autowired
-    private CacheService cacheService;
 
     @Autowired
     private ParametroService parametroService;
@@ -455,6 +445,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         } else {
             msg.messageAlert("No se encontraron datos en la RENIEC con el DNI ingresado", null);
             persona = new Persona();
+            persona.setTipo("PER");
         }
     }
 
@@ -569,7 +560,6 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         } else {
             ficha.setFechaConclusion("");
         }
-
         /**
          * LISTA DE PERSONAS
          */
@@ -672,18 +662,14 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 list);
         jasperPrint = JasperFillManager.fillReport("C:\\recursos\\reportesSID\\expedientePetitorio.jasper",
                 new HashMap(), beanCollectionDataSource);
-
     }
 
     public void ordenar(int tipo) {
-
         Collections.sort(listaExpedienteXUsuarioPaginado, new Comparator<Expediente>() {
-
             @Override
             public int compare(Expediente o1, Expediente o2) {
                 return o1.getId().compareTo(o2.getId());
             }
-
         });
     }
 
@@ -723,7 +709,6 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     public String cargarExpedienteGestion() {
         expedienteGestion = new ExpedienteGestion();
         expedienteBusquedaReplica = new Expediente();
-        //listaExpedienteGestion = expedienteGestionService.expedienteGestionLista(expediente.getId());
         return "expedienteGestion";
     }
 
@@ -874,7 +859,6 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                     }
                 }
             }
-
         }
         return true;
     }
@@ -966,6 +950,14 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             expedienteNivel = new ExpedienteNivel();
         }
         listarNiveles();
+    }
+    
+    public void limpiarNivelesAll(){
+        listaClasificacionSegundoLevel = new ArrayList<>();
+        listaClasificacionTercerLevel = new ArrayList<>();
+        listaClasificacionCuartoLevel = new ArrayList<>();
+        listaClasificacionQuintoLevel = new ArrayList<>();
+        listaClasificacionSextoLevel = new ArrayList<>();
     }
 
     public void guardarNivel(ExpedienteNivel en) {
@@ -1060,7 +1052,6 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             }
             expedienteConsultaEnvia = new ExpedienteConsulta();
         } else {
-            //ExpedienteConsulta consulta = expedienteConsultaService.expedienteConsultaSelectOne(idExpedienteConsulta);
             for (ExpedienteConsulta ec : list1) {
                 if (ec != null) {
                     if (ec.getEtapa() == EtapaConsultaType.CONSULTA_ETAPA_ENVIA.getKey()) {
@@ -1088,45 +1079,25 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 expedienteConsultaAprueba.setCodigoUsuario(usuarioSession.getCodigo());
                 expedienteConsultaAprueba.setCodigo(expedienteConsultaEnvia.getCodigo());
                 return "expedienteAccionesConsulta";
-            } /*else {
-             if (StringUtils.equals(expedienteConsultaAprueba.getCodigoUsuario(), usuarioSession.getCodigo())) {
-             return "expedienteAccionesConsulta";
-             }
-             }*/
-
+            }
             if (expedienteConsultaReasigna == null) {
                 expedienteConsultaReasigna = new ExpedienteConsulta();
                 expedienteConsultaReasigna.setCodigoUsuario(usuarioSession.getCodigo());
                 expedienteConsultaReasigna.setCodigo(expedienteConsultaAprueba.getCodigo());
                 return "expedienteAccionesConsulta";
-            } /*else {
-             if (StringUtils.equals(expedienteConsultaReasigna.getCodigoUsuario(), usuarioSession.getCodigo())) {
-             return "expedienteAccionesConsulta";
-             }
-             }*/
-
+            }
             if (expedienteConsultaResponde == null) {
                 expedienteConsultaResponde = new ExpedienteConsulta();
                 expedienteConsultaResponde.setCodigoUsuario(usuarioSession.getCodigo());
                 expedienteConsultaResponde.setCodigo(expedienteConsultaReasigna.getCodigo());
                 return "expedienteAccionesConsulta";
-            } /*else {
-             if (StringUtils.equals(expedienteConsultaResponde.getCodigoUsuario(), usuarioSession.getCodigo())) {
-             return "expedienteAccionesConsulta";
-             }
-             }*/
-
+            }
             if (expedienteConsultaRespondeReasigna == null) {
                 expedienteConsultaRespondeReasigna = new ExpedienteConsulta();
                 expedienteConsultaRespondeReasigna.setCodigoUsuario(usuarioSession.getCodigo());
                 expedienteConsultaRespondeReasigna.setCodigo(expedienteConsultaResponde.getCodigo());
                 return "expedienteAccionesConsulta";
-            }/* else {
-             if (StringUtils.equals(expedienteConsultaRespondeReasigna.getCodigoUsuario(), usuarioSession.getCodigo())) {
-             return "expedienteAccionesConsulta";
-             }
-             }*/
-
+            }
         }
         return "expedienteAccionesConsulta";
     }
@@ -1143,7 +1114,6 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             }
             expedienteConsultaEnvia = new ExpedienteConsulta();
         } else {
-            //ExpedienteConsulta consulta = expedienteConsultaService.expedienteConsultaSelectOne(idExpedienteConsulta);
             for (ExpedienteConsulta ec : list) {
                 if (ec != null) {
                     if (ec.getEtapa() == EtapaConsultaType.CONSULTA_ETAPA_ENVIA.getKey()) {
@@ -1171,45 +1141,25 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 expedienteConsultaAprueba.setCodigoUsuario(usuarioSession.getCodigo());
                 expedienteConsultaAprueba.setCodigo(expedienteConsultaEnvia.getCodigo());
                 return "expedienteAccionesConsulta";
-            } /*else {
-             if (StringUtils.equals(expedienteConsultaAprueba.getCodigoUsuario(), usuarioSession.getCodigo())) {
-             return "expedienteAccionesConsulta";
-             }
-             }*/
-
+            }
             if (expedienteConsultaReasigna == null) {
                 expedienteConsultaReasigna = new ExpedienteConsulta();
                 expedienteConsultaReasigna.setCodigoUsuario(usuarioSession.getCodigo());
                 expedienteConsultaReasigna.setCodigo(expedienteConsultaAprueba.getCodigo());
                 return "expedienteAccionesConsulta";
-            } /*else {
-             if (StringUtils.equals(expedienteConsultaReasigna.getCodigoUsuario(), usuarioSession.getCodigo())) {
-             return "expedienteAccionesConsulta";
-             }
-             }*/
-
+            }
             if (expedienteConsultaResponde == null) {
                 expedienteConsultaResponde = new ExpedienteConsulta();
                 expedienteConsultaResponde.setCodigoUsuario(usuarioSession.getCodigo());
                 expedienteConsultaResponde.setCodigo(expedienteConsultaReasigna.getCodigo());
                 return "expedienteAccionesConsulta";
-            } /*else {
-             if (StringUtils.equals(expedienteConsultaResponde.getCodigoUsuario(), usuarioSession.getCodigo())) {
-             return "expedienteAccionesConsulta";
-             }
-             }*/
-
+            }
             if (expedienteConsultaRespondeReasigna == null) {
                 expedienteConsultaRespondeReasigna = new ExpedienteConsulta();
                 expedienteConsultaRespondeReasigna.setCodigoUsuario(usuarioSession.getCodigo());
                 expedienteConsultaRespondeReasigna.setCodigo(expedienteConsultaResponde.getCodigo());
                 return "expedienteAccionesConsulta";
-            }/* else {
-             if (StringUtils.equals(expedienteConsultaRespondeReasigna.getCodigoUsuario(), usuarioSession.getCodigo())) {
-             return "expedienteAccionesConsulta";
-             }
-             }*/
-
+            }
         }
         return "expedienteAccionesConsulta";
     }
@@ -1737,7 +1687,6 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                         inicializarEtapaEstado(1, e);
                         GestionEtapa ge = new GestionEtapa(eg.getId(), e.getId(), etapaEstado.getVerEtapa(), e.getNumero());
                         gestionEtapaService.gestionEtapaInsertar(ge);
-                        //expedienteGestionService.expedienteGestionUpdate(expedienteGestion);
                     }
                 }
             } catch (Exception ex) {
@@ -1768,7 +1717,6 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         } catch (Exception e) {
             log.error(e);
         }
-
     }
 
     public boolean listarExpedienteUsuarioPaginadoCompletoPagina(Integer pagina) {
@@ -1996,7 +1944,6 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         menuController.cargarPagina(1);
         listaEtiquetasSeleccionadas = new ArrayList<>();
         setExpediente(e);
-        //cargarSubTemas();
         cargarEtiquetas();
         cargarPersonasEntidades();
         if (expediente.getVersion() == 0) {
@@ -2011,6 +1958,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_PETITORIO.getKey()) || Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_QUEJA.getKey()) || etapaEstado.getVerEtapa() == null) {
             return "expedienteEdit";
         }
+        cargarExpedienteGestionLista();
         return "expedienteGestionLista";
     }
 
@@ -2023,6 +1971,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             }
             expediente.setListaExpedienteNivel(list);
         }
+        limpiarNivelesAll();
     }
 
     public void setearExpediente(Expediente e) {
@@ -2031,7 +1980,6 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         menuController.cargarPagina(1);
         listaEtiquetasSeleccionadas = new ArrayList<>();
         setExpediente(e);
-        //cargarSubTemas();
         cargarEtiquetas();
         cargarPersonasEntidades();
         if (expediente.getVersion() == 0) {
@@ -2048,6 +1996,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
 
     public void cargarModalActor() {
         persona = new Persona();
+        persona.setTipo("PER");
     }
 
     public boolean buscarPersonaGeneral(Long pagina) {
@@ -2102,8 +2051,6 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                     log.error("ERROR : BusquedaUsuarioController.listarPaginado: " + e.getMessage());
                 }
             }
-
-            //listaPersonaGeneral = personaService.personaBusarGeneral(personaBusqueda);
         }
         indSeleccion = true;
         personaBusqueda = new Persona();
@@ -2602,9 +2549,6 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 }
                 expediente.setUsuarioRegistro(codigoUsuario);
                 expediente.setVersion(1);
-                /*DateFormat format = new SimpleDateFormat("yyMMddHHmmss");
-                 String formato = format.format(new Date());
-                 expediente.setNumero("CP" + formato);*/
                 generarCodigoExpediente();
                 expediente.setFechaRegistro(new Date());
             } else {
@@ -2689,11 +2633,9 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 }
             }
         }
-
         guardar();
         guardarEtapaEstadoConcluir(idExpedienteOld);
         inicializarEtapaEstado(1);
-        //guardarVersion2();
         /**
          * GENERAR NUEVO ESTADO
          */
@@ -2848,11 +2790,6 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                         if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.GESTION_PETITORIO.getKey())) {
                             etapaEstado1.setIdEtapa(EtapaType.GESTION_PETITORIO.getKey());
                             etapaEstado1.setIdEstado(expediente.getEstadoGestion());
-                            /*if (expediente.getEstadoGestion() == EstadoExpedienteType.GESTION_CONCLUIDO_PETITORIO.getKey()) {
-                             expediente.setGeneral("C");
-                             expedienteService.expedienteConcluir(expediente.getId());
-                             }*/
-
                             if (expediente.getEstadoGestion() == EstadoExpedienteType.GESTION_SOLUCIONADO_PETITORIO.getKey()) {
                                 expediente.setGeneral("C");
                                 expedienteService.expedienteConcluir(expediente.getId());
@@ -2872,7 +2809,6 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                     etapaEstado1.setIdEtapa(EtapaType.CALIFICACION_PETITORIO.getKey());
                 }
             }
-
             /**
              * CONSULTA
              */
@@ -2941,7 +2877,6 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                             nin++;
                         }
                     }
-
                 }
             }
         }
@@ -2951,25 +2886,13 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     public int getMonths(Date g1, Date g2) {
         Calendar cal1 = Calendar.getInstance();
         Calendar cal2 = Calendar.getInstance();
-
         // Establecer las fechas
         cal1.setTime(g1);
         cal2.setTime(g2);
-
         // conseguir la representacion de la fecha en milisegundos
         long milis1 = cal1.getTimeInMillis();
         long milis2 = cal2.getTimeInMillis();
-
-        // calcular la diferencia en milisengundos
         long diff = milis2 - milis1;
-
-        // calcular la diferencia en segundos
-        // long diffSeconds = diff / 1000;
-        // calcular la diferencia en minutos
-        // long diffMinutes = diff / (60 * 1000);
-        // calcular la diferencia en horas
-        // long diffHours = diff / (60 * 60 * 1000);
-        // calcular la diferencia en dias
         long diffDays = diff / (24 * 60 * 60 * 1000);
         Long diffyear = diffDays / 365;
         return Integer.parseInt(diffyear.toString());
@@ -3146,20 +3069,6 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     public void removeEtiqueta(Parametro param) {
         listaEtiquetasSeleccionadas.remove(param);
         msg.messageInfo("Se elimino la Etiqueta", null);
-    }
-
-    public void cargarSubTemas() {
-        if (!expediente.getTipoTema().trim().equals("0")) {
-            listaSubTemas = cacheService.buscarExpedienteSubTema(codigoParamentro(30));
-        }
-    }
-
-    private int codigoParamentro(int codigo) {
-        FiltroParametro filtro = new FiltroParametro();
-        filtro.setCodigoPadreParametro(codigo);
-        filtro.setValorParametro(expediente.getTipoTema());
-        Parametro p = parametroService.consultarParametroValor(filtro);
-        return p.getCodigoParametro();
     }
 
     private Parametro codigoParamentro(int codigo, String valor) {
@@ -3503,72 +3412,6 @@ public class RegistroController extends AbstractManagedBean implements Serializa
 
     public void setExpedienteGestion(ExpedienteGestion expedienteGestion) {
         this.expedienteGestion = expedienteGestion;
-    }
-
-    /*public List<SelectItem> getListaTiempo() {
-        System.out.println("getListaTiempo");
-        try {
-            listaTiempo = new ArrayList<>();
-            List<SelectVO> tiposTiempo = TiempoType.getList();
-            if (tiposTiempo != null) {
-                listaTiempo.add(new SelectItem("0", "[Seleccione]"));
-                for (SelectVO tipoTiempo : tiposTiempo) {
-                    listaTiempo.add(new SelectItem(tipoTiempo.getId(),
-                            tipoTiempo.getValue()));
-                }
-            }
-        } catch (Exception e) {
-            log.debug(e.getMessage());
-        }
-        return listaTiempo;
-    }*/
-
-    public void setListaTiempo(List<SelectItem> listaTiempo) {
-        this.listaTiempo = listaTiempo;
-    }
-
-    /*public List<SelectItem> getListaAntesDespues() {
-        System.out.println("getListaAntesDespues");
-        try {
-            listaAntesDespues = new ArrayList<>();
-            List<SelectVO> tiposAntesDespues = AntesDespuesType.getList();
-            if (tiposAntesDespues != null) {
-                listaAntesDespues.add(new SelectItem("0", "[Seleccione]"));
-                for (SelectVO tipoAntesDespues : tiposAntesDespues) {
-                    listaAntesDespues.add(new SelectItem(tipoAntesDespues.getId(),
-                            tipoAntesDespues.getValue()));
-                }
-            }
-        } catch (Exception e) {
-            log.debug(e.getMessage());
-        }
-        return listaAntesDespues;
-    }*/
-
-    public void setListaAntesDespues(List<SelectItem> listaAntesDespues) {
-        this.listaAntesDespues = listaAntesDespues;
-    }
-
-    /*public List<SelectItem> getListaRepeticion() {
-        System.out.println("getListaRepeticion");
-        try {
-            listaRepeticion = new ArrayList<>();
-            List<SelectVO> tiposRepeticion = RepeticionType.getList();
-            if (tiposRepeticion != null) {
-                listaRepeticion.add(new SelectItem("0", "[Seleccione]"));
-                for (SelectVO tipoRepeticion : tiposRepeticion) {
-                    listaRepeticion.add(new SelectItem(tipoRepeticion.getId(),
-                            tipoRepeticion.getValue()));
-                }
-            }
-        } catch (Exception e) {
-            log.debug(e.getMessage());
-        }
-        return listaRepeticion;
-    }*/
-
-    public void setListaRepeticion(List<SelectItem> listaRepeticion) {
-        this.listaRepeticion = listaRepeticion;
     }
 
     public List<SelectItem> getListaEstadoCalificacionQueja() {

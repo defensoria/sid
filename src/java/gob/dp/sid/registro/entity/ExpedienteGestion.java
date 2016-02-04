@@ -54,40 +54,14 @@ public class ExpedienteGestion implements Serializable{
     
     /**SEGUIMIENTO*/
     
-    private boolean indAlertar;
-    
-    private Date inicioSeguimiento;
-    
-    private Date finSeguimiento;
-    
-    private String tipoTiempoIni;
-    
-    private String tipoTiempoFin;
-    
-    private Integer numeroInicial;
-    
-    private Integer numeroFinal;
-    
-    private String indicadorAntesDespuesIni;
-    
-    private String indicadorAntesDespuesFin;
-    
     private Date inicioDefinitivo;
     
     private Date finDefinitivo;
     
-    private String indicadorLunesViernes;
-    
     private Date ultimaEjecucion;
     
-    private String indiceRepeticion;
-    
     private String estado;
-    
-    private Boolean indicadorSeleccionHoraIni;
-    
-    private Boolean indicadorSeleccionHoraFin;
-    
+
     private Boolean indicadorRecomendacion;
     
     private String documentoRespuesta;
@@ -204,70 +178,6 @@ public class ExpedienteGestion implements Serializable{
         this.apellidoMaterno = apellidoMaterno;
     }
 
-    public Date getInicioSeguimiento() {
-        return inicioSeguimiento;
-    }
-
-    public void setInicioSeguimiento(Date inicioSeguimiento) {
-        this.inicioSeguimiento = inicioSeguimiento;
-    }
-
-    public Date getFinSeguimiento() {
-        return finSeguimiento;
-    }
-
-    public void setFinSeguimiento(Date finSeguimiento) {
-        this.finSeguimiento = finSeguimiento;
-    }
-
-    public String getTipoTiempoIni() {
-        return tipoTiempoIni;
-    }
-
-    public void setTipoTiempoIni(String tipoTiempoIni) {
-        this.tipoTiempoIni = tipoTiempoIni;
-    }
-
-    public String getTipoTiempoFin() {
-        return tipoTiempoFin;
-    }
-
-    public void setTipoTiempoFin(String tipoTiempoFin) {
-        this.tipoTiempoFin = tipoTiempoFin;
-    }
-
-    public Integer getNumeroInicial() {
-        return numeroInicial;
-    }
-
-    public void setNumeroInicial(Integer numeroInicial) {
-        this.numeroInicial = numeroInicial;
-    }
-
-    public Integer getNumeroFinal() {
-        return numeroFinal;
-    }
-
-    public void setNumeroFinal(Integer numeroFinal) {
-        this.numeroFinal = numeroFinal;
-    }
-
-    public String getIndicadorAntesDespuesIni() {
-        return indicadorAntesDespuesIni;
-    }
-
-    public void setIndicadorAntesDespuesIni(String indicadorAntesDespuesIni) {
-        this.indicadorAntesDespuesIni = indicadorAntesDespuesIni;
-    }
-
-    public String getIndicadorAntesDespuesFin() {
-        return indicadorAntesDespuesFin;
-    }
-
-    public void setIndicadorAntesDespuesFin(String indicadorAntesDespuesFin) {
-        this.indicadorAntesDespuesFin = indicadorAntesDespuesFin;
-    }
-
     public Date getInicioDefinitivo() {
         return inicioDefinitivo;
     }
@@ -284,14 +194,6 @@ public class ExpedienteGestion implements Serializable{
         this.finDefinitivo = finDefinitivo;
     }
 
-    public String getIndicadorLunesViernes() {
-        return indicadorLunesViernes;
-    }
-
-    public void setIndicadorLunesViernes(String indicadorLunesViernes) {
-        this.indicadorLunesViernes = indicadorLunesViernes;
-    }
-
     public Date getUltimaEjecucion() {
         return ultimaEjecucion;
     }
@@ -300,36 +202,12 @@ public class ExpedienteGestion implements Serializable{
         this.ultimaEjecucion = ultimaEjecucion;
     }
 
-    public String getIndiceRepeticion() {
-        return indiceRepeticion;
-    }
-
-    public void setIndiceRepeticion(String indiceRepeticion) {
-        this.indiceRepeticion = indiceRepeticion;
-    }
-
     public String getEstado() {
         return estado;
     }
 
     public void setEstado(String estado) {
         this.estado = estado;
-    }
-
-    public Boolean getIndicadorSeleccionHoraIni() {
-        return indicadorSeleccionHoraIni;
-    }
-
-    public void setIndicadorSeleccionHoraIni(Boolean indicadorSeleccionHoraIni) {
-        this.indicadorSeleccionHoraIni = indicadorSeleccionHoraIni;
-    }
-
-    public Boolean getIndicadorSeleccionHoraFin() {
-        return indicadorSeleccionHoraFin;
-    }
-
-    public void setIndicadorSeleccionHoraFin(Boolean indicadorSeleccionHoraFin) {
-        this.indicadorSeleccionHoraFin = indicadorSeleccionHoraFin;
     }
 
     public Date getFecha() {
@@ -346,14 +224,6 @@ public class ExpedienteGestion implements Serializable{
 
     public void setIndEntidadQuejada(Boolean indEntidadQuejada) {
         this.indEntidadQuejada = indEntidadQuejada;
-    }
-
-    public boolean isIndAlertar() {
-        return indAlertar;
-    }
-
-    public void setIndAlertar(boolean indAlertar) {
-        this.indAlertar = indAlertar;
     }
 
     public String getNota() {
@@ -661,5 +531,3 @@ public class ExpedienteGestion implements Serializable{
     }
     
 }
-
-

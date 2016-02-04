@@ -57,6 +57,10 @@ public class Persona implements Serializable{
     private Date fechaNacimiento;
     
     private String contacto;
+    
+    private String tipoLengua;
+    
+    private Boolean indicadorDiscapacitado;
     /*temporales*/
     private String numeroExpediente;
     
@@ -312,6 +316,22 @@ public class Persona implements Serializable{
 
     public void setContacto(String contacto) {
         this.contacto = contacto;
+    }
+
+    public String getTipoLengua() {
+        return tipoLengua;
+    }
+
+    public void setTipoLengua(String tipoLengua) {
+        this.tipoLengua = tipoLengua;
+    }
+
+    public Boolean getIndicadorDiscapacitado() {
+        return indicadorDiscapacitado;
+    }
+
+    public void setIndicadorDiscapacitado(Boolean indicadorDiscapacitado) {
+        this.indicadorDiscapacitado = indicadorDiscapacitado;
     }
     
     

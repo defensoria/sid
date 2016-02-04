@@ -7,7 +7,6 @@
 
     <ui:composition template="../template/templateCabeceraExpediente.xhtml">
         <ui:define name="content2">
-            
             <ul class="nav nav-tabs">
                 <li role="presentation">
                     <a style="cursor: pointer" jsf:action="#{registroController.datosGeneralesExpediente()}">
@@ -54,7 +53,103 @@
                                                     <span class="text-resalt-primary">Datos generales</span>
                                                 </td>
                                                 <td style="text-align: right">
-                                                
+                                                    <a class="btn btn-warning" jsf:action="#{registroController.cargarModalReplica()}" jsf:rendered="#{registroController.expedienteGestion.codigoGestion != null}" jsf:onclick="loadingModal()">
+                                                        <span class="glyphicon glyphicon-book" /> Replicar en otro expediente
+                                                        <f:ajax render="idPanelModalReplicar" execute="idPanelModalReplicar" onevent="modalReplicar" />
+                                                    </a>
+                                                    <script>
+
+                                                        function modalReplicar(data) {
+                                                            if (data.status === 'success') {
+                                                                $("#loadModal").modal('hide');
+                                                                $('body').removeClass('modal-open');
+                                                                $(".modal-backdrop").removeClass("modal-backdrop");
+                                                                $("#idModalReoplicar").modal('show');
+                                                            }
+                                                        }
+                                                    </script>
+                                                    <h:panelGroup id="idPanelModalReplicar">
+                                                        <div class="modal fade" data-backdrop="static" data-keyboard="false" id="idModalReoplicar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                            <div class="modal-dialog" style="text-align: left">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <a type="button" class="close" data-dismiss="modal">
+                                                                            <span style="color:red" class="glyphicon glyphicon-remove"></span>
+                                                                        </a>
+                                                                        <span class="text-resalt-primary">Replicar gestiones</span>
+                                                                    </div>
+                                                                    <div class="modal-body" style="padding:5px">
+                                                                        <h:panelGroup id="idPanelBusquedaReplic">
+                                                                            <h:messages />
+                                                                            <table style="width: 100%">
+                                                                                <tr>
+                                                                                    <td style="width: 60%">
+                                                                                        <input type="text" id="idExpedienteNumero" jsf:value="#{registroController.expedienteBusquedaReplica.numero}" placeholder="Ingrese número de expediente" maxlength="50"/>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <a class="btn btn-primary" jsf:action="#{registroController.buscarModalReplica()}" jsf:onclick="loadingModal()">
+                                                                                            <span class="glyphicon glyphicon-search" />Buscar 
+                                                                                            <f:ajax render="idPanelBusquedaReplic" execute="idPanelBusquedaReplic" onevent="closeModal" />
+                                                                                        </a>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </table>
+                                                                            <br/>
+                                                                            <h:dataTable id="idDatatableReplica" value="#{registroController.listaExpedienteXUsuarioPaginadoReplica.subList(registroController.inicioPaginado, registroController.finPaginado)}" rendered="#{registroController.listaExpedienteXUsuarioPaginadoReplica.size() > 0}" var="exped" class="table table-hover" binding="#{ro5}">
+                                                                                <h:column>
+                                                                                    <f:facet name="header">Nro</f:facet>
+                                                                                    <h:outputText value="#{(ro5.rowIndex+1)+(registroController.nroPagina-1)*10}" />
+                                                                                </h:column>
+                                                                                <h:column>
+                                                                                    <f:facet name="header">Expediente</f:facet>
+                                                                                    <h:outputText value="#{exped.numero}" />
+                                                                                </h:column>
+                                                                                <h:column>
+                                                                                    <f:facet name="header">Tipo</f:facet>
+                                                                                    <h:outputText value="#{exped.clasificacionTipoNombre}" />
+                                                                                </h:column>
+                                                                                <h:column>
+                                                                                    <f:facet name="header">Etapa</f:facet>
+                                                                                    <h:outputText value="#{exped.etapaDetalle}" />
+                                                                                </h:column>
+                                                                                <h:column>
+                                                                                    <f:facet name="header">Estado expediente</f:facet>
+                                                                                    <h:outputText value="#{exped.estadoDetalle}" />
+                                                                                </h:column>
+
+                                                                                <h:column>
+                                                                                    <f:facet name="header">Seleccionar</f:facet>
+                                                                                    <h:selectBooleanCheckbox value="#{exped.indReplica}"/>
+                                                                                </h:column>
+                                                                            </h:dataTable>
+
+                                                                            <ul class="pager">
+                                                                                <li>
+                                                                                    <a jsf:action="#{registroController.listarExpedienteUsuarioPaginadoCompletoPagina(registroController.nroPagina -1)}" jsf:rendered="#{registroController.listaExpedienteXUsuarioPaginadoReplica.size() > 0}" jsf:onclick="loadingModal()">Anterior
+                                                                                        <f:ajax render="idPanelBusquedaReplic" execute="idPanelBusquedaReplic" onevent="closeModal"/>
+                                                                                    </a>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <a jsf:action="#{registroController.listarExpedienteUsuarioPaginadoCompletoPagina(registroController.nroPagina +1)}" jsf:rendered="#{registroController.listaExpedienteXUsuarioPaginadoReplica.size() > 0}" jsf:onclick="loadingModal()">Siguiente
+                                                                                        <f:ajax render="idPanelBusquedaReplic" execute="idPanelBusquedaReplic" onevent="closeModal"/>
+                                                                                    </a>
+                                                                                </li>
+                                                                            </ul>
+                                                                        </h:panelGroup>
+                                                                        <div class="modal-footer">
+                                                                            <a  class="btn btn-default" data-dismiss="modal">
+                                                                                <span class="glyphicon glyphicon-remove"/>Cerrar
+                                                                            </a>
+                                                                            <a class="btn btn-primary" jsf:action="#{registroController.insertarReplicaGestion1()}" jsf:onclick="loadingModal()">
+                                                                                <span class="glyphicon glyphicon-floppy-disk"/>Guardar
+                                                                                <f:ajax render="idPanelBusquedaReplic" execute="idPanelBusquedaReplic" onevent="closeModal"/>
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </h:panelGroup>
                                                 </td>
                                             </tr>
                                         </table>
@@ -324,6 +419,7 @@
                                                                 <input type="text" style="width: 50%" jsf:value="#{registroController.expedienteGestion.cargo}" placeholder="Cargo del funcionario" maxlength="190"/>
                                                             </td>
                                                         </tr>
+                                                        
                                                         <tr>
                                                             <td style="padding-top: 20px">
                                                                 <label><span style="font-size: large" class="glyphicon glyphicon-paperclip" />Adjuntar archivo:</label>
@@ -353,7 +449,119 @@
                                                     <span class="text-resalt-primary">Información de respuesta</span>
                                                 </td>
                                                 <td style="text-align: right">
-                                                   
+                                                    <a class="btn btn-warning" jsf:action="#{registroController.cargarModalReplica()}"  jsf:rendered="#{registroController.expedienteGestion.codigoGestion != null}" jsf:onclick="loadingModal()">
+                                                        <span class="glyphicon glyphicon-book" /> Replicar en otro expediente
+                                                        <f:ajax render="idPanelModalReplicar2" execute="idPanelModalReplicar2" onevent="modalReplicar2" />
+                                                    </a>
+                                                    <script>
+
+                                                        function modalReplicar2(data) {
+                                                            if (data.status === 'success') {
+                                                                $("#loadModal").modal('hide');
+                                                                $('body').removeClass('modal-open');
+                                                                $(".modal-backdrop").removeClass("modal-backdrop");
+                                                                $("#idModalReoplicar2").modal('show');
+                                                            }
+                                                        }
+                                                    </script>
+                                                    <h:panelGroup id="idPanelModalReplicar2">
+                                                        <div class="modal fade" data-backdrop="static" data-keyboard="false" id="idModalReoplicar2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                            <div class="modal-dialog" style="text-align: left">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <a type="button" class="close" data-dismiss="modal">
+                                                                            <span style="color:red" class="glyphicon glyphicon-remove"></span>
+                                                                        </a>
+                                                                        <span class="text-resalt-primary">Replicar gestiones</span>
+                                                                    </div>
+                                                                    <div class="modal-body" style="padding:5px">
+                                                                        <h:panelGroup id="idPanelBusquedaReplic2">
+                                                                            <table style="width: 100%">
+                                                                                <tr>
+                                                                                    <td style="width: 60%">
+                                                                                        <input type="text" id="idExpedienteNumero" jsf:value="#{registroController.expedienteBusquedaReplica.numero}" placeholder="Ingrese número de expediente" maxlength="50"/>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <a class="btn btn-primary" jsf:action="#{registroController.buscarModalReplica()}" jsf:onclick="loadingModal()">
+                                                                                            <span class="glyphicon glyphicon-search" />Buscar 
+                                                                                            <f:ajax render="idPanelBusquedaReplic2" execute="idPanelBusquedaReplic2" onevent="closeModal" />
+                                                                                        </a>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </table>
+                                                                            <br/>
+                                                                            <h:dataTable id="idDatatableReplica2" value="#{registroController.listaExpedienteXUsuarioPaginadoReplica.subList(registroController.inicioPaginado, registroController.finPaginado)}" rendered="#{registroController.listaExpedienteXUsuarioPaginadoReplica.size() > 0}"  var="exped" class="table table-hover" binding="#{ro6}">
+                                                                                <h:column>
+                                                                                    <f:facet name="header">Nro</f:facet>
+                                                                                    <h:outputText value="#{(ro6.rowIndex+1)+(registroController.nroPagina-1)*10}" />
+                                                                                </h:column>
+                                                                                <h:column>
+                                                                                    <f:facet name="header">Expediente</f:facet>
+                                                                                    <h:outputText value="#{exped.numero}" />
+                                                                                </h:column>
+                                                                                <h:column>
+                                                                                    <f:facet name="header">Tipo</f:facet>
+                                                                                    <h:outputText value="#{exped.clasificacionTipoNombre}" />
+                                                                                </h:column>
+                                                                                <h:column>
+                                                                                    <f:facet name="header">Etapa</f:facet>
+                                                                                    <h:outputText value="#{exped.etapaDetalle}" />
+                                                                                </h:column>
+                                                                                <h:column>
+                                                                                    <f:facet name="header">Estado expediente</f:facet>
+                                                                                    <h:outputText value="#{exped.estadoDetalle}" />
+                                                                                </h:column>
+
+                                                                                <h:column>
+                                                                                    <a class="btn btn-primary" jsf:action="#{registroController.gestionesPorExpediente(exped.numero)}">
+                                                                                        <span class="glyphicon glyphicon-circle-arrow-right" />
+                                                                                        <f:ajax render=":idFormTemplate:idPanelBusquedaReplic2" />
+                                                                                    </a>
+                                                                                </h:column>
+                                                                            </h:dataTable>
+
+                                                                            <ul class="pager">
+                                                                                <li>
+                                                                                    <a jsf:action="#{registroController.listarExpedienteUsuarioPaginadoCompletoPagina(registroController.nroPagina -1)}" jsf:rendered="#{registroController.listaExpedienteXUsuarioPaginadoReplica.size() > 0}"  jsf:onclick="loadingModal()">Anterior
+                                                                                        <f:ajax render="idPanelBusquedaReplic2" execute="idPanelBusquedaReplic2" onevent="closeModal"/>
+                                                                                    </a>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <a jsf:action="#{registroController.listarExpedienteUsuarioPaginadoCompletoPagina(registroController.nroPagina +1)}" jsf:rendered="#{registroController.listaExpedienteXUsuarioPaginadoReplica.size() > 0}"  jsf:onclick="loadingModal()">Siguiente
+                                                                                        <f:ajax render="idPanelBusquedaReplic2" execute="idPanelBusquedaReplic2" onevent="closeModal"/>
+                                                                                    </a>
+                                                                                </li>
+                                                                            </ul>
+
+                                                                            <br/><br/>
+                                                                            <h:panelGroup id="idPanelListaGestiones" rendered="#{registroController.listaGestionesParaReplica.size() > 0}">
+
+                                                                                <label>Seleccione las gestiones del expediente:</label>
+                                                                                <h:selectOneMenu value="#{registroController.idGestionReplica}">
+                                                                                    <f:selectItems value="#{registroController.listaGestionesParaReplica}" var="x" itemValue="#{x.id}" itemLabel="#{x.codigoGestion}" />
+                                                                                </h:selectOneMenu>
+
+
+
+                                                                            </h:panelGroup>
+                                                                            <div class="modal-footer">
+
+                                                                                <a  class="btn btn-default" data-dismiss="modal">
+                                                                                    <span class="glyphicon glyphicon-remove"/>Cerrar
+                                                                                </a>
+                                                                                <a class="btn btn-primary" data-dismiss="modal" jsf:action="#{registroController.actualizarReplicaGestion()}">
+                                                                                    <span class="glyphicon glyphicon-floppy-disk"/>Guardar
+                                                                                </a>
+
+
+                                                                            </div>
+                                                                        </h:panelGroup>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </h:panelGroup>
                                                 </td>
                                             </tr>
                                         </table>
@@ -361,21 +569,23 @@
                                         <br/><br/>
                                         <table style="width: 100%">
                                             <tr>
-                                                <td style="width: 34%; padding-bottom: 10px">
+                                                <td style="width: 28%; padding-bottom: 10px">
                                                     <label>Hubo respuesta?</label>
                                                     <h:selectOneRadio value="#{registroController.expedienteGestion.respuesta}">
                                                         <f:selectItem itemValue="SI" itemLabel="Si" />
                                                         <f:selectItem itemValue="NO" itemLabel="No" />
                                                     </h:selectOneRadio>
                                                 </td>
-                                                <td style="width: 34%;padding-bottom: 10px">
-                                                    <label>Fecha respuesta</label>
+                                                <td style="width: 40%;padding-bottom: 10px">
+                                                    <label>Fecha respuesta:</label>
                                                     <gc:calendar value="#{registroController.expedienteGestion.fechaRespuesta}" />
                                                 </td>
                                                 <td style="padding-bottom: 10px">
                                                     <span>(*)De darse la respuesta despues de los 30 dias de entregado el documento, se considerará fuera de plazo automaticamente.</span>
                                                 </td>
                                             </tr>
+                                        </table>    
+                                        <table style="width: 100%">    
                                             <tr>
                                                 <td colspan="2" style="padding-bottom: 20px">
                                                     <h:panelGroup id="idSelectAcogimiento" rendered="#{registroController.etapaEstado.verEtapa == 3 or registroController.etapaEstado.verEtapa == 7}">
@@ -404,14 +614,14 @@
                                             </tr>
                                             <tr>
                                                 <td style="padding-bottom: 10px">
-                                                    <label>Documento de respuesta</label>
+                                                    <label>Documento de respuesta:</label>
                                                     <input type="text" placeholder="Documento de respuesta" jsf:value="#{registroController.expedienteGestion.documentoRespuesta}" />
                                                 </td>
                                                 <td></td>
                                             </tr>
                                             <tr>
                                                 <td colspan="2" style="padding-bottom: 10px">
-                                                    <label>Calidad Respuesta</label>
+                                                    <label>Calidad Respuesta:</label>
                                                     <h:selectOneMenu value="#{registroController.expedienteGestion.tipoCalidad}">
                                                         <f:selectItem itemValue="0" itemLabel="Selecione" />
                                                         <f:selectItems value="#{listasComunesController.buscarGestionTipoCalidadRespuesta(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
@@ -421,14 +631,14 @@
                                             </tr>
                                             <tr>
                                                 <td colspan="3" style="padding-bottom: 10px">
-                                                    <label>Descripción respuesta</label>
+                                                    <label>Descripción respuesta:</label>
                                                     <textarea rows="6" jsf:value="#{registroController.expedienteGestion.detalleRespuesta}" style="width: 100%;" placeholder="Descripción respuesta"/>
                                                 </td>
                                                 <td></td>
                                             </tr>
                                             <tr>
                                                 <td colspan="3">
-                                                    <label>Observaciones</label>
+                                                    <label>Observaciones:</label>
                                                     <textarea rows="6" jsf:value="#{registroController.expedienteGestion.observacionRespuesta}" style="width: 100%;" placeholder="Observaciones"/>
                                                 </td>
                                                 <td></td>
@@ -455,14 +665,14 @@
                             <td colspan="2">
                                 <div class="panel panel-featured-top-silver">
                                     <div class="panel-body">
-                                        <span class="text-resalt-primary">Programación de alertas</span>
+                                        <span class="text-resalt-primary">Programación de alertas </span>
+                                        <span style="color: red; font-weight: bold; font-size: 1.3em">(*Las alertas se enviaran diariamente) </span>
                                         <br/><br/>
                                         <table style="width: 100%">
                                             <tr>
                                                 <td style="width: 65%; padding-right: 2px">
                                                     <span class="text-primary" style="font-size:1.2em;font-weight:bold">Alertas</span>
                                                     <br/>
-                                                    <h:selectBooleanCheckbox id="checkIndAlertar" value="#{registroController.expedienteGestion.indAlertar}" />No alertar
                                                     <div id="idDivAlert">
                                                         <table style="width:100%">
                                                             <tr>
@@ -470,39 +680,6 @@
                                                                     <h:outputText value="Inicio" />
                                                                 </td>
                                                                 <td>
-                                                                    <table style="width:100%">
-                                                                        <tr>
-                                                                            <td style="width:8%">
-                                                                                <div id="idDivTxtNumeroInicial">
-                                                                                    <input type="text" id="txtNumeroInicial" onkeypress="return soloNumbero(event)" jsf:value="#{registroController.expedienteGestion.numeroInicial}"/>
-                                                                                </div>
-                                                                            </td>
-                                                                            <td style="width:30%">
-                                                                                <div id="idDivSelTipoTiempoIni">
-                                                                                    <h:selectOneMenu id="selTipoTiempoIni" value="#{registroController.expedienteGestion.tipoTiempoIni}">
-                                                                                        <f:selectItems value="#{registroController.listaTiempo}" var="y" itemLabel="#{y.label}" itemValue="#{y.value}" />
-                                                                                    </h:selectOneMenu>
-                                                                                </div>
-                                                                            </td>
-                                                                            <td style="width:30%">
-                                                                                <div id="idDivSelIndicadorAntesDespuesIni">
-                                                                                    <h:selectOneMenu id="selIndicadorAntesDespuesIni" value="#{registroController.expedienteGestion.indicadorAntesDespuesIni}">
-                                                                                        <f:selectItems value="#{registroController.listaAntesDespues}" var="y" itemLabel="#{y.label}" itemValue="#{y.value}" />
-                                                                                    </h:selectOneMenu>
-                                                                                </div>
-                                                                            </td>
-                                                                            <td style="width:32%">
-                                                                                <div class="input-group datepicker" id="idDivTxtInicioSeguimiento">
-                                                                                    <div class="input-group-addon add-on">
-                                                                                        <span class="glyphicon glyphicon-calendar"></span>
-                                                                                    </div>
-                                                                                    <input type="text" id="txtInicioSeguimiento" data-format="dd/MM/yyyy" jsf:value="#{registroController.expedienteGestion.inicioSeguimiento}">
-                                                                                        <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
-                                                                                    </input>
-                                                                                </div>
-                                                                            </td>
-                                                                        </tr>
-                                                                    </table>
                                                                     <table style="width: 100%">
                                                                         <tr>
                                                                             <td colspan="2">
@@ -511,7 +688,7 @@
                                                                         </tr>
                                                                         <tr>
                                                                             <td style="width:5%">
-                                                                                <h:selectBooleanCheckbox id="checkIndicadorSeleccionHoraIni" value="#{registroController.expedienteGestion.indicadorSeleccionHoraIni}"/>
+                                                                                
                                                                             </td>
                                                                             <td style="width:25%">
                                                                                 <div class="input-group datepicker" id="idDivTxtInicioDefinitivo">
@@ -536,39 +713,6 @@
                                                                     <h:outputText value="Finaliza" />
                                                                 </td>
                                                                 <td>
-                                                                    <table style="width:100%">
-                                                                        <tr>
-                                                                            <td style="width:8%">
-                                                                                <div id="idDivTxtNumeroFinal">
-                                                                                    <input type="text" id="txtNumeroFinal" onkeypress="return soloNumbero(event)" jsf:value="#{registroController.expedienteGestion.numeroFinal}" />
-                                                                                </div>
-                                                                            </td>
-                                                                            <td style="width:30%">
-                                                                                <div id="idDivSelTipoTiempoFin">
-                                                                                    <h:selectOneMenu id="selTipoTiempoFin" value="#{registroController.expedienteGestion.tipoTiempoFin}">
-                                                                                        <f:selectItems value="#{registroController.listaTiempo}" var="y" itemLabel="#{y.label}" itemValue="#{y.value}" />
-                                                                                    </h:selectOneMenu>
-                                                                                </div>
-                                                                            </td>
-                                                                            <td style="width:30%">
-                                                                                <div id="idDivSelIndicadorAntesDespuesFin">
-                                                                                    <h:selectOneMenu id="selIndicadorAntesDespuesFin" value="#{registroController.expedienteGestion.indicadorAntesDespuesFin}">
-                                                                                        <f:selectItems value="#{registroController.listaAntesDespues}" var="y" itemLabel="#{y.label}" itemValue="#{y.value}" />
-                                                                                    </h:selectOneMenu>
-                                                                                </div>
-                                                                            </td>
-                                                                            <td style="width:32%">
-                                                                                <div class="input-group datepicker" id="idDivTxtFinSeguimiento">
-                                                                                    <div class="input-group-addon add-on">
-                                                                                        <span class="glyphicon glyphicon-calendar"></span>
-                                                                                    </div>
-                                                                                    <input type="text" data-format="dd/MM/yyyy" id="txtFinSeguimiento" jsf:value="#{registroController.expedienteGestion.finSeguimiento}">
-                                                                                        <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
-                                                                                    </input>
-                                                                                </div>
-                                                                            </td>
-                                                                        </tr>
-                                                                    </table>
                                                                     <table style="width: 100%">
                                                                         <tr>
                                                                             <td colspan="2">
@@ -577,7 +721,7 @@
                                                                         </tr>
                                                                         <tr>
                                                                             <td style="width:5%">
-                                                                                <h:selectBooleanCheckbox id="checkIndicadorSeleccionHoraFin" value="#{registroController.expedienteGestion.indicadorSeleccionHoraFin}"/>
+                                                                                
                                                                             </td>
                                                                             <td style="width:25%">
                                                                                 <div class="input-group datepicker" id="idDivTxtFinDefinitivo">
@@ -596,21 +740,6 @@
                                                             </tr>
                                                         </table>
                                                         <br/>
-                                                        <table style="width:100%">
-                                                            <tr>
-                                                                <td style="width:10%">
-                                                                    <h:outputText value="Repetir" />
-                                                                </td>
-                                                                <td style="width:30%">
-                                                                    <div id="idDivSelIndiceRepeticion">
-                                                                        <h:selectOneMenu id="selIndiceRepeticion" value="#{registroController.expedienteGestion.indiceRepeticion}">
-                                                                            <f:selectItems value="#{registroController.listaRepeticion}" var="y" itemLabel="#{y.label}" itemValue="#{y.value}" />
-                                                                        </h:selectOneMenu>
-                                                                    </div>
-                                                                </td>
-                                                                <td style="width:60%"></td>
-                                                            </tr>
-                                                        </table>
                                                     </div>
                                                 </td>
                                                 <td style="vertical-align: top;  padding-left: 2px">

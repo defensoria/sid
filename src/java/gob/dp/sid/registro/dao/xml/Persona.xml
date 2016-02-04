@@ -24,6 +24,9 @@
         <result property="fechaNacimiento" column="D_FECHANACIMIENTO"/>
         <result property="tipo" column="C_TIPO"/>
         <result property="contacto" column="C_CONTACTO"/>
+        <result property="tipoLengua" column="C_TIPOLENGUA"/>
+        <result property="indicadorDiscapacitado" column="C_INDDISCAPACITADO"/>
+           
     </resultMap> 
     
     
@@ -93,6 +96,12 @@
         <if test="contacto != null">
             C_CONTACTO,
         </if>
+        <if test="tipoLengua != null">
+            C_TIPOLENGUA,
+        </if>
+        <if test="indicadorDiscapacitado != null">
+            C_INDDISCAPACITADO,
+        </if>
         N_IDPERSONA
         )
         VALUES 
@@ -160,6 +169,12 @@
         <if test="contacto != null">
             #{contacto},
         </if>
+        <if test="tipoLengua != null">
+            #{tipoLengua},
+        </if>
+        <if test="indicadorDiscapacitado != null">
+            #{indicadorDiscapacitado},
+        </if>
         SEQ_SID_REG_PERSONA.NextVal
         )
         <selectKey keyProperty="id" resultType="Long">
@@ -225,6 +240,12 @@
             <if test="contacto != null">
                 C_CONTACTO = #{contacto},
             </if>
+            <if test="tipoLengua != null">
+            C_TIPOLENGUA = #{tipoLengua},
+        </if>
+        <if test="indicadorDiscapacitado != null">
+            C_INDDISCAPACITADO = #{indicadorDiscapacitado},
+        </if>
             C_NOMBRE = #{nombre}
         </set>
         <where>

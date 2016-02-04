@@ -42,6 +42,10 @@ public class ExpedientePersona implements Serializable{
     private String idDistrito;
     
     private String contacto;
+    
+    private String tipoLengua;
+    
+    private Boolean indicadorDiscapacitado;
 
     public ExpedientePersona(Expediente expediente, Persona persona) {
         this.expediente = expediente;
@@ -169,6 +173,22 @@ public class ExpedientePersona implements Serializable{
 
     public void setTelefono2(String telefono2) {
         this.telefono2 = telefono2;
+    }
+
+    public String getTipoLengua() {
+        return tipoLengua;
+    }
+
+    public void setTipoLengua(String tipoLengua) {
+        this.tipoLengua = tipoLengua;
+    }
+
+    public Boolean getIndicadorDiscapacitado() {
+        return indicadorDiscapacitado;
+    }
+
+    public void setIndicadorDiscapacitado(Boolean indicadorDiscapacitado) {
+        this.indicadorDiscapacitado = indicadorDiscapacitado;
     }
     
     

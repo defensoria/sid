@@ -34,7 +34,16 @@ public class ListasComunesController {
     }
     
     public List<Parametro> buscarExpedienteTipoIngreso(boolean insertarTODOS, boolean insertarNINGUNO, boolean insertarSELECCIONE) {
-        return insertarValoresDefectoParametro(cacheService.buscarExpedienteTipoIngreso(), insertarTODOS, insertarNINGUNO, insertarSELECCIONE);
+        List<Parametro> lista1 = insertarValoresDefectoParametro(cacheService.buscarExpedienteTipoIngreso(), insertarTODOS, insertarNINGUNO, insertarSELECCIONE);
+        Collections.sort(lista1, new Comparator<Parametro>() {
+
+			@Override
+			public int compare(Parametro o1, Parametro o2) {
+				return o1.getCodigoParametro().compareTo(o2.getCodigoParametro());
+			}
+
+		});
+        return lista1;
     }
     
     public List<Parametro> buscarExpedienteTema(boolean insertarTODOS, boolean insertarNINGUNO, boolean insertarSELECCIONE) {
@@ -143,6 +152,11 @@ public class ListasComunesController {
     public List<Parametro> listaONPTipoSolicitud(boolean insertarTODOS, boolean insertarNINGUNO, boolean insertarSELECCIONE) {
         return insertarValoresDefectoParametro(cacheService.listaONPTipoSolicitud(), insertarTODOS, insertarNINGUNO, insertarSELECCIONE);
     }
+    
+    public List<Parametro> listaLenguaMaterna(boolean insertarTODOS, boolean insertarNINGUNO, boolean insertarSELECCIONE) {
+        return insertarValoresDefectoParametro(cacheService.listaLenguaMaterna(), insertarTODOS, insertarNINGUNO, insertarSELECCIONE);
+    }
+    
 
     private List insertarValoresDefectoParametro(List lst, boolean insertarTODOS, boolean insertarNINGUNO, boolean insertarSELECCIONE) {
         if (insertarTODOS) {

@@ -20,6 +20,9 @@
         <result property="idDistrito" column="C_IDDISTR"/>
         <result property="telefono2" column="C_TELEFONO2"/>
         <result property="contacto" column="C_CONTACTO"/>
+        <result property="tipoLengua" column="C_TIPOLENGUA"/>
+        <result property="indicadorDiscapacitado" column="C_INDDISCAPACITADO"/>
+        
     </resultMap> 
     
     
@@ -56,6 +59,12 @@
         <if test="contacto != null">
             C_CONTACTO,
         </if>
+        <if test="tipoLengua != null">
+            C_TIPOLENGUA,
+        </if>
+        <if test="indicadorDiscapacitado != null">
+            C_INDDISCAPACITADO,
+        </if>
         N_IDEXPEDIENTE,
         N_IDPERSONA
         )
@@ -90,6 +99,12 @@
         </if>
         <if test="contacto != null">
             #{contacto},
+        </if>
+        <if test="tipoLengua != null">
+            #{tipoLengua},
+        </if>
+        <if test="indicadorDiscapacitado != null">
+            #{indicadorDiscapacitado},
         </if>
         #{expediente.id},
         #{persona.id}
@@ -133,7 +148,13 @@
         <if test="contacto != null">
             C_CONTACTO = #{contacto},
         </if>
-            C_DIRECCION = #{direccion}
+        <if test="tipoLengua != null">
+            C_TIPOLENGUA = #{tipoLengua},
+        </if>
+        <if test="direccion != null">
+            C_DIRECCION = #{direccion},
+        </if>
+            C_INDDISCAPACITADO = #{indicadorDiscapacitado}
         </set>
         <where>
             N_IDPERSONA = #{persona.id} AND

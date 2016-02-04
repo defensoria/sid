@@ -29,8 +29,6 @@ public class CacheServiceImpl implements CacheService{
     
     private static final Integer CACHE_PARAMETRO_EXPEDIENTE_TEMA = 30;
     
-    //private static final Integer CACHE_PARAMETRO_EXPEDIENTE_SUBTEMA = 40;
-    
     private static final Integer CACHE_PARAMETRO_EXPEDIENTE_TIPO_ACTOR = 50;
     
     private static final Integer CACHE_PARAMETRO_ETIQUETA = 60;
@@ -64,6 +62,8 @@ public class CacheServiceImpl implements CacheService{
     private static final Integer CACHE_PARAMETRO_LISTA_ONP_SUB_ORIGEN = 200;
     
     private static final Integer CACHE_PARAMETRO_LISTA_ONP_TIPO_SOLICITUD = 210;
+    
+    private static final Integer CACHE_PARAMETRO_LISTA_LENGUA_MATERNA = 220;
     
 
     private volatile HashMap<Integer, Object> contenedor = null;
@@ -199,6 +199,11 @@ public class CacheServiceImpl implements CacheService{
         return buscarParametro(CACHE_PARAMETRO_LISTA_ONP_TIPO_SOLICITUD, CACHE_PARAMETRO_LISTA_ONP_TIPO_SOLICITUD);
     }
     
+    @Override
+    public List<Parametro> listaLenguaMaterna() {
+        return buscarParametro(CACHE_PARAMETRO_LISTA_LENGUA_MATERNA, CACHE_PARAMETRO_LISTA_LENGUA_MATERNA);
+    }
+    
     private Object getElemento(Integer key) {
         if (this.contenedor == null) {
             return null;
@@ -215,3 +220,5 @@ public class CacheServiceImpl implements CacheService{
     }
 
 }
+
+

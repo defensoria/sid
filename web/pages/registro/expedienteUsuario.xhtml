@@ -120,9 +120,9 @@
                                                                                                 <input type="text" placeholder="Número documento" jsf:value="#{registroController.persona.numeroDocumento}" maxlength="8"/>
                                                                                             </td>
                                                                                             <td style="text-align: left">
-                                                                                                <a class="btn btn-primary" jsf:action="#{registroController.consultarReniec()}">
+                                                                                                <a class="btn btn-primary" jsf:action="#{registroController.consultarReniec()}" jsf:onclick="loadingModal()">
                                                                                                     <span class="glyphicon glyphicon-search" />Reniec
-                                                                                                    <f:ajax render="idPanelTipoPersona" execute="idPanelTipoPersona" />
+                                                                                                    <f:ajax render="idPanelTipoPersona" execute="idPanelTipoPersona" onevent="closeModal"/>
                                                                                                 </a>
                                                                                             </td>
                                                                                         </tr>
@@ -188,17 +188,17 @@
                                                                                         <table style="width:90%">
                                                                                             <tr>
                                                                                                 <td style="width:33%">
-                                                                                                    <h:selectOneMenu value="#{registroController.persona.idDepartamento}">
+                                                                                                    <h:selectOneMenu value="#{registroController.persona.idDepartamento}" onchange="loadingModal()">
                                                                                                         <f:selectItem itemLabel="Departamento" itemValue="0"/>
-                                                                                                        <f:selectItems value="#{listasComunesController.listaDepartamentos(false,false,false)}" var="y" itemLabel="#buscarTipoDocumento(false,false,false){y.nombreParametro}" itemValue="#{y.valorParametro}" />
-                                                                                                        <f:ajax listener="#{registroController.comboProvincia()}" render="idUbigeoPersona" />
+                                                                                                        <f:selectItems value="#{listasComunesController.listaDepartamentos(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
+                                                                                                        <f:ajax listener="#{registroController.comboProvincia()}" render="cmbProvincia1" onevent="closeModal"/>
                                                                                                     </h:selectOneMenu>
                                                                                                 </td>
                                                                                                 <td style="width:33%">
-                                                                                                    <h:selectOneMenu id="cmbProvincia1" value="#{registroController.persona.idProvincia}">
+                                                                                                    <h:selectOneMenu id="cmbProvincia1" value="#{registroController.persona.idProvincia}" onchange="loadingModal()">
                                                                                                         <f:selectItem itemLabel="Provincia" itemValue="0"/>
                                                                                                         <f:selectItems value="#{registroController.listaProvincia}" var="y" itemLabel="#{y.value} #{y.label}" itemValue="#{y.id}" />
-                                                                                                        <f:ajax listener="#{registroController.comboDistrito()}" render="cmbDistrito1"/>
+                                                                                                        <f:ajax listener="#{registroController.comboDistrito()}" render="cmbDistrito1" onevent="closeModal"/>
                                                                                                     </h:selectOneMenu>
                                                                                                 </td>
                                                                                                 <td style="width:34%">
@@ -210,6 +210,21 @@
                                                                                             </tr>
                                                                                         </table>
                                                                                     </h:panelGroup>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr jsf:rendered="#{registroController.persona.tipo == 'PER'}">
+                                                                                <td><b>Lengua materna:</b></td>
+                                                                                <td style="padding-bottom: 10px">
+                                                                                    <h:selectOneMenu value="#{registroController.persona.tipoLengua}" style="width: 50%">
+                                                                                        <f:selectItem itemLabel="Seleccione" itemValue="0"/>
+                                                                                        <f:selectItems value="#{listasComunesController.listaLenguaMaterna(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
+                                                                                    </h:selectOneMenu>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr jsf:rendered="#{registroController.persona.tipo == 'PER'}">
+                                                                                <td><b>Es discapacitado?</b></td>
+                                                                                <td style="padding-bottom: 10px">
+                                                                                    <h:selectBooleanCheckbox value="#{registroController.persona.indicadorDiscapacitado}" />
                                                                                 </td>
                                                                             </tr>
                                                                             <tr>

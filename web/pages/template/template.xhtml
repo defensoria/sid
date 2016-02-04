@@ -14,7 +14,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
         <title>SID</title>
-<link href="/sid/faces/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+        <link href="/sid/faces/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
         <link href="/sid/faces/bootstrap/css/sb-admin-2.css" rel="stylesheet" type="text/css"/>    
         <link href="/sid/faces/bootstrap/css/theme.min.css" rel="stylesheet" type="text/css"/>
         <link href="/sid/faces/bootstrap/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
@@ -34,10 +34,10 @@
         <link rel="stylesheet" href="/sid/faces/bootstrap/css/bootstrap-multiselect.css" type="text/css"/>
         <script type="text/javascript" src="/sid/faces/bootstrap/js/bootstrap-multiselect.js"></script>
         <script type="text/javascript" src="/sid/faces/bootstrap/js/bootstrap-multiselect-collapsible-groups.js"></script>
-        
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.2/raphael-min.js"></script>
-  <script src="/sid/faces/bootstrap/js/morris.min.js"></script>
-  <link rel="stylesheet" href="/sid/faces/bootstrap/css/morris.css"/>
+
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.2/raphael-min.js"></script>
+        <script src="/sid/faces/bootstrap/js/morris.min.js"></script>
+        <link rel="stylesheet" href="/sid/faces/bootstrap/css/morris.css"/>
     </h:head>
 
     <style>
@@ -48,7 +48,7 @@
         a:hover {
             cursor: pointer
         }
-        
+
         .disabled-form{
             background: #EEEEEE; pointer-events:none;
         }
@@ -221,39 +221,39 @@
                             </table>
                         </td>
 
-                        <td  style="width: 25%">
-                            <table>
-                                        <tr>
-                                            <td>
-                                                <h:selectOneMenu value="#{busquedaController.expediente.anhoBusqueda}">
-                                                    <f:selectItem itemLabel="Seleccione" itemValue="" />
-                                                    <f:selectItem itemLabel="2015" itemValue="2015" />
-                                                    <f:selectItem itemLabel="2016" itemValue="2016" />
-                                                </h:selectOneMenu>
-                                            </td>
-                                            <td>
-                                                <h:selectOneMenu value="#{busquedaController.expediente.ODBusqueda}">
-                                                    <f:selectItem itemLabel="Seleccione" itemValue="" />
-                                                    <f:selectItems value="#{listasComunesController.buscarListaADOD(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
-                                                </h:selectOneMenu>
-                                            </td>
-                                            <td>
-                                                <div class="content">
-                                <div id="idDivRegistro" class="form-group has-feedback" style="width: 100%">
-                                    
-                                    <input type="text" jsf:value="#{busquedaController.expediente.observacion}" class="form-control input-sm"  placeholder="Buscar"/>
+                        <td  style="width: 40%">
+                            <table style="width: 100%">
+                                <tr>
+                                    <td style="width: 22%">
+                                        <h:selectOneMenu value="#{busquedaController.expediente.anhoBusqueda}">
+                                            <f:selectItem itemLabel="Seleccione" itemValue="" />
+                                            <f:selectItem itemLabel="2015" itemValue="2015" />
+                                            <f:selectItem itemLabel="2016" itemValue="2016" />
+                                        </h:selectOneMenu>
+                                    </td>
+                                    <td>
+                                        <h:selectOneMenu value="#{busquedaController.expediente.ODBusqueda}">
+                                            <f:selectItem itemLabel="Seleccione" itemValue="" />
+                                            <f:selectItems value="#{listasComunesController.buscarListaADOD(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
+                                        </h:selectOneMenu>
+                                    </td>
+                                    <td>
+                                        <div class="content">
+                                            <div id="idDivRegistro" class="form-group has-feedback" style="width: 100%">
 
-                                    <a style="margin: auto" jsf:action="#{busquedaController.listarExpedientesPaginado(1)}" >
-                                        <span style="font-size: medium; top: 0px" class="glyphicon glyphicon-search form-control-feedback"/>
+                                                <input type="text" jsf:value="#{busquedaController.expediente.observacion}" class="form-control input-sm"  placeholder="Buscar"/>
 
-                                    </a>
-                                </div>
+                                                <a style="margin: auto" jsf:action="#{busquedaController.listarExpedientesPaginado(1)}" >
+                                                    <span style="font-size: medium; top: 0px" class="glyphicon glyphicon-search form-control-feedback"/>
 
-                            </div>
-                                            </td>
-                                        </tr>
-                                    </table>
-                            
+                                                </a>
+                                            </div>
+
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+
                         </td>
                         <td style="width: 47%">
 
@@ -472,13 +472,13 @@
 
         </section>
         <!-- /#wrapper -->
-        
-        
-        
-        
-        
-        
-        
+
+
+
+
+
+
+
         <div class="modal js-loading-bar" data-toggle="modal" id="loadModal" tabindex="-1" role="dialog" aria-labelledby="loadModal"> style="vertical-align: central"  aria-hidden="true">
             <br/><br/><br/><br/><br/>
             <center>
@@ -525,17 +525,17 @@
 
                 return /\d/.test(String.fromCharCode(keynum));
             }
-            
-            $('.datepicker').datetimepicker({
-                    pickTime: false
-                });
-                $(".datepicker").on("changeDate", function (ev) {
-                    $(this).datetimepicker("hide");
-                });
 
-                $('.timepicker').datetimepicker({
-                    pickDate: false
-                });
+            $('.datepicker').datetimepicker({
+                pickTime: false
+            });
+            $(".datepicker").on("changeDate", function (ev) {
+                $(this).datetimepicker("hide");
+            });
+
+            $('.timepicker').datetimepicker({
+                pickDate: false
+            });
         </script>
 
         <script language="javascript">
@@ -548,6 +548,6 @@
                 window.location = '#{facesContext.externalContext.requestContextPath}/cerrarSesion.jsp';
             }
         </script>
-      
+
     </body>
 </html>
