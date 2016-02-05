@@ -2186,11 +2186,21 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         Persona p = personaService.personaBusquedaOne(ep.getPersona().getId());
         ep.setPersona(p);
         setExpedientepersonaModalEdit(ep);
-        if (StringUtils.isNotBlank(ep.getIdDepartamento()) && StringUtils.equals(ep.getIdDepartamento(), "0")) {
-            comboProvinciaId(ep.getIdDepartamento());
+        expedientepersonaModalEdit.setDireccion(expedientepersonaModalEdit.getPersona().getDireccion());
+        expedientepersonaModalEdit.setIdDepartamento(expedientepersonaModalEdit.getPersona().getIdDepartamento());
+        expedientepersonaModalEdit.setIdProvincia(expedientepersonaModalEdit.getPersona().getIdProvincia());
+        expedientepersonaModalEdit.setIdDistrito(expedientepersonaModalEdit.getPersona().getIdDistrito());
+        expedientepersonaModalEdit.setTelefono1(expedientepersonaModalEdit.getPersona().getTelefono1());
+        expedientepersonaModalEdit.setTelefono2(expedientepersonaModalEdit.getPersona().getTelefono2());
+        expedientepersonaModalEdit.setEmail(expedientepersonaModalEdit.getPersona().getEmail());
+        expedientepersonaModalEdit.setTipoLengua(expedientepersonaModalEdit.getPersona().getTipoLengua());
+        expedientepersonaModalEdit.setIndicadorDiscapacitado(expedientepersonaModalEdit.getPersona().getIndicadorDiscapacitado());
+        expedientepersonaModalEdit.setTipoPueblo(expedientepersonaModalEdit.getPersona().getTipoPueblo());        
+        if (StringUtils.isNotBlank(expedientepersonaModalEdit.getIdDepartamento()) && !StringUtils.equals(expedientepersonaModalEdit.getIdDepartamento(), "0")) {
+            comboProvinciaId(expedientepersonaModalEdit.getIdDepartamento());
         }
-        if (StringUtils.isNotBlank(ep.getIdProvincia()) && StringUtils.equals(ep.getIdProvincia(), "0")) {
-            comboDistritoId(ep.getIdProvincia(), ep.getIdDepartamento());
+        if (StringUtils.isNotBlank(ep.getIdProvincia()) && !StringUtils.equals(expedientepersonaModalEdit.getIdProvincia(), "0")) {
+            comboDistritoId(expedientepersonaModalEdit.getIdProvincia(), expedientepersonaModalEdit.getIdDepartamento());
         }
         return true;
     }
@@ -2205,6 +2215,9 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         expedientepersonaModalEdit.getPersona().setIdProvincia(expedientepersonaModalEdit.getIdProvincia());
         expedientepersonaModalEdit.getPersona().setIdDistrito(expedientepersonaModalEdit.getIdDistrito());
         expedientepersonaModalEdit.getPersona().setContacto(expedientepersonaModalEdit.getContacto());
+        expedientepersonaModalEdit.getPersona().setIndicadorDiscapacitado(expedientepersonaModalEdit.getIndicadorDiscapacitado());
+        expedientepersonaModalEdit.getPersona().setTipoLengua(expedientepersonaModalEdit.getTipoLengua());
+        expedientepersonaModalEdit.getPersona().setTipoPueblo(expedientepersonaModalEdit.getTipoPueblo());
         personaService.personaUpdate(expedientepersonaModalEdit.getPersona());
         expedientePersonaService.expedienteDatosPersonaUpdate(expedientepersonaModalEdit);
         if (StringUtils.equals(expedientepersonaModalEdit.getPersona().getTipo(), "PER")) {
@@ -2214,6 +2227,8 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         }
         return true;
     }
+    
+    
 
     public void removePersona(ExpedientePersona ep) {
         personasSeleccionadas.remove(ep);

@@ -59,4 +59,6 @@ public interface CacheService {
     
     public List<Parametro> listaLenguaMaterna();
     
+    public List<Parametro> listaPuebloIndigena();
+    
 }

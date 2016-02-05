@@ -47,7 +47,7 @@
                                                         <td colspan="2" style="padding-bottom: 5px">
                                                             <a class="btn btn-primary" jsf:action="#{registroController.buscarPersonaGeneral(1)}" jsf:onclick="loadingModal()">
                                                                 <span class="glyphicon glyphicon-search" />Buscar
-                                                                <f:ajax render="idPanelListaPersonas" execute="@form" onevent="closeModal"/>
+
                                                             </a>
                                                         </td>
                                                     </tr>
@@ -218,6 +218,15 @@
                                                                                     <h:selectOneMenu value="#{registroController.persona.tipoLengua}" style="width: 50%">
                                                                                         <f:selectItem itemLabel="Seleccione" itemValue="0"/>
                                                                                         <f:selectItems value="#{listasComunesController.listaLenguaMaterna(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
+                                                                                    </h:selectOneMenu>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td style="padding-top: 10px"><b>Pueblo indígena u originarios:</b></td>
+                                                                                <td style="padding-bottom: 10px; padding-top: 10px" colspan="2">
+                                                                                    <h:selectOneMenu value="#{registroController.persona.tipoPueblo}" style="width: 50%">
+                                                                                        <f:selectItem itemLabel="Seleccione" itemValue="0"/>
+                                                                                        <f:selectItems value="#{listasComunesController.listaPuebloIndigena(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
                                                                                     </h:selectOneMenu>
                                                                                 </td>
                                                                             </tr>

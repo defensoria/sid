@@ -13,6 +13,8 @@ import java.io.Serializable;
  */
 public class ExpedientePersona implements Serializable{
     
+    private Long id;
+    
     private Expediente expediente;
     
     private Persona persona;
@@ -46,6 +48,8 @@ public class ExpedientePersona implements Serializable{
     private String tipoLengua;
     
     private Boolean indicadorDiscapacitado;
+    
+    private String tipoPueblo;
 
     public ExpedientePersona(Expediente expediente, Persona persona) {
         this.expediente = expediente;
@@ -190,7 +194,22 @@ public class ExpedientePersona implements Serializable{
     public void setIndicadorDiscapacitado(Boolean indicadorDiscapacitado) {
         this.indicadorDiscapacitado = indicadorDiscapacitado;
     }
-    
-    
+
+    public String getTipoPueblo() {
+        return tipoPueblo;
+    }
+
+    public void setTipoPueblo(String tipoPueblo) {
+        this.tipoPueblo = tipoPueblo;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     
 }

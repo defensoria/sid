@@ -157,6 +157,10 @@ public class ListasComunesController {
         return insertarValoresDefectoParametro(cacheService.listaLenguaMaterna(), insertarTODOS, insertarNINGUNO, insertarSELECCIONE);
     }
     
+    public List<Parametro> listaPuebloIndigena(boolean insertarTODOS, boolean insertarNINGUNO, boolean insertarSELECCIONE) {
+        return insertarValoresDefectoParametro(cacheService.listaPuebloIndigena(), insertarTODOS, insertarNINGUNO, insertarSELECCIONE);
+    }
+    
 
     private List insertarValoresDefectoParametro(List lst, boolean insertarTODOS, boolean insertarNINGUNO, boolean insertarSELECCIONE) {
         if (insertarTODOS) {

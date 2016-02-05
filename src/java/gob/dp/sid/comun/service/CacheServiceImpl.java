@@ -65,6 +65,8 @@ public class CacheServiceImpl implements CacheService{
     
     private static final Integer CACHE_PARAMETRO_LISTA_LENGUA_MATERNA = 220;
     
+    private static final Integer CACHE_PARAMETRO_LISTA_PUEBLO_INDIGENA = 230;
+    
 
     private volatile HashMap<Integer, Object> contenedor = null;
 
@@ -204,6 +206,11 @@ public class CacheServiceImpl implements CacheService{
         return buscarParametro(CACHE_PARAMETRO_LISTA_LENGUA_MATERNA, CACHE_PARAMETRO_LISTA_LENGUA_MATERNA);
     }
     
+    @Override
+    public List<Parametro> listaPuebloIndigena() {
+        return buscarParametro(CACHE_PARAMETRO_LISTA_PUEBLO_INDIGENA, CACHE_PARAMETRO_LISTA_PUEBLO_INDIGENA);
+    }
+    
     private Object getElemento(Integer key) {
         if (this.contenedor == null) {
             return null;
@@ -218,7 +225,6 @@ public class CacheServiceImpl implements CacheService{
         this.contenedor.put(key, objeto);
         notifyAll();
     }
-
 }
 
 

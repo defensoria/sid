@@ -3,6 +3,7 @@
 <mapper namespace="gob.dp.sid.registro.dao.ExpedientePersonaDAO">
     
     <resultMap id="expedientePersonaMap" type="expedientePersona">
+        <id property="id" column="N_IDEXPEDPERSONA" />
         <result property="expediente.id" column="N_IDEXPEDIENTE"/>
         <result property="persona.id" column="N_IDPERSONA"/>
         <result property="tipo" column="C_TIPO"/>
@@ -22,7 +23,7 @@
         <result property="contacto" column="C_CONTACTO"/>
         <result property="tipoLengua" column="C_TIPOLENGUA"/>
         <result property="indicadorDiscapacitado" column="C_INDDISCAPACITADO"/>
-        
+        <result property="tipoPueblo" column="C_TIPOPUEBLO"/>
     </resultMap> 
     
     
@@ -65,8 +66,12 @@
         <if test="indicadorDiscapacitado != null">
             C_INDDISCAPACITADO,
         </if>
+        <if test="tipoPueblo != null">
+            C_TIPOPUEBLO,
+        </if>
         N_IDEXPEDIENTE,
-        N_IDPERSONA
+        N_IDPERSONA,
+        N_IDEXPEDPERSONA
         )
         VALUES 
         (
@@ -106,9 +111,16 @@
         <if test="indicadorDiscapacitado != null">
             #{indicadorDiscapacitado},
         </if>
+        <if test="tipoPueblo != null">
+            #{tipoPueblo},
+        </if>
         #{expediente.id},
-        #{persona.id}
+        #{persona.id},
+        SEQ_SID_REG_EXPEDE_PERSONA.NextVal
         )
+        <selectKey keyProperty="id" resultType="Long">
+            SELECT SEQ_SID_REG_EXPEDE_PERSONA.CURRVAL FROM DUAL
+        </selectKey>
     </insert>
     
     
@@ -119,8 +131,7 @@
             N_INDRESERVA = #{indicadorReserva}
         </set>
         <where>
-            N_IDPERSONA = #{persona.id} AND
-            N_IDEXPEDIENTE= #{expediente.id}
+            N_IDEXPEDPERSONA = #{id}
         </where>
     </update>
     
@@ -154,25 +165,25 @@
         <if test="direccion != null">
             C_DIRECCION = #{direccion},
         </if>
+        <if test="tipoPueblo != null">
+            C_TIPOPUEBLO = #{tipoPueblo},
+        </if>
             C_INDDISCAPACITADO = #{indicadorDiscapacitado}
         </set>
         <where>
-            N_IDPERSONA = #{persona.id} AND
-            N_IDEXPEDIENTE= #{expediente.id}
+            N_IDEXPEDPERSONA = #{id}
         </where>
     </update>
     
     <delete id="expedientePersonaDelete" parameterType="expedientePersona">
         delete SID_REG_EXPEDE_PERSONA WHERE
-        N_IDPERSONA = #{persona.id} AND
-        N_IDEXPEDIENTE= #{expediente.id}
+        N_IDEXPEDPERSONA = #{id}
     </delete>
     
     <select id="expedientePersonaContar" parameterType="expedientePersona" resultType="java.lang.Integer" >
         select count(*) from SID_REG_EXPEDE_PERSONA
         WHERE
-        N_IDPERSONA = #{persona.id} AND
-        N_IDEXPEDIENTE= #{expediente.id}
+        N_IDEXPEDPERSONA = #{id}
     </select>
     
     <select id="expedientePersonaBuscarXExpediente" resultMap="expedientePersonaMap"  parameterType="long">

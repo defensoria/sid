@@ -26,7 +26,7 @@
         <result property="contacto" column="C_CONTACTO"/>
         <result property="tipoLengua" column="C_TIPOLENGUA"/>
         <result property="indicadorDiscapacitado" column="C_INDDISCAPACITADO"/>
-           
+        <result property="tipoPueblo" column="C_TIPOPUEBLO"/>   
     </resultMap> 
     
     
@@ -102,6 +102,10 @@
         <if test="indicadorDiscapacitado != null">
             C_INDDISCAPACITADO,
         </if>
+        <if test="tipoPueblo != null">
+            C_TIPOPUEBLO,
+        </if>
+        
         N_IDPERSONA
         )
         VALUES 
@@ -175,6 +179,9 @@
         <if test="indicadorDiscapacitado != null">
             #{indicadorDiscapacitado},
         </if>
+        <if test="tipoPueblo != null">
+            #{tipoPueblo},
+        </if>
         SEQ_SID_REG_PERSONA.NextVal
         )
         <selectKey keyProperty="id" resultType="Long">
@@ -241,11 +248,14 @@
                 C_CONTACTO = #{contacto},
             </if>
             <if test="tipoLengua != null">
-            C_TIPOLENGUA = #{tipoLengua},
-        </if>
-        <if test="indicadorDiscapacitado != null">
-            C_INDDISCAPACITADO = #{indicadorDiscapacitado},
-        </if>
+                C_TIPOLENGUA = #{tipoLengua},
+            </if>
+            <if test="indicadorDiscapacitado != null">
+                C_INDDISCAPACITADO = #{indicadorDiscapacitado},
+            </if>
+            <if test="tipoPueblo != null">
+                C_TIPOPUEBLO = #{tipoPueblo},
+            </if>
             C_NOMBRE = #{nombre}
         </set>
         <where>

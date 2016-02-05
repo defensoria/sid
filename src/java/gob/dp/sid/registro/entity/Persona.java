@@ -61,6 +61,8 @@ public class Persona implements Serializable{
     private String tipoLengua;
     
     private Boolean indicadorDiscapacitado;
+    
+    private String tipoPueblo;
     /*temporales*/
     private String numeroExpediente;
     
@@ -77,6 +79,13 @@ public class Persona implements Serializable{
     private Long fin;
     
     private String cadenaPersona;
+
+    public Persona() {
+    }
+
+    public Persona(Long id) {
+        this.id = id;
+    }
 
     public Long getId() {
         return id;
@@ -333,6 +342,13 @@ public class Persona implements Serializable{
     public void setIndicadorDiscapacitado(Boolean indicadorDiscapacitado) {
         this.indicadorDiscapacitado = indicadorDiscapacitado;
     }
-    
+
+    public String getTipoPueblo() {
+        return tipoPueblo;
+    }
+
+    public void setTipoPueblo(String tipoPueblo) {
+        this.tipoPueblo = tipoPueblo;
+    }
     
 }
