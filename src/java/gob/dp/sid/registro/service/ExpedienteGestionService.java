@@ -28,4 +28,6 @@ public interface ExpedienteGestionService {
     
     public ExpedienteGestion expedienteGestionPorONP(String codigoONP);
     
+    public ExpedienteGestion expedienteGestionPorONPUltimo(String numeroExpediente);
+    
 }

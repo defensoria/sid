@@ -390,7 +390,19 @@
         AND C.PADRE_PARAMETRO = 70 
         LEFT JOIN SID_REG_ENTIDAD D ON A.N_IDENTIDAD = D.N_ID_ENTIDAD
         WHERE B.C_NUMEROEXPEDIENTE = #{value}
+        ORDER BY A.N_ID_GESTION
     </select>
+    
+    
+    <select id="expedienteGestionPorONPUltimo" resultMap="expedienteGestionMap" parameterType="String" >
+        SELECT C.* FROM (
+SELECT A.* FROM SID_REG_GESTION A 
+INNER JOIN SID_REG_GESTION_ETAPA B ON A.N_ID_GESTION = B.N_ID_GESTION
+WHERE C_CODIGOONP IS NOT NULL AND B.C_NUMEROEXPEDIENTE = #{value}
+ORDER BY A.N_ID_GESTION DESC
+) C WHERE ROWNUM = 1
+    </select>
+    
     
     
 </mapper>

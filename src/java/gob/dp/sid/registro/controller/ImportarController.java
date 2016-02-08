@@ -12,9 +12,11 @@ import gob.dp.sid.comun.type.ExpedienteType;
 import gob.dp.sid.registro.entity.EtapaEstado;
 import gob.dp.sid.registro.entity.Expediente;
 import gob.dp.sid.registro.entity.ExpedienteGestion;
+import gob.dp.sid.registro.entity.ExpedienteONP;
 import gob.dp.sid.registro.entity.GestionEtapa;
 import gob.dp.sid.registro.service.EtapaEstadoService;
 import gob.dp.sid.registro.service.ExpedienteGestionService;
+import gob.dp.sid.registro.service.ExpedienteONPService;
 import gob.dp.sid.registro.service.ExpedienteService;
 import gob.dp.sid.registro.service.GestionEtapaService;
 import java.io.File;
@@ -70,6 +72,9 @@ public class ImportarController extends AbstractManagedBean implements Serializa
 
     @Autowired
     private GestionEtapaService gestionEtapaService;
+    
+    @Autowired
+    private ExpedienteONPService expedienteONPService;
 
     public String cargarPagina() {
         listaGestionesONP = new ArrayList<>();
@@ -176,7 +181,7 @@ public class ImportarController extends AbstractManagedBean implements Serializa
             try {
                 if (StringUtils.equals(eg.getValidaExpediente(), "SI")) {
                     if (eg.getVerEtapa() > 0) {
-                        if (StringUtils.equals(eg.getExisteGestion(), "NO")) {
+                        //if (StringUtils.equals(eg.getExisteGestion(), "NO")) {
                             DateFormat format = new SimpleDateFormat("yyMMddHHmmss");
                             DateFormat format2 = new SimpleDateFormat("dd/MM/yyyy");
                             String formato = format.format(new Date());
@@ -185,11 +190,21 @@ public class ImportarController extends AbstractManagedBean implements Serializa
                                     + "intercambio de información con ONP vía google apps");
                             eg.setCodigoGestion("GES" + i + formato);
                             eg.setFechaRegistro(new Date());
-                            eg.setFecha(eg.getFechaONP());
-                            eg.setFechaRespuesta(eg.getFechaONP());
+                            eg.setFecha(new Date());
+                            eg.setFechaRespuesta(new Date());
                             eg.setDetalleRespuesta("El expediente se encuentra en "+eg.getDestinoONP()+" desde la fecha "+format2.format(eg.getFechaONP()));
-                            eg.setTipoCalidad("01");
                             eg.setTipo("02");
+                            eg.setRespuesta("SI");
+                            ExpedienteGestion eg1 = expedienteGestionService.expedienteGestionPorONPUltimo(eg.getNumeroExpediente());
+                            if(eg1 != null){
+                                if(!StringUtils.equals(eg.getFechaONP().toString(), eg1.getFechaONP().toString()) && !StringUtils.equals(eg.getDestinoONP(), eg1.getDestinoONP())){
+                                eg.setTipoCalidad("01");
+                            }else{
+                                eg.setTipoCalidad("02");
+                                }
+                            }else{
+                                eg.setTipoCalidad("02");
+                            }
                             expedienteGestionService.expedienteGestionInsertar(eg);
                             GestionEtapa ge = new GestionEtapa();
                             ge.setIdEtapa(eg.getVerEtapa());
@@ -197,7 +212,8 @@ public class ImportarController extends AbstractManagedBean implements Serializa
                             ge.setIdGestion(eg.getId());
                             ge.setNumeroExpediente(eg.getNumeroExpediente());
                             gestionEtapaService.gestionEtapaInsertar(ge);
-                        } else {
+                            cargarExpedienteONP(eg);
+                        /*} else {
                             ExpedienteGestion eg1 = expedienteGestionService.expedienteGestionPorONP(eg.getCodigoONP());
                             if(StringUtils.equals(eg.getFechaONP().toString(), eg1.getFechaONP().toString()) && StringUtils.equals(eg.getDestinoONP(), eg1.getDestinoONP())){
                                 eg1.setTipoCalidad("02");
@@ -208,7 +224,7 @@ public class ImportarController extends AbstractManagedBean implements Serializa
                             }
                             eg1.setCodigoONP(null);
                             expedienteGestionService.expedienteGestionUpdate(eg1);
-                        }
+                        }*/
                     }else{
                         egs.add(eg);
                     }
@@ -223,6 +239,27 @@ public class ImportarController extends AbstractManagedBean implements Serializa
         msg.messageInfo("Se cargaron las gestiones", null);
         listaGestionesONP = new ArrayList<>();
         listaGestionesONP = egs;
+    }
+    
+    private void cargarExpedienteONP(ExpedienteGestion eg){
+        ExpedienteONP eonp;
+        eonp = expedienteONPService.expedienteONPBuscarExpediente(eg.getNumeroExpediente());
+        if(eonp == null){
+            eonp = new ExpedienteONP();
+        eonp.setNumeroExpediente(eg.getNumeroExpediente());
+        eonp.setCodigoExpedienteONP(eg.getCodigoONP());
+        eonp.setFechaONP(new Date());
+        eonp.setFechaRegistro(new Date());
+        eonp.setIndiceConcluidoONP(true);
+        eonp.setIndiceEnvidadoONP(true);
+        eonp.setTipoSubOrigen("01");
+        expedienteONPService.expedienteONPInsertar(eonp);
+        }else{
+            eonp.setCodigoExpedienteONP(eg.getCodigoONP());
+        eonp.setFechaONP(new Date());
+        eonp.setFechaRegistro(new Date());
+        expedienteONPService.expedienteONPUpdate(eonp);
+        }
     }
 
     private Integer inicializarEtapaEstado(Expediente expediente) {

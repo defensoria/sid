@@ -37,8 +37,38 @@ public class BandejaServiceImpl implements BandejaService{
     }
 
     @Override
-    public List<Bandeja> bandejaBuscarUsuarioPendientes(String destinatario) {
-        return bandejaDAO.bandejaBuscarUsuarioPendientes(destinatario);
+    public List<Bandeja> bandejaBuscarUsuarioPendientesInternos(String destinatario) {
+        return bandejaDAO.bandejaBuscarUsuarioPendientesInternos(destinatario);
+    }
+
+    @Override
+    public List<Bandeja> bandejaBuscarUsuarioPendientesAutomaticos(String destinatario) {
+        return bandejaDAO.bandejaBuscarUsuarioPendientesAutomaticos(destinatario);
+    }
+
+    @Override
+    public List<Bandeja> bandejaBuscarUsuarioInternos(String destinatario) {
+        return bandejaDAO.bandejaBuscarUsuarioInternos(destinatario);
+    }
+
+    @Override
+    public List<Bandeja> bandejaBuscarUsuarioAutomaticos(String destinatario) {
+        return bandejaDAO.bandejaBuscarUsuarioAutomaticos(destinatario);
+    }
+
+    @Override
+    public void mensajeInactivar(Long id) {
+        bandejaDAO.mensajeInactivar(id);
+    }
+
+    @Override
+    public List<Bandeja> bandejaBuscarUsuarioPendientesProgramados(String destinatario) {
+        return bandejaDAO.bandejaBuscarUsuarioPendientesProgramados(destinatario);
+    }
+
+    @Override
+    public List<Bandeja> bandejaBuscarUsuarioProgramados(String destinatario) {
+        return bandejaDAO.bandejaBuscarUsuarioProgramados(destinatario);
     }
     
 }

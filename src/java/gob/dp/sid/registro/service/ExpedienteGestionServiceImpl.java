@@ -55,5 +55,10 @@ public class ExpedienteGestionServiceImpl implements ExpedienteGestionService{
     public ExpedienteGestion expedienteGestionPorONP(String codigoONP) {
         return expedienteGestionDAO.expedienteGestionPorONP(codigoONP);
     }
+
+    @Override
+    public ExpedienteGestion expedienteGestionPorONPUltimo(String numeroExpediente) {
+        return expedienteGestionDAO.expedienteGestionPorONPUltimo(numeroExpediente);
+    }
     
 }

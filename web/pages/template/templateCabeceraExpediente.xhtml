@@ -112,16 +112,16 @@
                                                                 <table style="width: 80%">
                                                                     <tr>
                                                                         <td style="width: 25%">
-                                                                            <h:outputText rendered="#{registroController.etapaEstado.verEtapa == 1}" style="color: #878787" value="Quedan 4 días para culminar la etapa de Calificación"/>
+                                                                            <h:outputText rendered="#{registroController.etapaEstado.verEtapa == 1}" style="color: #878787" value="Quedan #{registroController.expedienteTiempo.diasRestante} días para culminar la etapa de Calificación"/>
                                                                         </td>
                                                                         <td style="width: 25%">
-                                                                            <h:outputText rendered="#{registroController.etapaEstado.verEtapa == 2}" style="color: #878787" value="Quedan 80 días para culminar la etapa de Investigación"/>
+                                                                            <h:outputText rendered="#{registroController.etapaEstado.verEtapa == 2}" style="color: #878787" value="Quedan #{registroController.expedienteTiempo.diasRestante} días para culminar la etapa de Investigación"/>
                                                                         </td>
                                                                         <td style="width: 25%">
-                                                                            <h:outputText rendered="#{registroController.etapaEstado.verEtapa == 3}" style="color: #878787" value="Quedan 40 días para culminar la etapa de Persuasión"/>
+                                                                            <h:outputText rendered="#{registroController.etapaEstado.verEtapa == 3}" style="color: #878787" value="Quedan #{registroController.expedienteTiempo.diasRestante} días para culminar la etapa de Persuasión"/>
                                                                         </td>
                                                                         <td style="width: 25%">
-                                                                            <h:outputText rendered="#{registroController.etapaEstado.verEtapa == 4}" style="color: #878787" value="Quedan 60 días para culminar la etapa de Seguimiento"/>
+                                                                            <h:outputText rendered="#{registroController.etapaEstado.verEtapa == 4}" style="color: #878787" value="Quedan #{registroController.expedienteTiempo.diasRestante} días para culminar la etapa de Seguimiento"/>
                                                                         </td>
                                                                     </tr>
                                                                 </table>
@@ -178,13 +178,13 @@
                                                                 <table style="width: 80%">
                                                                     <tr>
                                                                         <td style="width: 33%">
-                                                                            <h:outputText rendered="#{registroController.etapaEstado.verEtapa == 5}" style="color: #878787" value="Quedan 4 días para culminar la etapa de Calificación"/>
+                                                                            <h:outputText rendered="#{registroController.etapaEstado.verEtapa == 5}" style="color: #878787" value="Quedan #{registroController.expedienteTiempo.diasRestante} días para culminar la etapa de Calificación"/>
                                                                         </td>
                                                                         <td style="width: 33%">
-                                                                            <h:outputText rendered="#{registroController.etapaEstado.verEtapa == 6}" style="color: #878787" value="Quedan 30 días para culminar la etapa de Gestión"/>
+                                                                            <h:outputText rendered="#{registroController.etapaEstado.verEtapa == 6}" style="color: #878787" value="Quedan #{registroController.expedienteTiempo.diasRestante} días para culminar la etapa de Gestión"/>
                                                                         </td>
                                                                         <td style="width: 33%">
-                                                                            <h:outputText rendered="#{registroController.etapaEstado.verEtapa == 7}" style="color: #878787" value="Quedan 30 días para culminar la etapa de Persuasión"/>
+                                                                            <h:outputText rendered="#{registroController.etapaEstado.verEtapa == 7}" style="color: #878787" value="Quedan #{registroController.expedienteTiempo.diasRestante} días para culminar la etapa de Persuasión"/>
                                                                         </td>
                                                                     </tr>
                                                                 </table>
@@ -209,46 +209,37 @@
                                                                             <td style="padding-right: 10px; width: 70%;">
                                                                                 <h:selectOneRadio rendered="#{registroController.etapaEstado.verEtapa == 1}"  value="#{registroController.expediente.estadoCalificacion}">
                                                                                     <f:selectItems value="#{registroController.listaEstadoCalificacionQueja}"  />
-                                                                                    <f:ajax render="idPanelEstado" execute="@form"/>
                                                                                 </h:selectOneRadio>
 
                                                                                 <h:selectOneRadio rendered="#{registroController.etapaEstado.verEtapa == 2}"  value="#{registroController.expediente.estadoInvestigacion}">
                                                                                     <f:selectItems value="#{registroController.listaEstadoInvestigacionQueja}"  />
-                                                                                    <f:ajax render="idPanelEstado" execute="@form"/>
                                                                                 </h:selectOneRadio>
 
                                                                                 <h:selectOneRadio rendered="#{registroController.etapaEstado.verEtapa == 3}"  value="#{registroController.expediente.estadoPersuacion}">
                                                                                     <f:selectItems value="#{registroController.listaEstadoPersuacionQueja}"  />
-                                                                                    <f:ajax render="idPanelEstado" execute="@form"/>
                                                                                 </h:selectOneRadio>
 
                                                                                 <h:selectOneRadio rendered="#{registroController.etapaEstado.verEtapa == 4}"  value="#{registroController.expediente.estadoSeguimiento}">
                                                                                     <f:selectItems value="#{registroController.listaEstadoSeguimientoQueja}"  />
-                                                                                    <f:ajax render="idPanelEstado" execute="@form"/>
                                                                                 </h:selectOneRadio>
+                                                                                
                                                                                 <h:selectOneRadio rendered="#{registroController.etapaEstado.verEtapa == 5}"  value="#{registroController.expediente.estadoCalificacion}">
                                                                                     <f:selectItems value="#{registroController.listaEstadoCalificacionPetitorio}"  />
-                                                                                    <f:ajax render="idPanelEstado" execute="@form"/>
                                                                                 </h:selectOneRadio>
 
                                                                                 <h:selectOneRadio rendered="#{registroController.etapaEstado.verEtapa == 6}"  value="#{registroController.expediente.estadoGestion}">
                                                                                     <f:selectItems value="#{registroController.listaEstadoGestionPetitorio}"  />
-                                                                                    <f:ajax render="idPanelEstado" execute="@form"/>
                                                                                 </h:selectOneRadio>            
 
                                                                                 <h:selectOneRadio rendered="#{registroController.etapaEstado.verEtapa == 7}"  value="#{registroController.expediente.estadoPersuacion}">
                                                                                     <f:selectItems value="#{registroController.listaEstadoPersuacionPetitorio}"  />
-                                                                                    <f:ajax render="idPanelEstado" execute="@form"/>
                                                                                 </h:selectOneRadio>            
 
 
 
                                                                             </td>
                                                                             <td style="vertical-align: top">
-                                                                                <textarea rows="3" jsf:rendered="#{registroController.expediente.estadoCalificacion != null and registroController.etapaEstado.verEtapa == 1}" style="width: 100%" placeholder="Justificación"/>
-                                                                                <textarea rows="3" jsf:rendered="#{registroController.expediente.estadoInvestigacion != null and registroController.etapaEstado.verEtapa == 2}" style="width: 100%" placeholder="Justificación"/>
-                                                                                <textarea rows="3" jsf:rendered="#{registroController.expediente.estadoPersuacion != null and registroController.etapaEstado.verEtapa == 3}" style="width: 100%" placeholder="Justificación"/>
-                                                                                <textarea rows="3" jsf:rendered="#{registroController.expediente.estadoSeguimiento != null and registroController.etapaEstado.verEtapa == 4}" style="width: 100%" placeholder="Justificación"/>
+                                                                                
                                                                             </td>
                                                                         </tr>
                                                                     </table>

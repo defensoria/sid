@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD iBatis Mapper 3.0 //EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="gob.dp.sid.registro.dao.ExpedienteTiempoDAO">
+    
+    <resultMap id="expedienteTiempoMap" type="expedienteTiempo">
+        <id property="numeroExpediente" column="C_NUMEROEXPEDIENTE" />
+        <result property="etapa" column="N_ETAPA"/>
+        <result property="diasRestante" column="N_DIASRESTANTE"/>
+        <result property="tipoExpediente" column="C_TIPOEXPEDIENTE"/>
+        <result property="estado" column="C_ESTADO"/>
+        <result property="diasAlerta" column="N_DIASALERTA"/>
+    </resultMap> 
+    
+    
+    <insert id="expedienteTiempoInsertar" parameterType="expedienteTiempo">
+        INSERT INTO SID_REG_EXPEDIENTE_TIEMPO
+        (
+            C_NUMEROEXPEDIENTE,
+            N_ETAPA,
+            N_DIASRESTANTE,
+            C_TIPOEXPEDIENTE,
+            C_ESTADO,
+            N_DIASALERTA
+        )
+        VALUES 
+        (
+            #{numeroExpediente},
+            #{etapa},
+            #{diasRestante},
+            #{tipoExpediente},
+            #{estado},
+            #{diasAlerta}
+        )
+    </insert>
+    
+    
+    <update id="expedienteTiempoUpdate" parameterType="expedienteTiempo">
+        UPDATE SID_REG_EXPEDIENTE_TIEMPO SET
+            N_ETAPA = #{etapa},
+            N_DIASRESTANTE = #{diasRestante},
+            C_TIPOEXPEDIENTE = #{tipoExpediente},
+            C_ESTADO = #{estado},
+            N_DIASALERTA = #{diasAlerta}
+        <where>
+            C_NUMEROEXPEDIENTE = #{numeroExpediente}
+        </where>
+    </update>
+    
+    <select id="expedienteTiempoOne" resultMap="expedienteTiempoMap" parameterType="String" >
+        SELECT * FROM SID_REG_EXPEDIENTE_TIEMPO WHERE C_NUMEROEXPEDIENTE = #{value}
+    </select>
+    
+</mapper>

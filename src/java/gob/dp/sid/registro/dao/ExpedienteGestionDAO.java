@@ -28,4 +28,6 @@ public interface ExpedienteGestionDAO {
     
     public Integer expedienteGestionCountONP(String codigoONP);
     
+    public ExpedienteGestion expedienteGestionPorONPUltimo(String numeroExpediente);
+    
 }

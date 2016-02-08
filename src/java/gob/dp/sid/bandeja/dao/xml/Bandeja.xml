@@ -20,6 +20,8 @@
         <result property="idAccion" column="N_ID_ACCION"/>
         <result property="tituloMensaje" column="C_TITULOMENSAJE"/>
         <result property="codigoConsulta" column="C_CODIGOCONSULTA"/>
+        <result property="tipoMensaje" column="C_TIPOMENSAJE"/>
+        <result property="activo" column="C_ACTIVO"/>
     </resultMap> 
     
     
@@ -74,7 +76,12 @@
         <if test="codigoConsulta != null">
             C_CODIGOCONSULTA,
         </if>
-        
+        <if test="tipoMensaje != null">
+            C_TIPOMENSAJE,
+        </if>
+        <if test="activo != null">
+            C_ACTIVO,
+        </if>
         N_ID_BANDEJA
         )
         VALUES 
@@ -127,6 +134,12 @@
         <if test="codigoConsulta != null">
             #{codigoConsulta},
         </if>
+        <if test="tipoMensaje != null">
+            #{tipoMensaje},
+        </if>
+        <if test="activo != null">
+            #{activo},
+        </if>
         SEQ_SID_MSG_BANDEJA.NextVal
         )
         <selectKey keyProperty="id" resultType="Long">
@@ -144,13 +157,48 @@
         </where>
     </update>
     
+    <update id="mensajeInactivar" parameterType="long">
+        UPDATE SID_MSG_BANDEJA
+        <set>
+            C_ACTIVO = 'I'
+        </set>
+        <where>
+            N_ID_BANDEJA = #{id}
+        </where>
+    </update>
+    
     <select id="bandejaBuscarUsuario" resultMap="bandejaMap" parameterType="String" >
         SELECT * FROM SID_MSG_BANDEJA WHERE C_DESTINATARIO = #{value}
         ORDER BY N_ID_BANDEJA DESC
     </select>
     
-    <select id="bandejaBuscarUsuarioPendientes" resultMap="bandejaMap" parameterType="String" >
-        SELECT * FROM SID_MSG_BANDEJA WHERE C_DESTINATARIO = #{value} AND C_ESTADO = 'PEN'
+    <select id="bandejaBuscarUsuarioPendientesInternos" resultMap="bandejaMap" parameterType="String" >
+        SELECT * FROM SID_MSG_BANDEJA WHERE C_DESTINATARIO = #{value} AND C_ESTADO = 'PEN' AND C_TIPOMENSAJE = 'INT' AND C_ACTIVO = 'A'
+        ORDER BY N_ID_BANDEJA DESC
+    </select>
+    
+    <select id="bandejaBuscarUsuarioPendientesAutomaticos" resultMap="bandejaMap" parameterType="String" >
+        SELECT * FROM SID_MSG_BANDEJA WHERE C_DESTINATARIO = #{value} AND C_ESTADO = 'PEN' AND C_TIPOMENSAJE = 'AUT' AND C_ACTIVO = 'A'
+        ORDER BY N_ID_BANDEJA DESC
+    </select>
+    
+    <select id="bandejaBuscarUsuarioInternos" resultMap="bandejaMap" parameterType="String" >
+        SELECT * FROM SID_MSG_BANDEJA WHERE C_DESTINATARIO = #{value} AND C_TIPOMENSAJE = 'INT' AND C_ACTIVO = 'A'
+        ORDER BY N_ID_BANDEJA DESC
+    </select>
+    
+    <select id="bandejaBuscarUsuarioAutomaticos" resultMap="bandejaMap" parameterType="String" >
+        SELECT * FROM SID_MSG_BANDEJA WHERE C_DESTINATARIO = #{value} AND C_TIPOMENSAJE = 'AUT' AND C_ACTIVO = 'A'
+        ORDER BY N_ID_BANDEJA DESC
+    </select>
+    
+    <select id="bandejaBuscarUsuarioPendientesProgramados" resultMap="bandejaMap" parameterType="String" >
+        SELECT * FROM SID_MSG_BANDEJA WHERE C_DESTINATARIO = #{value} AND C_ESTADO = 'PEN' AND C_TIPOMENSAJE = 'PRO' AND C_ACTIVO = 'A'
+        ORDER BY N_ID_BANDEJA DESC
+    </select>
+    
+    <select id="bandejaBuscarUsuarioProgramados" resultMap="bandejaMap" parameterType="String" >
+        SELECT * FROM SID_MSG_BANDEJA WHERE C_DESTINATARIO = #{value} AND C_TIPOMENSAJE = 'PRO' AND C_ACTIVO = 'A'
         ORDER BY N_ID_BANDEJA DESC
     </select>
     

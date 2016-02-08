@@ -33,8 +33,38 @@ public class BandejaDAOImpl extends SqlSessionDaoSupport implements BandejaDAO{
     }
 
     @Override
-    public List<Bandeja> bandejaBuscarUsuarioPendientes(String destinatario) {
-        return getSqlSession().selectList("gob.dp.sid.bandeja.dao.BandejaDAO.bandejaBuscarUsuarioPendientes", destinatario);
+    public List<Bandeja> bandejaBuscarUsuarioPendientesInternos(String destinatario) {
+        return getSqlSession().selectList("gob.dp.sid.bandeja.dao.BandejaDAO.bandejaBuscarUsuarioPendientesInternos", destinatario);
+    }
+
+    @Override
+    public List<Bandeja> bandejaBuscarUsuarioPendientesAutomaticos(String destinatario) {
+        return getSqlSession().selectList("gob.dp.sid.bandeja.dao.BandejaDAO.bandejaBuscarUsuarioPendientesAutomaticos", destinatario);
+    }
+
+    @Override
+    public List<Bandeja> bandejaBuscarUsuarioInternos(String destinatario) {
+        return getSqlSession().selectList("gob.dp.sid.bandeja.dao.BandejaDAO.bandejaBuscarUsuarioInternos", destinatario);
+    }
+
+    @Override
+    public List<Bandeja> bandejaBuscarUsuarioAutomaticos(String destinatario) {
+        return getSqlSession().selectList("gob.dp.sid.bandeja.dao.BandejaDAO.bandejaBuscarUsuarioAutomaticos", destinatario);
+    }
+
+    @Override
+    public void mensajeInactivar(Long id) {
+        getSqlSession().update("gob.dp.sid.bandeja.dao.BandejaDAO.mensajeInactivar", id);
+    }
+
+    @Override
+    public List<Bandeja> bandejaBuscarUsuarioPendientesProgramados(String destinatario) {
+        return getSqlSession().selectList("gob.dp.sid.bandeja.dao.BandejaDAO.bandejaBuscarUsuarioPendientesProgramados", destinatario);
+    }
+
+    @Override
+    public List<Bandeja> bandejaBuscarUsuarioProgramados(String destinatario) {
+        return getSqlSession().selectList("gob.dp.sid.bandeja.dao.BandejaDAO.bandejaBuscarUsuarioProgramados", destinatario);
     }
     
 }

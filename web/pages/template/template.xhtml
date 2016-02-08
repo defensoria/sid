@@ -263,7 +263,7 @@
                                     <li>
                                         <a href="#" class="dropdown-toggle notification-icon" data-toggle="dropdown">
                                             <i class="fa fa-bell"></i>
-                                            <span class="badge">#{bandejaController.listaMensajesPendientes.size()}</span>
+                                            <span class="badge">#{bandejaController.listaMensajesPendientesInternos.size()}</span>
                                         </a>
 
                                         <div class="dropdown-menu notification-menu">
@@ -273,22 +273,60 @@
 
                                             <div class="content">
                                                 <ul>
-                                                    <span>Tiene #{bandejaController.listaMensajesPendientes.size()} mensajes no atendidos</span>  
+                                                    <span>Tiene #{bandejaController.listaMensajesPendientesInternos.size()} mensajes no atendidos</span>  
                                                 </ul>
                                                 <hr />
 
                                                 <div class="text-right">
-                                                    <a jsf:action="#{bandejaController.cargarBandeja()}" class="view-more"><i class="fa fa-arrow-right"></i> ir a la bandeja</a>
+                                                    <a jsf:action="#{bandejaController.cargarMensajesInternos()}" class="view-more"><i class="fa fa-arrow-right"></i> ir a la bandeja</a>
                                                 </div>
                                             </div>
                                         </div>                            
 
                                     </li>
                                     <li>
-                                        <a href="#" class="dropdown-toggle notification-icon">
+                                        <a href="#" class="dropdown-toggle notification-icon"  data-toggle="dropdown">
                                             <i class="fa fa-rss"></i>
-                                            <span class="badge">3</span>
-                                        </a>                            
+                                            <span class="badge">#{bandejaController.listaMensajesPendientesAutomaticos.size()}</span>
+                                        </a> 
+                                        <div class="dropdown-menu notification-menu">
+                                            <div class="notification-title">
+                                                Mensajes
+                                            </div>
+
+                                            <div class="content">
+                                                <ul>
+                                                    <span>Tiene #{bandejaController.listaMensajesPendientesAutomaticos.size()} mensajes no atendidos</span>  
+                                                </ul>
+                                                <hr />
+
+                                                <div class="text-right">
+                                                    <a jsf:action="#{bandejaController.cargarMensajesAutomaticos()}" class="view-more"><i class="fa fa-arrow-right"></i> ir a la bandeja</a>
+                                                </div>
+                                            </div>
+                                        </div> 
+                                    </li>
+                                    <li>
+                                        <a href="#" class="dropdown-toggle notification-icon"  data-toggle="dropdown">
+                                            <i class="fa fa-cog fa-fw"></i>
+                                            <span class="badge">#{bandejaController.listaMensajesPendientesProgramados.size()}</span>
+                                        </a> 
+                                        <div class="dropdown-menu notification-menu">
+                                            <div class="notification-title">
+                                                Mensajes
+                                            </div>
+
+                                            <div class="content">
+                                                <ul>
+                                                    <span>Tiene #{bandejaController.listaMensajesPendientesProgramados.size()} mensajes no atendidos</span>  
+                                                </ul>
+                                                <hr />
+
+                                                <div class="text-right">
+                                                    <a jsf:action="#{bandejaController.cargarMensajesProgramados()}" class="view-more"><i class="fa fa-arrow-right"></i> ir a la bandeja</a>
+                                                </div>
+                                            </div>
+                                        </div> 
                                     </li>
                                 </ul>
 

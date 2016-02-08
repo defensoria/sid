@@ -34,10 +34,12 @@ import gob.dp.sid.registro.entity.ExpedienteClasificacionTipo;
 import gob.dp.sid.registro.entity.ExpedienteConsulta;
 import gob.dp.sid.registro.entity.ExpedienteDerivacion;
 import gob.dp.sid.registro.entity.ExpedienteEntidad;
+import gob.dp.sid.registro.entity.ExpedienteEtapa;
 import gob.dp.sid.registro.entity.ExpedienteGestion;
 import gob.dp.sid.registro.entity.ExpedienteNivel;
 import gob.dp.sid.registro.entity.ExpedienteONP;
 import gob.dp.sid.registro.entity.ExpedientePersona;
+import gob.dp.sid.registro.entity.ExpedienteTiempo;
 import gob.dp.sid.registro.entity.GestionEtapa;
 import gob.dp.sid.registro.entity.OficinaDefensorial;
 import gob.dp.sid.registro.entity.Persona;
@@ -49,11 +51,13 @@ import gob.dp.sid.registro.service.ExpedienteClasificacionTipoService;
 import gob.dp.sid.registro.service.ExpedienteConsultaService;
 import gob.dp.sid.registro.service.ExpedienteDerivacionService;
 import gob.dp.sid.registro.service.ExpedienteEntidadService;
+import gob.dp.sid.registro.service.ExpedienteEtapaService;
 import gob.dp.sid.registro.service.ExpedienteGestionService;
 import gob.dp.sid.registro.service.ExpedienteNivelService;
 import gob.dp.sid.registro.service.ExpedienteONPService;
 import gob.dp.sid.registro.service.ExpedientePersonaService;
 import gob.dp.sid.registro.service.ExpedienteService;
+import gob.dp.sid.registro.service.ExpedienteTiempoService;
 import gob.dp.sid.registro.service.GestionEtapaService;
 import gob.dp.sid.registro.service.OficinaDefensorialService;
 import gob.dp.sid.registro.service.PersonaService;
@@ -200,8 +204,6 @@ public class RegistroController extends AbstractManagedBean implements Serializa
 
     private Long nroPaginaPersona = 1L;
 
-    private List<SelectItem> listaOficinaDefensoriales;
-
     private List<SelectItem> listaAdjuntiaDefensoriales;
 
     private List<SelectItem> listaUsuariosComisionadosPorOD;
@@ -277,13 +279,17 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     private Integer idSegundaClasificacion;
 
     private List<ExpedienteClasificacionTipo> listaExpedienteClasificacion;
-    
+
     private Long idClasificacion;
-    
+
     private ExpedienteONP expedienteONP;
-    
+
     private List<ExpedienteGestion> listaGestionesONP;
 
+    private ExpedienteTiempo expedienteTiempo;
+
+    private Boolean verSeccionONP;
+    
     @Autowired
     private ExpedienteService expedienteService;
 
@@ -337,9 +343,15 @@ public class RegistroController extends AbstractManagedBean implements Serializa
 
     @Autowired
     private ExpedienteClasiTipoService expedienteClasiTipoService;
-    
+
     @Autowired
     private ExpedienteONPService expedienteONPService;
+
+    @Autowired
+    private ExpedienteTiempoService expedienteTiempoService;
+
+    @Autowired
+    private ExpedienteEtapaService expedienteEtapaService;
 
     public String cargarNuevoExpediente() {
         cargarObjetoExpediente();
@@ -381,29 +393,65 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         expedienteClasificacionBusqueda = new ExpedienteClasificacion();
         return "expedienteNuevo";
     }
-    
-    private void cargarFichaONP(){
+
+    private void cargarFichaONP() {
         listaGestionesONP = new ArrayList<>();
         List<ExpedienteGestion> list = expedienteGestionService.expedienteGestionListaXexpediente(expediente.getNumero());
-        for(ExpedienteGestion eg : list){
-            if(StringUtils.isNotBlank(eg.getCodigoONP())){
+        for (ExpedienteGestion eg : list) {
+            if (StringUtils.isNotBlank(eg.getCodigoONP())) {
                 listaGestionesONP.add(eg);
             }
         }
-        if(listaGestionesONP.size() >  0){
+        if (listaGestionesONP.size() > 0) {
             expedienteONP = expedienteONPService.expedienteONPBuscarExpediente(expediente.getNumero());
-            if(expedienteONP == null)
+            if (expedienteONP == null) {
                 expedienteONP = new ExpedienteONP();
-        }else{
+            }
+        } else {
             expedienteONP = null;
         }
     }
-    
-    public void guardarExpedienteONP(){
-        if(expedienteONP.getId() == null){
+
+    private void insertarActualizarTiempos() {
+        try {
+            ExpedienteEtapa etapa = expedienteEtapaService.expedienteEtapaBuscar(etapaEstado.getVerEtapa());
+            if (expediente.getVersion() == 1) {
+                setearExpedienteTiempo(etapa, 1);
+            } else {
+                ExpedienteTiempo et = expedienteTiempoService.expedienteTiempoOne(expediente.getNumero());
+                if (!Objects.equals(et.getEtapa(), etapa.getIdEtapa())) {
+                    setearExpedienteTiempo(etapa, 2);
+                }
+            }
+        } catch (Exception ex) {
+            log.error(ex);
+        }
+    }
+
+    private void setearExpedienteTiempo(ExpedienteEtapa etapa, int tip) {
+        expedienteTiempo = new ExpedienteTiempo();
+        expedienteTiempo.setNumeroExpediente(expediente.getNumero());
+        expedienteTiempo.setEtapa(etapaEstado.getVerEtapa());
+        expedienteTiempo.setDiasRestante(etapa.getDiasTotal());
+        expedienteTiempo.setDiasAlerta(etapa.getDiasAlerta());
+        expedienteTiempo.setEstado("ACT");
+        expedienteTiempo.setTipoExpediente(expediente.getTipoClasificion());
+        if (tip == 1) {
+            expedienteTiempoService.expedienteTiempoInsertar(expedienteTiempo);
+        } else {
+            expedienteTiempoService.expedienteTiempoUpdate(expedienteTiempo);
+        }
+    }
+
+    private void setearExpedienteTiempo() {
+        expedienteTiempo = expedienteTiempoService.expedienteTiempoOne(expediente.getNumero());
+    }
+
+    public void guardarExpedienteONP() {
+        if (expedienteONP.getId() == null) {
             expedienteONP.setNumeroExpediente(expediente.getNumero());
             expedienteONPService.expedienteONPInsertar(expedienteONP);
-        }else{
+        } else {
             expedienteONPService.expedienteONPUpdate(expedienteONP);
         }
         msg.messageInfo("Se realizaron los cambios", null);
@@ -453,9 +501,10 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         idClasificacion = idClasifica;
         idSegundaClasificacion = null;
         listaExpedienteClasificacion = expedienteClasificacionTipoService.clasificacioneExpedienteClasiTipo(idClasificacion);
-        if(listaExpedienteClasificacion.isEmpty())
+        if (listaExpedienteClasificacion.isEmpty()) {
             listaExpedienteClasificacion = new ArrayList<>();
-        
+        }
+
         listadoClasificacionTipo = new ArrayList<>();
         List<ExpedienteClasificacionTipo> list = expedienteClasificacionTipoService.clasificacionCabecera(idPrimerNivel);
         if (list.size() > 0) {
@@ -471,7 +520,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     public boolean addSegundaClasificacion() {
         if (idSegundaClasificacion != null && idSegundaClasificacion != 0) {
             ExpedienteClasificacionTipo ect = expedienteClasificacionTipoService.clasificacionOne(idSegundaClasificacion);
-            listaExpedienteClasificacion =expedienteClasificacionTipoService.clasificacioneExpedienteClasiTipo(idClasificacion);
+            listaExpedienteClasificacion = expedienteClasificacionTipoService.clasificacioneExpedienteClasiTipo(idClasificacion);
             if (listaExpedienteClasificacion.size() > 0) {
                 for (ExpedienteClasificacionTipo ect1 : listaExpedienteClasificacion) {
                     if (Objects.equals(ect1.getId(), ect.getId())) {
@@ -483,7 +532,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 expedienteClasiTipoService.expedienteClasiTipoInsertar(new ExpedienteClasiTipo(idClasificacion, ect.getId()));
             }
             listaExpedienteClasificacion = expedienteClasificacionTipoService.clasificacioneExpedienteClasiTipo(idClasificacion);
-            
+
         } else {
             msg.messageAlert("Debe seleccionar una clasificación", null);
         }
@@ -491,7 +540,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         listarNiveles();
         return false;
     }
-    
+
     public void removeSegundaClasificacion(ExpedienteClasificacionTipo ect) {
         expedienteClasiTipoService.expedienteClasiTipoEliminar(new ExpedienteClasiTipo(idClasificacion, ect.getId()));
         listaExpedienteClasificacion = expedienteClasificacionTipoService.clasificacioneExpedienteClasiTipo(idClasificacion);
@@ -951,8 +1000,8 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         }
         listarNiveles();
     }
-    
-    public void limpiarNivelesAll(){
+
+    public void limpiarNivelesAll() {
         listaClasificacionSegundoLevel = new ArrayList<>();
         listaClasificacionTercerLevel = new ArrayList<>();
         listaClasificacionCuartoLevel = new ArrayList<>();
@@ -1509,7 +1558,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         } else {
             expedienteGestion.setUsuarioModificacion(usuarioSession.getCodigo());
             expedienteGestion.setFechaModificacion(new Date());
-            if(StringUtils.isNotBlank(expedienteGestion.getCodigoONP())){
+            if (StringUtils.isNotBlank(expedienteGestion.getCodigoONP())) {
                 expedienteGestion.setCodigoONP(null);
             }
             expedienteGestionService.expedienteGestionUpdate(expedienteGestion);
@@ -1955,17 +2004,31 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         defineBotonRegistro();
         expedienteClasificacionBusqueda = new ExpedienteClasificacion();
         cargarFichaONP();
-        if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_PETITORIO.getKey()) || Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_QUEJA.getKey()) || etapaEstado.getVerEtapa() == null) {
+        verONP();
+        if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_PETITORIO.getKey()) || Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_QUEJA.getKey())) {
+            setearExpedienteTiempo();
             return "expedienteEdit";
         }
         cargarExpedienteGestionLista();
+        setearExpedienteTiempo();
+        verONP();
         return "expedienteGestionLista";
+    }
+    
+    private void verONP(){
+        int i = 0;
+        for(ExpedienteEntidad ee : entidadSeleccionadas){
+            if(ee.getEntidad().getId() == 4455){
+                i++;
+            }
+        }
+        verSeccionONP = i > 0;
     }
 
     private void listarNiveles() {
         if (StringUtils.isNotBlank(expediente.getNumero())) {
             List<ExpedienteNivel> list = expedienteNivelService.expedienteNivelPorExpediente(expediente.getNumero());
-            for(ExpedienteNivel en : list){
+            for (ExpedienteNivel en : list) {
                 listaExpedienteClasificacion = expedienteClasificacionTipoService.clasificacioneExpedienteClasiTipo(en.getId());
                 en.setListaClasificacionTipo(listaExpedienteClasificacion);
             }
@@ -2195,7 +2258,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         expedientepersonaModalEdit.setEmail(expedientepersonaModalEdit.getPersona().getEmail());
         expedientepersonaModalEdit.setTipoLengua(expedientepersonaModalEdit.getPersona().getTipoLengua());
         expedientepersonaModalEdit.setIndicadorDiscapacitado(expedientepersonaModalEdit.getPersona().getIndicadorDiscapacitado());
-        expedientepersonaModalEdit.setTipoPueblo(expedientepersonaModalEdit.getPersona().getTipoPueblo());        
+        expedientepersonaModalEdit.setTipoPueblo(expedientepersonaModalEdit.getPersona().getTipoPueblo());
         if (StringUtils.isNotBlank(expedientepersonaModalEdit.getIdDepartamento()) && !StringUtils.equals(expedientepersonaModalEdit.getIdDepartamento(), "0")) {
             comboProvinciaId(expedientepersonaModalEdit.getIdDepartamento());
         }
@@ -2227,8 +2290,6 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         }
         return true;
     }
-    
-    
 
     public void removePersona(ExpedientePersona ep) {
         personasSeleccionadas.remove(ep);
@@ -2475,6 +2536,8 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             guardar();
             guardarEtapaEstado(idExpedienteOld);
             inicializarEtapaEstado(1);
+            insertarActualizarTiempos();
+            verONP();
             msg.messageInfo("Se genero una nueva version del Expediente", null);
         } catch (Exception e) {
             log.error(e);
@@ -2490,6 +2553,8 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             guardar();
             guardarEtapaEstado(idExpedienteOld);
             inicializarEtapaEstado(1);
+            insertarActualizarTiempos();
+            verONP();
         } catch (Exception e) {
             log.error(e);
         }
@@ -2651,6 +2716,8 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         guardar();
         guardarEtapaEstadoConcluir(idExpedienteOld);
         inicializarEtapaEstado(1);
+        insertarActualizarTiempos();
+        verONP();
         /**
          * GENERAR NUEVO ESTADO
          */
@@ -3024,11 +3091,15 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     public void insertUpdateExpedientePersona(ExpedientePersona ep) {
         try {
             if (ep.getExpediente().getId() != null && ep.getPersona().getId() != null) {
-                int contador = expedientePersonaService.expedientePersonaContar(ep);
-                if (contador == 0) {
+                if (ep.getId() == null) {
                     expedientePersonaService.expedientePersonaInsertar(ep);
                 } else {
-                    expedientePersonaService.expedientePersonaUpdate(ep);
+                    int contador = expedientePersonaService.expedientePersonaContar(ep);
+                    if (contador == 0) {
+                        expedientePersonaService.expedientePersonaInsertar(ep);
+                    } else {
+                        expedientePersonaService.expedientePersonaUpdate(ep);
+                    }
                 }
             }
         } catch (Exception e) {
@@ -3544,25 +3615,6 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         this.listaExpedientesPersuacionPetitorio = listaExpedientesPersuacionPetitorio;
     }
 
-    public List<SelectItem> getListaOficinaDefensoriales() {
-        System.out.println("getListaOficinaDefensoriales");
-        List<SelectItem> listaOficinaDef = new ArrayList<>();
-        try {
-            List<OficinaDefensorial> list = oficinaDefensorialService.listaOficinasDefensoriales();
-            for (OficinaDefensorial od : list) {
-                listaOficinaDef.add(new SelectItem(od.getId(), od.getNombre()));
-            }
-            listaOficinaDefensoriales = listaOficinaDef;
-        } catch (Exception e) {
-            log.debug(e.getMessage());
-        }
-        return listaOficinaDefensoriales;
-    }
-
-    public void setListaOficinaDefensoriales(List<SelectItem> listaOficinaDefensoriales) {
-        this.listaOficinaDefensoriales = listaOficinaDefensoriales;
-    }
-
     public ExpedienteDerivacion getExpedienteDerivacionEnvia() {
         return expedienteDerivacionEnvia;
     }
@@ -3944,6 +3996,22 @@ public class RegistroController extends AbstractManagedBean implements Serializa
 
     public void setListaGestionesONP(List<ExpedienteGestion> listaGestionesONP) {
         this.listaGestionesONP = listaGestionesONP;
+    }
+
+    public ExpedienteTiempo getExpedienteTiempo() {
+        return expedienteTiempo;
+    }
+
+    public void setExpedienteTiempo(ExpedienteTiempo expedienteTiempo) {
+        this.expedienteTiempo = expedienteTiempo;
+    }
+
+    public Boolean getVerSeccionONP() {
+        return verSeccionONP;
+    }
+
+    public void setVerSeccionONP(Boolean verSeccionONP) {
+        this.verSeccionONP = verSeccionONP;
     }
 
 }

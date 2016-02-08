@@ -47,7 +47,15 @@ public class Bandeja implements Serializable{
     private String tituloMensaje;
     
     private String codigoConsulta;
+    
+    private String tipoMensaje;
+    
+    private String activo;
+    
+    /**agregados*/
 
+    private Boolean indicador;
+    
     public Long getId() {
         return id;
     }
@@ -182,6 +190,30 @@ public class Bandeja implements Serializable{
 
     public void setCodigoConsulta(String codigoConsulta) {
         this.codigoConsulta = codigoConsulta;
+    }
+
+    public String getTipoMensaje() {
+        return tipoMensaje;
+    }
+
+    public void setTipoMensaje(String tipoMensaje) {
+        this.tipoMensaje = tipoMensaje;
+    }
+
+    public Boolean getIndicador() {
+        return indicador;
+    }
+
+    public void setIndicador(Boolean indicador) {
+        this.indicador = indicador;
+    }
+
+    public String getActivo() {
+        return activo;
+    }
+
+    public void setActivo(String activo) {
+        this.activo = activo;
     }
     
 }

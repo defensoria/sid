@@ -23,7 +23,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import org.apache.log4j.Logger;
@@ -45,6 +44,18 @@ public class BandejaController extends AbstractManagedBean implements Serializab
     private List<Bandeja> listaMensajes;
     
     private List<Bandeja> listaMensajesPendientes;
+    
+    private List<Bandeja> listaMensajesPendientesInternos;
+    
+    private List<Bandeja> listaMensajesPendientesAutomaticos;
+    
+    private List<Bandeja> listaMensajesPendientesProgramados;
+    
+    private List<Bandeja> listaMensajesInternos;
+    
+    private List<Bandeja> listaMensajesAutomaticos;
+    
+    private List<Bandeja> listaMensajesProgramados;
 
     private Bandeja mensajeBandeja;
 
@@ -63,11 +74,62 @@ public class BandejaController extends AbstractManagedBean implements Serializab
         return "bandeja";
     }
     
+    public void eliminarMensajes(){
+        List<Bandeja> list = new ArrayList<>();
+        for(Bandeja b : listaMensajes){
+            if(b.getIndicador()){
+                b.setActivo("I");
+                bandejaService.mensajeInactivar(b.getId());
+            }else{
+                list.add(b);
+            }
+        }
+        listaMensajes = list;
+    }
+    
     public void cargarMensajesPendientes(){
         usuarioSession();
-        listaMensajesPendientes = bandejaService.bandejaBuscarUsuarioPendientes(usuarioSession.getCodigo());
+        cargarMensajesInternos();
+        cargarMensajesAutomaticos();
+        cargarMensajesProgramados();
+    }
+    
+    public String cargarMensajesInternos(){
+        listaMensajesPendientesInternos = bandejaService.bandejaBuscarUsuarioPendientesInternos(usuarioSession.getCodigo());
+        listaMensajesInternos = bandejaService.bandejaBuscarUsuarioInternos(usuarioSession.getCodigo());
+        listaMensajes = listaMensajesPendientesInternos;
+        return "bandeja";
     }
 
+    public String cargarMensajesAutomaticos(){
+        listaMensajesPendientesAutomaticos = bandejaService.bandejaBuscarUsuarioPendientesAutomaticos(usuarioSession.getCodigo());
+        listaMensajesAutomaticos = bandejaService.bandejaBuscarUsuarioAutomaticos(usuarioSession.getCodigo());
+        listaMensajes = listaMensajesPendientesAutomaticos;
+        return "bandeja";
+    }
+    
+    public String cargarMensajesProgramados(){
+        listaMensajesPendientesProgramados = bandejaService.bandejaBuscarUsuarioPendientesProgramados(usuarioSession.getCodigo());
+        listaMensajesProgramados = bandejaService.bandejaBuscarUsuarioProgramados(usuarioSession.getCodigo());
+        listaMensajes = listaMensajesPendientesProgramados;
+        return "bandeja";
+    }
+    
+    public void cargarTotalInternos(){
+        listaMensajesInternos = bandejaService.bandejaBuscarUsuarioInternos(usuarioSession.getCodigo());
+        listaMensajes = listaMensajesInternos;
+    }
+
+    public void cargarTotalAutomaticos(){
+        listaMensajesAutomaticos = bandejaService.bandejaBuscarUsuarioAutomaticos(usuarioSession.getCodigo());
+        listaMensajes = listaMensajesAutomaticos;
+    }
+    
+    public void cargarTotalProgramados(){
+        listaMensajesProgramados = bandejaService.bandejaBuscarUsuarioProgramados(usuarioSession.getCodigo());
+        listaMensajes = listaMensajesProgramados;
+    }
+    
     public String verMensajeBandeja(Bandeja b) {
         setMensajeBandeja(b);
         b.setEstado("VIS");
@@ -195,6 +257,8 @@ public class BandejaController extends AbstractManagedBean implements Serializab
             mensajeBandeja.setMotivo(ec.getDetalle());
             mensajeBandeja.setNumeroExpediente(ec.getNumeroExpediente());
             mensajeBandeja.setCodigoConsulta(ec.getCodigo());
+            mensajeBandeja.setTipoMensaje("INT");
+            mensajeBandeja.setActivo("A");
             if(idExp > 0)
                 mensajeBandeja.setIdExpediente(idExp);
             else
@@ -218,6 +282,8 @@ public class BandejaController extends AbstractManagedBean implements Serializab
             mensajeBandeja.setColorTipo(MensajeType.MENSAJE_DERIVACION.getColor());
             mensajeBandeja.setMotivo(ed.getDetalle());
             mensajeBandeja.setNumeroExpediente(ed.getNumeroExpediente());
+            mensajeBandeja.setTipoMensaje("INT");
+            mensajeBandeja.setActivo("A");
             if(idExp > 0)
                 mensajeBandeja.setIdExpediente(idExp);
             else
@@ -245,6 +311,8 @@ public class BandejaController extends AbstractManagedBean implements Serializab
         mensajeBandeja.setNumeroExpediente(ed.getNumeroExpediente());
         mensajeBandeja.setIdExpediente(ed.getIdExpediente());
         mensajeBandeja.setIdAccion(ed.getId());
+        mensajeBandeja.setTipoMensaje("INT");
+        mensajeBandeja.setActivo("A");
         bandejaService.bandejaInsertar(mensajeBandeja);
     }
 
@@ -312,6 +380,22 @@ public class BandejaController extends AbstractManagedBean implements Serializab
         this.mensajeBandeja = mensajeBandeja;
     }
 
+    public List<Bandeja> getListaMensajesPendientesInternos() {
+        return listaMensajesPendientesInternos;
+    }
+
+    public void setListaMensajesPendientesInternos(List<Bandeja> listaMensajesPendientesInternos) {
+        this.listaMensajesPendientesInternos = listaMensajesPendientesInternos;
+    }
+
+    public List<Bandeja> getListaMensajesPendientesAutomaticos() {
+        return listaMensajesPendientesAutomaticos;
+    }
+
+    public void setListaMensajesPendientesAutomaticos(List<Bandeja> listaMensajesPendientesAutomaticos) {
+        this.listaMensajesPendientesAutomaticos = listaMensajesPendientesAutomaticos;
+    }
+
     public List<Bandeja> getListaMensajesPendientes() {
         return listaMensajesPendientes;
     }
@@ -319,5 +403,39 @@ public class BandejaController extends AbstractManagedBean implements Serializab
     public void setListaMensajesPendientes(List<Bandeja> listaMensajesPendientes) {
         this.listaMensajesPendientes = listaMensajesPendientes;
     }
+
+    public List<Bandeja> getListaMensajesInternos() {
+        return listaMensajesInternos;
+    }
+
+    public void setListaMensajesInternos(List<Bandeja> listaMensajesInternos) {
+        this.listaMensajesInternos = listaMensajesInternos;
+    }
+
+    public List<Bandeja> getListaMensajesAutomaticos() {
+        return listaMensajesAutomaticos;
+    }
+
+    public void setListaMensajesAutomaticos(List<Bandeja> listaMensajesAutomaticos) {
+        this.listaMensajesAutomaticos = listaMensajesAutomaticos;
+    }
+
+    public List<Bandeja> getListaMensajesPendientesProgramados() {
+        return listaMensajesPendientesProgramados;
+    }
+
+    public void setListaMensajesPendientesProgramados(List<Bandeja> listaMensajesPendientesProgramados) {
+        this.listaMensajesPendientesProgramados = listaMensajesPendientesProgramados;
+    }
+
+    public List<Bandeja> getListaMensajesProgramados() {
+        return listaMensajesProgramados;
+    }
+
+    public void setListaMensajesProgramados(List<Bandeja> listaMensajesProgramados) {
+        this.listaMensajesProgramados = listaMensajesProgramados;
+    }
+
+    
 
 }

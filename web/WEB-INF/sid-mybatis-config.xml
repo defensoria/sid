@@ -48,6 +48,8 @@
         <typeAlias type="gob.dp.sid.registro.entity.ExpedienteClasificacionTipo" alias="expedienteClasificacionTipo"/>
         <typeAlias type="gob.dp.sid.registro.entity.ExpedienteClasificacionTipo" alias="expedienteClasiTipo"/>
         <typeAlias type="gob.dp.sid.registro.entity.ExpedienteONP" alias="expedienteONP"/>
+        <typeAlias type="gob.dp.sid.registro.entity.ExpedienteTiempo" alias="expedienteTiempo"/>
+        <typeAlias type="gob.dp.sid.registro.entity.ExpedienteEtapa" alias="expedienteEtapa"/>
         
         <typeAlias type="gob.dp.sid.reporte.entity.Reporte" alias="reporte"/>
         
@@ -79,11 +81,12 @@
         <mapper resource="gob/dp/sid/registro/dao/xml/ExpedienteDerivacion.xml" />
         <mapper resource="gob/dp/sid/registro/dao/xml/ExpedienteConsulta.xml" />
         <mapper resource="gob/dp/sid/registro/dao/xml/ExpedienteClasificacion.xml" />
-        <mapper resource="gob/dp/sid/registro/dao/xml/ExpedienteClasificacion.xml" />
         <mapper resource="gob/dp/sid/registro/dao/xml/ExpedienteNivel.xml" />
         <mapper resource="gob/dp/sid/registro/dao/xml/ExpedienteClasificacionTipo.xml" />
         <mapper resource="gob/dp/sid/registro/dao/xml/ExpedienteClasiTipo.xml" />
         <mapper resource="gob/dp/sid/registro/dao/xml/ExpedienteONP.xml" />
+        <mapper resource="gob/dp/sid/registro/dao/xml/ExpedienteTiempo.xml" />
+        <mapper resource="gob/dp/sid/registro/dao/xml/ExpedienteEtapa.xml" />
         
         <mapper resource="gob/dp/sid/bandeja/dao/xml/Bandeja.xml" />
     </mappers>

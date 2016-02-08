@@ -51,5 +51,10 @@ public class ExpedienteGestionDAOImpl extends SqlSessionDaoSupport implements  E
     public ExpedienteGestion expedienteGestionPorONP(String codigoONP) {
         return getSqlSession().selectOne("gob.dp.sid.registro.dao.ExpedienteGestionDAO.expedienteGestionPorONP", codigoONP);
     }
+
+    @Override
+    public ExpedienteGestion expedienteGestionPorONPUltimo(String numeroExpediente) {
+        return getSqlSession().selectOne("gob.dp.sid.registro.dao.ExpedienteGestionDAO.expedienteGestionPorONPUltimo", numeroExpediente);
+    }
     
 }

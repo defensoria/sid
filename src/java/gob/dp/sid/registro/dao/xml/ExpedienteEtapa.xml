@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD iBatis Mapper 3.0 //EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="gob.dp.sid.registro.dao.ExpedienteEtapaDAO">
+    
+    <resultMap id="expedienteEtapaMap" type="expedienteEtapa">
+        <id property="idEtapa" column="N_ID_ETAPA" />
+        <result property="valor" column="C_VALOR"/>
+        <result property="tipo" column="C_TIPO"/>
+        <result property="diasTotal" column="N_DIASTOTAL"/>
+        <result property="diasAlerta" column="N_DIASALERTA"/>
+    </resultMap> 
+    
+    
+    <select id="expedienteEtapaBuscar" resultMap="expedienteEtapaMap" parameterType="long">
+        SELECT * FROM SID_REG_ETAPA WHERE N_ID_ETAPA = #{id}
+    </select>
+    
+</mapper>
