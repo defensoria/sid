@@ -109,7 +109,7 @@
                                                         <label>Oficina Defensorial:</label>
                                                         <h:selectOneMenu value="#{registroController.expedienteDerivacionEnvia.idOficinaDefensorial}">
                                                             <f:selectItem itemLabel="Seleccione" itemValue="0" />
-                                                            <f:selectItems value="#{registroController.listaOficinaDefensoriales}" />
+                                                            <f:selectItems value="#{listasComunesController.buscarListaADOD(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
                                                         </h:selectOneMenu>
                                                     </td>
                                                 </tr>
@@ -163,7 +163,7 @@
                                                         <label>Oficina Defensorial:</label>
                                                         <h:selectOneMenu value="#{registroController.expedienteDerivacionEnvia.idOficinaDefensorial}">
                                                             <f:selectItem itemLabel="Seleccione" itemValue="0" />
-                                                            <f:selectItems value="#{registroController.listaOficinaDefensoriales}" />
+                                                            <f:selectItems value="#{listasComunesController.buscarListaADOD(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
                                                         </h:selectOneMenu>
                                                     </td>
                                                 </tr>
@@ -221,7 +221,7 @@
                                                                 <label jsf:rendered="#{registroController.expedienteDerivacionAprueba.aprueba == 'SI'}">Oficina Defensorial:</label>
                                                                 <h:selectOneMenu value="#{registroController.expedienteDerivacionAprueba.idOficinaDefensorial}" rendered="#{registroController.expedienteDerivacionAprueba.aprueba == 'SI'}">
                                                                     <f:selectItem itemLabel="Seleccione" itemValue="0" />
-                                                                    <f:selectItems value="#{registroController.listaOficinaDefensoriales}" />
+                                                                    <f:selectItems value="#{listasComunesController.buscarListaADOD(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
                                                                 </h:selectOneMenu>
                                                             </h:panelGroup>
                                                         </td>
@@ -273,7 +273,7 @@
                                                         <label>Oficina Defensorial:</label>
                                                         <h:selectOneMenu value="#{registroController.expedienteDerivacionAprueba.idOficinaDefensorial}">
                                                             <f:selectItem itemLabel="Seleccione" itemValue="0" />
-                                                            <f:selectItems value="#{registroController.listaOficinaDefensoriales}" />
+                                                            <f:selectItems value="#{listasComunesController.buscarListaADOD(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
                                                         </h:selectOneMenu>
                                                         <br/>
                                                         <br/>

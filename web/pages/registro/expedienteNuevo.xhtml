@@ -123,16 +123,16 @@
                                                                 <table style="width: 80%">
                                                                     <tr>
                                                                         <td style="width: 25%">
-                                                                            <h:outputText rendered="#{registroController.etapaEstado.verEtapa == 1}" style="color: #878787" value="Quedan #{registroController.expedienteTiempo.diasRestante} días para culminar la etapa de Calificación"/>
+                                                                            <h:outputText rendered="#{registroController.etapaEstado.verEtapa == 1}" style="color: #878787" value="quedan #{registroController.expedienteTiempo.diasRestante} días"/>
                                                                         </td>
                                                                         <td style="width: 25%">
-                                                                            <h:outputText rendered="#{registroController.etapaEstado.verEtapa == 2}" style="color: #878787" value="Quedan #{registroController.expedienteTiempo.diasRestante} días para culminar la etapa de Investigación"/>
+                                                                            <h:outputText rendered="#{registroController.etapaEstado.verEtapa == 2}" style="color: #878787" value="quedan #{registroController.expedienteTiempo.diasRestante} días"/>
                                                                         </td>
                                                                         <td style="width: 25%">
-                                                                            <h:outputText rendered="#{registroController.etapaEstado.verEtapa == 3}" style="color: #878787" value="Quedan #{registroController.expedienteTiempo.diasRestante} días para culminar la etapa de Persuasión"/>
+                                                                            <h:outputText rendered="#{registroController.etapaEstado.verEtapa == 3}" style="color: #878787" value="quedan #{registroController.expedienteTiempo.diasRestante} días"/>
                                                                         </td>
                                                                         <td style="width: 25%">
-                                                                            <h:outputText rendered="#{registroController.etapaEstado.verEtapa == 4}" style="color: #878787" value="Quedan #{registroController.expedienteTiempo.diasRestante} días para culminar la etapa de Seguimiento"/>
+                                                                            <h:outputText rendered="#{registroController.etapaEstado.verEtapa == 4}" style="color: #878787" value="quedan #{registroController.expedienteTiempo.diasRestante} días"/>
                                                                         </td>
                                                                     </tr>
                                                                 </table>
@@ -189,13 +189,13 @@
                                                                 <table style="width: 80%">
                                                                     <tr>
                                                                         <td style="width: 33%">
-                                                                            <h:outputText rendered="#{registroController.etapaEstado.verEtapa == 5}" style="color: #878787" value="Quedan #{registroController.expedienteTiempo.diasRestante} días para culminar la etapa de Calificación"/>
+                                                                            <h:outputText rendered="#{registroController.etapaEstado.verEtapa == 5}" style="color: #878787" value="quedan #{registroController.expedienteTiempo.diasRestante} días"/>
                                                                         </td>
                                                                         <td style="width: 33%">
-                                                                            <h:outputText rendered="#{registroController.etapaEstado.verEtapa == 6}" style="color: #878787" value="Quedan #{registroController.expedienteTiempo.diasRestante} días para culminar la etapa de Gestión"/>
+                                                                            <h:outputText rendered="#{registroController.etapaEstado.verEtapa == 6}" style="color: #878787" value="quedan #{registroController.expedienteTiempo.diasRestante} días"/>
                                                                         </td>
                                                                         <td style="width: 33%">
-                                                                            <h:outputText rendered="#{registroController.etapaEstado.verEtapa == 7}" style="color: #878787" value="Quedan #{registroController.expedienteTiempo.diasRestante} días para culminar la etapa de Persuasión"/>
+                                                                            <h:outputText rendered="#{registroController.etapaEstado.verEtapa == 7}" style="color: #878787" value="quedan #{registroController.expedienteTiempo.diasRestante} días"/>
                                                                         </td>
                                                                     </tr>
                                                                 </table>
@@ -552,7 +552,7 @@
                                                     </tr> 
                                                     <tr>
                                                         <td style="width: 40%; padding-bottom: 10px">
-                                                            <span class="text-bold">Ambito:</span>
+                                                            <span class="text-bold">Buscador:</span>
                                                         </td>
                                                         <td style="padding-bottom: 10px">
                                                             <table style="width: 100%">
@@ -1011,8 +1011,10 @@
                                         <div class="panel-body">
                                             <span class="text-resalt-primary">Información de adicional</span>
                                             <br/><br/>
-                                            <span class="text-bold">Sumilla</span>
-                                            <textarea rows="5" jsf:value="#{registroController.expediente.sumilla}" style="width: 100%;" placeholder="Sumilla" maxlength="1950"/>
+                                            <h:outputText rendered="#{registroController.expediente.tipoClasificion == '02'}" value="Motivo de la consulta" class="text-bold"/>
+                                            <h:outputText rendered="#{registroController.expediente.tipoClasificion != '02'}" value="Sumilla" class="text-bold"/>
+                                            <textarea jsf:rendered="#{registroController.expediente.tipoClasificion == '02'}" rows="5" jsf:value="#{registroController.expediente.sumilla}" style="width: 100%;" placeholder="Motivo de la consulta" maxlength="1950"/>
+                                            <textarea jsf:rendered="#{registroController.expediente.tipoClasificion != '02'}" rows="5" jsf:value="#{registroController.expediente.sumilla}" style="width: 100%;" placeholder="Sumilla" maxlength="1950"/>
                                             <br/>
                                             <span class="text-bold">Observaciones</span>
                                             <textarea rows="5" jsf:value="#{registroController.expediente.observacion}" style="width: 100%" placeholder="Observacion"  maxlength="1950"/>
@@ -1041,8 +1043,10 @@
                                             <br/><br/>
                                             <span class="text-resalt-primary">Información de conclusión</span>
                                             <br/><br/>
-                                            <span class="text-bold">Conclusión</span>
-                                            <textarea rows="5" jsf:value="#{registroController.expediente.conclusion}" style="width: 100%;" placeholder="Conclusión" maxlength="1950"/>
+                                            <h:outputText rendered="#{registroController.expediente.tipoClasificion == '02'}" value="Orientación" class="text-bold"/>
+                                            <h:outputText rendered="#{registroController.expediente.tipoClasificion != '02'}" value="Justificación" class="text-bold"/>
+                                            <textarea rows="5" jsf:rendered="#{registroController.expediente.tipoClasificion == '02'}" jsf:value="#{registroController.expediente.conclusion}" style="width: 100%;" placeholder="Orientación" maxlength="1950"/>
+                                            <textarea rows="5" jsf:rendered="#{registroController.expediente.tipoClasificion != '02'}" jsf:value="#{registroController.expediente.conclusion}" style="width: 100%;" placeholder="Justificación" maxlength="1950"/>
                                         </div>
                                     </div>
                                 </td>
@@ -1078,7 +1082,7 @@
                                                 <br/>
                                                 <h:panelGroup id="idPanelRecurrentes">
                                                     <table style="width: 100%">
-                                                        <tr>
+                                                        <tr jsf:rendered="#{registroController.expediente.tipoClasificion != '02'}">
                                                             <td style="width: 60%">
                                                                 <input type="text" id="idBusquedaPersona" name="nombreActor" style="width: 100%" placeholder="Ingrese nombre/documento de la persona" jsf:value="#{registroController.persona.cadenaPersona}"/>
                                                             </td>
@@ -1452,11 +1456,12 @@
                                                                             }
                                                                         </script>
                                                                         <gc:confirmSubmit bean="#{registroController.removePersona(per)}" classGC="confirmacion4#{rowIn.rowIndex+1}" mensaje="Esta seguro de desvincular a la Persona?" />
-                                                                        <h:panelGroup rendered="#{per.id != null}">
+                                                                        <h:panelGroup rendered="#{per.id != null and registroController.expediente.tipoClasificion != '02'}">
                                                                             <a onclick="confirmar4#{rowIn.rowIndex+1}()">
                                                                                 <span style="font-size: medium; color: red" class="glyphicon glyphicon-remove"></span>
                                                                             </a>
                                                                         </h:panelGroup>
+                                                                       
                                                                         <a jsf:action="#{registroController.seteaPersonaExpediente(per)}" jsf:rendered="#{per.id != null}" jsf:onclick="loadingModal()">
                                                                             <span style="font-size: medium" class="glyphicon glyphicon-pencil"></span>  
                                                                             <f:ajax render=":idForm:idPanelRecurrentes" execute=":idForm:idPanelRecurrentes" onevent="openModalEditPersona"/>
@@ -1627,7 +1632,7 @@
                                             <div class="panel-body" style="height: auto">
                                                 <br/>
                                                 <h:panelGroup id="idPanelEntidadesQue">
-                                                    <table style="width: 100%">
+                                                    <table style="width: 100%" jsf:rendered="#{registroController.expediente.tipoClasificion != '02'}">
                                                         <tr>
                                                             <td style="width: 85%">
                                                                 <table>

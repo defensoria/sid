@@ -184,16 +184,16 @@
                                             </tr>
                                             <tr>
                                                 <td style="width: 50%; padding-right: 5px;padding-bottom: 10px">
-                                                    <label>Documento de gestión:</label>
-                                                    <h:selectOneMenu value="#{registroController.expedienteGestion.documentoGestion}" >
+                                                    <label class="classdocumentoGestion" jsf:rendered="#{registroController.expedienteGestion.tipo != '01' and registroController.expedienteGestion.tipo != '02'}">Documento de gestión:</label>
+                                                    <h:selectOneMenu  class="classdocumentoGestion" value="#{registroController.expedienteGestion.documentoGestion}" rendered="#{registroController.expedienteGestion.tipo != '01' and registroController.expedienteGestion.tipo != '02'}" >
                                                         <f:selectItem itemValue="0" itemLabel="Selecione" />
                                                         <f:selectItems value="#{listasComunesController.buscarDocumentoGestion(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
                                                     </h:selectOneMenu>
                                                 </td>
                                                 <td style="padding-left: 5px; padding-bottom: 10px" >
                                                     <div class="idFechaRecepcion">
-                                                        <label>Fecha de recepción:</label>
-                                                        <gc:calendar value="#{registroController.expedienteGestion.fechaRecepcion}" />
+                                                        <label jsf:rendered="#{registroController.expedienteGestion.tipo == '04'}">Fecha de recepción:</label>
+                                                        <gc:calendar value="#{registroController.expedienteGestion.fechaRecepcion}" rendered="#{registroController.expedienteGestion.tipo == '04'}"/>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -229,7 +229,13 @@
                                             } else {
                                                 $(".idFechaRecepcion").addClass("classHide");
                                             }
-
+                                            $(".idTipoDocumento").change(function () {
+                                                if ($(this).val() === '01' || $(this).val() === '02' ) {
+                                                    $(".classdocumentoGestion").addClass("classHide");
+                                                } else {
+                                                    $(".classdocumentoGestion").removeClass("classHide");
+                                                }
+                                            });
                                         </script>
                                         <table style="width: 100%">
                                             <tr>

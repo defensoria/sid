@@ -2005,14 +2005,22 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         expedienteClasificacionBusqueda = new ExpedienteClasificacion();
         cargarFichaONP();
         verONP();
-        if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_PETITORIO.getKey()) || Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_QUEJA.getKey())) {
-            setearExpedienteTiempo();
+        if(StringUtils.isBlank(expediente.getNumero())){
             return "expedienteEdit";
         }
-        cargarExpedienteGestionLista();
-        setearExpedienteTiempo();
-        verONP();
-        return "expedienteGestionLista";
+        if(StringUtils.equals(expediente.getTipoClasificion(), ExpedienteType.CONSULTA.getKey())){
+            setearExpedienteTiempo();
+            return "expedienteEdit";
+        }else{
+            if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_PETITORIO.getKey()) || Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_QUEJA.getKey())) {
+                setearExpedienteTiempo();
+                return "expedienteEdit";
+            }
+            cargarExpedienteGestionLista();
+            setearExpedienteTiempo();
+            verONP();
+            return "expedienteGestionLista";
+        }
     }
     
     private void verONP(){
@@ -2527,7 +2535,17 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         inicializarEtapaEstado(0);
     }
 
-    public void guardarVersion() {
+    public boolean guardarVersion() {
+        if(StringUtils.isBlank(expediente.getTipoClasificion())){
+            msg.messageAlert("Debe seleccionar un tipo de expediente", null);
+            return false;
+        }
+        if(expediente.getIndicadorOficio()){
+            if(StringUtils.equals(expediente.getTipoClasificion(), ExpedienteType.CONSULTA.getKey())){
+                msg.messageAlert("Un expediente de oficio no puede ser del tipo consulta", null);
+                return false;
+            }
+        }
         try {
             Long idExpedienteOld = null;
             if (expediente.getId() != null) {
@@ -2542,6 +2560,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         } catch (Exception e) {
             log.error(e);
         }
+        return true;
     }
 
     public void guardarVersion2() {
