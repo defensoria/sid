@@ -202,7 +202,11 @@
                                                                 <label>Número del documento de gestión:</label>
                                                                 <input type="text" placeholder="Número del documento de gestión:" jsf:value="#{registroController.expedienteGestion.documentoGestionDetalle}" maxlength="100"/>
                                                             </td>
-                                                            <td></td>
+                                                <td>
+                                                    <h:selectBooleanCheckbox id="idCheckbox2" value="#{registroController.expedienteGestion.indicadorRecomendacion}" >
+                                                                        Contiene recomendación
+                                                                    </h:selectBooleanCheckbox>
+                                                </td>
                                                         </tr>
                                         </table>
                                         <style>
@@ -460,7 +464,7 @@
                                         <table style="width: 100%">
                                             <tr>
                                                 <td>
-                                                    <span class="text-resalt-primary">Información de respuesta</span>
+                                                    <span class="text-resalt-primary">Información de gestión</span>
                                                 </td>
                                                 <td style="text-align: right">
                                                     <a class="btn btn-warning" jsf:action="#{registroController.cargarModalReplica()}"  jsf:rendered="#{registroController.expedienteGestion.codigoGestion != null}" jsf:onclick="loadingModal()">
@@ -606,20 +610,17 @@
                                                         <table style="width: 100%">
                                                             <tr>
                                                                 <td>
-                                                                    <h:selectBooleanCheckbox id="idCheckbox2" value="#{registroController.expedienteGestion.indicadorRecomendacion}" >
-                                                                        Contiene recomendación
-                                                                        <f:ajax render="idSelectAcogimiento" /> 
-                                                                    </h:selectBooleanCheckbox>
+                                                                    
                                                                 </td>
 
                                                                 <td>
-                                                                    <h:panelGroup rendered="#{registroController.expedienteGestion.indicadorRecomendacion}">
+                                                                    <!--<h:panelGroup rendered="#{registroController.expedienteGestion.indicadorRecomendacion}">
                                                                         <label>Acogimiento de recomendaciones</label>
                                                                         <h:selectOneMenu value="#{registroController.expedienteGestion.tipoAcogimiento}">
                                                                             <f:selectItem itemValue="0" itemLabel="Selecione" />
                                                                             <f:selectItems value="#{listasComunesController.buscarAcogimientoRecomendaciones(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
                                                                         </h:selectOneMenu>
-                                                                    </h:panelGroup>
+                                                                    </h:panelGroup>-->
                                                                 </td>
                                                             </tr>
                                                         </table>
@@ -629,14 +630,14 @@
                                             <tr>
                                                 <td style="padding-bottom: 10px">
                                                     <label>Documento de respuesta:</label>
-                                                    <input type="text" placeholder="Documento de respuesta" jsf:value="#{registroController.expedienteGestion.documentoRespuesta}" />
+                                                    <input type="text" placeholder="Documento de respuesta" jsf:value="#{registroController.expedienteGestion.documentoRespuesta}" style="width: 50%"/>
                                                 </td>
                                                 <td></td>
                                             </tr>
                                             <tr>
                                                 <td colspan="2" style="padding-bottom: 10px">
                                                     <label>Calidad Respuesta:</label>
-                                                    <h:selectOneMenu value="#{registroController.expedienteGestion.tipoCalidad}">
+                                                    <h:selectOneMenu value="#{registroController.expedienteGestion.tipoCalidad}" style="width: 50%">
                                                         <f:selectItem itemValue="0" itemLabel="Selecione" />
                                                         <f:selectItems value="#{listasComunesController.buscarGestionTipoCalidadRespuesta(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
                                                     </h:selectOneMenu>

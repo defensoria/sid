@@ -2742,6 +2742,10 @@ public class RegistroController extends AbstractManagedBean implements Serializa
          */
 
         msg.messageInfo("Se concluyó la etapa", null);
+        if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_PETITORIO.getKey()) || Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_QUEJA.getKey())) {
+                setearExpedienteTiempo();
+                return "expedienteEdit";
+            }
         return "expedienteGestionLista";
     }
 
@@ -2962,7 +2966,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 }
                 if (ep.getPersona().getFechaNacimiento() != null) {
                     int year = getMonths(ep.getPersona().getFechaNacimiento(), new Date());
-                    if (year >= 65) {
+                    if (year > 60) {
                         if (adultosMayores == 0) {
                             if (!sb.toString().contains("03")) {
                                 sb.append(",03");
@@ -2970,7 +2974,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                             adultosMayores++;
                         }
                     }
-                    if (year < 12) {
+                    if (year <= 12) {
                         if (nin == 0) {
                             if (!sb.toString().contains("02")) {
                                 sb.append(",02");

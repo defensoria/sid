@@ -46,12 +46,11 @@
                                         <tr>
                                             <td>
                                                 <span style="font-size: 2em" class="text-resalt-primary">Expediente: #{registroController.expediente.numero}</span>
-
                                                 <h:outputText value=" (CONCLUIDO)" rendered="#{registroController.expediente.general == 'C'}"  style="color: red; font-weight: bold; font-size: 1.5em" />
                                             </td>
                                             <td style="text-align: right">
                                                 <a jsf:action="#{registroController.pdf()}">
-                                                    <img src="../../bootstrap/img/pdf.png" alt="Plan de Intervencion" height="30" width="30"/>
+                                                    <img src="../../bootstrap/img/pdf.png" height="30" width="30"/>
                                                 </a>
                                             </td>
                                         </tr>
@@ -547,7 +546,7 @@
                                                 <table style="width: 100%">
                                                     <tr>
                                                         <td style="padding-bottom: 10px" colspan="2">
-                                                            <span class="text-bold" style="font-size: 1.2em; color: red">Ambito</span>
+                                                            <span class="text-bold" style="font-size: 1.2em; color: red">Ámbito</span>
                                                         </td>
                                                     </tr> 
                                                     <tr>
@@ -814,6 +813,7 @@
                                                                                         </div> 
                                                                                     </td>
                                                                                     <td style="vertical-align: top">
+                                                                                        <h:panelGroup rendered="#{registroController.expediente.tipoClasificion == '01'}">
                                                                                         <div class="alert alert-info fade in" style="margin-bottom: 3px; padding: 5px">
                                                                                             <style>
                                                                                                 .columnRed{
@@ -848,7 +848,8 @@
                                                                                                     </td>
                                                                                                 </tr>
                                                                                             </table>
-                                                                                        </div>            
+                                                                                        </div>  
+                                                                                            </h:panelGroup>
                                                                                     </td>
                                                                                 </tr>
                                                                             </table>
@@ -1076,9 +1077,9 @@
                                         <div class="panel panel-featured-top-silver" id="idPanel3">
                                             <div class="panel-body">
                                                 <br/>
-
-                                                <h:outputText rendered="#{!registroController.expediente.indicadorOficio}" value="Recurrentes y afectados" class="text-resalt-primary" />
-                                                <h:outputText rendered="#{registroController.expediente.indicadorOficio}" value="Afectados" class="text-resalt-primary" />
+                                                <h:outputText rendered="#{registroController.expediente.tipoClasificion == '02'}" value="Recurrente" class="text-resalt-primary" />
+                                                <h:outputText rendered="#{!registroController.expediente.indicadorOficio and registroController.expediente.tipoClasificion != '02'}" value="Recurrentes y afectados" class="text-resalt-primary" />
+                                                <h:outputText rendered="#{registroController.expediente.indicadorOficio and registroController.expediente.tipoClasificion != '02'}" value="Afectados" class="text-resalt-primary" />
                                                 <br/>
                                                 <h:panelGroup id="idPanelRecurrentes">
                                                     <table style="width: 100%">
@@ -1199,7 +1200,7 @@
                                                             </td>
                                                             <td style="text-align: right">
                                                                 <a style="text-decoration:none" class="btn btn-primary" jsf:action="#{registroController.cargarModalActor()}" jsf:onclick="loadingModal()">
-                                                                    <span class="glyphicon glyphicon-user"/>Agregar
+                                                                    <span class="glyphicon glyphicon-user"/>Nueva Persona
                                                                     <f:ajax render="idPanelAgregarPersona" onevent="openModalNuevaPersona"/>
                                                                 </a>
                                                                 <h:panelGroup id="idPanelAgregarPersona">
@@ -1593,32 +1594,32 @@
                                                             </td>
                                                         </tr>
                                                     </table>
-                                                    <span class="text-bold">Expediente de oficio:</span>
+                                                    <h:outputText value="Expediente de oficio:" rendered="#{registroController.expediente.tipoClasificion != '02'}" class="text-bold"/>
 
-                                                    <h:selectBooleanCheckbox class="idChecExpedienteOficio" value="#{registroController.expediente.indicadorOficio}" style="background: #EEEEEE; pointer-events:none;"/>
+                                                    <h:selectBooleanCheckbox rendered="#{registroController.expediente.tipoClasificion != '02'}" class="idChecExpedienteOficio" value="#{registroController.expediente.indicadorOficio}" style="background: #EEEEEE; pointer-events:none;"/>
                                                     <br/><br/><br/>
                                                     <table>
                                                         <tr>
                                                             <td style="padding-bottom: 10px" colspan="2">
                                                                 <br/>
-                                                                <span class="text-bold" style="font-size: 1.2em; color: red">Grupo Vulnerables y Especiales</span>
+                                                                <h:outputText value="Grupo Vulnerables y Especiales" rendered="#{registroController.expediente.tipoClasificion != '02'}" class="text-bold" style="font-size: 1.2em; color: red"/>
                                                             </td>
                                                         </tr>
                                                         <tr>
                                                             <td style="padding-bottom: 20px">
-                                                                <span class="text-bold">Grupos vulnerables :</span>
+                                                                <h:outputText value="Grupos vulnerables:" rendered="#{registroController.expediente.tipoClasificion != '02'}" class="text-bold"/>
                                                             </td>
                                                             <td style="padding-bottom: 20px">
-                                                                <gc:selectMultiBootstrap idSelect="idSelectGrupoViolencia" idHidden="idSelect1" 
+                                                                <gc:selectMultiBootstrap idSelect="idSelectGrupoViolencia" idHidden="idSelect1" rendered="#{registroController.expediente.tipoClasificion != '02'}"
                                                                                          lista="#{listasComunesController.buscarGrupoVulnerable(false,false,false)}" value="#{registroController.expediente.tipoGrupoVulnerable}"/>
                                                             </td>
                                                         </tr>
                                                         <tr>
                                                             <td style="padding-bottom: 20px">
-                                                                <span class="text-bold">Grupos especiales :</span>
+                                                                <h:outputText value="Grupos especiales:" rendered="#{registroController.expediente.tipoClasificion != '02'}" class="text-bold"/>
                                                             </td>
                                                             <td style="padding-bottom: 20px">
-                                                                <gc:selectMultiBootstrap idSelect="idSelectGrupoEspecial" idHidden="idSelect32" 
+                                                                <gc:selectMultiBootstrap idSelect="idSelectGrupoEspecial" idHidden="idSelect32" rendered="#{registroController.expediente.tipoClasificion != '02'}" 
                                                                                          lista="#{listasComunesController.buscarGrupoEspecial(false,false,false)}" value="#{registroController.expediente.tipoGrupoEspecial}"/>
                                                             </td>
                                                         </tr>
