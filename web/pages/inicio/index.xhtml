@@ -35,6 +35,10 @@
                                                     <f:facet name="header">Nro</f:facet>
                                                     <h:outputText value="#{(row3.rowIndex+1)+(registroController.nroPagina-1)*10}" />
                                                 </h:column>
+                                                <h:column rendered="#{seguridadUtilController.tieneRecurso('REC_EXP008')}">
+                                                    <f:facet name="header">Comisionado</f:facet>
+                                                    <h:outputText value="#{exped.comisionado}" />
+                                                </h:column>
                                                 <h:column>
                                                     <f:facet name="header"><a jsf:action="#{registroController.listarExpedienteUsuarioPaginadoOrder(1,2)}">Expediente</a></f:facet>
                                                     <h:outputText class="round tooltip-right" title="#{exped.sumilla == null? '' : exped.sumilla}" value="#{exped.numero}" />
@@ -122,7 +126,7 @@
                                                         ],
                                                         xkey: 'x',
                                                         ykeys: ['y', 'z'],
-                                                        labels: ['Activo', 'Concluido']
+                                                        labels: ['Trámite', 'Concluido']
                                                     }).on('click', function (i, row) {
                                                         console.log(i, row);
                                                     });

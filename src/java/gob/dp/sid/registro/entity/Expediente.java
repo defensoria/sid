@@ -131,6 +131,8 @@ public class Expediente implements Serializable{
     private Integer tipoBusqueda;
     
     private String comisionado;
+    
+    private Integer idOficinaDefensorial;
 
     public Long getId() {
         return id;
@@ -596,6 +598,14 @@ public class Expediente implements Serializable{
 
     public void setComisionado(String comisionado) {
         this.comisionado = comisionado;
+    }
+
+    public Integer getIdOficinaDefensorial() {
+        return idOficinaDefensorial;
+    }
+
+    public void setIdOficinaDefensorial(Integer idOficinaDefensorial) {
+        this.idOficinaDefensorial = idOficinaDefensorial;
     }
 
 }

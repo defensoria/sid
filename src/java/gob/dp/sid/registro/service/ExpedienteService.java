@@ -49,5 +49,7 @@ public interface ExpedienteService {
     public void expedienteDesistir(Expediente expediente);
     
     public List<Expediente> expedienteBuscarUsuarioCompleto(Expediente expediente);
+    
+    public List<Expediente> expedienteBuscarUsuarioODPaginado(Expediente expediente);
 
 }

@@ -7,6 +7,7 @@ package gob.dp.sid.registro.controller;
 
 import gob.dp.sid.administracion.seguridad.controller.LoginController;
 import gob.dp.sid.administracion.seguridad.controller.MenuController;
+import gob.dp.sid.administracion.seguridad.controller.SeguridadUtilController;
 import gob.dp.sid.administracion.seguridad.entity.Usuario;
 import gob.dp.sid.administracion.seguridad.service.UsuarioService;
 import gob.dp.sid.bandeja.controller.BandejaController;
@@ -1552,6 +1553,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             expedienteGestion.setUsuarioRegistro(usuarioSession.getCodigo());
             expedienteGestion.setFechaRegistro(new Date());
             expedienteGestion.setCodigoGestion("GES" + formato);
+            expedienteGestion.setFecha(new Date());
             expedienteGestionService.expedienteGestionInsertar(expedienteGestion);
             guardarGestionEtapa();
             msg.messageInfo("Se registro una nueva gestión", null);
@@ -1602,8 +1604,16 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             e.setUsuarioRegistro(usuarioSession.getCodigo());
             e.setIni(ini);
             e.setFin(fin);
-
-            List<Expediente> list = expedienteService.expedienteBuscarUsuarioPaginado(e);
+            FacesContext context = FacesContext.getCurrentInstance();
+            SeguridadUtilController seguridadUtilController = (SeguridadUtilController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "seguridadUtilController");
+            List<Expediente> list;
+            if(seguridadUtilController.tieneRecurso("REC_EXP008")){
+                e.setIdOficinaDefensorial(usuarioSession.getCodigoOD());
+                list = expedienteService.expedienteBuscarUsuarioODPaginado(e);
+            }else{
+                e.setUsuarioRegistro(usuarioSession.getCodigo());
+                list = expedienteService.expedienteBuscarUsuarioPaginado(e);
+            }
             if (list.size() > 0) {
                 for (Expediente e1 : list) {
                     e1.setEtapaDetalle(devolverEtapa(e1));
@@ -1637,11 +1647,19 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 ini = 1;
                 fin = 10;
             }
-            e.setUsuarioRegistro(usuarioSession.getCodigo());
             e.setIni(ini);
             e.setFin(fin);
-
-            List<Expediente> list = expedienteService.expedienteBuscarUsuarioPaginado(e);
+            List<Expediente> list;
+            FacesContext context = FacesContext.getCurrentInstance();
+            SeguridadUtilController seguridadUtilController = (SeguridadUtilController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "seguridadUtilController");
+            if(seguridadUtilController.tieneRecurso("REC_EXP008")){
+                e.setIdOficinaDefensorial(usuarioSession.getCodigoOD());
+                list = expedienteService.expedienteBuscarUsuarioODPaginado(e);
+            }else{
+                e.setUsuarioRegistro(usuarioSession.getCodigo());
+                list = expedienteService.expedienteBuscarUsuarioPaginado(e);
+            }
+            
             if (list.size() > 0) {
                 for (Expediente e1 : list) {
                     e1.setEtapaDetalle(devolverEtapa(e1));
@@ -2540,11 +2558,13 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             msg.messageAlert("Debe seleccionar un tipo de expediente", null);
             return false;
         }
-        if(expediente.getIndicadorOficio()){
+        if(!StringUtils.equals(expediente.getTipoClasificion(), ExpedienteType.CONSULTA.getKey())){
+            if(expediente.getIndicadorOficio()){
             if(StringUtils.equals(expediente.getTipoClasificion(), ExpedienteType.CONSULTA.getKey())){
                 msg.messageAlert("Un expediente de oficio no puede ser del tipo consulta", null);
                 return false;
             }
+        }
         }
         try {
             Long idExpedienteOld = null;
@@ -2605,6 +2625,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 expediente.setUsuarioRegistro(usuarioSession.getCodigo());
                 expediente.setVersion(1);
                 generarCodigoExpediente();
+                expediente.setFechaIngreso(new Date());
                 expediente.setFechaRegistro(new Date());
             } else {
                 expediente.setVersion(expediente.getVersion() + 1);
@@ -2724,13 +2745,9 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             }
         }
 
-        if (StringUtils.equals(expediente.getTipoClasificion(), ExpedienteType.QUEJA.getKey())) {
-            if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_QUEJA.getKey())) {
-                if (expediente.getListaExpedienteNivel().size() == 0) {
-                    msg.messageAlert("Debe ingresar al menos una clasificación", null);
-                    return null;
-                }
-            }
+        
+        if(!validaConcluision()){
+            return null;
         }
         guardar();
         guardarEtapaEstadoConcluir(idExpedienteOld);
@@ -2747,6 +2764,70 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 return "expedienteEdit";
             }
         return "expedienteGestionLista";
+    }
+    
+    private boolean validaConcluision(){
+        if (StringUtils.equals(expediente.getTipoClasificion(), ExpedienteType.QUEJA.getKey()) || StringUtils.equals(expediente.getTipoClasificion(), ExpedienteType.PETITORIO.getKey())) {
+            if(StringUtils.equals(expediente.getTipoIngreso(), "0")){
+                    msg.messageAlert("Debe ingresar el canal de ingreso", null);
+                    return false;
+            
+            }
+            if(StringUtils.isBlank(expediente.getSumilla())){
+                    msg.messageAlert("Debe ingresar la sumilla", null);
+                    return false;
+            
+            }
+            if(!expediente.getIndicadorOficio()){
+                if(personasSeleccionadas.size() == 0){
+                    msg.messageAlert("Debe ingresar el recurrente y el afectado", null);
+                    return false;
+            }else{
+                int i = 0;
+                int j = 0;
+                for(ExpedientePersona ep : personasSeleccionadas ){
+                    if(StringUtils.equals(ep.getTipo(), "01")){
+                        i++;
+                    }
+                    if(StringUtils.equals(ep.getTipo(), "03")){
+                        j++;
+                    }
+                }
+                if(i == 0){
+                    msg.messageAlert("Debe ingresar el recurrente", null);
+                    return false;
+                }
+                if(j == 0){
+                    msg.messageAlert("Debe ingresar el afectado", null);
+                    return false;
+                }
+            }
+            }else{
+                if(personasSeleccionadas.size() == 0){
+                    msg.messageAlert("Debe ingresar el afectado", null);
+                    return false;
+            }else{
+                int j = 0;
+                for(ExpedientePersona ep : personasSeleccionadas ){
+                    if(StringUtils.equals(ep.getTipo(), "03")){
+                        j++;
+                    }
+                }
+                
+                if(j == 0){
+                    msg.messageAlert("Debe ingresar el afectado", null);
+                    return false;
+                }
+            }
+            }
+            if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_QUEJA.getKey())) {
+                if (expediente.getListaExpedienteNivel().size() == 0) {
+                    msg.messageAlert("Debe ingresar al menos una clasificación", null);
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     private void guardarEtapaEstado(Long idExpedienteOld) {

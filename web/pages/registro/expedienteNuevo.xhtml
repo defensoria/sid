@@ -47,6 +47,7 @@
                                             <td>
                                                 <span style="font-size: 2em" class="text-resalt-primary">Expediente: #{registroController.expediente.numero}</span>
                                                 <h:outputText value=" (CONCLUIDO)" rendered="#{registroController.expediente.general == 'C'}"  style="color: red; font-weight: bold; font-size: 1.5em" />
+                                                <h:outputText value="- (DESISTIDO)" rendered="#{registroController.expediente.indicadorDesestimiento == 1}"  style="color: red; font-weight: bold; font-size: 1.5em" />
                                             </td>
                                             <td style="text-align: right">
                                                 <a jsf:action="#{registroController.pdf()}">
@@ -425,13 +426,13 @@
                                                                 </a>
                                                             </h:panelGroup>
                                                             &#160;&#160;
-                                                            <h:panelGroup rendered="#{registroController.etapaEstado.verEtapa == 1 or registroController.etapaEstado.verEtapa == 5 }">
+                                                            <h:panelGroup rendered="#{(registroController.etapaEstado.verEtapa == 1 or registroController.etapaEstado.verEtapa == 5) and !registroController.expediente.indicadorOficio }">
                                                                 <a class="btn btn-info">
                                                                     <span class="glyphicon glyphicon-link" />Mayor información
                                                                 </a>
                                                             </h:panelGroup>   
                                                             &#160;&#160;
-                                                            <h:panelGroup rendered="#{registroController.expediente.id != null and registroController.expediente.version > 0 and registroController.expediente.general != 'C' and registroController.verBotonRegistrarExpediente and registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo}">
+                                                            <h:panelGroup rendered="#{registroController.expediente.id != null and registroController.expediente.version > 0 and registroController.expediente.general != 'C' and registroController.verBotonRegistrarExpediente and registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo and !registroController.expediente.indicadorOficio}">
                                                                 <a class="btn btn-danger" onclick="confirmar0()" >
                                                                     <span class="glyphicon glyphicon-remove" />Desistir
                                                                 </a>
@@ -481,7 +482,9 @@
                                                         <span class="text-bold">Fecha de Ingreso:</span>
                                                     </td>
                                                     <td style="padding-bottom: 10px">
-                                                        <gc:calendar value="#{registroController.expediente.fechaIngreso}" />
+                                                        <h:outputText value="#{registroController.expediente.fechaIngreso}" style="font-weight: bold; font-size: 1.5em">
+                                                            <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
+                                                        </h:outputText>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -1020,7 +1023,7 @@
                                             <span class="text-bold">Observaciones</span>
                                             <textarea rows="5" jsf:value="#{registroController.expediente.observacion}" style="width: 100%" placeholder="Observacion"  maxlength="1950"/>
                                             <br/><br/>
-                                            <h:selectBooleanCheckbox value="#{registroController.expediente.indRelevante}" >
+                                            <h:selectBooleanCheckbox rendered="#{registroController.expediente.tipoClasificion != '02'}" value="#{registroController.expediente.indRelevante}" >
                                                 El caso es relevante? 
                                             </h:selectBooleanCheckbox>
                                             <br/>
@@ -1223,11 +1226,27 @@
                                                                     <div class="modal fade" data-backdrop="static" data-keyboard="false" id="idModalNuevaPersona" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                                                         <div class="modal-dialog" style="text-align: left">
                                                                             <div class="modal-content">
+                                                                                <div class="modal-footer">
+                                                                                        
+                                                                                    </div>
                                                                                 <div class="modal-header">
-                                                                                    <a type="button" class="close" data-dismiss="modal">
-                                                                                        <span style="color:red" class="glyphicon glyphicon-remove"></span>
-                                                                                    </a>
-                                                                                    <span class="text-resalt-primary">Registro de Persona</span>
+                                                                                    <table style="width: 100%">
+                                                                                            <tr>
+                                                                                                    <td>
+                                                                                            <span class="text-resalt-primary">Registro de Persona</span>
+                                                                                                </td>
+                                                                                                <td style="text-align: right">
+                                                                                            <a  class="btn btn-default" data-dismiss="modal">
+                                                                                            <span class="glyphicon glyphicon-remove"/>Cerrar
+                                                                                        </a>
+                                                                                        <a jsf:action="#{registroController.guardarVincularListaPersona()}" class="btn btn-primary">
+                                                                                            <span class="glyphicon glyphicon-floppy-disk" />Guardar
+                                                                                        </a>
+                                                                                                </td>
+                                                                                        </tr>
+                                                                                    </table>
+                                                                                    
+                                                                                    
                                                                                 </div>
                                                                                 <div class="modal-body" style="padding:5px">
                                                                                     <div class="panel-body">
@@ -1249,7 +1268,7 @@
                                                                                             <table style="width: 100%">
                                                                                                 <tr jsf:rendered="#{registroController.persona.tipo == 'PER'}">
                                                                                                     <td style="width: 20%"><b>Tipo de documento:</b></td>
-                                                                                                    <td style="padding-bottom: 10px;">
+                                                                                                    <td style="padding-bottom: 5px;">
                                                                                                         <h:selectOneMenu value="#{registroController.persona.tipoDocumento}" style="width: 50%">
                                                                                                             <f:selectItems value="#{listasComunesController.buscarTipoDocumento(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
                                                                                                         </h:selectOneMenu>
@@ -1257,7 +1276,7 @@
                                                                                                 </tr>
                                                                                                 <tr jsf:rendered="#{registroController.persona.tipo == 'PER'}">
                                                                                                     <td style="width: 20%"><b>Número documento:</b></td>
-                                                                                                    <td style="padding-bottom: 10px;">
+                                                                                                    <td style="padding-bottom: 5px;">
                                                                                                         <table>
                                                                                                             <tr>
                                                                                                                 <td>
@@ -1275,31 +1294,31 @@
                                                                                                 </tr>
                                                                                                 <tr>
                                                                                                     <td style="width: 20%"><b>Nombre:</b></td>
-                                                                                                    <td style="padding-bottom: 10px">
+                                                                                                    <td style="padding-bottom: 5px">
                                                                                                         <input type="text" placeholder="Nombre" jsf:value="#{registroController.persona.nombre}" style="width: 90%" maxlength="200"/>
                                                                                                     </td>
                                                                                                 </tr>
                                                                                                 <tr jsf:rendered="#{registroController.persona.tipo == 'ORG'}">
                                                                                                     <td><b>Contacto:</b></td>
-                                                                                                    <td style="padding-bottom: 10px">
+                                                                                                    <td style="padding-bottom: 5px">
                                                                                                         <input type="text" placeholder="Contacto" jsf:value="#{registroController.persona.contacto}" style="width: 90%" maxlength="50"/>
                                                                                                     </td>
                                                                                                 </tr>
                                                                                                 <tr jsf:rendered="#{registroController.persona.tipo == 'PER'}">
                                                                                                     <td><b>Apellido paterno:</b></td>
-                                                                                                    <td style="padding-bottom: 10px;">
+                                                                                                    <td style="padding-bottom: 5px;">
                                                                                                         <input type="text" placeholder="Apellido Paterno" jsf:value="#{registroController.persona.apellidoPat}" style="width: 90%" maxlength="100"/>
                                                                                                     </td>
                                                                                                 </tr>
                                                                                                 <tr jsf:rendered="#{registroController.persona.tipo == 'PER'}">
                                                                                                     <td><b>Apellido Materno:</b></td>
-                                                                                                    <td style="padding-bottom: 10px">
+                                                                                                    <td style="padding-bottom: 5px">
                                                                                                         <input type="text" placeholder="Apellido Materno" jsf:value="#{registroController.persona.apellidoMat}" style="width: 90%" maxlength="100"/>
                                                                                                     </td>
                                                                                                 </tr>
                                                                                                 <tr jsf:rendered="#{registroController.persona.tipo == 'PER'}">
                                                                                                     <td><b>Fecha de nacimiento:</b></td>
-                                                                                                    <td style="padding-bottom: 10px; padding-right: 200px;" >
+                                                                                                    <td style="padding-bottom: 5px; padding-right: 200px;" >
                                                                                                         <script>
                                                                                                             $(document).ready(function () {
                                                                                                                 $('.datepicker').datetimepicker({
@@ -1317,7 +1336,7 @@
                                                                                                 </tr>
                                                                                                 <tr jsf:rendered="#{registroController.persona.tipo == 'PER'}">
                                                                                                     <td ><b>Sexo:</b></td>
-                                                                                                    <td style="padding-bottom: 10px">
+                                                                                                    <td style="padding-bottom: 5px">
                                                                                                         <h:selectOneRadio value="#{registroController.persona.sexo}">
                                                                                                             <f:selectItem itemLabel="Masculino" itemValue="M"/>
                                                                                                             <f:selectItem itemLabel="Femenino" itemValue="F"/>
@@ -1326,7 +1345,7 @@
                                                                                                 </tr>
                                                                                                 <tr>
                                                                                                     <td><b>Dirección:</b></td>
-                                                                                                    <td style="padding-bottom: 10px">
+                                                                                                    <td style="padding-bottom: 5px">
                                                                                                         <input type="text" placeholder="Dirección" jsf:value="#{registroController.persona.direccion}" style="width: 90%" maxlength="300"/><br/>
                                                                                                         <h:panelGroup id="idUbigeoPersona">
                                                                                                             <table style="width:90%">
@@ -1356,9 +1375,9 @@
                                                                                                         </h:panelGroup>
                                                                                                     </td>
                                                                                                 </tr>
-                                                                                                <tr jsf:rendered="#{registroController.persona.tipo == 'PER'}">
+                                                                                                <tr>
                                                                                                     <td><b>Lengua materna:</b></td>
-                                                                                                    <td style="padding-bottom: 10px">
+                                                                                                    <td style="padding-bottom: 5px">
                                                                                                         <h:selectOneMenu value="#{registroController.persona.tipoLengua}" style="width: 50%">
                                                                                                             <f:selectItem itemLabel="Seleccione" itemValue="0"/>
                                                                                                             <f:selectItems value="#{listasComunesController.listaLenguaMaterna(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
@@ -1366,49 +1385,47 @@
                                                                                                     </td>
                                                                                                 </tr>
                                                                                                 <tr>
-                                                                                                    <td style="padding-top: 10px"><b>Pueblo indígena u originarios:</b></td>
-                                                                                                    <td style="padding-bottom: 10px; padding-top: 10px" colspan="2">
+                                                                                                    <td style="padding-top: 5px"><b>Pueblo indígena u originarios:</b></td>
+                                                                                                    <td style="padding-bottom: 5px; padding-top: 10px" colspan="2">
                                                                                                         <h:selectOneMenu value="#{registroController.persona.tipoLengua}" style="width: 50%">
                                                                                                             <f:selectItem itemLabel="Seleccione" itemValue="0"/>
                                                                                                             <f:selectItems value="#{listasComunesController.listaPuebloIndigena(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
                                                                                                         </h:selectOneMenu>
                                                                                                     </td>
                                                                                                 </tr>
-                                                                                                <tr jsf:rendered="#{registroController.persona.tipo == 'PER'}">
-                                                                                                    <td><b>Es discapacitado?</b></td>
-                                                                                                    <td style="padding-bottom: 10px">
+                                                                                                <tr>
+                                                                                                    <td><b>¿es persona con discapacidad?</b></td>
+                                                                                                    <td style="padding-bottom: 5px">
                                                                                                         <h:selectBooleanCheckbox value="#{registroController.persona.indicadorDiscapacitado}" />
                                                                                                     </td>
                                                                                                 </tr>
                                                                                                 <tr>
                                                                                                     <td><b>Correo:</b></td>
-                                                                                                    <td style="padding-bottom: 10px">
-                                                                                                        <input type="text" placeholder="Correo electronico" jsf:value="#{registroController.persona.email}" style="width: 90%" maxlength="100"/>
+                                                                                                    <td style="padding-bottom: 5px">
+                                                                                                        <input type="text" placeholder="Correo electrónico" jsf:value="#{registroController.persona.email}" style="width: 90%" maxlength="100"/>
                                                                                                     </td>
                                                                                                 </tr>
                                                                                                 <tr>
-                                                                                                    <td><b>Primer teléfono:</b></td>
-                                                                                                    <td style="padding-bottom: 10px">
-                                                                                                        <input type="text" placeholder="Telefono 1" jsf:value="#{registroController.persona.telefono1}" style="width: 90%" maxlength="50"/>
-                                                                                                    </td>
-                                                                                                </tr>
-                                                                                                <tr>
-                                                                                                    <td><b>Segundo teléfono:</b></td>
-                                                                                                    <td style="padding-bottom: 10px">
-                                                                                                        <input type="text" placeholder="Telefono 2" jsf:value="#{registroController.persona.telefono2}" style="width: 90%" maxlength="50"/>
+                                                                                                    <td><b>Teléfonos:</b></td>
+                                                                                                    <td style="padding-bottom: 5px">
+                                                                                                        <table style="width: 90%">
+                                                                                                                    <tr>
+                                                                                                                            <td  style="width: 50%">
+                                                                                                                                <input type="text" placeholder="Telefono 1" jsf:value="#{registroController.persona.telefono1}" maxlength="50"/>
+                                                                                                                        </td>
+                                                                                                                            <td>
+                                                                                                                                <input type="text" placeholder="Telefono 2" jsf:value="#{registroController.persona.telefono2}" maxlength="50"/>
+                                                                                                                        </td>
+                                                                                                                </tr>
+                                                                                                        </table>
+                                                                                                        
+                                                                                                        
                                                                                                     </td>
                                                                                                 </tr>
                                                                                             </table>
                                                                                         </h:panelGroup>
                                                                                     </div>
-                                                                                    <div class="modal-footer">
-                                                                                        <a  class="btn btn-default" data-dismiss="modal">
-                                                                                            <span class="glyphicon glyphicon-remove"/>Cerrar
-                                                                                        </a>
-                                                                                        <a jsf:action="#{registroController.guardarVincularListaPersona()}" class="btn btn-primary">
-                                                                                            <span class="glyphicon glyphicon-floppy-disk" />Guardar
-                                                                                        </a>
-                                                                                    </div>
+                                                                                    
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -1556,7 +1573,7 @@
                                                                                         <tr>
                                                                                             <td><b>Correo:</b></td>
                                                                                             <td style="padding-bottom: 10px">
-                                                                                                <input type="text" placeholder="Correo electronico" jsf:value="#{registroController.expedientepersonaModalEdit.email}" style="width: 90%" maxlength="100"/>
+                                                                                                <input type="text" placeholder="Correo electrónico" jsf:value="#{registroController.expedientepersonaModalEdit.email}" style="width: 90%" maxlength="100"/>
                                                                                             </td>
                                                                                         </tr>
                                                                                         <tr>

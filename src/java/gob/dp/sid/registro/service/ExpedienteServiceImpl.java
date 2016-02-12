@@ -82,7 +82,8 @@ public class ExpedienteServiceImpl implements ExpedienteService{
 
     @Override
     public List<Expediente> expedienteReporteMesUsuario(Expediente expediente) {
-        return expedienteDAO.expedienteReporteMesUsuario(expediente);    }
+        return expedienteDAO.expedienteReporteMesUsuario(expediente);    
+    }
 
     @Override
     public List<Expediente> expedientexPersona(long idPersona) {
@@ -132,6 +133,11 @@ public class ExpedienteServiceImpl implements ExpedienteService{
     @Override
     public List<Expediente> expedienteBuscarUsuarioCompleto(Expediente expediente) {
         return expedienteDAO.expedienteBuscarUsuarioCompleto(expediente);
+    }
+
+    @Override
+    public List<Expediente> expedienteBuscarUsuarioODPaginado(Expediente expediente) {
+        return expedienteDAO.expedienteBuscarUsuarioODPaginado(expediente);
     }
     
 }

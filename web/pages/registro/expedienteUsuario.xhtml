@@ -78,196 +78,208 @@
                                                 <div class="modal fade" data-backdrop="static" data-keyboard="false" id="idModalNuevaPersona" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                                     <div class="modal-dialog" style="text-align: left">
                                                         <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <a type="button" class="close" data-dismiss="modal">
-                                                                    <span style="color:red" class="glyphicon glyphicon-remove"></span>
-                                                                </a>
-                                                                <span class="text-resalt-primary">Registro de Persona</span>
-                                                            </div>
-                                                            <div class="modal-body" style="padding:5px">
-                                                                <div class="panel-body">
-                                                                    <h:panelGroup id="idPanelTipoPersona">
-                                                                        <h:messages />
-                                                                        <table>
-                                                                            <tr>
-                                                                                <td>
-                                                                                    <span class="text-bold">Tipo:</span>
-                                                                                </td>
-                                                                                <td>
-                                                                                    <h:selectOneRadio value="#{registroController.persona.tipo}">
-                                                                                        <f:selectItem itemLabel="Persona" itemValue="PER"/>
-                                                                                        <f:selectItem itemLabel="Organización" itemValue="ORG"/>
-                                                                                        <f:ajax render="idPanelTipoPersona" execute="idPanelTipoPersona" />
-                                                                                    </h:selectOneRadio>
-                                                                                </td>
-                                                                            </tr>
-                                                                        </table>
-                                                                        <table style="width: 100%">
-                                                                            <tr jsf:rendered="#{registroController.persona.tipo == 'PER'}">
-                                                                                <td style="width: 20%"><b>Tipo de documento:</b></td>
-                                                                                <td style="padding-bottom: 10px;">
-                                                                                    <h:selectOneMenu value="#{registroController.persona.tipoDocumento}" style="width: 50%">
-                                                                                        <f:selectItems value="#{listasComunesController.buscarTipoDocumento(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
-                                                                                    </h:selectOneMenu>
-                                                                                </td>
-                                                                            </tr>
-                                                                            <tr jsf:rendered="#{registroController.persona.tipo == 'PER'}">
-                                                                                <td style="width: 20%"><b>Número documento</b></td>
-                                                                                <td style="padding-bottom: 10px;">
-                                                                                    <table>
-                                                                                        <tr>
-                                                                                            <td>
-                                                                                                <input type="text" placeholder="Número documento" jsf:value="#{registroController.persona.numeroDocumento}" maxlength="8"/>
-                                                                                            </td>
-                                                                                            <td style="text-align: left">
-                                                                                                <a class="btn btn-primary" jsf:action="#{registroController.consultarReniec()}" jsf:onclick="loadingModal()">
-                                                                                                    <span class="glyphicon glyphicon-search" />Reniec
-                                                                                                    <f:ajax render="idPanelTipoPersona" execute="idPanelTipoPersona" onevent="closeModal"/>
-                                                                                                </a>
-                                                                                            </td>
+                                                                                <div class="modal-footer">
+                                                                                        
+                                                                                    </div>
+                                                                                <div class="modal-header">
+                                                                                    <table style="width: 100%">
+                                                                                            <tr>
+                                                                                                    <td>
+                                                                                            <span class="text-resalt-primary">Registro de Persona</span>
+                                                                                                </td>
+                                                                                                <td style="text-align: right">
+                                                                                            <a  class="btn btn-default" data-dismiss="modal">
+                                                                                            <span class="glyphicon glyphicon-remove"/>Cerrar
+                                                                                        </a>
+                                                                                                    <a jsf:action="#{registroController.guardarVincularPersona()}" class="btn btn-primary">
+                                                                                            <span class="glyphicon glyphicon-floppy-disk" />Guardar
+                                                                                        </a>
+                                                                                                </td>
                                                                                         </tr>
                                                                                     </table>
-                                                                                </td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td style="width: 20%"><b>Nombre:</b></td>
-                                                                                <td style="padding-bottom: 10px">
-                                                                                    <input type="text" placeholder="Nombre" jsf:value="#{registroController.persona.nombre}" style="width: 90%" maxlength="200"/>
-                                                                                </td>
-                                                                            </tr>
-                                                                            <tr jsf:rendered="#{registroController.persona.tipo == 'ORG'}">
-                                                                                <td><b>Contacto:</b></td>
-                                                                                <td style="padding-bottom: 10px">
-                                                                                    <input type="text" placeholder="Contacto" jsf:value="#{registroController.persona.contacto}" style="width: 90%" maxlength="50"/>
-                                                                                </td>
-                                                                            </tr>
-                                                                            <tr jsf:rendered="#{registroController.persona.tipo == 'PER'}">
-                                                                                <td><b>Apellido paterno:</b></td>
-                                                                                <td style="padding-bottom: 10px;">
-                                                                                    <input type="text" placeholder="Apellido Paterno" jsf:value="#{registroController.persona.apellidoPat}" style="width: 90%" maxlength="100"/>
-                                                                                </td>
-                                                                            </tr>
-                                                                            <tr jsf:rendered="#{registroController.persona.tipo == 'PER'}">
-                                                                                <td><b>Apellido Materno:</b></td>
-                                                                                <td style="padding-bottom: 10px">
-                                                                                    <input type="text" placeholder="Apellido Materno" jsf:value="#{registroController.persona.apellidoMat}" style="width: 90%" maxlength="100"/>
-                                                                                </td>
-                                                                            </tr>
-                                                                            <tr jsf:rendered="#{registroController.persona.tipo == 'PER'}">
-                                                                                <td><b>Fecha de nacimiento:</b></td>
-                                                                                <td style="padding-bottom: 10px; padding-right: 200px;" >
-                                                                                    <script>
-                                                                                        $(document).ready(function () {
-                                                                                            $('.datepicker').datetimepicker({
-                                                                                                pickTime: false
-                                                                                            });
-                                                                                            $(".datepicker").on("changeDate", function (ev) {
-                                                                                                $(this).datetimepicker("hide");
-                                                                                            });
-                                                                                        });
+                                                                                    
+                                                                                    
+                                                                                </div>
+                                                                                <div class="modal-body" style="padding:5px">
+                                                                                    <div class="panel-body">
+                                                                                        <h:panelGroup id="idPanelTipoPersona">
+                                                                                            <table>
+                                                                                                <tr>
+                                                                                                    <td>
+                                                                                                        <span class="text-bold">Tipo:</span>
+                                                                                                    </td>
+                                                                                                    <td>
+                                                                                                        <h:selectOneRadio value="#{registroController.persona.tipo}">
+                                                                                                            <f:selectItem itemLabel="Persona" itemValue="PER"/>
+                                                                                                            <f:selectItem itemLabel="Organización" itemValue="ORG"/>
+                                                                                                            <f:ajax render="idPanelTipoPersona" execute="idPanelTipoPersona" />
+                                                                                                        </h:selectOneRadio>
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                            </table>
+                                                                                            <table style="width: 100%">
+                                                                                                <tr jsf:rendered="#{registroController.persona.tipo == 'PER'}">
+                                                                                                    <td style="width: 20%"><b>Tipo de documento:</b></td>
+                                                                                                    <td style="padding-bottom: 5px;">
+                                                                                                        <h:selectOneMenu value="#{registroController.persona.tipoDocumento}" style="width: 50%">
+                                                                                                            <f:selectItems value="#{listasComunesController.buscarTipoDocumento(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
+                                                                                                        </h:selectOneMenu>
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                                <tr jsf:rendered="#{registroController.persona.tipo == 'PER'}">
+                                                                                                    <td style="width: 20%"><b>Número documento:</b></td>
+                                                                                                    <td style="padding-bottom: 5px;">
+                                                                                                        <table>
+                                                                                                            <tr>
+                                                                                                                <td>
+                                                                                                                    <input type="text" placeholder="Número documento" jsf:value="#{registroController.persona.numeroDocumento}" maxlength="8"/>
+                                                                                                                </td>
+                                                                                                                <td style="text-align: left">
+                                                                                                                    <a class="btn btn-primary" jsf:action="#{registroController.consultarReniec()}" jsf:onclick="loadingModal()">
+                                                                                                                        <span class="glyphicon glyphicon-search" />Reniec
+                                                                                                                        <f:ajax render="idPanelTipoPersona" execute="idPanelTipoPersona" onevent="closeModal"/>
+                                                                                                                    </a>
+                                                                                                                </td>
+                                                                                                            </tr>
+                                                                                                        </table>
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                                <tr>
+                                                                                                    <td style="width: 20%"><b>Nombre:</b></td>
+                                                                                                    <td style="padding-bottom: 5px">
+                                                                                                        <input type="text" placeholder="Nombre" jsf:value="#{registroController.persona.nombre}" style="width: 90%" maxlength="200"/>
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                                <tr jsf:rendered="#{registroController.persona.tipo == 'ORG'}">
+                                                                                                    <td><b>Contacto:</b></td>
+                                                                                                    <td style="padding-bottom: 5px">
+                                                                                                        <input type="text" placeholder="Contacto" jsf:value="#{registroController.persona.contacto}" style="width: 90%" maxlength="50"/>
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                                <tr jsf:rendered="#{registroController.persona.tipo == 'PER'}">
+                                                                                                    <td><b>Apellido paterno:</b></td>
+                                                                                                    <td style="padding-bottom: 5px;">
+                                                                                                        <input type="text" placeholder="Apellido Paterno" jsf:value="#{registroController.persona.apellidoPat}" style="width: 90%" maxlength="100"/>
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                                <tr jsf:rendered="#{registroController.persona.tipo == 'PER'}">
+                                                                                                    <td><b>Apellido Materno:</b></td>
+                                                                                                    <td style="padding-bottom: 5px">
+                                                                                                        <input type="text" placeholder="Apellido Materno" jsf:value="#{registroController.persona.apellidoMat}" style="width: 90%" maxlength="100"/>
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                                <tr jsf:rendered="#{registroController.persona.tipo == 'PER'}">
+                                                                                                    <td><b>Fecha de nacimiento:</b></td>
+                                                                                                    <td style="padding-bottom: 5px; padding-right: 200px;" >
+                                                                                                        <script>
+                                                                                                            $(document).ready(function () {
+                                                                                                                $('.datepicker').datetimepicker({
+                                                                                                                    pickTime: false
+                                                                                                                });
+                                                                                                                $(".datepicker").on("changeDate", function (ev) {
+                                                                                                                    $(this).datetimepicker("hide");
+                                                                                                                });
+                                                                                                            });
 
-                                                                                    </script>
-                                                                                    <gc:calendar value="#{registroController.persona.fechaNacimiento}"/>
-                                                                                </td>
+                                                                                                        </script>
+                                                                                                        <gc:calendar value="#{registroController.persona.fechaNacimiento}"/>
+                                                                                                    </td>
 
-                                                                            </tr>
-                                                                            <tr jsf:rendered="#{registroController.persona.tipo == 'PER'}">
-                                                                                <td><b>Sexo:</b></td>
-                                                                                <td style="padding-bottom: 10px">
-                                                                                    <h:selectOneRadio value="#{registroController.persona.sexo}">
-                                                                                        <f:selectItem itemLabel="Masculino" itemValue="M"/>
-                                                                                        <f:selectItem itemLabel="Femenino" itemValue="F"/>
-                                                                                    </h:selectOneRadio>
-                                                                                </td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td><b>Dirección:</b></td>
-                                                                                <td style="padding-bottom: 10px">
-                                                                                    <input type="text" placeholder="Dirección" jsf:value="#{registroController.persona.direccion}" style="width: 90%" maxlength="300"/><br/>
-                                                                                    <h:panelGroup id="idUbigeoPersona">
-                                                                                        <table style="width:90%">
-                                                                                            <tr>
-                                                                                                <td style="width:33%">
-                                                                                                    <h:selectOneMenu value="#{registroController.persona.idDepartamento}" onchange="loadingModal()">
-                                                                                                        <f:selectItem itemLabel="Departamento" itemValue="0"/>
-                                                                                                        <f:selectItems value="#{listasComunesController.listaDepartamentos(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
-                                                                                                        <f:ajax listener="#{registroController.comboProvincia()}" render="cmbProvincia1" onevent="closeModal"/>
-                                                                                                    </h:selectOneMenu>
-                                                                                                </td>
-                                                                                                <td style="width:33%">
-                                                                                                    <h:selectOneMenu id="cmbProvincia1" value="#{registroController.persona.idProvincia}" onchange="loadingModal()">
-                                                                                                        <f:selectItem itemLabel="Provincia" itemValue="0"/>
-                                                                                                        <f:selectItems value="#{registroController.listaProvincia}" var="y" itemLabel="#{y.value} #{y.label}" itemValue="#{y.id}" />
-                                                                                                        <f:ajax listener="#{registroController.comboDistrito()}" render="cmbDistrito1" onevent="closeModal"/>
-                                                                                                    </h:selectOneMenu>
-                                                                                                </td>
-                                                                                                <td style="width:34%">
-                                                                                                    <h:selectOneMenu id="cmbDistrito1" value="#{registroController.persona.idDistrito}">
-                                                                                                        <f:selectItem itemLabel="Distrito" itemValue="0"/>
-                                                                                                        <f:selectItems value="#{registroController.listaDistrito}" var="y" itemLabel="#{y.value} #{y.label}" itemValue="#{y.id}" />
-                                                                                                    </h:selectOneMenu>
-                                                                                                </td>
-                                                                                            </tr>
-                                                                                        </table>
-                                                                                    </h:panelGroup>
-                                                                                </td>
-                                                                            </tr>
-                                                                            <tr jsf:rendered="#{registroController.persona.tipo == 'PER'}">
-                                                                                <td><b>Lengua materna:</b></td>
-                                                                                <td style="padding-bottom: 10px">
-                                                                                    <h:selectOneMenu value="#{registroController.persona.tipoLengua}" style="width: 50%">
-                                                                                        <f:selectItem itemLabel="Seleccione" itemValue="0"/>
-                                                                                        <f:selectItems value="#{listasComunesController.listaLenguaMaterna(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
-                                                                                    </h:selectOneMenu>
-                                                                                </td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td style="padding-top: 10px"><b>Pueblo indígena u originarios:</b></td>
-                                                                                <td style="padding-bottom: 10px; padding-top: 10px" colspan="2">
-                                                                                    <h:selectOneMenu value="#{registroController.persona.tipoPueblo}" style="width: 50%">
-                                                                                        <f:selectItem itemLabel="Seleccione" itemValue="0"/>
-                                                                                        <f:selectItems value="#{listasComunesController.listaPuebloIndigena(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
-                                                                                    </h:selectOneMenu>
-                                                                                </td>
-                                                                            </tr>
-                                                                            <tr jsf:rendered="#{registroController.persona.tipo == 'PER'}">
-                                                                                <td><b>Es discapacitado?</b></td>
-                                                                                <td style="padding-bottom: 10px">
-                                                                                    <h:selectBooleanCheckbox value="#{registroController.persona.indicadorDiscapacitado}" />
-                                                                                </td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td><b>Correo:</b></td>
-                                                                                <td style="padding-bottom: 10px">
-                                                                                    <input type="text" placeholder="Correo electronico" jsf:value="#{registroController.persona.email}" style="width: 90%" maxlength="100"/>
-                                                                                </td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td><b>Telefono 1:</b></td>
-                                                                                <td style="padding-bottom: 10px">
-                                                                                    <input type="text" placeholder="Telefono 1" jsf:value="#{registroController.persona.telefono1}" style="width: 90%" maxlength="50"/>
-                                                                                </td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td><b>Telefono 2:</b></td>
-                                                                                <td style="padding-bottom: 10px">
-                                                                                    <input type="text" placeholder="Telefono 2" jsf:value="#{registroController.persona.telefono2}" style="width: 90%" maxlength="50"/>
-                                                                                </td>
-                                                                            </tr>
-
-                                                                        </table>
-                                                                    </h:panelGroup>
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <a  class="btn btn-default" data-dismiss="modal">
-                                                                        <span class="glyphicon glyphicon-remove"/>Cerrar
-                                                                    </a>
-                                                                    <a jsf:action="#{registroController.guardarVincularPersona()}" class="btn btn-primary">
-                                                                        <span class="glyphicon glyphicon-floppy-disk" />Guardar
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                                                                                </tr>
+                                                                                                <tr jsf:rendered="#{registroController.persona.tipo == 'PER'}">
+                                                                                                    <td ><b>Sexo:</b></td>
+                                                                                                    <td style="padding-bottom: 5px">
+                                                                                                        <h:selectOneRadio value="#{registroController.persona.sexo}">
+                                                                                                            <f:selectItem itemLabel="Masculino" itemValue="M"/>
+                                                                                                            <f:selectItem itemLabel="Femenino" itemValue="F"/>
+                                                                                                        </h:selectOneRadio>
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                                <tr>
+                                                                                                    <td><b>Dirección:</b></td>
+                                                                                                    <td style="padding-bottom: 5px">
+                                                                                                        <input type="text" placeholder="Dirección" jsf:value="#{registroController.persona.direccion}" style="width: 90%" maxlength="300"/><br/>
+                                                                                                        <h:panelGroup id="idUbigeoPersona">
+                                                                                                            <table style="width:90%">
+                                                                                                                <tr>
+                                                                                                                    <td style="width:33%">
+                                                                                                                        <h:selectOneMenu value="#{registroController.persona.idDepartamento}" onchange="loadingModal()">
+                                                                                                                            <f:selectItem itemLabel="Departamento" itemValue="0"/>
+                                                                                                                            <f:selectItems value="#{listasComunesController.listaDepartamentos(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
+                                                                                                                            <f:ajax listener="#{registroController.comboProvincia()}" render="cmbProvincia1" onevent="closeModal"/>
+                                                                                                                        </h:selectOneMenu>
+                                                                                                                    </td>
+                                                                                                                    <td style="width:33%">
+                                                                                                                        <h:selectOneMenu id="cmbProvincia1" value="#{registroController.persona.idProvincia}" onchange="loadingModal()">
+                                                                                                                            <f:selectItem itemLabel="Provincia" itemValue="0"/>
+                                                                                                                            <f:selectItems value="#{registroController.listaProvincia}" var="y" itemLabel="#{y.value} #{y.label}" itemValue="#{y.id}" />
+                                                                                                                            <f:ajax listener="#{registroController.comboDistrito()}" render="cmbDistrito1" onevent="closeModal"/>
+                                                                                                                        </h:selectOneMenu>
+                                                                                                                    </td>
+                                                                                                                    <td style="width:34%">
+                                                                                                                        <h:selectOneMenu id="cmbDistrito1" value="#{registroController.persona.idDistrito}">
+                                                                                                                            <f:selectItem itemLabel="Distrito" itemValue="0"/>
+                                                                                                                            <f:selectItems value="#{registroController.listaDistrito}" var="y" itemLabel="#{y.value} #{y.label}" itemValue="#{y.id}" />
+                                                                                                                        </h:selectOneMenu>
+                                                                                                                    </td>
+                                                                                                                </tr>
+                                                                                                            </table>
+                                                                                                        </h:panelGroup>
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                                <tr>
+                                                                                                    <td><b>Lengua materna:</b></td>
+                                                                                                    <td style="padding-bottom: 5px">
+                                                                                                        <h:selectOneMenu value="#{registroController.persona.tipoLengua}" style="width: 50%">
+                                                                                                            <f:selectItem itemLabel="Seleccione" itemValue="0"/>
+                                                                                                            <f:selectItems value="#{listasComunesController.listaLenguaMaterna(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
+                                                                                                        </h:selectOneMenu>
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                                <tr>
+                                                                                                    <td style="padding-top: 5px"><b>Pueblo indígena u originarios:</b></td>
+                                                                                                    <td style="padding-bottom: 5px; padding-top: 10px" colspan="2">
+                                                                                                        <h:selectOneMenu value="#{registroController.persona.tipoLengua}" style="width: 50%">
+                                                                                                            <f:selectItem itemLabel="Seleccione" itemValue="0"/>
+                                                                                                            <f:selectItems value="#{listasComunesController.listaPuebloIndigena(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
+                                                                                                        </h:selectOneMenu>
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                                <tr>
+                                                                                                    <td><b>¿es persona con discapacidad?</b></td>
+                                                                                                    <td style="padding-bottom: 5px">
+                                                                                                        <h:selectBooleanCheckbox value="#{registroController.persona.indicadorDiscapacitado}" />
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                                <tr>
+                                                                                                    <td><b>Correo:</b></td>
+                                                                                                    <td style="padding-bottom: 5px">
+                                                                                                        <input type="text" placeholder="Correo electrónico" jsf:value="#{registroController.persona.email}" style="width: 90%" maxlength="100"/>
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                                <tr>
+                                                                                                    <td><b>Teléfonos:</b></td>
+                                                                                                    <td style="padding-bottom: 5px">
+                                                                                                        <table style="width: 90%">
+                                                                                                                    <tr>
+                                                                                                                            <td  style="width: 50%">
+                                                                                                                                <input type="text" placeholder="Telefono 1" jsf:value="#{registroController.persona.telefono1}" maxlength="50"/>
+                                                                                                                        </td>
+                                                                                                                            <td>
+                                                                                                                                <input type="text" placeholder="Telefono 2" jsf:value="#{registroController.persona.telefono2}" maxlength="50"/>
+                                                                                                                        </td>
+                                                                                                                </tr>
+                                                                                                        </table>
+                                                                                                        
+                                                                                                        
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                            </table>
+                                                                                        </h:panelGroup>
+                                                                                    </div>
+                                                                                    
+                                                                                </div>
+                                                                            </div>
                                                     </div>
                                                 </div>
 
@@ -334,7 +346,7 @@
                                                             <td><span class="text-bold">Teléfono: </span><span>#{registroController.personaSeleccionada.telefono1}</span></td>
                                                         </tr>
                                                         <tr>
-                                                            <td><span class="text-bold">Correo electronico: </span><span>#{registroController.personaSeleccionada.email}</span></td>
+                                                            <td><span class="text-bold">Correo electrónico: </span><span>#{registroController.personaSeleccionada.email}</span></td>
                                                         </tr>
                                                         <tr>
                                                             <td><span class="text-bold">Ultima actualización: </span><span><h:outputText value="#{registroController.personaSeleccionada.fechaModificacion}" >
