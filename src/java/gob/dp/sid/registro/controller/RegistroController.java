@@ -1162,7 +1162,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                     listaExpedienteConsultaEnvia.add(ec);
                 }
             }
-            expedienteConsultaEnvia = new ExpedienteConsulta();
+            //expedienteConsultaEnvia = new ExpedienteConsulta();
         } else {
             for (ExpedienteConsulta ec : list) {
                 if (ec != null) {
@@ -1261,6 +1261,9 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             msg.messageAlert("Debe seleccionar una oficina defensorial", null);
             return false;
         }
+        if(expedienteDerivacionEnvia.getId() != null){
+            return false;
+        }
         expedienteDerivacionEnvia.setIdExpediente(expediente.getId());
         expedienteDerivacionEnvia.setNumeroExpediente(expediente.getNumero());
         expedienteDerivacionEnvia.setEstado("ACT");
@@ -1349,7 +1352,10 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         return true;
     }
 
-    public void enviarConsulta(int tipo) {
+    public boolean enviarConsulta(int tipo) {
+        if(expedienteConsultaEnvia.getId() != null){
+            return false;
+        }
         String ruta1 = uploadArchive(file3);
         expedienteConsultaEnvia.setRuta(ruta1);
         expedienteConsultaEnvia.setIdExpediente(expediente.getId());
@@ -1368,6 +1374,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         enviarMensajeConsulta();
         inicioAccionesConsulta(0L);
         msg.messageInfo("Se envio la Consulta", null);
+        return true;
     }
 
     public boolean aprobarConsulta() {
