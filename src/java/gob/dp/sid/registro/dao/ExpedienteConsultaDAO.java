@@ -20,4 +20,12 @@ public interface ExpedienteConsultaDAO {
     
     public List<ExpedienteConsulta> expedienteConsultaPorExpediente(String numeroExpediente);
     
+    public List<ExpedienteConsulta> expedienteConsultaPorExpedientePadre(String numeroExpediente);
+    
+    public void expedienteConsultaUpdate(ExpedienteConsulta expedienteConsulta);
+    
+    public ExpedienteConsulta expedienteConsultaPorExpedienteHijo(ExpedienteConsulta expedienteConsulta);
+    
+    public ExpedienteConsulta expedienteConsultaPorEtapa(ExpedienteConsulta expedienteConsulta);
+    
 }

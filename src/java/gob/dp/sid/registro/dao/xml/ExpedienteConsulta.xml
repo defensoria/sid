@@ -18,6 +18,8 @@
         <result property="codigo" column="C_CODIGO"/>
         <result property="fecha" column="D_FECHA"/>
         <result property="codigoUsuarioReasignado" column="C_CODIGOUSUARIOREASIGNADO"/>
+        <result property="idPadre" column="N_ID_PADRE"/>
+        <result property="respuesta" column="C_RESPUESTA"/>
         
         <result property="nombreAdjuntia" column="ADJUNTIA"/>
     </resultMap> 
@@ -68,6 +70,12 @@
         <if test="fecha != null">
             D_FECHA,
         </if>
+        <if test="idPadre != null">
+            N_ID_PADRE,
+        </if>
+        <if test="respuesta != null">
+            C_RESPUESTA,
+        </if>
         N_ID_CONSULTA
         )
         VALUES 
@@ -114,12 +122,59 @@
         <if test="fecha != null">
             #{fecha},
         </if>
+        <if test="idPadre != null">
+            #{idPadre},
+        </if>
+        <if test="respuesta != null">
+            #{respuesta},
+        </if>
         SEQ_SID_REG_EXPEDIENTE_CONSUL.NextVal
         )
         <selectKey keyProperty="id" resultType="Long">
             SELECT SEQ_SID_REG_EXPEDIENTE_CONSUL.CURRVAL FROM DUAL
         </selectKey>
     </insert>
+    
+    <update id="expedienteConsultaUpdate" parameterType="expedienteConsulta">
+        UPDATE SID_REG_EXPEDIENTE_CONSULTA
+        <set>
+        
+        <if test="detalle != null">
+            C_DETALLE = #{detalle},
+        </if>
+        <if test="idAdjuntiaDefensorial != null">
+            N_ID_AD = #{idAdjuntiaDefensorial},
+        </if>
+        <if test="estado != null">
+            C_ESTADO = #{estado},
+        </if>
+        <if test="etapa != null">
+            C_ETAPA = #{etapa},
+        </if>
+        <if test="codigoUsuario != null">
+            C_CODIGOUSUARIO = #{codigoUsuario},
+        </if>
+        <if test="nombreUsuario != null">
+            C_NOMBREUSUARIO = #{nombreUsuario},
+        </if>
+        <if test="aprueba != null">
+            C_APRUEBA = #{aprueba},
+        </if>
+        <if test="ruta != null">
+            C_RUTA = #{ruta},
+        </if>
+        <if test="tipo != null">
+            N_TIPO = #{tipo},
+        </if>
+        <if test="respuesta != null">
+            C_RESPUESTA = #{respuesta},
+        </if>
+        D_FECHA = #{fecha}
+        </set>
+        <where>
+            N_ID_CONSULTA = #{id}
+        </where>
+    </update>
     
     <select id="expedienteConsultaSelectOne" resultMap="expedienteConsultaMap"  parameterType="long">
         SELECT * FROM SID_REG_EXPEDIENTE_CONSULTA WHERE N_ID_CONSULTA = #{id}
@@ -131,5 +186,25 @@
         WHERE A.C_NUMEROEXPEDIENTE = #{value}
         ORDER BY A.N_ID_CONSULTA DESC
     </select>
+    
+    <select id="expedienteConsultaPorExpedientePadre" resultMap="expedienteConsultaMap"  parameterType="String">
+        SELECT A.*, B.C_NOMBRE ADJUNTIA FROM SID_REG_EXPEDIENTE_CONSULTA A
+        LEFT JOIN SID_SEG_OFICINA_DEFENSORIAL B ON A.N_ID_AD = B.N_ID_OD
+        WHERE A.C_NUMEROEXPEDIENTE = #{value}
+        AND A.N_ID_PADRE IS NULL
+        ORDER BY A.N_ID_CONSULTA DESC
+    </select>
+    
+    <select id="expedienteConsultaPorExpedienteHijo" resultMap="expedienteConsultaMap"  parameterType="String">
+        SELECT A.*, B.C_NOMBRE ADJUNTIA FROM SID_REG_EXPEDIENTE_CONSULTA A
+        LEFT JOIN SID_SEG_OFICINA_DEFENSORIAL B ON A.N_ID_AD = B.N_ID_OD
+        WHERE A.N_ID_PADRE = #{id} and C_CODIGOUSUARIO = #{codigoUsuario}
+    </select>
+    
+    <select id="expedienteConsultaPorEtapa" resultMap="expedienteConsultaMap"  parameterType="expedienteConsulta">
+        SELECT * FROM SID_REG_EXPEDIENTE_CONSULTA WHERE N_ID_PADRE = #{idPadre}
+        AND C_ETAPA = #{etapa}
+    </select>
+    
     
 </mapper>

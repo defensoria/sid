@@ -162,7 +162,7 @@ public class BandejaController extends AbstractManagedBean implements Serializab
         mensajeBandeja = new Bandeja();
         OficinaDefensorial of = oficinaDefensorialService.obtenerOficinaDefensorial(ec.getIdAdjuntiaDefensorial().longValue());
         mensajeBandeja.setTituloMensaje(MensajeType.MENSAJE_CONSULTA.getDetalle()+" exp: "+ec.getNumeroExpediente()+" a: "+of.getNombre());
-        usuarioSession.setRol(RolType.APROBADOR_OD.getKey());
+        usuarioSession.setRol(RolType.APROBADOR_AD.getKey());
         usuarioSession.setCodigoOD(ec.getIdAdjuntiaDefensorial());
         List<Usuario> listaDestinatarios = buscarDestinatarios(usuarioSession);
         guardarMensajeConsulta(ec, listaDestinatarios, 0L);
@@ -333,8 +333,8 @@ public class BandejaController extends AbstractManagedBean implements Serializab
         return cargarDerivacionPorId();
     }
     
-    public String cargarExpedientePorMensa(String codigoConsulta){
-        return cargarMensajePorNumero(codigoConsulta);
+    public String cargarExpedientePorMensa(){
+        return cargarMensajePorNumero();
     }
     
     private String cargarDerivacionPorId() {
@@ -344,11 +344,11 @@ public class BandejaController extends AbstractManagedBean implements Serializab
         return registroController.inicioAccionesDerivacion();
     }
     
-    private String cargarMensajePorNumero(String codigoConsulta) {
+    private String cargarMensajePorNumero() {
         FacesContext context = FacesContext.getCurrentInstance();
         RegistroController registroController = (RegistroController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "registroController");
         registroController.cargarExpedientePorNumero(mensajeBandeja.getNumeroExpediente());
-        return registroController.inicioAccionesConsulta(mensajeBandeja.getIdAccion(),codigoConsulta);
+        return registroController.inicioAccionesConsulta();
     }
 
     private List<Usuario> buscarDestinatarios(Usuario u) {
