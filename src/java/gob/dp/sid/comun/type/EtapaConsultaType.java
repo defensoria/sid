@@ -16,7 +16,7 @@ public enum EtapaConsultaType {
         
         CONSULTA_ETAPA_RESPONDE(4, "Se responde la consulta"),
         
-        CONSULTA_ETAPA_RESPONDE_REASIGNA(5, "Se reasigna la respuesta de la consulta");
+        RESPUESTA_ETAPA_APRUEBA(5, "Aprobacion de la respuesta");
         
         
 	/** La Constante list. */

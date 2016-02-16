@@ -190,7 +190,7 @@ public class BandejaController extends AbstractManagedBean implements Serializab
         guardarMensajeConsulta(ec, listaDestinatarios, 0L);
     }
     
-    public void mensajeEnviaReasignaRespuesta(ExpedienteConsulta ec){
+    public void mensajeEnviaAprobarRespuesta(ExpedienteConsulta ec){
         usuarioSession();
         mensajeBandeja = new Bandeja();
         mensajeBandeja.setTituloMensaje(MensajeType.MENSAJE_CONSULTA.getDetalle()+" exp: "+ec.getNumeroExpediente());

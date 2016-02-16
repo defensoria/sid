@@ -237,7 +237,9 @@ public class RegistroController extends AbstractManagedBean implements Serializa
 
     private ExpedienteConsulta expedienteConsultaResponde;
 
-    private ExpedienteConsulta expedienteConsultaRespondeReasigna;
+    private ExpedienteConsulta expedienteRespuestaAprueba;
+    
+    private ExpedienteConsulta expedienteRespuestaAcepta;
 
     private ExpedienteClasificacion expedienteClasificacionBusqueda;
 
@@ -836,19 +838,16 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     }
 
     public void limpiarModalConsulta() {
-        expedienteConsultaEnvia = new ExpedienteConsulta();
         expedienteConsultaEnvia.setIdExpediente(expediente.getId());
         expedienteConsultaEnvia.setNumeroExpediente(expediente.getNumero());
     }
     
     public void limpiarModalConsultaAprueba(ExpedienteConsulta ec){
-        expedienteConsultaAprueba = new ExpedienteConsulta();
         //expedienteConsultaAprueba = expedienteConsultaService.expedienteConsultaSelectOne(id);
         expedienteConsultaAprueba = ec;
     }
     
     public void limpiarModalConsultaReasigna(ExpedienteConsulta ec){
-        expedienteConsultaReasigna = new ExpedienteConsulta();
         //expedienteConsultaAprueba = expedienteConsultaService.expedienteConsultaSelectOne(id);
         expedienteConsultaReasigna = ec;
         expedienteConsultaReasigna.setAprueba(null);
@@ -856,11 +855,20 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     }
     
     public void limpiarModalConsultaResponde(ExpedienteConsulta ec){
-        expedienteConsultaReasigna = ec;
-        expedienteConsultaResponde = new ExpedienteConsulta();
         //expedienteConsultaAprueba = expedienteConsultaService.expedienteConsultaSelectOne(id);
         expedienteConsultaResponde = ec;
         expedienteConsultaResponde.setAprueba(null);
+    }
+    
+    public void limpiarModalRespuestaAprueba(ExpedienteConsulta ec){
+        //expedienteConsultaAprueba = expedienteConsultaService.expedienteConsultaSelectOne(id);
+        expedienteRespuestaAprueba = ec;
+        expedienteRespuestaAprueba.setAprueba(null);
+    }
+    
+    public void limpiarModalRespuestaAcepta(ExpedienteConsulta ec){
+        //expedienteConsultaAprueba = expedienteConsultaService.expedienteConsultaSelectOne(id);
+        expedienteRespuestaAcepta = ec;
     }
     
     private void cargarListaComisionadoAD(){
@@ -1127,22 +1135,16 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             setVerBotonRegistrarExpediente(false);
         }
     }
-    
-    
-    
-
-    /*public String inicioAccionesConsulta(Long idExpedienteConsulta, String codigoConsulta) {
-        expedienteConsultaEnvia = null;
-        expedienteConsultaReasigna = null;
-        expedienteConsultaResponde = null;
-        expedienteConsultaRespondeReasigna = null;
-        listaExpedienteConsultaEnvia = expedienteConsultaService.expedienteConsultaPorExpediente(expediente.getNumero());
-        return "expedienteAccionesConsulta";
-    }*/
 
     public String inicioAccionesConsulta() {
+        expedienteConsultaAprueba = new ExpedienteConsulta();
         expedienteConsultaPadre = new ExpedienteConsulta();
-        
+        expedienteConsultaEnvia = new ExpedienteConsulta();
+        expedienteConsultaReasigna = new ExpedienteConsulta();
+        expedienteRespuestaAcepta = new ExpedienteConsulta();
+        expedienteConsultaReasigna = new ExpedienteConsulta();
+        expedienteRespuestaAprueba = new ExpedienteConsulta();
+                
         listaExpedienteTotalesEnvia = new ArrayList<>();
         listaExpedienteTotalesAprueba = new ArrayList<>();
         listaExpedienteTotalesReasigna = new ArrayList<>();
@@ -1161,13 +1163,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 }
                 
             }
-            if(ec.getEtapa() == 3){
-                listaExpedienteTotalesEnvia.add(ec);
-                listaExpedienteTotalesAprueba.add(ec);
-                listaExpedienteTotalesReasigna.add(ec);
-                listaExpedienteTotalesResponde.add(ec);
-            }
-            if(ec.getEtapa() == 4){
+            if(ec.getEtapa() >= 3){
                 listaExpedienteTotalesEnvia.add(ec);
                 listaExpedienteTotalesAprueba.add(ec);
                 listaExpedienteTotalesReasigna.add(ec);
@@ -1447,27 +1443,32 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         inicioAccionesConsulta();
         return true;
     }
-
-    public boolean reasignaRespuesta() {
-        if (StringUtils.isBlank(expedienteConsultaRespondeReasigna.getDetalle())) {
+    
+    public boolean respuestaAprobar() {
+        if (StringUtils.isBlank(expedienteRespuestaAprueba.getDetalle())) {
             msg.messageAlert("Debe responder la consulta", null);
             return false;
         }
-        expedienteConsultaRespondeReasigna.setIdExpediente(expediente.getId());
-        expedienteConsultaRespondeReasigna.setNumeroExpediente(expediente.getNumero());
-        expedienteConsultaRespondeReasigna.setEstado("ACT");
-        expedienteConsultaRespondeReasigna.setEtapa(EtapaConsultaType.CONSULTA_ETAPA_RESPONDE_REASIGNA.getKey());
-        expedienteConsultaRespondeReasigna.setCodigoUsuario(usuarioSession.getCodigo());
-        expedienteConsultaRespondeReasigna.setNombreUsuario(usuarioSession.getNombre() + " " + usuarioSession.getApellidoPaterno() + " " + usuarioSession.getApellidoMaterno());
-        expedienteConsultaRespondeReasigna.setFecha(new Date());
-        expedienteConsultaService.expedienteConsultaInsertar(expedienteConsultaRespondeReasigna);
-
-        enviarMensajeReasignaRespuesta();
-        msg.messageInfo("Se reasigno por derivación el expediente", null);
-
+        
+        setExpedienteConsultaPadre(expedienteRespuestaAprueba);
+        expedienteConsultaPadre.setCodigoUsuario(usuarioSession.getCodigo());
+        expedienteConsultaPadre.setNombreUsuario(usuarioSession.getNombre() + " " + usuarioSession.getApellidoPaterno() + " " + usuarioSession.getApellidoMaterno());
+        expedienteConsultaPadre.setEtapa(EtapaConsultaType.RESPUESTA_ETAPA_APRUEBA.getKey());
+        expedienteConsultaPadre.setFecha(new Date());
+        /**ACTUALIZAR PADRE*/
+        expedienteConsultaService.expedienteConsultaUpdate(expedienteConsultaPadre);
+        /**GRABAR EL HIJO*/
+        expedienteRespuestaAprueba = expedienteConsultaPadre;
+        expedienteRespuestaAprueba.setIdPadre(expedienteConsultaPadre.getId());
+        expedienteRespuestaAprueba.setEtapa(EtapaConsultaType.RESPUESTA_ETAPA_APRUEBA.getKey());
+        expedienteRespuestaAprueba.setId(null);
+        expedienteConsultaService.expedienteConsultaInsertar(expedienteRespuestaAprueba);
+        /***/
+        enviarMensajeAprobarRespuesta();
+        inicioAccionesConsulta();
         return true;
     }
-
+    
     private void enviarMensajeConsulta() {
         FacesContext context = FacesContext.getCurrentInstance();
         BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
@@ -1497,11 +1498,15 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         bandejaController.mensajeEnviaConsultaResponde(expedienteConsultaResponde);
     }
 
-    private void enviarMensajeReasignaRespuesta() {
+    private void enviarMensajeAprobarRespuesta() {
         FacesContext context = FacesContext.getCurrentInstance();
         BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
-        expedienteConsultaRespondeReasigna.setCodigoUsuarioRetorno(expedienteConsultaAprueba.getCodigoUsuario());
-        bandejaController.mensajeEnviaReasignaRespuesta(expedienteConsultaRespondeReasigna);
+        ExpedienteConsulta consultaAprueba = new ExpedienteConsulta();
+        consultaAprueba.setIdPadre(expedienteRespuestaAprueba.getIdPadre());
+        consultaAprueba.setEtapa(EtapaConsultaType.CONSULTA_ETAPA_APRUEBA.getKey());
+        consultaAprueba = expedienteConsultaService.expedienteConsultaPorEtapa(consultaAprueba);
+        expedienteRespuestaAprueba.setCodigoUsuarioRetorno(consultaAprueba.getCodigoUsuario());
+        bandejaController.mensajeEnviaAprobarRespuesta(expedienteRespuestaAprueba);
     }
 
     private void enviarMensajeDerivacion() {
@@ -4016,14 +4021,6 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         this.expedienteConsultaResponde = expedienteConsultaResponde;
     }
 
-    public ExpedienteConsulta getExpedienteConsultaRespondeReasigna() {
-        return expedienteConsultaRespondeReasigna;
-    }
-
-    public void setExpedienteConsultaRespondeReasigna(ExpedienteConsulta expedienteConsultaRespondeReasigna) {
-        this.expedienteConsultaRespondeReasigna = expedienteConsultaRespondeReasigna;
-    }
-
     public Integer getTipoBusqueda() {
         return tipoBusqueda;
     }
@@ -4134,6 +4131,22 @@ public class RegistroController extends AbstractManagedBean implements Serializa
 
     public void setListaExpedienteTotalesResponde(List<ExpedienteConsulta> listaExpedienteTotalesResponde) {
         this.listaExpedienteTotalesResponde = listaExpedienteTotalesResponde;
+    }
+
+    public ExpedienteConsulta getExpedienteRespuestaAprueba() {
+        return expedienteRespuestaAprueba;
+    }
+
+    public void setExpedienteRespuestaAprueba(ExpedienteConsulta expedienteRespuestaAprueba) {
+        this.expedienteRespuestaAprueba = expedienteRespuestaAprueba;
+    }
+
+    public ExpedienteConsulta getExpedienteRespuestaAcepta() {
+        return expedienteRespuestaAcepta;
+    }
+
+    public void setExpedienteRespuestaAcepta(ExpedienteConsulta expedienteRespuestaAcepta) {
+        this.expedienteRespuestaAcepta = expedienteRespuestaAcepta;
     }
 
     
