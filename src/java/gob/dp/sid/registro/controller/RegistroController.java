@@ -240,6 +240,8 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     private ExpedienteConsulta expedienteRespuestaAprueba;
     
     private ExpedienteConsulta expedienteRespuestaAcepta;
+    
+    private ExpedienteConsulta expedienteRespuestaRecibe;
 
     private ExpedienteClasificacion expedienteClasificacionBusqueda;
 
@@ -252,6 +254,8 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     private Part file4;
 
     private Part file5;
+    
+    private Part file6;
 
     private boolean verBotonRegistrarExpediente = true;
 
@@ -838,39 +842,41 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     }
 
     public void limpiarModalConsulta() {
+        expedienteConsultaEnvia = new ExpedienteConsulta();
         expedienteConsultaEnvia.setIdExpediente(expediente.getId());
         expedienteConsultaEnvia.setNumeroExpediente(expediente.getNumero());
     }
     
     public void limpiarModalConsultaAprueba(ExpedienteConsulta ec){
-        //expedienteConsultaAprueba = expedienteConsultaService.expedienteConsultaSelectOne(id);
         expedienteConsultaAprueba = ec;
     }
     
     public void limpiarModalConsultaReasigna(ExpedienteConsulta ec){
-        //expedienteConsultaAprueba = expedienteConsultaService.expedienteConsultaSelectOne(id);
         expedienteConsultaReasigna = ec;
         expedienteConsultaReasigna.setAprueba(null);
         cargarListaComisionadoAD();
     }
     
     public void limpiarModalConsultaResponde(ExpedienteConsulta ec){
-        //expedienteConsultaAprueba = expedienteConsultaService.expedienteConsultaSelectOne(id);
         expedienteConsultaResponde = ec;
         expedienteConsultaResponde.setAprueba(null);
     }
     
     public void limpiarModalRespuestaAprueba(ExpedienteConsulta ec){
-        //expedienteConsultaAprueba = expedienteConsultaService.expedienteConsultaSelectOne(id);
         expedienteRespuestaAprueba = ec;
         expedienteRespuestaAprueba.setAprueba(null);
     }
     
     public void limpiarModalRespuestaAcepta(ExpedienteConsulta ec){
-        //expedienteConsultaAprueba = expedienteConsultaService.expedienteConsultaSelectOne(id);
         expedienteRespuestaAcepta = ec;
+        expedienteRespuestaAcepta.setAprueba(null);
     }
     
+    public void limpiarModalRespuestaRecibe(ExpedienteConsulta ec){
+        expedienteRespuestaRecibe = ec;
+        expedienteRespuestaRecibe.setAprueba(null);
+    }
+
     private void cargarListaComisionadoAD(){
         List<SelectItem> listaUsuario = new ArrayList<>();
         try {
@@ -1135,8 +1141,8 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             setVerBotonRegistrarExpediente(false);
         }
     }
-
-    public String inicioAccionesConsulta() {
+    
+    private void limpiarElementosConsulta(){
         expedienteConsultaAprueba = new ExpedienteConsulta();
         expedienteConsultaPadre = new ExpedienteConsulta();
         expedienteConsultaEnvia = new ExpedienteConsulta();
@@ -1144,7 +1150,10 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         expedienteRespuestaAcepta = new ExpedienteConsulta();
         expedienteConsultaReasigna = new ExpedienteConsulta();
         expedienteRespuestaAprueba = new ExpedienteConsulta();
-                
+        expedienteRespuestaRecibe = new ExpedienteConsulta();
+    }
+
+    private void inicioAccionesConsulta() {
         listaExpedienteTotalesEnvia = new ArrayList<>();
         listaExpedienteTotalesAprueba = new ArrayList<>();
         listaExpedienteTotalesReasigna = new ArrayList<>();
@@ -1161,16 +1170,23 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 if(Objects.equals(ec.getIdAdjuntiaDefensorial(), usuarioSession.getCodigoOD())){
                     listaExpedienteTotalesReasigna.add(ec);
                 }
-                
             }
             if(ec.getEtapa() >= 3){
                 listaExpedienteTotalesEnvia.add(ec);
                 listaExpedienteTotalesAprueba.add(ec);
-                listaExpedienteTotalesReasigna.add(ec);
-                listaExpedienteTotalesResponde.add(ec);
+                if(Objects.equals(ec.getIdAdjuntiaDefensorial(), usuarioSession.getCodigoOD())){
+                    listaExpedienteTotalesReasigna.add(ec);
+                }
+                if(Objects.equals(ec.getIdAdjuntiaDefensorial(), usuarioSession.getCodigoOD())){
+                    listaExpedienteTotalesResponde.add(ec);
+                }
             }
-            
         }
+    }
+    
+    public String inicioAccionesConsultaPublic(){
+        limpiarElementosConsulta();
+        inicioAccionesConsulta();
         return "expedienteAccionesConsulta";
     }
 
@@ -1316,6 +1332,14 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         if(expedienteConsultaEnvia.getId() != null){
             return false;
         }
+        if(StringUtils.isBlank(expedienteConsultaEnvia.getDetalle())){
+           msg.messageAlert("Debe ingresar la consulta", null);
+            return false;
+        }
+        if(expedienteConsultaEnvia.getIdAdjuntiaDefensorial() == null || expedienteConsultaEnvia.getIdAdjuntiaDefensorial() == 0){
+            msg.messageAlert("Debe seleccionar el destino de la consulta", null);
+            return false;
+        }
         String ruta1 = uploadArchive(file3);
         expedienteConsultaEnvia.setRuta(ruta1);
         expedienteConsultaEnvia.setIdExpediente(expediente.getId());
@@ -1345,9 +1369,17 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     }
     
     public boolean enviarAprobacion() {
-        /*if(expedienteConsultaAprueba.getId() != null){
+        if(expedienteConsultaAprueba.getId() != null){
             return false;
-        }*/
+        }
+        if(StringUtils.isBlank(expedienteConsultaAprueba.getDetalle())){
+            msg.messageAlert("El campo de la consulta no puede estar vacio", null);
+            return false;
+        }
+        if(StringUtils.isBlank(expedienteConsultaAprueba.getAprueba())){
+            msg.messageAlert("Debe aprobar o desaprobar la consulta", null);
+            return false;
+        }
         String ruta1 = uploadArchive(file3);
         if(ruta1 != null){
             expedienteConsultaPadre.setRuta(ruta1);
@@ -1416,6 +1448,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             msg.messageInfo("Se rechaza la consulta", null);
         }
         inicioAccionesConsulta();
+        msg.messageInfo("Se reasigno la consulta", null);
         return true;
     }
     
@@ -1426,6 +1459,10 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         }
         
         setExpedienteConsultaPadre(expedienteConsultaResponde);
+        String rutaRespuesta = uploadArchive(file6);
+        if(rutaRespuesta != null){
+            expedienteConsultaPadre.setRutaRespuesta(rutaRespuesta);
+        }
         expedienteConsultaPadre.setCodigoUsuario(usuarioSession.getCodigo());
         expedienteConsultaPadre.setNombreUsuario(usuarioSession.getNombre() + " " + usuarioSession.getApellidoPaterno() + " " + usuarioSession.getApellidoMaterno());
         expedienteConsultaPadre.setEtapa(EtapaConsultaType.CONSULTA_ETAPA_RESPONDE.getKey());
@@ -1441,6 +1478,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         /***/
         enviarMensajeRespondeConsulta();
         inicioAccionesConsulta();
+        msg.messageInfo("Se respondío la consulta", null);
         return true;
     }
     
@@ -1451,6 +1489,10 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         }
         
         setExpedienteConsultaPadre(expedienteRespuestaAprueba);
+        String rutaRespuesta = uploadArchive(file6);
+        if(rutaRespuesta != null){
+            expedienteConsultaPadre.setRutaRespuesta(rutaRespuesta);
+        }
         expedienteConsultaPadre.setCodigoUsuario(usuarioSession.getCodigo());
         expedienteConsultaPadre.setNombreUsuario(usuarioSession.getNombre() + " " + usuarioSession.getApellidoPaterno() + " " + usuarioSession.getApellidoMaterno());
         expedienteConsultaPadre.setEtapa(EtapaConsultaType.RESPUESTA_ETAPA_APRUEBA.getKey());
@@ -1466,6 +1508,37 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         /***/
         enviarMensajeAprobarRespuesta();
         inicioAccionesConsulta();
+        msg.messageInfo("Se aprobó la respuesta", null);
+        return true;
+    }
+    
+    public boolean respuestaAceptar() {
+        if (StringUtils.isBlank(expedienteRespuestaAcepta.getDetalle())) {
+            msg.messageAlert("Debe responder la consulta", null);
+            return false;
+        }
+        
+        setExpedienteConsultaPadre(expedienteRespuestaAcepta);
+        String rutaRespuesta = uploadArchive(file6);
+        if(rutaRespuesta != null){
+            expedienteConsultaPadre.setRutaRespuesta(rutaRespuesta);
+        }
+        expedienteConsultaPadre.setCodigoUsuario(usuarioSession.getCodigo());
+        expedienteConsultaPadre.setNombreUsuario(usuarioSession.getNombre() + " " + usuarioSession.getApellidoPaterno() + " " + usuarioSession.getApellidoMaterno());
+        expedienteConsultaPadre.setEtapa(EtapaConsultaType.RESPUESTA_ETAPA_ACEPTA.getKey());
+        expedienteConsultaPadre.setFecha(new Date());
+        /**ACTUALIZAR PADRE*/
+        expedienteConsultaService.expedienteConsultaUpdate(expedienteConsultaPadre);
+        /**GRABAR EL HIJO*/
+        expedienteRespuestaAcepta = expedienteConsultaPadre;
+        expedienteRespuestaAcepta.setIdPadre(expedienteConsultaPadre.getId());
+        expedienteRespuestaAcepta.setEtapa(EtapaConsultaType.RESPUESTA_ETAPA_ACEPTA.getKey());
+        expedienteRespuestaAcepta.setId(null);
+        expedienteConsultaService.expedienteConsultaInsertar(expedienteRespuestaAcepta);
+        /***/
+        enviarMensajeAceptarRespuesta();
+        inicioAccionesConsulta();
+        msg.messageInfo("Se acepto la respuesta", null);
         return true;
     }
     
@@ -1507,6 +1580,17 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         consultaAprueba = expedienteConsultaService.expedienteConsultaPorEtapa(consultaAprueba);
         expedienteRespuestaAprueba.setCodigoUsuarioRetorno(consultaAprueba.getCodigoUsuario());
         bandejaController.mensajeEnviaAprobarRespuesta(expedienteRespuestaAprueba);
+    }
+    
+    private void enviarMensajeAceptarRespuesta() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
+        ExpedienteConsulta consultaEnvia = new ExpedienteConsulta();
+        consultaEnvia.setIdPadre(expedienteRespuestaAcepta.getIdPadre());
+        consultaEnvia.setEtapa(EtapaConsultaType.CONSULTA_ETAPA_ENVIA.getKey());
+        consultaEnvia = expedienteConsultaService.expedienteConsultaPorEtapa(consultaEnvia);
+        expedienteRespuestaAcepta.setCodigoUsuarioRetorno(consultaEnvia.getCodigoUsuario());
+        bandejaController.mensajeEnviaAprobarRespuesta(expedienteRespuestaAcepta);
     }
 
     private void enviarMensajeDerivacion() {
@@ -4147,6 +4231,22 @@ public class RegistroController extends AbstractManagedBean implements Serializa
 
     public void setExpedienteRespuestaAcepta(ExpedienteConsulta expedienteRespuestaAcepta) {
         this.expedienteRespuestaAcepta = expedienteRespuestaAcepta;
+    }
+
+    public ExpedienteConsulta getExpedienteRespuestaRecibe() {
+        return expedienteRespuestaRecibe;
+    }
+
+    public void setExpedienteRespuestaRecibe(ExpedienteConsulta expedienteRespuestaRecibe) {
+        this.expedienteRespuestaRecibe = expedienteRespuestaRecibe;
+    }
+
+    public Part getFile6() {
+        return file6;
+    }
+
+    public void setFile6(Part file6) {
+        this.file6 = file6;
     }
 
     

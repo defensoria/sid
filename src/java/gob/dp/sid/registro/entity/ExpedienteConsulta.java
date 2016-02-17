@@ -51,6 +51,8 @@ public class ExpedienteConsulta implements Serializable{
     private Long idPadre;
     
     private String respuesta;
+    
+    private String rutaRespuesta;
 
     public Long getId() {
         return id;
@@ -202,6 +204,14 @@ public class ExpedienteConsulta implements Serializable{
 
     public void setRespuesta(String respuesta) {
         this.respuesta = respuesta;
+    }
+
+    public String getRutaRespuesta() {
+        return rutaRespuesta;
+    }
+
+    public void setRutaRespuesta(String rutaRespuesta) {
+        this.rutaRespuesta = rutaRespuesta;
     }
 
 }

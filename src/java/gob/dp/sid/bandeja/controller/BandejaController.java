@@ -348,7 +348,7 @@ public class BandejaController extends AbstractManagedBean implements Serializab
         FacesContext context = FacesContext.getCurrentInstance();
         RegistroController registroController = (RegistroController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "registroController");
         registroController.cargarExpedientePorNumero(mensajeBandeja.getNumeroExpediente());
-        return registroController.inicioAccionesConsulta();
+        return registroController.inicioAccionesConsultaPublic();
     }
 
     private List<Usuario> buscarDestinatarios(Usuario u) {

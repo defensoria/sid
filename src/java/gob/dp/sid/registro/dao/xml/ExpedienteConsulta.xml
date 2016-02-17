@@ -20,6 +20,7 @@
         <result property="codigoUsuarioReasignado" column="C_CODIGOUSUARIOREASIGNADO"/>
         <result property="idPadre" column="N_ID_PADRE"/>
         <result property="respuesta" column="C_RESPUESTA"/>
+        <result property="rutaRespuesta" column="C_RUTARESPUESTA"/>
         
         <result property="nombreAdjuntia" column="ADJUNTIA"/>
     </resultMap> 
@@ -76,6 +77,9 @@
         <if test="respuesta != null">
             C_RESPUESTA,
         </if>
+        <if test="rutaRespuesta != null">
+            C_RUTARESPUESTA,
+        </if>
         N_ID_CONSULTA
         )
         VALUES 
@@ -128,6 +132,9 @@
         <if test="respuesta != null">
             #{respuesta},
         </if>
+        <if test="rutaRespuesta != null">
+            #{rutaRespuesta},
+        </if>
         SEQ_SID_REG_EXPEDIENTE_CONSUL.NextVal
         )
         <selectKey keyProperty="id" resultType="Long">
@@ -168,6 +175,9 @@
         </if>
         <if test="respuesta != null">
             C_RESPUESTA = #{respuesta},
+        </if>
+        <if test="rutaRespuesta != null">
+            C_RUTARESPUESTA = #{rutaRespuesta},
         </if>
         D_FECHA = #{fecha}
         </set>
