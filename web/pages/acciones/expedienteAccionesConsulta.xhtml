@@ -160,6 +160,13 @@
                             </h:column>
 
                             <h:column>
+                                <f:facet name="header">Estado</f:facet>
+                                <h:outputText value="#{envia.estado == 'ACT'? 'Activo' : 'Concluido'}" >
+                                    <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
+                                </h:outputText>
+                            </h:column>
+
+                            <h:column>
                                 <f:facet name="header">Archivo consulta</f:facet>
                                 <h:panelGroup rendered="#{envia.ruta != null}">
                                     <a target="_blank" href="/filesystem/#{envia.ruta}">
@@ -202,23 +209,25 @@
                                             <a type="button" class="close" data-dismiss="modal">
                                                 <span style="color:red" class="glyphicon glyphicon-remove"></span>
                                             </a>
-                                            <span class="text-resalt-primary">Aceptar respuesta</span>
+                                            <span class="text-resalt-primary" style="font-size: 2em">Respuesta</span>
                                         </div>
                                         <div class="modal-body" style="padding:5px">
                                             <div class="body">
-                                                <div style="text-align: right">
-                                                    <br/>
-
-                                                    <br/>
-                                                </div>
+                                                <div style="text-align: left">
+                                                <br/>
+                                                <span style="color: gray; font-weight: bold">Envia: #{registroController.expedienteRespuestaRecibe.nombreUsuario}</span>
+                                            </div>
+                                            <div class="panel panel-featured-top-primary">
+                                                <br/>
                                                 <table style="width: 100%">
                                                     <tr>
-                                                        <td style="padding-right: 30px; width: 50%">
-                                                            <label>Consulta</label>
+                                                        <td style="padding-right: 30px; width: 75%">
+                                                            <label style="font-size: 1.5em">Consulta</label>
                                                             <br/>
                                                             <h:outputText value="#{registroController.expedienteRespuestaRecibe.detalle}" />
                                                         </td>
                                                         <td style="vertical-align: top">
+                                                            <label>Archivo consulta</label>
                                                             <h:panelGroup rendered="#{registroController.expedienteRespuestaRecibe.ruta != null}">
                                                                 <a target="_blank" href="/filesystem/#{registroController.expedienteRespuestaRecibe.ruta}">
                                                                     <span style="font-size: large" class="glyphicon glyphicon-link" />
@@ -230,26 +239,28 @@
                                                 <hr/>
                                                 <table style="width: 100%">
                                                     <tr>
-                                                        <td style="padding-right: 30px; width: 50%">
-
-
+                                                        <td style="padding-right: 30px; width: 75%">
+                                                            <label style="font-size: 1.5em">Respuesta</label>
+                                                            <br/>
+                                                            <h:outputText value="#{registroController.expedienteRespuestaRecibe.respuesta}" />
                                                         </td>
                                                         <td style="vertical-align: top">
-                                                            <label>Respuesta</label>
-                                                            <h:outputText value="#{registroController.expedienteRespuestaRecibe.respuesta}" />
+                                                            <label>Archivo respuesta</label>
+                                                            <h:panelGroup rendered="#{registroController.expedienteRespuestaRecibe.rutaRespuesta != null}">
+                                                                <a target="_blank" href="/filesystem/#{registroController.expedienteRespuestaRecibe.rutaRespuesta}">
+                                                                    <span style="font-size: large" class="glyphicon glyphicon-link" />
+                                                                </a>
+                                                            </h:panelGroup>
                                                         </td>
                                                     </tr>
                                                 </table>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <a  class="btn btn-default" data-dismiss="modal">
-                                                    <span class="glyphicon glyphicon-remove"/>Cerrar
-                                                </a>
+                                                <br/>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                                </div>
                         </h:panelGroup>
                     </h:panelGroup>
 
@@ -282,6 +293,12 @@
                                 </h:outputText>
                             </h:column>
                             <h:column>
+                                <f:facet name="header">Estado</f:facet>
+                                <h:outputText value="#{aprueba.estado == 'ACT'? 'Activo' : 'Concluido'}" >
+                                    <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
+                                </h:outputText>
+                            </h:column>
+                            <h:column>
                                 <f:facet name="header">Archivo consulta</f:facet>
                                 <h:panelGroup rendered="#{aprueba.ruta != null}">
                                     <a target="_blank" href="/filesystem/#{aprueba.ruta}">
@@ -299,11 +316,11 @@
                             </h:column>
                             <h:column>
                                 <f:facet name="header">Responder</f:facet>
-                                <a jsf:rendered="#{aprueba.etapa == 1}" jsf:action="#{registroController.limpiarModalConsultaAprueba(aprueba)}">
+                                <a jsf:rendered="#{aprueba.etapa == 1 and aprueba.estado == 'ACT'}" jsf:action="#{registroController.limpiarModalConsultaAprueba(aprueba)}">
                                     <span style="font-size: large" class="glyphicon glyphicon-pencil" />
                                     <f:ajax render="@form" onevent="openModalNuevaAprobar" />
                                 </a>
-                                <a jsf:rendered="#{aprueba.etapa == 5}" jsf:action="#{registroController.limpiarModalRespuestaAcepta(aprueba)}">
+                                <a jsf:rendered="#{aprueba.etapa == 5 and aprueba.estado == 'ACT'}" jsf:action="#{registroController.limpiarModalRespuestaAcepta(aprueba)}">
                                     <span style="font-size: large" class="glyphicon glyphicon-pencil" />
                                     <f:ajax render="@form" onevent="openModalNuevaRespuesAcepta" />
                                 </a>
@@ -415,60 +432,71 @@
                                             <a type="button" class="close" data-dismiss="modal">
                                                 <span style="color:red" class="glyphicon glyphicon-remove"></span>
                                             </a>
-                                            <span class="text-resalt-primary">Aceptar respuesta</span>
+                                            <span class="text-resalt-primary" style="font-size: 2em">Aceptar / rechazar respuesta</span>
                                         </div>
                                         <div class="modal-body" style="padding:5px">
-                                            <div class="body">
-                                                <div style="text-align: right">
-                                                    <br/>
-
-                                                    <br/>
+                                            <div style="text-align: left">
+                                                <br/>
+                                                <span style="color: gray; font-weight: bold">Envia: #{registroController.expedienteRespuestaAcepta.nombreUsuario}</span>
+                                            </div>
+                                            <div class="panel panel-featured-top-primary">
+                                                <br/>
+                                                <div class="body">
+                                                    <table style="width: 100%">
+                                                        <tr>
+                                                            <td style="padding-right: 30px; width: 75%">
+                                                                <label style="font-size: 1.5em">Consulta</label>
+                                                                <br/>
+                                                                <h:outputText value="#{registroController.expedienteRespuestaAcepta.detalle}" />
+                                                            </td>
+                                                            <td style="vertical-align: top">
+                                                                <label>Descargar archivo</label>
+                                                                <br/>
+                                                                <h:panelGroup rendered="#{registroController.expedienteRespuestaAcepta.ruta != null}">
+                                                                    <a target="_blank" href="/filesystem/#{registroController.expedienteRespuestaAcepta.ruta}">
+                                                                        <span style="font-size: large" class="glyphicon glyphicon-link" />
+                                                                    </a>
+                                                                </h:panelGroup>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                    <hr/>
+                                                    <table style="width: 100%">
+                                                        <tr>
+                                                            <td style="padding-right: 30px; width: 75%">
+                                                                <label style="font-size: 1.5em">Respuesta</label>
+                                                                <textarea jsf:value="#{registroController.expedienteRespuestaAcepta.respuesta}" rows="6" style="width: 100%" maxlength="2600" placeholder="Motivo"/>
+                                                            </td>
+                                                            <td style="vertical-align: top">
+                                                                <label style="font-size: 1.5em">Acepta / rechaza</label>
+                                                                <h:selectOneRadio value="#{registroController.expedienteRespuestaAcepta.aprueba}">
+                                                                    <f:selectItem itemLabel="Aceptar" itemValue="SI" />
+                                                                    <f:selectItem itemLabel="Rechazar" itemValue="NO" />
+                                                                </h:selectOneRadio>
+                                                                <br/><br/>
+                                                                <label><span style="font-size: large" class="glyphicon glyphicon-paperclip" />Cambiar archivo:</label>
+                                                                <h:inputFile value="#{registroController.file6}"/>
+                                                                <br/>
+                                                                <h:panelGroup rendered="#{registroController.expedienteRespuestaAcepta.rutaRespuesta != null}">
+                                                                    <a target="_blank" href="/filesystem/#{registroController.expedienteRespuestaAcepta.rutaRespuesta}">
+                                                                        <span style="font-size: large" class="glyphicon glyphicon-link" />
+                                                                    </a>
+                                                                </h:panelGroup>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
                                                 </div>
-                                                <table style="width: 100%">
-                                                    <tr>
-                                                        <td style="padding-right: 30px; width: 50%">
-                                                            <label>Consulta</label>
-                                                            <br/>
-                                                            <h:outputText value="#{registroController.expedienteRespuestaAcepta.detalle}" />
-                                                        </td>
-                                                        <td style="vertical-align: top">
-                                                            <h:panelGroup rendered="#{registroController.expedienteRespuestaAcepta.ruta != null}">
-                                                                <a target="_blank" href="/filesystem/#{registroController.expedienteRespuestaAcepta.ruta}">
-                                                                    <span style="font-size: large" class="glyphicon glyphicon-link" />
-                                                                </a>
-                                                            </h:panelGroup>
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                                <hr/>
-                                                <table style="width: 100%">
-                                                    <tr>
-                                                        <td style="padding-right: 30px; width: 50%">
-                                                            <h:selectOneRadio value="#{registroController.expedienteRespuestaAcepta.aprueba}">
-                                                                <f:selectItem itemLabel="Aceptar" itemValue="SI" />
-                                                                <f:selectItem itemLabel="Rechazar" itemValue="NO" />
-                                                            </h:selectOneRadio>
-
-                                                        </td>
-                                                        <td style="vertical-align: top">
-                                                            <label>Respuesta</label>
-                                                            <textarea jsf:value="#{registroController.expedienteRespuestaAcepta.respuesta}" rows="6" style="width: 100%" maxlength="1300" placeholder="Motivo"/>
-                                                        </td>
-                                                    </tr>
-                                                </table>
                                             </div>
-                                            <div class="modal-footer">
-                                                <a  class="btn btn-default" data-dismiss="modal">
-                                                    <span class="glyphicon glyphicon-remove"/>Cerrar
-                                                </a>
-                                                <a class="btn btn-primary" jsf:action="#{registroController.respuestaAceptar()}">
-                                                    <span class="glyphicon glyphicon-share-alt"/>Enviar
-                                                </a>
-                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <a class="btn btn-primary" jsf:action="#{registroController.respuestaAceptar()}">
+                                                <span class="glyphicon glyphicon-share-alt"/>Enviar
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
                         </h:panelGroup> 
                     </h:panelGroup>
 
@@ -502,6 +530,12 @@
                                 </h:outputText>
                             </h:column>
                             <h:column>
+                                <f:facet name="header">Estado</f:facet>
+                                <h:outputText value="#{reasigna.estado == 'ACT'? 'Activo' : 'Concluido'}" >
+                                    <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
+                                </h:outputText>
+                            </h:column>
+                            <h:column>
                                 <f:facet name="header">Archivo consulta</f:facet>
                                 <h:panelGroup rendered="#{reasigna.ruta != null}">
                                     <a target="_blank" href="/filesystem/#{reasigna.ruta}">
@@ -518,12 +552,12 @@
                                 </h:panelGroup>
                             </h:column>
                             <h:column>
-                                <f:facet name="header"></f:facet>
-                                <a jsf:rendered="#{reasigna.etapa == 2}" jsf:action="#{registroController.limpiarModalConsultaReasigna(reasigna)}">
+                                <f:facet name="header">Responde</f:facet>
+                                <a jsf:rendered="#{reasigna.etapa == 2 and reasigna.estado == 'ACT'}" jsf:action="#{registroController.limpiarModalConsultaReasigna(reasigna)}">
                                     <span style="font-size: large" class="glyphicon glyphicon-pencil" />
                                     <f:ajax render="@form" onevent="openModalNuevaReasigna" />
                                 </a>
-                                <a jsf:rendered="#{reasigna.etapa == 4}" jsf:action="#{registroController.limpiarModalRespuestaAprueba(reasigna)}">
+                                <a jsf:rendered="#{reasigna.etapa == 4 and reasigna.estado == 'ACT'}" jsf:action="#{registroController.limpiarModalRespuestaAprueba(reasigna)}">
                                     <span style="font-size: large" class="glyphicon glyphicon-pencil" />
                                     <f:ajax render="@form" onevent="openModalNuevaRespuesAprueba" />
                                 </a>
@@ -605,9 +639,6 @@
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
-                                                <a  class="btn btn-default" data-dismiss="modal">
-                                                    <span class="glyphicon glyphicon-remove"/>Cerrar
-                                                </a>
                                                 <a class="btn btn-primary" jsf:action="#{registroController.reasignarConsulta()}">
                                                     <span class="glyphicon glyphicon-share-alt"/>Enviar
                                                 </a>
@@ -626,60 +657,72 @@
                                             <a type="button" class="close" data-dismiss="modal">
                                                 <span style="color:red" class="glyphicon glyphicon-remove"></span>
                                             </a>
-                                            <span class="text-resalt-primary">Aprobar consulta</span>
+                                            <span class="text-resalt-primary" style="font-size: 2em">Aprobar / desaprobar respuesta</span>
                                         </div>
                                         <div class="modal-body" style="padding:5px">
                                             <div class="body">
-                                                <div style="text-align: right">
+                                                <div style="text-align: left">
                                                     <br/>
-
-                                                    <br/>
+                                                    <span style="color: gray; font-weight: bold">Envia: #{registroController.expedienteRespuestaAprueba.nombreUsuario}</span>
                                                 </div>
-                                                <table style="width: 100%">
-                                                    <tr>
-                                                        <td style="padding-right: 30px; width: 50%">
-                                                            <label>Consulta</label>
-                                                            <br/>
-                                                            <h:outputText value="#{registroController.expedienteRespuestaAprueba.detalle}" />
-                                                        </td>
-                                                        <td style="vertical-align: top">
-                                                            <h:panelGroup rendered="#{registroController.expedienteRespuestaAprueba.ruta != null}">
-                                                                <a target="_blank" href="/filesystem/#{registroController.expedienteRespuestaAprueba.ruta}">
-                                                                    <span style="font-size: large" class="glyphicon glyphicon-link" />
-                                                                </a>
-                                                            </h:panelGroup>
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                                <hr/>
-                                                <table style="width: 100%">
-                                                    <tr>
-                                                        <td style="padding-right: 30px; width: 50%">
-                                                            <h:selectOneRadio value="#{registroController.expedienteRespuestaAprueba.aprueba}">
-                                                                <f:selectItem itemLabel="Aceptar" itemValue="SI" />
-                                                                <f:selectItem itemLabel="Rechazar" itemValue="NO" />
-                                                            </h:selectOneRadio>
+                                                <div class="panel panel-featured-top-primary">
+                                                    <br/>
+                                                    <table style="width: 100%">
+                                                        <tr>
+                                                            <td style="padding-right: 30px; width: 75%">
+                                                                <label style="font-size: 1.5em">Consulta</label>
+                                                                <br/>
+                                                                <h:outputText value="#{registroController.expedienteRespuestaAprueba.detalle}" />
+                                                            </td>
+                                                            <td style="vertical-align: top">
+                                                                <label>Descargar archivo</label>
+                                                                <br/>
+                                                                <h:panelGroup rendered="#{registroController.expedienteRespuestaAprueba.ruta != null}">
+                                                                    <a target="_blank" href="/filesystem/#{registroController.expedienteRespuestaAprueba.ruta}">
+                                                                        <span style="font-size: large" class="glyphicon glyphicon-link" />
+                                                                    </a>
+                                                                </h:panelGroup>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                    <hr/>
+                                                    <table style="width: 100%">
+                                                        <tr>
+                                                            <td style="padding-right: 30px; width: 75%">
+                                                                <label style="font-size: 1.5em">Respuesta</label>
+                                                                <textarea jsf:value="#{registroController.expedienteRespuestaAprueba.respuesta}" rows="6" style="width: 100%" maxlength="1300" placeholder="Motivo"/>
+                                                            </td>
+                                                            <td style="vertical-align: top">
+                                                                <label style="font-size: 1.5em">Aprobar / desaprobar</label>
+                                                                <h:selectOneRadio value="#{registroController.expedienteRespuestaAprueba.aprueba}">
+                                                                    <f:selectItem itemLabel="Aceptar" itemValue="SI" />
+                                                                    <f:selectItem itemLabel="Rechazar" itemValue="NO" />
+                                                                </h:selectOneRadio>
+                                                                <br/><br/>
+                                                                <label><span style="font-size: large" class="glyphicon glyphicon-paperclip" />Cambiar archivo:</label>
+                                                                <h:inputFile value="#{registroController.file6}"/>
+                                                                <br/>
+                                                                <h:panelGroup rendered="#{registroController.expedienteRespuestaAprueba.rutaRespuesta != null}">
+                                                                    <a target="_blank" href="/filesystem/#{registroController.expedienteRespuestaAprueba.rutaRespuesta}">
+                                                                        <span style="font-size: large" class="glyphicon glyphicon-link" />
+                                                                    </a>
+                                                                </h:panelGroup>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
 
-                                                        </td>
-                                                        <td style="vertical-align: top">
-                                                            <label>Respuesta</label>
-                                                            <textarea jsf:value="#{registroController.expedienteRespuestaAprueba.respuesta}" rows="6" style="width: 100%" maxlength="1300" placeholder="Motivo"/>
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <a  class="btn btn-default" data-dismiss="modal">
-                                                    <span class="glyphicon glyphicon-remove"/>Cerrar
-                                                </a>
-                                                <a class="btn btn-primary" jsf:action="#{registroController.respuestaAprobar()}">
-                                                    <span class="glyphicon glyphicon-share-alt"/>Enviar
-                                                </a>
-                                            </div>
+                                        <div class="modal-footer">
+                                            <a class="btn btn-primary" jsf:action="#{registroController.respuestaAprobar()}">
+                                                <span class="glyphicon glyphicon-share-alt"/>Enviar
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
                         </h:panelGroup> 
                     </h:panelGroup> 
 
@@ -712,6 +755,14 @@
                                     <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
                                 </h:outputText>
                             </h:column>
+
+                            <h:column>
+                                <f:facet name="header">Estado</f:facet>
+                                <h:outputText value="#{responde.estado == 'ACT'? 'Activo' : 'Concluido'}" >
+                                    <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
+                                </h:outputText>
+                            </h:column>
+
                             <h:column>
                                 <f:facet name="header">Archivo consulta</f:facet>
                                 <h:panelGroup rendered="#{responde.ruta != null}">
@@ -730,7 +781,7 @@
                             </h:column>
                             <h:column>
                                 <f:facet name="header">Responder</f:facet>
-                                <a jsf:rendered="#{responde.etapa == 3}" jsf:action="#{registroController.limpiarModalConsultaResponde(responde)}">
+                                <a jsf:rendered="#{responde.etapa == 3 and responde.estado == 'ACT'}" jsf:action="#{registroController.limpiarModalConsultaResponde(responde)}">
                                     <span style="font-size: large" class="glyphicon glyphicon-pencil" />
                                     <f:ajax render="@form" onevent="openModalNuevaReasigna" />
                                 </a>

@@ -51,5 +51,10 @@ public class ExpedienteConsultaDAOImpl extends SqlSessionDaoSupport implements E
     public ExpedienteConsulta expedienteConsultaPorEtapa(ExpedienteConsulta expedienteConsulta) {
         return getSqlSession().selectOne("gob.dp.sid.registro.dao.ExpedienteConsultaDAO.expedienteConsultaPorEtapa", expedienteConsulta);
     }
+
+    @Override
+    public int expedienteConsultaPorEtapaCount(ExpedienteConsulta expedienteConsulta) {
+        return getSqlSession().selectOne("gob.dp.sid.registro.dao.ExpedienteConsultaDAO.expedienteConsultaPorEtapaCount", expedienteConsulta);
+    }
     
 }

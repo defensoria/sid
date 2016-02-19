@@ -11,6 +11,7 @@ import gob.dp.sid.administracion.seguridad.service.UsuarioService;
 import gob.dp.sid.bandeja.entity.Bandeja;
 import gob.dp.sid.bandeja.service.BandejaService;
 import gob.dp.sid.comun.controller.AbstractManagedBean;
+import gob.dp.sid.comun.type.EtapaConsultaType;
 import gob.dp.sid.comun.type.MensajeType;
 import gob.dp.sid.comun.type.RolType;
 import gob.dp.sid.registro.controller.RegistroController;
@@ -18,6 +19,7 @@ import gob.dp.sid.registro.entity.Expediente;
 import gob.dp.sid.registro.entity.ExpedienteConsulta;
 import gob.dp.sid.registro.entity.ExpedienteDerivacion;
 import gob.dp.sid.registro.entity.OficinaDefensorial;
+import gob.dp.sid.registro.service.ExpedienteConsultaService;
 import gob.dp.sid.registro.service.OficinaDefensorialService;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -67,6 +69,9 @@ public class BandejaController extends AbstractManagedBean implements Serializab
 
     @Autowired
     private OficinaDefensorialService oficinaDefensorialService;
+    
+    @Autowired
+    private ExpedienteConsultaService expedienteConsultaService;
 
     public String cargarBandeja() {
         usuarioSession();
@@ -168,8 +173,32 @@ public class BandejaController extends AbstractManagedBean implements Serializab
         guardarMensajeConsulta(ec, listaDestinatarios, 0L);
     }
     
+    public void mensajeEnviaConsultaDesaprobacion(ExpedienteConsulta ec){
+        
+        mensajeBandeja = new Bandeja();
+        OficinaDefensorial of = oficinaDefensorialService.obtenerOficinaDefensorial(ec.getIdAdjuntiaDefensorial().longValue());
+        mensajeBandeja.setTituloMensaje(MensajeType.MENSAJE_CONSULTA.getDetalle()+" exp: "+ec.getNumeroExpediente()+" a: "+of.getNombre());
+        ExpedienteConsulta ec1 = expedienteConsultaService.expedienteConsultaPorEtapa(new ExpedienteConsulta(EtapaConsultaType.CONSULTA_ETAPA_ENVIA.getKey(), ec.getIdPadre()));
+        Usuario u = new Usuario();
+        u.setCodigo(ec1.getCodigoUsuario());
+        List<Usuario> listaDestinatarios = new ArrayList<>();
+        listaDestinatarios.add(u);
+        guardarMensajeConsulta(ec, listaDestinatarios, 0L);
+    }
+    
+    public void mensajeEnviaDesapruebaConsultaReasignacion(ExpedienteConsulta ec){
+        
+        mensajeBandeja = new Bandeja();
+        mensajeBandeja.setTituloMensaje("Se desaprueba "+MensajeType.MENSAJE_CONSULTA.getDetalle()+" exp: "+ec.getNumeroExpediente());
+        ExpedienteConsulta ec1 = expedienteConsultaService.expedienteConsultaPorEtapa(new ExpedienteConsulta(EtapaConsultaType.CONSULTA_ETAPA_ENVIA.getKey(), ec.getIdPadre()));
+        List<Usuario> listaDestinatarios = new ArrayList<>();
+        listaDestinatarios.add(new Usuario(ec1.getCodigoUsuario()));
+        ExpedienteConsulta ec2 = expedienteConsultaService.expedienteConsultaPorEtapa(new ExpedienteConsulta(EtapaConsultaType.CONSULTA_ETAPA_APRUEBA.getKey(), ec.getIdPadre()));
+        listaDestinatarios.add(new Usuario(ec2.getCodigoUsuario()));
+        guardarMensajeConsulta(ec, listaDestinatarios, 0L);
+    }
+    
     public void mensajeEnviaConsultaReasignacion(ExpedienteConsulta ec){
-        usuarioSession();
         mensajeBandeja = new Bandeja();
         mensajeBandeja.setTituloMensaje(MensajeType.MENSAJE_CONSULTA.getDetalle()+" exp: "+ec.getNumeroExpediente());
         Usuario usuario = new Usuario();
@@ -180,26 +209,59 @@ public class BandejaController extends AbstractManagedBean implements Serializab
     }
     
     public void mensajeEnviaConsultaResponde(ExpedienteConsulta ec){
-        usuarioSession();
         mensajeBandeja = new Bandeja();
         mensajeBandeja.setTituloMensaje(MensajeType.MENSAJE_CONSULTA.getDetalle()+" exp: "+ec.getNumeroExpediente());
-        Usuario usuario = new Usuario();
-        usuario.setCodigo(ec.getCodigoUsuarioRetorno());
+        ExpedienteConsulta ec1 = expedienteConsultaService.expedienteConsultaPorEtapa(new ExpedienteConsulta(EtapaConsultaType.CONSULTA_ETAPA_REASIGNA.getKey(), ec.getIdPadre()));
         List<Usuario> listaDestinatarios = new ArrayList<>();
-        listaDestinatarios.add(usuario);
+        listaDestinatarios.add(new Usuario(ec1.getCodigoUsuario()));
         guardarMensajeConsulta(ec, listaDestinatarios, 0L);
     }
     
     public void mensajeEnviaAprobarRespuesta(ExpedienteConsulta ec){
-        usuarioSession();
         mensajeBandeja = new Bandeja();
         mensajeBandeja.setTituloMensaje(MensajeType.MENSAJE_CONSULTA.getDetalle()+" exp: "+ec.getNumeroExpediente());
-        Usuario usuario = new Usuario();
-        usuario.setCodigo(ec.getCodigoUsuarioRetorno());
+        ExpedienteConsulta ec1 = expedienteConsultaService.expedienteConsultaPorEtapa(new ExpedienteConsulta(EtapaConsultaType.CONSULTA_ETAPA_APRUEBA.getKey(), ec.getIdPadre()));
         List<Usuario> listaDestinatarios = new ArrayList<>();
-        listaDestinatarios.add(usuario);
+        listaDestinatarios.add(new Usuario(ec1.getCodigoUsuario()));
         guardarMensajeConsulta(ec, listaDestinatarios, 0L);
     }
+    
+    public void mensajeEnviaDesaprobarRespuesta(ExpedienteConsulta ec){
+        mensajeBandeja = new Bandeja();
+        mensajeBandeja.setTituloMensaje("Se desaprueba la respuesta "+MensajeType.MENSAJE_CONSULTA.getDetalle()+" exp: "+ec.getNumeroExpediente());
+        ExpedienteConsulta ec1 = expedienteConsultaService.expedienteConsultaPorEtapa(new ExpedienteConsulta(EtapaConsultaType.CONSULTA_ETAPA_ENVIA.getKey(), ec.getIdPadre()));
+        List<Usuario> listaDestinatarios = new ArrayList<>();
+        listaDestinatarios.add(new Usuario(ec1.getCodigoUsuario()));
+        ExpedienteConsulta ec2 = expedienteConsultaService.expedienteConsultaPorEtapa(new ExpedienteConsulta(EtapaConsultaType.CONSULTA_ETAPA_APRUEBA.getKey(), ec.getIdPadre()));
+        listaDestinatarios.add(new Usuario(ec2.getCodigoUsuario()));
+        ExpedienteConsulta ec3 = expedienteConsultaService.expedienteConsultaPorEtapa(new ExpedienteConsulta(EtapaConsultaType.CONSULTA_ETAPA_RESPONDE.getKey(), ec.getIdPadre()));
+        listaDestinatarios.add(new Usuario(ec3.getCodigoUsuario()));
+        guardarMensajeConsulta(ec, listaDestinatarios, 0L);
+    }
+    
+    public void mensajeEnviaAceptarRespuesta(ExpedienteConsulta ec){
+        mensajeBandeja = new Bandeja();
+        mensajeBandeja.setTituloMensaje("Se acepta la consulta "+MensajeType.MENSAJE_CONSULTA.getDetalle()+" exp: "+ec.getNumeroExpediente());
+        ExpedienteConsulta ec1 = expedienteConsultaService.expedienteConsultaPorEtapa(new ExpedienteConsulta(EtapaConsultaType.CONSULTA_ETAPA_ENVIA.getKey(), ec.getIdPadre()));
+        List<Usuario> listaDestinatarios = new ArrayList<>();
+        listaDestinatarios.add(new Usuario(ec1.getCodigoUsuario()));
+        guardarMensajeConsulta(ec, listaDestinatarios, 0L);
+    }
+    
+    public void mensajeEnviaRechazarRespuesta(ExpedienteConsulta ec){
+        mensajeBandeja = new Bandeja();
+        mensajeBandeja.setTituloMensaje("Se rechaza la respuesta "+MensajeType.MENSAJE_CONSULTA.getDetalle()+" exp: "+ec.getNumeroExpediente());
+        ExpedienteConsulta ec1 = expedienteConsultaService.expedienteConsultaPorEtapa(new ExpedienteConsulta(EtapaConsultaType.CONSULTA_ETAPA_ENVIA.getKey(), ec.getIdPadre()));
+        List<Usuario> listaDestinatarios = new ArrayList<>();
+        listaDestinatarios.add(new Usuario(ec1.getCodigoUsuario()));
+        ExpedienteConsulta ec2 = expedienteConsultaService.expedienteConsultaPorEtapa(new ExpedienteConsulta(EtapaConsultaType.CONSULTA_ETAPA_REASIGNA.getKey(), ec.getIdPadre()));
+        listaDestinatarios.add(new Usuario(ec2.getCodigoUsuario()));
+        ExpedienteConsulta ec3 = expedienteConsultaService.expedienteConsultaPorEtapa(new ExpedienteConsulta(EtapaConsultaType.CONSULTA_ETAPA_RESPONDE.getKey(), ec.getIdPadre()));
+        listaDestinatarios.add(new Usuario(ec3.getCodigoUsuario()));
+        guardarMensajeConsulta(ec, listaDestinatarios, 0L);
+    }
+    
+    
     
     public void mensajeEnviaAprobacion(ExpedienteDerivacion ed){
         mensajeBandeja = new Bandeja();

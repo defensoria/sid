@@ -54,6 +54,14 @@ public class ExpedienteConsulta implements Serializable{
     
     private String rutaRespuesta;
 
+    public ExpedienteConsulta() {
+    }
+
+    public ExpedienteConsulta(Integer etapa, Long idPadre) {
+        this.etapa = etapa;
+        this.idPadre = idPadre;
+    }
+
     public Long getId() {
         return id;
     }

@@ -64,6 +64,15 @@ public class Usuario implements Serializable
     private String codigoRemitente;
     
     private String rol;
+
+    public Usuario() {
+    }
+
+    public Usuario(String codigo) {
+        this.codigo = codigo;
+    }
+    
+    
     
     public String getCodigoConNombreCompleto()
     {

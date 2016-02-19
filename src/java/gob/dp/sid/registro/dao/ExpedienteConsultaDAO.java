@@ -28,4 +28,6 @@ public interface ExpedienteConsultaDAO {
     
     public ExpedienteConsulta expedienteConsultaPorEtapa(ExpedienteConsulta expedienteConsulta);
     
+    public int expedienteConsultaPorEtapaCount(ExpedienteConsulta expedienteConsulta);
+    
 }

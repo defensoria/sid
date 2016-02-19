@@ -28,4 +28,6 @@ public interface ExpedienteConsultaService {
     
     public ExpedienteConsulta expedienteConsultaPorEtapa(ExpedienteConsulta expedienteConsulta);
     
+    public int expedienteConsultaPorEtapaCount(ExpedienteConsulta expedienteConsulta);
+    
 }

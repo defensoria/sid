@@ -56,4 +56,9 @@ public class ExpedienteConsultaServiceImpl implements ExpedienteConsultaService{
         return expedienteConsultaDAO.expedienteConsultaPorEtapa(expedienteConsulta);
     }
 
+    @Override
+    public int expedienteConsultaPorEtapaCount(ExpedienteConsulta expedienteConsulta) {
+        return expedienteConsultaDAO.expedienteConsultaPorEtapaCount(expedienteConsulta);
+    }
+
 }

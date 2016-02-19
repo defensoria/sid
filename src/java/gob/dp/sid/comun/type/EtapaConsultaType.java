@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 public enum EtapaConsultaType {
+    
+        CONSULTA_ETAPA_CANCELADO(0, "Se desaprueba en alguna etapa"),
 
 	CONSULTA_ETAPA_ENVIA(1, "Se envia la consulta"),
         
