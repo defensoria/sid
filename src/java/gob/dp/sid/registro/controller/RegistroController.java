@@ -1185,6 +1185,35 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         }
     }
     
+    public String inicioAccionesSuspenderPublic(){
+        limpiarElementosSuspencion();
+        inicioAccionesSuspencion();
+        return "expedienteAccionesSuspeder";
+    }
+    
+    private void limpiarElementosSuspencion(){
+    
+    }
+    
+    private void inicioAccionesSuspencion(){
+    
+    }
+    
+    public String inicioAccionesAmpliarPublic(){
+        limpiarElementosAmpliacion();
+        inicioAccionesAmpliacion();
+        return "expedienteAccionesAmpliar";
+    }
+    
+    private void limpiarElementosAmpliacion(){
+    
+    }
+    
+    private void inicioAccionesAmpliacion(){
+    
+    }
+    
+    
     public String inicioAccionesConsultaPublic(){
         limpiarElementosConsulta();
         inicioAccionesConsulta();

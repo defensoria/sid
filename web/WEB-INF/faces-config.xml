@@ -221,6 +221,20 @@
   
   <navigation-rule>
         <navigation-case>
+                <from-outcome>expedienteAccionesSuspeder</from-outcome>
+                <to-view-id>/pages/acciones/expedienteAccionesSuspender.xhtml</to-view-id>
+        </navigation-case>
+  </navigation-rule>
+  
+  <navigation-rule>
+        <navigation-case>
+                <from-outcome>expedienteAccionesAmpliar</from-outcome>
+                <to-view-id>/pages/acciones/expedienteAccionesAmpliar.xhtml</to-view-id>
+        </navigation-case>
+  </navigation-rule>
+  
+  <navigation-rule>
+        <navigation-case>
                 <from-outcome>usuarioRoles</from-outcome>
                 <to-view-id>/pages/seguridad/usuarioRoles.xhtml</to-view-id>
         </navigation-case>

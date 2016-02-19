@@ -44,8 +44,16 @@
                                     <span class="glyphicon glyphicon-question-sign" />Consultar
                                 </a>
                             </li>
-                            <li><a href="#">Suspender</a></li>
-                            <li><a href="#">Ampliar</a></li>
+                            <li>
+                                <a jsf:action="#{registroController.inicioAccionesSuspenderPublic()}">
+                                    <span class="glyphicon glyphicon-time" />Suspender
+                                </a>
+                            </li>
+                            <li>
+                                <a jsf:action="#{registroController.inicioAccionesAmpliarPublic()}">
+                                    <span class="glyphicon glyphicon-plus" />Ampliar
+                                </a>
+                            </li>
                         </ul>
                     </div>
 
