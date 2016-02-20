@@ -23,12 +23,14 @@ import gob.dp.sid.comun.service.UbigeoService;
 import gob.dp.sid.comun.type.EstadoExpedienteType;
 import gob.dp.sid.comun.type.EtapaConsultaType;
 import gob.dp.sid.comun.type.EtapaDerivacionType;
+import gob.dp.sid.comun.type.EtapaSuspencionType;
 import gob.dp.sid.comun.type.EtapaType;
 import gob.dp.sid.comun.type.ExpedienteType;
 import gob.dp.sid.comun.type.RolType;
 import gob.dp.sid.registro.entity.Entidad;
 import gob.dp.sid.registro.entity.EtapaEstado;
 import gob.dp.sid.registro.entity.Expediente;
+import gob.dp.sid.registro.entity.ExpedienteAmpliacion;
 import gob.dp.sid.registro.entity.ExpedienteClasiTipo;
 import gob.dp.sid.registro.entity.ExpedienteClasificacion;
 import gob.dp.sid.registro.entity.ExpedienteClasificacionTipo;
@@ -40,12 +42,14 @@ import gob.dp.sid.registro.entity.ExpedienteGestion;
 import gob.dp.sid.registro.entity.ExpedienteNivel;
 import gob.dp.sid.registro.entity.ExpedienteONP;
 import gob.dp.sid.registro.entity.ExpedientePersona;
+import gob.dp.sid.registro.entity.ExpedienteSuspencion;
 import gob.dp.sid.registro.entity.ExpedienteTiempo;
 import gob.dp.sid.registro.entity.GestionEtapa;
 import gob.dp.sid.registro.entity.OficinaDefensorial;
 import gob.dp.sid.registro.entity.Persona;
 import gob.dp.sid.registro.service.EntidadService;
 import gob.dp.sid.registro.service.EtapaEstadoService;
+import gob.dp.sid.registro.service.ExpedienteAmpliacionService;
 import gob.dp.sid.registro.service.ExpedienteClasiTipoService;
 import gob.dp.sid.registro.service.ExpedienteClasificacionService;
 import gob.dp.sid.registro.service.ExpedienteClasificacionTipoService;
@@ -58,6 +62,7 @@ import gob.dp.sid.registro.service.ExpedienteNivelService;
 import gob.dp.sid.registro.service.ExpedienteONPService;
 import gob.dp.sid.registro.service.ExpedientePersonaService;
 import gob.dp.sid.registro.service.ExpedienteService;
+import gob.dp.sid.registro.service.ExpedienteSuspencionService;
 import gob.dp.sid.registro.service.ExpedienteTiempoService;
 import gob.dp.sid.registro.service.GestionEtapaService;
 import gob.dp.sid.registro.service.OficinaDefensorialService;
@@ -242,7 +247,19 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     private ExpedienteConsulta expedienteRespuestaAcepta;
     
     private ExpedienteConsulta expedienteRespuestaRecibe;
-
+    
+    private ExpedienteSuspencion expedienteSuspencionEnvia;
+    
+    private ExpedienteAmpliacion expedienteAmpliacionEnvia;
+    
+    private ExpedienteSuspencion expedienteSuspencionAprueba;
+    
+    private ExpedienteAmpliacion expedienteAmpliacionAprueba;
+    
+    private ExpedienteSuspencion expedienteSuspencionAcepta;
+    
+    private ExpedienteAmpliacion expedienteAmpliacionAcepta;
+    
     private ExpedienteClasificacion expedienteClasificacionBusqueda;
 
     private Part file1;
@@ -278,6 +295,10 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     private List<Usuario> listaUsuarioOD;
 
     private List<ExpedienteDerivacion> listaExpedienteDerivacion;
+    
+    private List<ExpedienteSuspencion> listaExpedienteSuspencion;
+    
+    private List<ExpedienteAmpliacion> listaExpedienteAmpliacion;
 
     JasperPrint jasperPrint;
 
@@ -369,6 +390,13 @@ public class RegistroController extends AbstractManagedBean implements Serializa
 
     @Autowired
     private ExpedienteEtapaService expedienteEtapaService;
+    
+    @Autowired
+    private ExpedienteSuspencionService expedienteSuspencionService;
+    
+    @Autowired
+    private ExpedienteAmpliacionService expedienteAmpliacionService;
+    
 
     public String cargarNuevoExpediente() {
         cargarObjetoExpediente();
@@ -1192,11 +1220,45 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     }
     
     private void limpiarElementosSuspencion(){
-    
+        expedienteSuspencionEnvia = new ExpedienteSuspencion();
+        expedienteSuspencionAprueba = new ExpedienteSuspencion();
+        expedienteSuspencionAcepta = new ExpedienteSuspencion();
     }
     
-    private void inicioAccionesSuspencion(){
-    
+    private String inicioAccionesSuspencion(){
+        listaExpedienteSuspencion = null;
+        listaExpedienteSuspencion = expedienteSuspencionService.expedienteSuspencionSelectList(expediente.getId());
+        
+        for (ExpedienteSuspencion es : listaExpedienteSuspencion) {
+            if (es.getEtapa() == EtapaSuspencionType.SUSPENCION_ETAPA_ENVIA.getKey()) {
+                setExpedienteSuspencionEnvia(es);
+            }
+            if (es.getEtapa() == EtapaSuspencionType.SUSPENCION_ETAPA_APRUEBA.getKey()) {
+                setExpedienteSuspencionAprueba(es);
+            }
+            if (es.getEtapa() == EtapaSuspencionType.SUSPENCION_ETAPA_ACEPTA.getKey()) {
+                setExpedienteSuspencionAcepta(es);
+            }
+        }
+        if (expedienteSuspencionEnvia == null) {
+            expedienteSuspencionEnvia = new ExpedienteSuspencion();
+        }
+
+        if (expedienteSuspencionAprueba == null) {
+            expedienteSuspencionAprueba = new ExpedienteSuspencion();
+            expedienteSuspencionAprueba.setCodigoUsuario(usuarioSession.getCodigo());
+            return "expedienteAccionesSuspeder";
+        } else {
+            if (StringUtils.equals(expedienteSuspencionAprueba.getCodigoUsuario(), usuarioSession.getCodigo())) {
+                return "expedienteAccionesSuspeder";
+            }
+        }
+
+        if (expedienteSuspencionAcepta == null) {
+            expedienteSuspencionAcepta = new ExpedienteSuspencion();
+            expedienteSuspencionAcepta.setCodigoUsuario(usuarioSession.getCodigo());
+        }
+        return "expedienteAccionesSuspeder";
     }
     
     public String inicioAccionesAmpliarPublic(){
@@ -1206,7 +1268,9 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     }
     
     private void limpiarElementosAmpliacion(){
-    
+        expedienteAmpliacionEnvia = new ExpedienteAmpliacion();
+        expedienteAmpliacionAprueba = new ExpedienteAmpliacion();
+        expedienteAmpliacionAcepta = new ExpedienteAmpliacion();
     }
     
     private void inicioAccionesAmpliacion(){
@@ -1638,6 +1702,91 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         return true;
     }
     
+    public boolean enviarSuspencion() {
+        if (StringUtils.isBlank(expedienteSuspencionEnvia.getDetalle())) {
+            msg.messageAlert("Debe ingresar el detalle", null);
+            return false;
+        }
+        
+        if(expedienteSuspencionEnvia.getId() != null){
+            return false;
+        }
+        expedienteSuspencionEnvia.setIdExpediente(expediente.getId());
+        expedienteSuspencionEnvia.setNumeroExpediente(expediente.getNumero());
+        expedienteSuspencionEnvia.setEstado("ACT");
+        expedienteSuspencionEnvia.setEtapa(EtapaSuspencionType.SUSPENCION_ETAPA_ENVIA.getKey());
+        expedienteSuspencionEnvia.setCodigoUsuario(usuarioSession.getCodigo());
+        expedienteSuspencionEnvia.setNombreUsuario(usuarioSession.getNombre() + " " + usuarioSession.getApellidoPaterno() + " " + usuarioSession.getApellidoMaterno());
+        expedienteSuspencionEnvia.setFecha(new Date());
+        String ruta = uploadArchive(file4);
+        expedienteSuspencionEnvia.setRuta(ruta);
+        expedienteSuspencionService.expedienteSuspencionInsertar(expedienteSuspencionEnvia);
+        enviarMensajeSupensionEnvio();
+        msg.messageInfo("Se envio la Suspención", null);
+        return true;
+    }
+    
+    public boolean aprobarSuspencion() {
+        if (StringUtils.isBlank(expedienteSuspencionAprueba.getAprueba())) {
+            msg.messageAlert("Debe aprobar o desaprobar la solicitud de suspención", null);
+            return false;
+        }
+
+        if (StringUtils.isBlank(expedienteSuspencionAprueba.getDetalle())) {
+            msg.messageAlert("Debe ingresar el detalle", null);
+            return false;
+        }
+        
+        expedienteSuspencionAprueba.setIdExpediente(expediente.getId());
+        expedienteSuspencionAprueba.setNumeroExpediente(expediente.getNumero());
+        expedienteSuspencionAprueba.setEstado("ACT");
+        expedienteSuspencionAprueba.setEtapa(EtapaSuspencionType.SUSPENCION_ETAPA_APRUEBA.getKey());
+        expedienteSuspencionAprueba.setCodigoUsuario(usuarioSession.getCodigo());
+        expedienteSuspencionAprueba.setNombreUsuario(usuarioSession.getNombre() + " " + usuarioSession.getApellidoPaterno() + " " + usuarioSession.getApellidoMaterno());
+        expedienteSuspencionAprueba.setFecha(new Date());
+        expedienteSuspencionService.expedienteSuspencionInsertar(expedienteSuspencionAprueba);
+        if (StringUtils.equals(expedienteSuspencionAprueba.getAprueba(), "SI")) {
+            enviarMensajeSuspencionAprobacion();
+            msg.messageInfo("Se aprobó la Derivación", null);
+        } else {
+            guardarVersion2();
+            enviarMensajeSuspencionDesaprobacion();
+            msg.messageInfo("No se aprobo la derivación", null);
+        }
+        return true;
+    }
+    
+    public boolean aceptarSuspencion() {
+        if (StringUtils.isBlank(expedienteSuspencionAcepta.getAprueba())) {
+            msg.messageAlert("Debe aceptar o rechazar la solicitud de suspención", null);
+            return false;
+        }
+
+        if (StringUtils.isBlank(expedienteSuspencionAcepta.getDetalle())) {
+            msg.messageAlert("Debe ingresar el detalle", null);
+            return false;
+        }
+
+        expedienteSuspencionAcepta.setIdExpediente(expediente.getId());
+        expedienteSuspencionAcepta.setNumeroExpediente(expediente.getNumero());
+        expedienteSuspencionAcepta.setEstado("ACT");
+        expedienteSuspencionAcepta.setEtapa(EtapaSuspencionType.SUSPENCION_ETAPA_ACEPTA.getKey());
+        expedienteSuspencionAcepta.setCodigoUsuario(usuarioSession.getCodigo());
+        expedienteSuspencionAcepta.setNombreUsuario(usuarioSession.getNombre() + " " + usuarioSession.getApellidoPaterno() + " " + usuarioSession.getApellidoMaterno());
+        expedienteSuspencionAcepta.setFecha(new Date());
+        expedienteSuspencionService.expedienteSuspencionInsertar(expedienteSuspencionAcepta);
+        if (StringUtils.equals(expedienteSuspencionAcepta.getAprueba(), "SI")) {
+            guardarVersion2();
+            enviarMensajeSuspencionAcepta();
+            msg.messageInfo("Se reasigno por derivación el expediente", null);
+        } else {
+            guardarVersion2();
+            enviarMensajeSuspencionRechaza();
+            msg.messageInfo("Se rechaza la derivación", null);
+        }
+        return true;
+    }
+    
     private void enviarMensajeConsulta() {
         FacesContext context = FacesContext.getCurrentInstance();
         BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
@@ -1726,6 +1875,36 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         FacesContext context = FacesContext.getCurrentInstance();
         BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
         bandejaController.mensajeEnviaReasignacionDesaprobada(expedienteDerivacionReasigna, expedienteDerivacionAprueba.getCodigoUsuario(), expediente);
+    }
+    
+    private void enviarMensajeSupensionEnvio() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
+        bandejaController.mensajeEnviaSuspencionEnvia(expedienteSuspencionEnvia);
+    }
+    
+    private void enviarMensajeSuspencionAprobacion() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
+        bandejaController.mensajeEnviaSuspencionAprobacion(expedienteSuspencionAprueba);
+    }
+
+    private void enviarMensajeSuspencionDesaprobacion() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
+        bandejaController.mensajeEnviaSuspencionDesaprobacion(expedienteSuspencionAprueba, expediente);
+    }
+    
+    private void enviarMensajeSuspencionAcepta() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
+        bandejaController.mensajeEnviaSuspencionAprobacion(expedienteSuspencionAcepta);
+    }
+
+    private void enviarMensajeSuspencionRechaza() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
+        bandejaController.mensajeEnviaSuspencionDesaprobacion(expedienteSuspencionAcepta, expediente);
     }
 
     public String registarExpedienteGestion() {
@@ -4353,6 +4532,71 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     public void setFile6(Part file6) {
         this.file6 = file6;
     }
+
+    public ExpedienteSuspencion getExpedienteSuspencionEnvia() {
+        return expedienteSuspencionEnvia;
+    }
+
+    public void setExpedienteSuspencionEnvia(ExpedienteSuspencion expedienteSuspencionEnvia) {
+        this.expedienteSuspencionEnvia = expedienteSuspencionEnvia;
+    }
+
+    public ExpedienteAmpliacion getExpedienteAmpliacionEnvia() {
+        return expedienteAmpliacionEnvia;
+    }
+
+    public void setExpedienteAmpliacionEnvia(ExpedienteAmpliacion expedienteAmpliacionEnvia) {
+        this.expedienteAmpliacionEnvia = expedienteAmpliacionEnvia;
+    }
+
+    public ExpedienteSuspencion getExpedienteSuspencionAprueba() {
+        return expedienteSuspencionAprueba;
+    }
+
+    public void setExpedienteSuspencionAprueba(ExpedienteSuspencion expedienteSuspencionAprueba) {
+        this.expedienteSuspencionAprueba = expedienteSuspencionAprueba;
+    }
+
+    public ExpedienteAmpliacion getExpedienteAmpliacionAprueba() {
+        return expedienteAmpliacionAprueba;
+    }
+
+    public void setExpedienteAmpliacionAprueba(ExpedienteAmpliacion expedienteAmpliacionAprueba) {
+        this.expedienteAmpliacionAprueba = expedienteAmpliacionAprueba;
+    }
+
+    public ExpedienteSuspencion getExpedienteSuspencionAcepta() {
+        return expedienteSuspencionAcepta;
+    }
+
+    public void setExpedienteSuspencionAcepta(ExpedienteSuspencion expedienteSuspencionAcepta) {
+        this.expedienteSuspencionAcepta = expedienteSuspencionAcepta;
+    }
+
+    public ExpedienteAmpliacion getExpedienteAmpliacionAcepta() {
+        return expedienteAmpliacionAcepta;
+    }
+
+    public void setExpedienteAmpliacionAcepta(ExpedienteAmpliacion expedienteAmpliacionAcepta) {
+        this.expedienteAmpliacionAcepta = expedienteAmpliacionAcepta;
+    }
+
+    public List<ExpedienteSuspencion> getListaExpedienteSuspencion() {
+        return listaExpedienteSuspencion;
+    }
+
+    public void setListaExpedienteSuspencion(List<ExpedienteSuspencion> listaExpedienteSuspencion) {
+        this.listaExpedienteSuspencion = listaExpedienteSuspencion;
+    }
+
+    public List<ExpedienteAmpliacion> getListaExpedienteAmpliacion() {
+        return listaExpedienteAmpliacion;
+    }
+
+    public void setListaExpedienteAmpliacion(List<ExpedienteAmpliacion> listaExpedienteAmpliacion) {
+        this.listaExpedienteAmpliacion = listaExpedienteAmpliacion;
+    }
+
 
     
 }

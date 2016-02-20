@@ -19,7 +19,18 @@ public enum MensajeType {
 
     MENSAJE_DERIVACION(1, "Mensaje por Derivación", "Derivación", "green"),
     
-    MENSAJE_CONSULTA(2, "Mensaje por Consulta", "Consulta", "blue");
+    MENSAJE_CONSULTA(2, "Mensaje por Consulta", "Consulta", "blue"),
+    
+    MENSAJE_SUSPENCION(3, "Mensaje por Suspención", "Suspención", "red"),
+    
+    MENSAJE_AMPLIACION(4, "Mensaje por Ampliación", "Ampliación", "orange");
+
+    private MensajeType() {
+        this.key = null;
+        this.value = null;
+        this.detalle = null;
+        this.color = null;
+    }
 
     /**
      * La Constante list.
