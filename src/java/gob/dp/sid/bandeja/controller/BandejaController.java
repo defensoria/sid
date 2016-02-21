@@ -16,6 +16,7 @@ import gob.dp.sid.comun.type.MensajeType;
 import gob.dp.sid.comun.type.RolType;
 import gob.dp.sid.registro.controller.RegistroController;
 import gob.dp.sid.registro.entity.Expediente;
+import gob.dp.sid.registro.entity.ExpedienteAmpliacion;
 import gob.dp.sid.registro.entity.ExpedienteConsulta;
 import gob.dp.sid.registro.entity.ExpedienteDerivacion;
 import gob.dp.sid.registro.entity.ExpedienteSuspencion;
@@ -316,43 +317,103 @@ public class BandejaController extends AbstractManagedBean implements Serializab
     public void mensajeEnviaSuspencionAprobacion(ExpedienteSuspencion es){
         mensajeBandeja = new Bandeja();
         OficinaDefensorial of = oficinaDefensorialService.obtenerOficinaDefensorial(es.getIdAdjuntiaDefensorial().longValue());
-        mensajeBandeja.setTituloMensaje("Solicita: reasignación por "+MensajeType.MENSAJE_SUSPENCION.getDetalle()+" exp: "+es.getNumeroExpediente()+" a: "+of.getNombre());
-        usuarioSession.setRol(RolType.APROBADOR_OD.getKey());
+        mensajeBandeja.setTituloMensaje("Solicita aceptar solicitud por "+MensajeType.MENSAJE_SUSPENCION.getDetalle()+" del exp: "+es.getNumeroExpediente()+" a: "+of.getNombre());
+        usuarioSession.setRol(RolType.APROBADOR_AD.getKey());
         usuarioSession.setCodigoOD(es.getIdAdjuntiaDefensorial());
         List<Usuario> listaDestinatarios = buscarDestinatarios(usuarioSession);
         guardarMensajeSuspencion(es, listaDestinatarios, 0L);
     }
     
-    public void mensajeEnviaSuspencionDesaprobacion(ExpedienteSuspencion es, Expediente e){
+    public void mensajeEnviaSuspencionDesaprobacion(ExpedienteSuspencion envia, ExpedienteSuspencion aprueba, Expediente e){
         mensajeBandeja = new Bandeja();
-        mensajeBandeja.setTituloMensaje("No se aprueba la "+MensajeType.MENSAJE_SUSPENCION.getDetalle()+" exp: "+es.getNumeroExpediente());
+        mensajeBandeja.setTituloMensaje("Se Desaprueba la solicitud de "+MensajeType.MENSAJE_SUSPENCION.getDetalle()+" del exp: "+aprueba.getNumeroExpediente());
         usuarioSession.setRol(RolType.APROBADOR_OD.getKey());
         List<Usuario> listaDestinatarios = new ArrayList<>();
-        Usuario usu = new Usuario();
-        usu.setCodigo(e.getUsuarioRegistro());
-        listaDestinatarios.add(usu);
-        guardarMensajeSuspencion(es, listaDestinatarios, e.getId());
+        Usuario u;
+        u = new Usuario(envia.getCodigoUsuario());
+        listaDestinatarios.add(u);
+        guardarMensajeSuspencion(aprueba, listaDestinatarios, e.getId());
     }
     
-    public void mensajeEnviaSuspencionAcepta(ExpedienteSuspencion es){
+    public void mensajeEnviaSuspencionAcepta(ExpedienteSuspencion acepta,ExpedienteSuspencion envia,ExpedienteSuspencion aprueba){
+        mensajeBandeja = new Bandeja();
+        mensajeBandeja.setTituloMensaje("Se acepta la solicitud de "+MensajeType.MENSAJE_SUSPENCION.getDetalle()+" del exp: "+acepta.getNumeroExpediente());
+        List<Usuario> listaDestinatarios = new ArrayList<>();
+        Usuario u;
+        u = new Usuario(envia.getCodigoUsuario());
+        listaDestinatarios.add(u);
+        u = new Usuario(aprueba.getCodigoUsuario());
+        listaDestinatarios.add(u);
+        guardarMensajeSuspencion(acepta, listaDestinatarios, 0L);
+    }
+    
+    public void mensajeEnviaSuspencionRechaza(ExpedienteSuspencion acepta,ExpedienteSuspencion envia,ExpedienteSuspencion aprueba, Expediente e){
+        mensajeBandeja = new Bandeja();
+        mensajeBandeja.setTituloMensaje("Se rechaza la solicitud de "+MensajeType.MENSAJE_SUSPENCION.getDetalle()+" exp: "+acepta.getNumeroExpediente());
+        usuarioSession.setRol(RolType.APROBADOR_OD.getKey());
+        List<Usuario> listaDestinatarios = new ArrayList<>();
+        Usuario u;
+        u = new Usuario(envia.getCodigoUsuario());
+        listaDestinatarios.add(u);
+        u = new Usuario(aprueba.getCodigoUsuario());
+        listaDestinatarios.add(u);
+        guardarMensajeSuspencion(acepta, listaDestinatarios, e.getId());
+    }
+    
+    public void mensajeEnviaAmpliacionEnvia(ExpedienteAmpliacion es){
+        usuarioSession();
         mensajeBandeja = new Bandeja();
         OficinaDefensorial of = oficinaDefensorialService.obtenerOficinaDefensorial(es.getIdAdjuntiaDefensorial().longValue());
-        mensajeBandeja.setTituloMensaje("Solicita: reasignación por "+MensajeType.MENSAJE_SUSPENCION.getDetalle()+" exp: "+es.getNumeroExpediente()+" a: "+of.getNombre());
+        mensajeBandeja.setTituloMensaje("Solicita: aprobación de "+MensajeType.MENSAJE_AMPLIACION.getDetalle()+" exp: "+es.getNumeroExpediente()+" a: "+of.getNombre());
         usuarioSession.setRol(RolType.APROBADOR_OD.getKey());
-        usuarioSession.setCodigoOD(es.getIdAdjuntiaDefensorial());
         List<Usuario> listaDestinatarios = buscarDestinatarios(usuarioSession);
-        guardarMensajeSuspencion(es, listaDestinatarios, 0L);
+        guardarMensajeAmpliacion(es, listaDestinatarios, 0L);
     }
     
-    public void mensajeEnviaSuspencionRechaza(ExpedienteSuspencion es, Expediente e){
+    public void mensajeEnviaAmpliacionAprobacion(ExpedienteAmpliacion es){
         mensajeBandeja = new Bandeja();
-        mensajeBandeja.setTituloMensaje("No se aprueba la "+MensajeType.MENSAJE_SUSPENCION.getDetalle()+" exp: "+es.getNumeroExpediente());
+        OficinaDefensorial of = oficinaDefensorialService.obtenerOficinaDefensorial(es.getIdAdjuntiaDefensorial().longValue());
+        mensajeBandeja.setTituloMensaje("Solicita aceptar solicitud por "+MensajeType.MENSAJE_AMPLIACION.getDetalle()+" del exp: "+es.getNumeroExpediente()+" a: "+of.getNombre());
+        usuarioSession.setRol(RolType.APROBADOR_AD.getKey());
+        usuarioSession.setCodigoOD(es.getIdAdjuntiaDefensorial());
+        List<Usuario> listaDestinatarios = buscarDestinatarios(usuarioSession);
+        guardarMensajeAmpliacion(es, listaDestinatarios, 0L);
+    }
+    
+    public void mensajeEnviaAmpliacionDesaprobacion(ExpedienteAmpliacion envia, ExpedienteAmpliacion aprueba, Expediente e){
+        mensajeBandeja = new Bandeja();
+        mensajeBandeja.setTituloMensaje("Se Desaprueba la solicitud de "+MensajeType.MENSAJE_AMPLIACION.getDetalle()+" del exp: "+aprueba.getNumeroExpediente());
         usuarioSession.setRol(RolType.APROBADOR_OD.getKey());
         List<Usuario> listaDestinatarios = new ArrayList<>();
-        Usuario usu = new Usuario();
-        usu.setCodigo(e.getUsuarioRegistro());
-        listaDestinatarios.add(usu);
-        guardarMensajeSuspencion(es, listaDestinatarios, e.getId());
+        Usuario u;
+        u = new Usuario(envia.getCodigoUsuario());
+        listaDestinatarios.add(u);
+        guardarMensajeAmpliacion(aprueba, listaDestinatarios, e.getId());
+    }
+    
+    public void mensajeEnviaAmpliacionAcepta(ExpedienteAmpliacion acepta,ExpedienteAmpliacion envia,ExpedienteAmpliacion aprueba){
+        mensajeBandeja = new Bandeja();
+        mensajeBandeja.setTituloMensaje("Se acepta la solicitud de "+MensajeType.MENSAJE_AMPLIACION.getDetalle()+" del exp: "+acepta.getNumeroExpediente());
+        List<Usuario> listaDestinatarios = new ArrayList<>();
+        Usuario u;
+        u = new Usuario(envia.getCodigoUsuario());
+        listaDestinatarios.add(u);
+        u = new Usuario(aprueba.getCodigoUsuario());
+        listaDestinatarios.add(u);
+        guardarMensajeAmpliacion(acepta, listaDestinatarios, 0L);
+    }
+    
+    public void mensajeEnviaAmpliacionRechaza(ExpedienteAmpliacion acepta,ExpedienteAmpliacion envia,ExpedienteAmpliacion aprueba, Expediente e){
+        mensajeBandeja = new Bandeja();
+        mensajeBandeja.setTituloMensaje("Se rechaza la solicitud de "+MensajeType.MENSAJE_AMPLIACION.getDetalle()+" exp: "+acepta.getNumeroExpediente());
+        usuarioSession.setRol(RolType.APROBADOR_OD.getKey());
+        List<Usuario> listaDestinatarios = new ArrayList<>();
+        Usuario u;
+        u = new Usuario(envia.getCodigoUsuario());
+        listaDestinatarios.add(u);
+        u = new Usuario(aprueba.getCodigoUsuario());
+        listaDestinatarios.add(u);
+        guardarMensajeAmpliacion(acepta, listaDestinatarios, e.getId());
     }
     
     
@@ -413,12 +474,37 @@ public class BandejaController extends AbstractManagedBean implements Serializab
             mensajeBandeja.setEstado("PEN");
             mensajeBandeja.setFechaEnvio(new Date());
             mensajeBandeja.setRemitente(usuarioSession.getCodigo());
-            mensajeBandeja.setTipo(MensajeType.MENSAJE_DERIVACION.getKey());
-            mensajeBandeja.setTitulo(MensajeType.MENSAJE_DERIVACION.getValue());
+            mensajeBandeja.setTipo(MensajeType.MENSAJE_SUSPENCION.getKey());
+            mensajeBandeja.setTitulo(MensajeType.MENSAJE_SUSPENCION.getValue());
             mensajeBandeja.setCodigoTipo(es.getId());
             mensajeBandeja.setNombreRemitente(usuarioSession.getNombre() + " " + usuarioSession.getApellidoPaterno() + " " + usuarioSession.getApellidoMaterno());
-            mensajeBandeja.setDetalleTipo(MensajeType.MENSAJE_DERIVACION.getDetalle());
-            mensajeBandeja.setColorTipo(MensajeType.MENSAJE_DERIVACION.getColor());
+            mensajeBandeja.setDetalleTipo(MensajeType.MENSAJE_SUSPENCION.getDetalle());
+            mensajeBandeja.setColorTipo(MensajeType.MENSAJE_SUSPENCION.getColor());
+            mensajeBandeja.setMotivo(es.getDetalle());
+            mensajeBandeja.setNumeroExpediente(es.getNumeroExpediente());
+            mensajeBandeja.setTipoMensaje("INT");
+            mensajeBandeja.setActivo("A");
+            if(idExp > 0)
+                mensajeBandeja.setIdExpediente(idExp);
+            else
+                mensajeBandeja.setIdExpediente(es.getIdExpediente());
+            mensajeBandeja.setIdAccion(es.getId());
+            bandejaService.bandejaInsertar(mensajeBandeja);
+        }
+    }
+    
+    private void guardarMensajeAmpliacion(ExpedienteAmpliacion es, List<Usuario> usuarios, Long idExp) {
+        for(Usuario u : usuarios){
+            mensajeBandeja.setDestinatario(u.getCodigo());
+            mensajeBandeja.setEstado("PEN");
+            mensajeBandeja.setFechaEnvio(new Date());
+            mensajeBandeja.setRemitente(usuarioSession.getCodigo());
+            mensajeBandeja.setTipo(MensajeType.MENSAJE_AMPLIACION.getKey());
+            mensajeBandeja.setTitulo(MensajeType.MENSAJE_AMPLIACION.getValue());
+            mensajeBandeja.setCodigoTipo(es.getId());
+            mensajeBandeja.setNombreRemitente(usuarioSession.getNombre() + " " + usuarioSession.getApellidoPaterno() + " " + usuarioSession.getApellidoMaterno());
+            mensajeBandeja.setDetalleTipo(MensajeType.MENSAJE_AMPLIACION.getDetalle());
+            mensajeBandeja.setColorTipo(MensajeType.MENSAJE_AMPLIACION.getColor());
             mensajeBandeja.setMotivo(es.getDetalle());
             mensajeBandeja.setNumeroExpediente(es.getNumeroExpediente());
             mensajeBandeja.setTipoMensaje("INT");
@@ -476,6 +562,14 @@ public class BandejaController extends AbstractManagedBean implements Serializab
         return cargarMensajePorNumero();
     }
     
+    public String cargarExpedientePorSuspencion(){
+        return cargarSuspencionPorNumero();
+    }
+    
+    public String cargarExpedientePorAmpliacion(){
+        return cargarAmpliacionPorNumero();
+    }
+    
     private String cargarDerivacionPorId() {
         FacesContext context = FacesContext.getCurrentInstance();
         RegistroController registroController = (RegistroController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "registroController");
@@ -488,6 +582,20 @@ public class BandejaController extends AbstractManagedBean implements Serializab
         RegistroController registroController = (RegistroController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "registroController");
         registroController.cargarExpedientePorNumero(mensajeBandeja.getNumeroExpediente());
         return registroController.inicioAccionesConsultaPublic();
+    }
+    
+    private String cargarSuspencionPorNumero() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        RegistroController registroController = (RegistroController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "registroController");
+        registroController.cargarExpedientePorNumero(mensajeBandeja.getNumeroExpediente());
+        return registroController.inicioAccionesSuspenderPublic();
+    }
+    
+    private String cargarAmpliacionPorNumero() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        RegistroController registroController = (RegistroController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "registroController");
+        registroController.cargarExpedientePorNumero(mensajeBandeja.getNumeroExpediente());
+        return registroController.inicioAccionesAmpliarPublic();
     }
 
     private List<Usuario> buscarDestinatarios(Usuario u) {

@@ -21,6 +21,7 @@ import gob.dp.sid.comun.entity.Provincia;
 import gob.dp.sid.comun.service.ParametroService;
 import gob.dp.sid.comun.service.UbigeoService;
 import gob.dp.sid.comun.type.EstadoExpedienteType;
+import gob.dp.sid.comun.type.EtapaAmpliacionType;
 import gob.dp.sid.comun.type.EtapaConsultaType;
 import gob.dp.sid.comun.type.EtapaDerivacionType;
 import gob.dp.sid.comun.type.EtapaSuspencionType;
@@ -500,6 +501,14 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             expedienteONPService.expedienteONPUpdate(expedienteONP);
         }
         msg.messageInfo("Se realizaron los cambios", null);
+    }
+    
+    public void aumentarDisminuirTiempoEtapa(int tipo, int nroDias){
+        if(tipo == 1)
+            expedienteTiempo.setDiasRestante(expedienteTiempo.getDiasRestante()+nroDias);
+        else
+            expedienteTiempo.setDiasRestante(expedienteTiempo.getDiasRestante()-nroDias);
+        expedienteTiempoService.expedienteTiempoUpdate(expedienteTiempo);
     }
 
     public void consultarReniec() throws ParseException {
@@ -1240,11 +1249,11 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 setExpedienteSuspencionAcepta(es);
             }
         }
-        if (expedienteSuspencionEnvia == null) {
+        if (expedienteSuspencionEnvia.getId() == null) {
             expedienteSuspencionEnvia = new ExpedienteSuspencion();
         }
 
-        if (expedienteSuspencionAprueba == null) {
+        if (expedienteSuspencionAprueba.getId() == null) {
             expedienteSuspencionAprueba = new ExpedienteSuspencion();
             expedienteSuspencionAprueba.setCodigoUsuario(usuarioSession.getCodigo());
             return "expedienteAccionesSuspeder";
@@ -1254,7 +1263,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             }
         }
 
-        if (expedienteSuspencionAcepta == null) {
+        if (expedienteSuspencionAcepta.getId() == null) {
             expedienteSuspencionAcepta = new ExpedienteSuspencion();
             expedienteSuspencionAcepta.setCodigoUsuario(usuarioSession.getCodigo());
         }
@@ -1273,10 +1282,41 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         expedienteAmpliacionAcepta = new ExpedienteAmpliacion();
     }
     
-    private void inicioAccionesAmpliacion(){
-    
+    private String inicioAccionesAmpliacion(){
+        listaExpedienteAmpliacion = null;
+        listaExpedienteAmpliacion = expedienteAmpliacionService.expedienteAmpliacionSelectList(expediente.getId());
+        
+        for (ExpedienteAmpliacion ea : listaExpedienteAmpliacion) {
+            if (ea.getEtapa() == EtapaAmpliacionType.AMPLIACION_ETAPA_ENVIA.getKey()) {
+                setExpedienteAmpliacionEnvia(ea);
+            }
+            if (ea.getEtapa() == EtapaAmpliacionType.AMPLIACION_ETAPA_APRUEBA.getKey()) {
+                setExpedienteAmpliacionAprueba(ea);
+            }
+            if (ea.getEtapa() == EtapaAmpliacionType.AMPLIACION_ETAPA_ACEPTA.getKey()) {
+                setExpedienteAmpliacionAcepta(ea);
+            }
+        }
+        if (expedienteAmpliacionEnvia.getId() == null) {
+            expedienteAmpliacionEnvia = new ExpedienteAmpliacion();
+        }
+
+        if (expedienteAmpliacionAprueba.getId() == null) {
+            expedienteAmpliacionAprueba = new ExpedienteAmpliacion();
+            expedienteAmpliacionAprueba.setCodigoUsuario(usuarioSession.getCodigo());
+            return "expedienteAccionesAmpliar";
+        } else {
+            if (StringUtils.equals(expedienteAmpliacionAprueba.getCodigoUsuario(), usuarioSession.getCodigo())) {
+                return "expedienteAccionesAmpliar";
+            }
+        }
+
+        if (expedienteAmpliacionAcepta.getId() == null) {
+            expedienteAmpliacionAcepta = new ExpedienteAmpliacion();
+            expedienteAmpliacionAcepta.setCodigoUsuario(usuarioSession.getCodigo());
+        }
+        return "expedienteAccionesAmpliar";
     }
-    
     
     public String inicioAccionesConsultaPublic(){
         limpiarElementosConsulta();
@@ -1778,11 +1818,98 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         if (StringUtils.equals(expedienteSuspencionAcepta.getAprueba(), "SI")) {
             guardarVersion2();
             enviarMensajeSuspencionAcepta();
-            msg.messageInfo("Se reasigno por derivación el expediente", null);
+            aumentarDisminuirTiempoEtapa(1, 20);
+            msg.messageInfo("Se acepta la solicitud de suspención se agregan 20 dias habiles en la etapa actual", null);
         } else {
             guardarVersion2();
             enviarMensajeSuspencionRechaza();
-            msg.messageInfo("Se rechaza la derivación", null);
+            msg.messageInfo("Se rechaza la solicitud de suspención", null);
+        }
+        return true;
+    }
+    
+    public boolean enviarAmpliacion() {
+        if (StringUtils.isBlank(expedienteAmpliacionEnvia.getDetalle())) {
+            msg.messageAlert("Debe ingresar el detalle", null);
+            return false;
+        }
+        
+        if(expedienteAmpliacionEnvia.getId() != null){
+            return false;
+        }
+        expedienteAmpliacionEnvia.setIdExpediente(expediente.getId());
+        expedienteAmpliacionEnvia.setNumeroExpediente(expediente.getNumero());
+        expedienteAmpliacionEnvia.setEstado("ACT");
+        expedienteAmpliacionEnvia.setEtapa(EtapaAmpliacionType.AMPLIACION_ETAPA_ENVIA.getKey());
+        expedienteAmpliacionEnvia.setCodigoUsuario(usuarioSession.getCodigo());
+        expedienteAmpliacionEnvia.setNombreUsuario(usuarioSession.getNombre() + " " + usuarioSession.getApellidoPaterno() + " " + usuarioSession.getApellidoMaterno());
+        expedienteAmpliacionEnvia.setFecha(new Date());
+        String ruta = uploadArchive(file4);
+        expedienteAmpliacionEnvia.setRuta(ruta);
+        expedienteAmpliacionService.expedienteAmpliacionInsertar(expedienteAmpliacionEnvia);
+        enviarMensajeAmpliacionEnvio();
+        msg.messageInfo("Se envio la solicitud de ampliación", null);
+        return true;
+    }
+    
+    public boolean aprobarAmpliacion() {
+        if (StringUtils.isBlank(expedienteAmpliacionAprueba.getAprueba())) {
+            msg.messageAlert("Debe aprobar o desaprobar la solicitud de ampliación", null);
+            return false;
+        }
+
+        if (StringUtils.isBlank(expedienteAmpliacionAprueba.getDetalle())) {
+            msg.messageAlert("Debe ingresar el detalle", null);
+            return false;
+        }
+        
+        expedienteAmpliacionAprueba.setIdExpediente(expediente.getId());
+        expedienteAmpliacionAprueba.setNumeroExpediente(expediente.getNumero());
+        expedienteAmpliacionAprueba.setEstado("ACT");
+        expedienteAmpliacionAprueba.setEtapa(EtapaAmpliacionType.AMPLIACION_ETAPA_APRUEBA.getKey());
+        expedienteAmpliacionAprueba.setCodigoUsuario(usuarioSession.getCodigo());
+        expedienteAmpliacionAprueba.setNombreUsuario(usuarioSession.getNombre() + " " + usuarioSession.getApellidoPaterno() + " " + usuarioSession.getApellidoMaterno());
+        expedienteAmpliacionAprueba.setFecha(new Date());
+        expedienteAmpliacionService.expedienteAmpliacionInsertar(expedienteAmpliacionAprueba);
+        if (StringUtils.equals(expedienteAmpliacionAprueba.getAprueba(), "SI")) {
+            enviarMensajeAmpliacionAprobacion();
+            msg.messageInfo("Se aprobó la ampliación", null);
+        } else {
+            guardarVersion2();
+            enviarMensajeAmpliacionDesaprobacion();
+            msg.messageInfo("Se desaprobo la ampliación", null);
+        }
+        return true;
+    }
+    
+    public boolean aceptarAmpliacion() {
+        if (StringUtils.isBlank(expedienteAmpliacionAcepta.getAprueba())) {
+            msg.messageAlert("Debe aceptar o rechazar la solicitud de ampliación", null);
+            return false;
+        }
+
+        if (StringUtils.isBlank(expedienteAmpliacionAcepta.getDetalle())) {
+            msg.messageAlert("Debe ingresar el detalle", null);
+            return false;
+        }
+
+        expedienteAmpliacionAcepta.setIdExpediente(expediente.getId());
+        expedienteAmpliacionAcepta.setNumeroExpediente(expediente.getNumero());
+        expedienteAmpliacionAcepta.setEstado("ACT");
+        expedienteAmpliacionAcepta.setEtapa(EtapaAmpliacionType.AMPLIACION_ETAPA_ACEPTA.getKey());
+        expedienteAmpliacionAcepta.setCodigoUsuario(usuarioSession.getCodigo());
+        expedienteAmpliacionAcepta.setNombreUsuario(usuarioSession.getNombre() + " " + usuarioSession.getApellidoPaterno() + " " + usuarioSession.getApellidoMaterno());
+        expedienteAmpliacionAcepta.setFecha(new Date());
+        expedienteAmpliacionService.expedienteAmpliacionInsertar(expedienteAmpliacionAcepta);
+        if (StringUtils.equals(expedienteAmpliacionAcepta.getAprueba(), "SI")) {
+            guardarVersion2();
+            enviarMensajeAmpliacionAcepta();
+            aumentarDisminuirTiempoEtapa(1, 30);
+            msg.messageInfo("Se acepta la solicitud de ampliación se agregan 30 dias habiles en la etapa actual", null);
+        } else {
+            guardarVersion2();
+            enviarMensajeAmpliacionRechaza();
+            msg.messageInfo("Se rechaza la solicitud de ampliación", null);
         }
         return true;
     }
@@ -1892,20 +2019,52 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     private void enviarMensajeSuspencionDesaprobacion() {
         FacesContext context = FacesContext.getCurrentInstance();
         BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
-        bandejaController.mensajeEnviaSuspencionDesaprobacion(expedienteSuspencionAprueba, expediente);
+        bandejaController.mensajeEnviaSuspencionDesaprobacion(expedienteSuspencionEnvia,expedienteSuspencionAprueba, expediente);
     }
     
     private void enviarMensajeSuspencionAcepta() {
         FacesContext context = FacesContext.getCurrentInstance();
         BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
-        bandejaController.mensajeEnviaSuspencionAprobacion(expedienteSuspencionAcepta);
+        bandejaController.mensajeEnviaSuspencionAcepta(expedienteSuspencionAcepta, expedienteSuspencionEnvia, expedienteSuspencionAprueba);
     }
 
     private void enviarMensajeSuspencionRechaza() {
         FacesContext context = FacesContext.getCurrentInstance();
         BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
-        bandejaController.mensajeEnviaSuspencionDesaprobacion(expedienteSuspencionAcepta, expediente);
+        bandejaController.mensajeEnviaSuspencionRechaza(expedienteSuspencionAcepta, expedienteSuspencionEnvia, expedienteSuspencionAprueba, expediente);
     }
+    
+    private void enviarMensajeAmpliacionEnvio() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
+        bandejaController.mensajeEnviaAmpliacionEnvia(expedienteAmpliacionEnvia);
+    }
+    
+    private void enviarMensajeAmpliacionAprobacion() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
+        bandejaController.mensajeEnviaAmpliacionAprobacion(expedienteAmpliacionAprueba);
+    }
+
+    private void enviarMensajeAmpliacionDesaprobacion() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
+        bandejaController.mensajeEnviaAmpliacionDesaprobacion(expedienteAmpliacionEnvia,expedienteAmpliacionAprueba, expediente);
+    }
+    
+    private void enviarMensajeAmpliacionAcepta() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
+        bandejaController.mensajeEnviaAmpliacionAcepta(expedienteAmpliacionAcepta, expedienteAmpliacionEnvia, expedienteAmpliacionAprueba);
+    }
+
+    private void enviarMensajeAmpliacionRechaza() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
+        bandejaController.mensajeEnviaAmpliacionRechaza(expedienteAmpliacionAcepta, expedienteAmpliacionEnvia, expedienteAmpliacionAprueba, expediente);
+    }
+    
+    
 
     public String registarExpedienteGestion() {
         String ruta1 = uploadArchive(file1);
@@ -2999,10 +3158,13 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 expedienteService.expedienteUpdate(expediente);
             }
             expediente.setEstado("A");
-            String ruta = uploadArchive(file5);
+            if(file5 != null){
+                String ruta = uploadArchive(file5);
             if (ruta != null) {
-                expediente.setRuta(ruta);
+                    expediente.setRuta(ruta);
+                }
             }
+            
             cargarGruposVulnerables();
             expedienteService.expedienteInsertar(expediente);
             insertListasPersonaEntidad();

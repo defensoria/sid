@@ -9,11 +9,9 @@
     <ui:composition template="../template/templateCabeceraExpediente.xhtml">
 
         <ui:define name="content2">
-
-
-            <gc:confirmSubmit bean="#{registroController.enviarSuspencion()}" classGC="confirmacion7" mensaje="Esta seguro de derivar el expediente?" />
-            <gc:confirmSubmit bean="#{registroController.aprobarSuspencion()}" classGC="confirmacion5" mensaje="Esta seguro de derivar el expediente?" />
-            <gc:confirmSubmit bean="#{registroController.aceptarSuspencion()}" classGC="confirmacion6" mensaje="Esta seguro de derivar el expediente?" />
+            <gc:confirmSubmit bean="#{registroController.enviarSuspencion()}" classGC="confirmacion7" mensaje="Esta seguro de crear la solicitud de suspención?" />
+            <gc:confirmSubmit bean="#{registroController.aprobarSuspencion()}" classGC="confirmacion5" mensaje="Esta seguro de aprobar / desaprobar la solicitud de suspención?" />
+            <gc:confirmSubmit bean="#{registroController.aceptarSuspencion()}" classGC="confirmacion6" mensaje="Esta seguro de aceptar / rechazar la solicitud de suspención?" />
             <script>
                 function confirmar5() {
                     $(".confirmacion5").modal('show');
@@ -48,7 +46,7 @@
             <div class="panel panel-default">
 
                 <div class="panel-body">
-                    <h:panelGroup rendered="#{registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo}">
+                    <h:panelGroup>
                         <div class="btn-group" role="group" style="float: right; width: 10%">
                             <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="glyphicon glyphicon-th-list" /> Acciones
@@ -111,7 +109,7 @@
                                                     <td style="padding-right: 30px; width: 60%" rowspan="2">
                                                         <label>Descripción:</label>
                                                         <textarea jsf:value="#{registroController.expedienteSuspencionEnvia.detalle}" jsf:rendered="#{registroController.expedienteSuspencionEnvia.id == null}" rows="6" style="width: 100%" maxlength="1300" placeholder="Motivo"/>
-                                                        <h:outputText value="#{registroController.expedienteSuspencionEnvia.detalle}" rendered="#{registroController.expedienteSuspencionEnvia.id != null}"/>
+                                                        <br/><h:outputText value="#{registroController.expedienteSuspencionEnvia.detalle}" rendered="#{registroController.expedienteSuspencionEnvia.id != null}"/>
                                                     </td>
                                                     <td style="vertical-align: top">
                                                         <label>Adjuntía Defensorial:</label>
@@ -139,7 +137,8 @@
                             </tr>
                         </table>
                     </h:panelGroup>
-                    <h:panelGroup rendered="#{seguridadUtilController.tieneRecurso('REC_EXP010') and registroController.usuarioSession.codigo == registroController.expedienteSuspencionEnvia.codigoUsuario and registroController.listaExpedienteSuspencion.size() > 0}">
+                    
+                    <h:panelGroup rendered="#{seguridadUtilController.tieneRecurso('REC_EXP010') and registroController.listaExpedienteSuspencion.size() > 0 and registroController.usuarioSession.codigo == registroController.expedienteSuspencionAprueba.codigoUsuario}">
                         <br/>
                         <table style="width: 100%">
                             <tr>
@@ -164,8 +163,8 @@
                                                 <tr>
                                                     <td style="padding-right: 30px; width: 60%" rowspan="2">
                                                         <label>Descripción:</label>
-                                                        <textarea jsf:rendered="#{registroController.expedienteSuspencionEnvia.id == null}" jsf:value="#{registroController.expedienteDerivacionEnvia.detalle}" rows="6" style="width: 100%" maxlength="1300" placeholder="Motivo"/>
-                                                        <h:outputText rendered="#{registroController.expedienteSuspencionEnvia.id != null}" value="#{registroController.expedienteDerivacionEnvia.detalle}" />
+                                                        <br/>
+                                                        <h:outputText value="#{registroController.expedienteSuspencionEnvia.detalle}" />
                                                     </td>
                                                     <td style="vertical-align: top">
                                                         <label>Adjuntía Defensorial:</label>
@@ -191,7 +190,7 @@
                             </tr>
                             <tr>
                                 <td style="width: 20%; vertical-align: top">
-                                    <h3>Aprobar Derivación</h3>
+                                    <h3>Aprobar suspención</h3>
                                     <span class="text-bold">fecha de envio: 
                                         <h:outputText value="#{registroController.expedienteSuspencionAprueba.fecha}">
                                             <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
@@ -216,21 +215,30 @@
                                                         <td style="padding-right: 30px; width: 60%">
                                                             <label>Motivo de la aprobación / desaprobación</label>
                                                             <textarea jsf:rendered="#{registroController.expedienteSuspencionAprueba.id == null}" jsf:value="#{registroController.expedienteSuspencionAprueba.detalle}" rows="6" style="width: 100%" maxlength="1300" placeholder="Motivo"/>
-                                                            <h:outputText rendered="#{registroController.expedienteSuspencionAprueba.id != null}" value="#{registroController.expedienteSuspencionAprueba.detalle}" />
+                                                            <br/><h:outputText rendered="#{registroController.expedienteSuspencionAprueba.id != null}" value="#{registroController.expedienteSuspencionAprueba.detalle}" />
                                                         </td>
                                                         <td style="vertical-align: top">
                                                             <h:panelGroup id="idPanelapob">
-                                                                <h:selectOneRadio value="#{registroController.expedienteSuspencionAprueba.aprueba}">
+                                                                <h:selectOneRadio value="#{registroController.expedienteSuspencionAprueba.aprueba}" disabled="#{registroController.expedienteSuspencionAprueba.id == null? 'false': 'true'}">
                                                                     <f:selectItem itemLabel="Aprobar" itemValue="SI" />
                                                                     <f:selectItem itemLabel="Desaprobar" itemValue="NO" />
                                                                     <f:ajax render="idPanelapob" />
                                                                 </h:selectOneRadio>
                                                                 <br/>
-                                                                <label jsf:rendered="#{registroController.expedienteSuspencionAprueba.aprueba == 'SI'}">Oficina Defensorial:</label>
-                                                                <h:selectOneMenu value="#{registroController.expedienteSuspencionAprueba.idAdjuntiaDefensorial}" rendered="#{registroController.expedienteDerivacionAprueba.aprueba == 'SI'}" disabled="#{registroController.expedienteDerivacionAprueba.id == null? 'false':'true'}" >
+                                                                <label jsf:rendered="#{registroController.expedienteSuspencionAprueba.aprueba == 'SI'}">Adjuntía Defensorial:</label>
+                                                                <h:selectOneMenu value="#{registroController.expedienteSuspencionAprueba.idAdjuntiaDefensorial}" rendered="#{registroController.expedienteSuspencionAprueba.aprueba == 'SI'}" disabled="#{registroController.expedienteDerivacionAprueba.id == null? 'false':'true'}" >
                                                                     <f:selectItem itemLabel="ADJUNTIA PARA LOS DERECHOS HUMANOS Y PERSONAS CON DISCAPACIDAD" itemValue="10000" />                                                            
                                                                 </h:selectOneMenu>
                                                             </h:panelGroup>
+                                                            <br/>
+                                                            <label jsf:rendered="#{registroController.expedienteSuspencionAprueba.ruta == null}"><span style="font-size: large" class="glyphicon glyphicon-paperclip" />Adjuntar archivo:</label>
+                                                        <h:inputFile rendered="#{registroController.expedienteSuspencionAprueba.id == null}" class="cMedio" value="#{registroController.file4}"/>
+                                                        <br/>
+                                                        <h:panelGroup rendered="#{registroController.expedienteSuspencionAprueba.ruta != null}">
+                                                            <a target="_blank" href="/filesystem/#{registroController.expedienteSuspencionAprueba.ruta}">
+                                                                <span style="font-size: large" class="glyphicon glyphicon-link" />
+                                                            </a>
+                                                        </h:panelGroup>
                                                         </td>
                                                     </tr>
                                                 </table>
@@ -249,7 +257,7 @@
                             </tr>
                             <tr>
                                 <td style="width: 20%; vertical-align: top">
-                                    <h3>Aprobar Derivación</h3>
+                                    <h3>Aceptar la suspención</h3>
                                     <span style="color: gray; font-weight: bold">#{registroController.expedienteSuspencionAprueba.nombreUsuario}</span>
                                     <br/><br/>
                                     <span class="text-bold">fecha de envio: 
@@ -278,7 +286,7 @@
                                                     </td>
                                                     <td style="vertical-align: top">
                                                         <label>Adjuntía Defensorial:</label>
-                                                        <h:selectOneMenu value="#{registroController.expedienteSuspencionAprueba.idOficinaDefensorial}" disabled="true">
+                                                        <h:selectOneMenu value="#{registroController.expedienteSuspencionAprueba.idAdjuntiaDefensorial}" disabled="true">
                                                             <f:selectItem itemLabel="ADJUNTIA PARA LOS DERECHOS HUMANOS Y PERSONAS CON DISCAPACIDAD" itemValue="10000" />                                                            
                                                         </h:selectOneMenu>
                                                         <br/>
@@ -298,7 +306,7 @@
                             </tr>
                             <tr>
                                 <td style="width: 20%; vertical-align: top">
-                                    <h3>Reasignar Derivación</h3>
+                                    <h3>Aceptar suspención</h3>
                                     <br/>
                                     <span class="text-bold">fecha de envio: 
                                         <h:outputText value="#{registroController.expedienteSuspencionAcepta.fecha}">
@@ -324,13 +332,13 @@
                                                         <td style="padding-right: 30px; width: 50%">
                                                             <label>Motivo de aceptar / rechazar</label>
                                                             <textarea jsf:rendered="#{registroController.expedienteSuspencionAcepta.id == null}" jsf:value="#{registroController.expedienteSuspencionAcepta.detalle}" rows="6" style="width: 100%" maxlength="1300" placeholder="Motivo"/>
-                                                            <h:outputText rendered="#{registroController.expedienteSuspencionAcepta.id != null}" value="#{registroController.expedienteSuspencionAcepta.detalle}" />
+                                                            <br/><h:outputText rendered="#{registroController.expedienteSuspencionAcepta.id != null}" value="#{registroController.expedienteSuspencionAcepta.detalle}" />
                                                         </td>
                                                         <td style="vertical-align: top">
                                                             <h:panelGroup id="idPanelrech">
                                                                 <h:selectOneRadio value="#{registroController.expedienteSuspencionAcepta.aprueba}" disabled="#{registroController.expedienteSuspencionAcepta.id == null? 'false' : 'true'}">
-                                                                    <f:selectItem itemLabel="Aceptar Derivación" itemValue="SI" />
-                                                                    <f:selectItem itemLabel="Rechazar Derivación" itemValue="NO" />
+                                                                    <f:selectItem itemLabel="Aceptar suspención" itemValue="SI" />
+                                                                    <f:selectItem itemLabel="Rechazar suspención" itemValue="NO" />
                                                                     <f:ajax render="idPanelrech" />
                                                                 </h:selectOneRadio>
                                                                 <br/>

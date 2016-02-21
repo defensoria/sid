@@ -51,6 +51,14 @@
                             <span style="font-weight: bold; font-size: 1em; color: #007ACC"></span>
                             <a title="ir al expediente" jsf:action="#{bandejaController.cargarExpedientePorMensa()}">Ir al expediente</a>
                             </h:panelGroup>
+                            <h:panelGroup rendered="#{bandejaController.mensajeBandeja.tipo == 3}">
+                            <span style="font-weight: bold; font-size: 1em; color: #007ACC"></span>
+                            <a title="ir al expediente" jsf:action="#{bandejaController.cargarExpedientePorSuspencion()}">Ir al expediente</a>
+                            </h:panelGroup>
+                            <h:panelGroup rendered="#{bandejaController.mensajeBandeja.tipo == 4}">
+                            <span style="font-weight: bold; font-size: 1em; color: #007ACC"></span>
+                            <a title="ir al expediente" jsf:action="#{bandejaController.cargarExpedientePorAmpliacion()}">Ir al expediente</a>
+                            </h:panelGroup>
                         </div>
                     </td>
                 </table>

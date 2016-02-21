@@ -24,7 +24,7 @@ public class ExpedienteSuspencionDAOImpl extends SqlSessionDaoSupport implements
 
     @Override
     public List<ExpedienteSuspencion> expedienteSuspencionSelectList(long idExpediente) {
-        return getSqlSession().selectList("gob.dp.sid.registro.dao.ExpedienteSuspencionDAO.expedienteSuspencionInsertar", idExpediente);
+        return getSqlSession().selectList("gob.dp.sid.registro.dao.ExpedienteSuspencionDAO.expedienteSuspencionSelectList", idExpediente);
     }
     
 }

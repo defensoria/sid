@@ -91,15 +91,21 @@
     
     
     <select id="etapaEstadoVigente" resultMap="etapaEstadoMap" parameterType="Long">
+SELECT C.*, ROWNUM FROM (
 SELECT A.*, B.C_VALOR, C.C_NOMBRE ESTADO_DETALLE FROM SID_REG_ETAPA_ESTADO A
 INNER JOIN SID_REG_ETAPA B ON B.N_ID_ETAPA = A.N_ID_ETAPA 
 LEFT JOIN SID_REG_ESTADO C ON A.N_ID_ESTADO = C.N_ID_ESTADO
-WHERE A.N_ID_EXPEDIENTE = #{id}
+WHERE A.N_ID_EXPEDIENTE = #{id} ORDER BY A.N_ID_ETAPAESTADO DESC
+) C WHERE ROWNUM = 1
     </select>
     
     <select id="etapaEstadoInicial" resultMap="etapaEstadoMap" parameterType="Long">
         SELECT * FROM SID_REG_ETAPA_ESTADO 
         WHERE N_ID_EXPEDIENTE = #{id}
+    </select>
+    
+    <select id="etapaEstadoPorID" resultMap="etapaEstadoMap" parameterType="Long">
+        SELECT * FROM SID_REG_ETAPA_ESTADO WHERE N_ID_ETAPAESTADO = #{id}
     </select>
     
     <select id="etapaEstadoxExpediente" resultMap="etapaEstadoMap" parameterType="String">

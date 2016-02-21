@@ -9,7 +9,7 @@
         <result property="idAdjuntiaDefensorial" column="N_ID_AD"/>
         <result property="estado" column="C_ESTADO"/>
         <result property="numeroExpediente" column="C_NUMEROEXPEDIENTE"/>
-        <result property="etapa" column="C_ETAPA"/>
+        <result property="etapa" column="N_ETAPA"/>
         <result property="codigoUsuario" column="C_CODIGOUSUARIO"/>
         <result property="nombreUsuario" column="C_NOMBREUSUARIO"/>
         <result property="aprueba" column="C_APRUEBA"/>
@@ -34,7 +34,7 @@
             C_ESTADO,
         </if>
         <if test="etapa != null">
-            C_ETAPA,
+            N_ETAPA,
         </if>
         <if test="nombreUsuario != null">
             C_NOMBREUSUARIO,
@@ -44,12 +44,6 @@
         </if>
         <if test="codigoUsuario != null">
             C_CODIGOUSUARIO,
-        </if>
-        <if test="nombreUsuario != null">
-            C_NOMBREUSUARIO,
-        </if>
-        <if test="aprueba != null">
-            C_APRUEBA,
         </if>
         <if test="fecha != null">
             D_FECHAACCION,
@@ -84,12 +78,6 @@
         </if>
         <if test="codigoUsuario != null">
             #{codigoUsuario},
-        </if>
-        <if test="nombreUsuario != null">
-            #{nombreUsuario},
-        </if>
-        <if test="aprueba != null">
-            #{aprueba},
         </if>
         <if test="fecha != null">
             #{fecha},
