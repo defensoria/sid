@@ -329,6 +329,8 @@ public class RegistroController extends AbstractManagedBean implements Serializa
 
     private Boolean verSeccionONP;
     
+    private Boolean verModalConclusion;
+    
     @Autowired
     private ExpedienteService expedienteService;
 
@@ -439,6 +441,12 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         expedienteClasificacionBusqueda = new ExpedienteClasificacion();
         return "expedienteNuevo";
     }
+    
+    public void inactivarExpediente(Expediente e){
+        expedienteService.expedienteInactivar(e);
+        listarExpedienteUsuarioPaginadoOrder(1,1);
+        msg.messageInfo("Se ha inactivado el expediente, ya no podra verlo en el sistema", null);
+    }
 
     private void cargarFichaONP() {
         listaGestionesONP = new ArrayList<>();
@@ -511,6 +519,11 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         expedienteTiempoService.expedienteTiempoUpdate(expedienteTiempo);
     }
 
+    public void setearTiempoEtapa(int nroDias){
+        expedienteTiempo.setDiasRestante(nroDias);
+        expedienteTiempoService.expedienteTiempoUpdate(expedienteTiempo);
+    }
+    
     public void consultarReniec() throws ParseException {
         /* String proxyHost = "172.30.1.250";
          String proxyPort = "8080";
@@ -937,15 +950,26 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     }
 
     public void limpiarModalAsignar() {
-        listaUsuarioOD = usuarioService.listaUsuariosPorOD(usuarioSession);
+        Usuario u = new Usuario();
+        u.setCodigoOD(usuarioSession.getCodigoOD());
+        listaUsuarioOD = usuarioService.listaUsuariosPorOD(u);
     }
 
     public void guardarAsignado() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        SeguridadUtilController seguridadUtilController = (SeguridadUtilController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "seguridadUtilController");
+
         if (StringUtils.isBlank(expediente.getUsuarioAsignado())) {
             msg.messageAlert("Debe ingresar el usuario asignado", null);
         } else {
-            expedienteService.expedienteAsignar(expediente);
+            //si es practicante o sesigrista
+            if(seguridadUtilController.tieneRol("ROL0000005") || seguridadUtilController.tieneRol("ROL0000006")){
+                expediente.setUsuarioResponsable(usuarioSession.getCodigo());
+            }else{
+                expediente.setUsuarioResponsable(expediente.getUsuarioAsignado());
+            }
             expediente.setUsuarioRegistro(expediente.getUsuarioAsignado());
+            expedienteService.expedienteAsignar(expediente);
             msg.messageInfo("Se asigno el expediente correctamente", null);
         }
     }
@@ -3100,6 +3124,45 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             inicializarEtapaEstado(1);
             insertarActualizarTiempos();
             verONP();
+            if(expediente.getIndiceMayorInformacion()){
+                if(etapaEstado.getVerEtapa() == 1 || etapaEstado.getVerEtapa() == 5 ){
+                    Integer contador = expedienteService.expedienteMayorInformacionCount(expediente.getNumero());
+                    if(contador == 1)
+                        setearTiempoEtapa(15);
+                    }
+            }
+            msg.messageInfo("Se genero una nueva version del Expediente", null);
+        } catch (Exception e) {
+            log.error(e);
+        }
+        return true;
+    }
+    
+    public boolean guardarVersionSupervisor(int tipo) {
+        if(StringUtils.isBlank(expediente.getTipoClasificion())){
+            msg.messageAlert("Debe seleccionar un tipo de expediente", null);
+            return false;
+        }
+        if(!StringUtils.equals(expediente.getTipoClasificion(), ExpedienteType.CONSULTA.getKey())){
+            if(expediente.getIndicadorOficio()){
+            if(StringUtils.equals(expediente.getTipoClasificion(), ExpedienteType.CONSULTA.getKey())){
+                msg.messageAlert("Un expediente de oficio no puede ser del tipo consulta", null);
+                return false;
+            }
+        }
+        }
+        try {
+            Long idExpedienteOld = null;
+            if (expediente.getId() != null) {
+                idExpedienteOld = expediente.getId();
+            }
+            guardarSinClasificacion();
+            guardarEtapaEstado(idExpedienteOld);
+            inicializarEtapaEstado(1);
+            insertarActualizarTiempos();
+            verONP();
+            if(tipo == 1)
+                expediente.setGeneral("A");
             msg.messageInfo("Se genero una nueva version del Expediente", null);
         } catch (Exception e) {
             log.error(e);
@@ -3147,6 +3210,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                     expedienteService.expedienteUpdate(expediente);
                 }
                 expediente.setUsuarioRegistro(usuarioSession.getCodigo());
+                expediente.setUsuarioResponsable(usuarioSession.getCodigo());
                 expediente.setVersion(1);
                 generarCodigoExpediente();
                 expediente.setFechaIngreso(new Date());
@@ -3156,6 +3220,41 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 expediente.setEstado("I");
                 expediente.setFechaModificacion(new Date());
                 expedienteService.expedienteUpdate(expediente);
+            }
+            expediente.setEstado("A");
+            if(file5 != null){
+                String ruta = uploadArchive(file5);
+            if (ruta != null) {
+                    expediente.setRuta(ruta);
+                }
+            }
+            
+            cargarGruposVulnerables();
+            expedienteService.expedienteInsertar(expediente);
+            insertListasPersonaEntidad();
+        } catch (Exception e) {
+            log.error(e);
+        }
+    }
+    
+    private void guardarSinClasificacion() {
+        try {
+            expediente.setEtiqueta(encadenarEtiquetas());
+            if (expediente.getId() == null || expediente.getVersion() == 0) {
+                if (expediente.getId() != null) {
+                    expediente.setEstado("I");
+                    expedienteService.expedienteUpdate(expediente);
+                }
+                expediente.setUsuarioRegistro(usuarioSession.getCodigo());
+                expediente.setVersion(1);
+                generarCodigoExpediente();
+                expediente.setFechaIngreso(new Date());
+                expediente.setFechaRegistro(new Date());
+            } else {
+                expediente.setVersion(expediente.getVersion() + 1);
+                expediente.setEstado("I");
+                expediente.setFechaModificacion(new Date());
+                expedienteService.expedienteUpdateNoClasificacion(expediente);
             }
             expediente.setEstado("A");
             if(file5 != null){
@@ -3271,9 +3370,34 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 }
             }
         }
-
-        
         if(!validaConcluision()){
+            return null;
+        }
+        
+        if(validaConclusionFinal()){
+            return null;
+        }
+        guardar();
+        guardarEtapaEstadoConcluir(idExpedienteOld);
+        inicializarEtapaEstado(1);
+        insertarActualizarTiempos();
+        verONP();
+        verModalConclusion = false;
+        /**
+         * GENERAR NUEVO ESTADO
+         */
+
+        msg.messageInfo("Se concluyó la etapa", null);
+        if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_PETITORIO.getKey()) || Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_QUEJA.getKey())) {
+                setearExpedienteTiempo();
+                return "expedienteEdit";
+            }
+        return "expedienteGestionLista";
+    }
+    
+    public String guardarConclusionFinExpediente(){
+        Long idExpedienteOld = expediente.getId();
+        if (idExpedienteOld == null) {
             return null;
         }
         guardar();
@@ -3288,9 +3412,74 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         msg.messageInfo("Se concluyó la etapa", null);
         if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_PETITORIO.getKey()) || Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_QUEJA.getKey())) {
                 setearExpedienteTiempo();
+                verModalConclusion = false;
                 return "expedienteEdit";
             }
+        verModalConclusion = false;
         return "expedienteGestionLista";
+    }
+    
+    private boolean validaConclusionFinal() {
+        verModalConclusion = false;
+            /**
+             * QUEJA
+             */
+            if (StringUtils.equals(expediente.getTipoClasificion(), ExpedienteType.QUEJA.getKey())) {
+                
+                    //actualizarEtapaEstado(idExpedienteOld);
+                    if (etapaEstado != null) {
+                        if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_QUEJA.getKey())) {
+                            if (expediente.getEstadoCalificacion() == EstadoExpedienteType.CALIFICACION_NO_ADMITIDA_QUEJA.getKey()) {
+                                verModalConclusion = true;
+                                return verModalConclusion;
+                            }
+                        }
+                        if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.INVESTIGACION_QUEJA.getKey())) {
+                            if (expediente.getEstadoInvestigacion() == EstadoExpedienteType.INVESTIGACION_INFUNDADO_QUEJA.getKey()) {
+                                verModalConclusion = true;
+                                return verModalConclusion;
+                            }
+                        }
+                        if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.PERSUACION_QUEJA.getKey())) {
+                            if (expediente.getEstadoPersuacion() == EstadoExpedienteType.PERSUACION_ACOGIDO_QUEJA.getKey()) {
+                                verModalConclusion = true;
+                                return verModalConclusion;
+                            }
+                        }
+                        if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.SEGUIMIENTO_QUEJA.getKey())) {
+                            verModalConclusion = true;
+                            return verModalConclusion;
+                        }
+                    } 
+                } 
+            
+
+            /**
+             * PETITORIO
+             */
+            if (StringUtils.equals(expediente.getTipoClasificion(), ExpedienteType.PETITORIO.getKey())) {
+                    //actualizarEtapaEstado(idExpedienteOld);
+                    if (etapaEstado != null) {
+                        if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_PETITORIO.getKey())) {
+                            if (expediente.getEstadoCalificacion() == EstadoExpedienteType.CALIFICACION_NO_ADMITIDA_PETITORIO.getKey()) {
+                                verModalConclusion = true;
+                                return verModalConclusion;
+                            }
+                        }
+                        if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.GESTION_PETITORIO.getKey())) {
+                            if (expediente.getEstadoGestion() == EstadoExpedienteType.GESTION_SOLUCIONADO_PETITORIO.getKey()) {
+                                verModalConclusion = true;
+                                return verModalConclusion;
+                            }
+                        }
+                        if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.PERSUASION_PETITORIO.getKey())) {
+                            verModalConclusion = true;
+                            return verModalConclusion;
+                        }
+                        
+                    } 
+            }
+        return false;
     }
     
     private boolean validaConcluision(){
@@ -3312,6 +3501,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             }else{
                 int i = 0;
                 int j = 0;
+                int k = 0;
                 for(ExpedientePersona ep : personasSeleccionadas ){
                     if(StringUtils.equals(ep.getTipo(), "01")){
                         i++;
@@ -3319,14 +3509,19 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                     if(StringUtils.equals(ep.getTipo(), "03")){
                         j++;
                     }
+                    if(StringUtils.equals(ep.getTipo(), "02")){
+                        k++;
+                    }
                 }
-                if(i == 0){
-                    msg.messageAlert("Debe ingresar el recurrente", null);
-                    return false;
-                }
-                if(j == 0){
-                    msg.messageAlert("Debe ingresar el afectado", null);
-                    return false;
+                if(k == 0){
+                    if(i == 0){
+                        msg.messageAlert("Debe ingresar el recurrente", null);
+                        return false;
+                    }
+                    if(j == 0){
+                        msg.messageAlert("Debe ingresar el afectado", null);
+                        return false;
+                    }
                 }
             }
             }else{
@@ -4757,6 +4952,14 @@ public class RegistroController extends AbstractManagedBean implements Serializa
 
     public void setListaExpedienteAmpliacion(List<ExpedienteAmpliacion> listaExpedienteAmpliacion) {
         this.listaExpedienteAmpliacion = listaExpedienteAmpliacion;
+    }
+
+    public Boolean getVerModalConclusion() {
+        return verModalConclusion;
+    }
+
+    public void setVerModalConclusion(Boolean verModalConclusion) {
+        this.verModalConclusion = verModalConclusion;
     }
 
 

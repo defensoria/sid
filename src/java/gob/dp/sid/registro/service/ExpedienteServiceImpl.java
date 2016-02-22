@@ -139,5 +139,20 @@ public class ExpedienteServiceImpl implements ExpedienteService{
     public List<Expediente> expedienteBuscarUsuarioODPaginado(Expediente expediente) {
         return expedienteDAO.expedienteBuscarUsuarioODPaginado(expediente);
     }
+
+    @Override
+    public void expedienteUpdateNoClasificacion(Expediente expediente) {
+        expedienteDAO.expedienteUpdateNoClasificacion(expediente);
+    }
+
+    @Override
+    public Integer expedienteMayorInformacionCount(String numeroExpediente) {
+        return expedienteDAO.expedienteMayorInformacionCount(numeroExpediente);
+    }
+
+    @Override
+    public void expedienteInactivar(Expediente expediente) {
+        expedienteDAO.expedienteInactivar(expediente);
+    }
     
 }

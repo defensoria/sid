@@ -43,6 +43,9 @@
         <result property="conclusion" column="C_CONCLUSION"/>
         <result property="indicadorDesestimiento" column="N_INDDESESTIMIENTO"/>
         <result property="indicadorOficio" column="N_INDOFICIO"/>
+        <result property="usuarioResponsable" column="C_USUARIORESPONSABLE"/>
+        <result property="indiceRecomendacion" column="N_INDRECOMENDACION"/>
+        <result property="indiceMayorInformacion" column="N_INDMAYORINFORMA"/>
         
         <result property="etapaDetalle" column="C_VALOR"/>
         <result property="indicadorEtapa" column="C_INDICADORETAPA"/>
@@ -149,6 +152,16 @@
         <if test="indicadorOficio != null">
             N_INDOFICIO,
         </if>
+        <if test="usuarioResponsable != null">
+            C_USUARIORESPONSABLE,
+        </if>
+        <if test="indiceRecomendacion != null">
+            N_INDRECOMENDACION,
+        </if>
+        <if test="indiceMayorInformacion != null">
+            N_INDMAYORINFORMA,
+        </if>
+        
         C_ESTADOGENERAL,
         N_IDEXPEDIENTE
         )
@@ -247,6 +260,15 @@
         <if test="indicadorOficio != null">
             #{indicadorOficio},
         </if>
+        <if test="usuarioResponsable != null">
+            #{usuarioRegistro},
+        </if>
+        <if test="indiceRecomendacion != null">
+            #{indiceRecomendacion},
+        </if>
+        <if test="indiceMayorInformacion != null">
+            #{indiceMayorInformacion},
+        </if>
         'A',
         SEQ_SID_REG_EXPEDIENTE.NextVal
         )
@@ -310,6 +332,73 @@
             <if test="etiqueta != null">
                 C_ETIQUETA = #{etiqueta},
             </if>
+            <if test="usuarioResponsable != null">
+            C_USUARIORESPONSABLE = #{usuarioResponsable},
+        </if>
+            
+        <if test="numero != null">
+                C_NUMEROEXPEDIENTE = #{numero}
+            </if>
+        </set>
+        <where>
+            N_IDEXPEDIENTE = #{id}
+        </where>
+    </update>
+    
+    <update id="expedienteUpdateNoClasificacion" parameterType="expediente">
+        UPDATE SID_REG_EXPEDIENTE
+        <set>
+            <if test="tipoIngreso != null">
+                C_TIPOINGRESO = #{tipoIngreso},
+            </if>
+            <if test="tipoTema != null">
+                C_TIPOTEMA = #{tipoTema},
+            </if>
+            <if test="tipoSubtema != null">
+                C_TIPOSUBTEMA = #{tipoSubtema},
+            </if>
+            <if test="fechaIngreso != null">
+                D_FECHAINGRESO = #{fechaIngreso},
+            </if>
+            <if test="sumilla != null">
+                C_SUMILLA = #{sumilla},
+            </if>
+            <if test="observacion != null">
+                C_OBSERVACIONES = #{observacion},
+            </if>
+            <if test="estadoCalificacion != null">
+                C_ESTADOCALIFICACION  = #{estadoCalificacion},
+            </if>
+            <if test="estadoInvestigacion != null">
+                C_ESTADOINVESTIGACION  = #{estadoInvestigacion},
+            </if>
+            <if test="estadoPersuacion != null">
+                C_ESTADOPERSUACION  = #{estadoPersuacion},
+            </if>
+            <if test="estadoSeguimiento != null">
+                C_ESTADOSEGUIMIENTO  = #{estadoSeguimiento},
+            </if>
+            <if test="estadoGestion != null">
+                C_ESTADOGESTION  = #{estadoGestion},
+            </if>
+            <if test="calificacion != null">
+                N_CALIFICACION = #{calificacion},
+            </if>
+            <if test="usuarioRegistro != null">
+                C_USUREGISTRO = #{usuarioRegistro},
+            </if>
+            <if test="estado != null">
+                C_ESTADO = #{estado},
+            </if>
+            <if test="fechaRegistro != null">
+                D_FECHAREGISTRO = #{fechaRegistro},
+            </if>
+            <if test="etiqueta != null">
+                C_ETIQUETA = #{etiqueta},
+            </if>
+            <if test="usuarioResponsable != null">
+                C_USUARIORESPONSABLE = #{usuarioResponsable},
+            </if>
             
         <if test="numero != null">
                 C_NUMEROEXPEDIENTE = #{numero}
@@ -333,7 +422,9 @@
     <update id="expedienteAsignar" parameterType="expediente">
         UPDATE SID_REG_EXPEDIENTE
         <set>
-            C_USUREGISTRO = #{usuarioAsignado}
+            C_USUREGISTRO = #{usuarioAsignado},
+            C_USUARIORESPONSABLE = #{usuarioResponsable}
+            
         </set>
         <where>
             N_IDEXPEDIENTE = #{id}
@@ -345,6 +436,16 @@
         <set>
             N_INDDESESTIMIENTO = 1,
             C_ESTADOGENERAL = 'C'
+        </set>
+        <where>
+            N_IDEXPEDIENTE = #{id}
+        </where>
+    </update>
+    
+    <update id="expedienteInactivar" parameterType="expediente">
+        UPDATE SID_REG_EXPEDIENTE
+        <set>
+            C_ESTADO = 'I'
         </set>
         <where>
             N_IDEXPEDIENTE = #{id}
@@ -615,6 +716,12 @@
     <select id="expedienteCodigoPorOD" resultType="Long" parameterType="Long">
         SELECT MAX(N_CONSECUTIVO) as N_CONSECUTIVO FROM SID_REG_EXPEDIENTE WHERE N_CODIGOOD = #{id} AND TO_CHAR(D_FECHAREGISTRO, 'YYYY') = TO_CHAR(SYSDATE, 'YYYY')
     </select>
+    
+    <select id="expedienteMayorInformacionCount" resultType="java.lang.Integer" parameterType="String">
+        SELECT COUNT(*) FROM SID_REG_EXPEDIENTE WHERE C_NUMEROEXPEDIENTE = #{value} and N_INDMAYORINFORMA = 1
+    </select>
+    
+    
  
 </mapper>
 

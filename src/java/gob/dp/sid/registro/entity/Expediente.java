@@ -80,6 +80,8 @@ public class Expediente implements Serializable{
     private String conclusion;
     
     private List<ExpedienteNivel> listaExpedienteNivel;
+    
+    private String usuarioResponsable;
     /*agregados*/
     
     private String idEtiqueta;
@@ -133,6 +135,10 @@ public class Expediente implements Serializable{
     private String comisionado;
     
     private Integer idOficinaDefensorial;
+    
+    private Boolean indiceRecomendacion;
+    
+    private Boolean indiceMayorInformacion;
 
     public Long getId() {
         return id;
@@ -606,6 +612,30 @@ public class Expediente implements Serializable{
 
     public void setIdOficinaDefensorial(Integer idOficinaDefensorial) {
         this.idOficinaDefensorial = idOficinaDefensorial;
+    }
+
+    public String getUsuarioResponsable() {
+        return usuarioResponsable;
+    }
+
+    public void setUsuarioResponsable(String usuarioResponsable) {
+        this.usuarioResponsable = usuarioResponsable;
+    }
+
+    public Boolean getIndiceRecomendacion() {
+        return indiceRecomendacion;
+    }
+
+    public void setIndiceRecomendacion(Boolean indiceRecomendacion) {
+        this.indiceRecomendacion = indiceRecomendacion;
+    }
+
+    public Boolean getIndiceMayorInformacion() {
+        return indiceMayorInformacion;
+    }
+
+    public void setIndiceMayorInformacion(Boolean indiceMayorInformacion) {
+        this.indiceMayorInformacion = indiceMayorInformacion;
     }
 
 }

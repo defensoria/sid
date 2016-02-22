@@ -3,7 +3,8 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:jsf="http://xmlns.jcp.org/jsf"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:gc="http://xmlns.jcp.org/jsf/composite/gc">
     <ui:composition template="../template/template.xhtml">
         <ui:define name="content">
             <h:form>
@@ -75,6 +76,17 @@
                                                     <a jsf:action="#{registroController.cargarExpedienteEdit(exped)}">
                                                         <span class="glyphicon glyphicon-pencil"/>
                                                     </a>
+                                                </h:column>
+                                                <h:column>
+                                                    <a onclick="confirmar4#{row3.rowIndex+1}()">
+                                                        <span class="glyphicon glyphicon-remove" style="color: red"/>
+                                                    </a>
+                                                    <script>
+                                                                            function confirmar4#{row3.rowIndex+1}() {
+                                                                                $(".confirmacion4#{row3.rowIndex+1}").modal('show');
+                                                                            }
+                                                                        </script>
+                                                                        <gc:confirmSubmit bean="#{registroController.inactivarExpediente(exped)}" classGC="confirmacion4#{row3.rowIndex+1}" mensaje="Esta seguro de inactivar el expediente, esta acción no se puede revertir?" />
                                                 </h:column>
                                             </h:dataTable>
                                             <ul class="pager">

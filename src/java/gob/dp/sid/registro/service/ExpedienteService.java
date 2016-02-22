@@ -51,5 +51,10 @@ public interface ExpedienteService {
     public List<Expediente> expedienteBuscarUsuarioCompleto(Expediente expediente);
     
     public List<Expediente> expedienteBuscarUsuarioODPaginado(Expediente expediente);
+    
+    public void expedienteUpdateNoClasificacion(Expediente expediente);
+    
+    public Integer expedienteMayorInformacionCount(String numeroExpediente);
 
+    public void expedienteInactivar(Expediente expediente);
 }

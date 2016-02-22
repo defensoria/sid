@@ -12,27 +12,65 @@
             <h:form id="idFormTemplate" class="form-horizontal" enctype="multipart/form-data">
                 <h:messages />
                 <script>
-                    
+
                     function confirmar3() {
                         if ($("#idTipoClasificacion").val() === "0") {
                             alertar("Debe de ingresar el tipo de expediente!");
                             return false;
                         } else {
+                            if ($(".idChecExpedienteOficio").is(':checked')) {
+                                if ($("#idTipoClasificacion").val() === "02") {
+                                    alertar("Para un expediente de oficio el tipo no puede ser CONSULTA");
+                                    return false;
+                                }
+                            }
                             $(".confirmacion3").modal('show');
                         }
                     }
-                    
                     function confirmar0() {
-                        
-                            $(".confirmacion0").modal('show');
-                        
+                        $(".confirmacion0").modal('show');
                     }
+
+                    $(document).ready(function () {
+                        $("#idModalCulminar").modal('show');
+                    });
+
                 </script>
                 <gc:confirmSubmit rendered="#{registroController.etapaEstado.verEtapa != 2}" classGC="confirmacion3" bean="#{registroController.concluir()}" mensaje="Está seguro que desea concluir la etapa?"/>
                 <gc:confirmSubmit rendered="#{registroController.etapaEstado.verEtapa == 2}" classGC="confirmacion3" bean="#{registroController.concluir()}" mensaje="Está seguro de haber completado la clasificación temática?      Está seguro que desea concluir la etapa?"/>
-                
-                
                 <gc:confirmSubmitRemove classGC="confirmacion0" bean="#{registroController.desistirExpediente()}"  mensaje="Está seguro que desea desistir expediente?"/>
+
+                <h:panelGroup rendered="#{registroController.verModalConclusion}">
+                    <div class="modal fade" data-backdrop="static" data-keyboard="false" id="idModalCulminar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" style="text-align: left">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <a type="button" class="close" data-dismiss="modal">
+                                        <span style="color:red" class="glyphicon glyphicon-remove"></span>
+                                    </a>
+                                    <span class="text-resalt-primary">Culminar Expediente</span>
+                                </div>
+                                <div class="modal-body" style="padding:5px">
+                                    <h:selectBooleanCheckbox rendered="#{registroController.expediente.tipoClasificion != '02'}" value="#{registroController.expediente.indRelevante}" >
+                                        El caso es relevante? 
+                                    </h:selectBooleanCheckbox>
+                                    <br/><br/>
+                                    <h:outputText rendered="#{registroController.expediente.tipoClasificion == '02'}" value="Orientación" class="text-bold"/>
+                                    <h:outputText rendered="#{registroController.expediente.tipoClasificion != '02'}" value="Justificación" class="text-bold"/>
+                                    <textarea rows="5" jsf:rendered="#{registroController.expediente.tipoClasificion == '02'}" jsf:value="#{registroController.expediente.conclusion}" style="width: 100%;" placeholder="Orientación" maxlength="1950"/>
+                                    <textarea rows="5" jsf:rendered="#{registroController.expediente.tipoClasificion != '02'}" jsf:value="#{registroController.expediente.conclusion}" style="width: 100%;" placeholder="Justificación" maxlength="1950"/>
+                                    <div class="modal-footer">
+                                        <a class="btn btn-primary" data-dismiss="modal" jsf:action="#{registroController.guardarConclusionFinExpediente()}">
+                                            <span class="glyphicon glyphicon-floppy-disk"/>Guardar
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </h:panelGroup>
+
+
                 <table style="width: 100%">
                     <tr>
                         <td colspan="2">
@@ -43,6 +81,7 @@
                                             <td>
                                                 <span style="font-size: 2em" class="text-resalt-primary">Expediente: #{registroController.expediente.numero}</span>
                                                 <h:outputText value=" (CONCLUIDO)" rendered="#{registroController.expediente.general == 'C'}"  style="color: red; font-weight: bold; font-size: 1.5em" />
+                                                <h:outputText value="- (DESISTIDO)" rendered="#{registroController.expediente.indicadorDesestimiento == 1}"  style="color: red; font-weight: bold; font-size: 1.5em" />
                                             </td>
                                             <td style="text-align: right">
                                                 <a jsf:action="#{registroController.pdf()}">
@@ -228,7 +267,7 @@
                                                                                 <h:selectOneRadio rendered="#{registroController.etapaEstado.verEtapa == 4}"  value="#{registroController.expediente.estadoSeguimiento}">
                                                                                     <f:selectItems value="#{registroController.listaEstadoSeguimientoQueja}"  />
                                                                                 </h:selectOneRadio>
-                                                                                
+
                                                                                 <h:selectOneRadio rendered="#{registroController.etapaEstado.verEtapa == 5}"  value="#{registroController.expediente.estadoCalificacion}">
                                                                                     <f:selectItems value="#{registroController.listaEstadoCalificacionPetitorio}"  />
                                                                                 </h:selectOneRadio>
@@ -239,40 +278,95 @@
 
                                                                                 <h:selectOneRadio rendered="#{registroController.etapaEstado.verEtapa == 7}"  value="#{registroController.expediente.estadoPersuacion}">
                                                                                     <f:selectItems value="#{registroController.listaEstadoPersuacionPetitorio}"  />
-                                                                                </h:selectOneRadio>            
-
-
-
+                                                                                </h:selectOneRadio>
                                                                             </td>
                                                                             <td style="vertical-align: top">
-                                                                                
+
                                                                             </td>
                                                                         </tr>
                                                                     </table>
                                                                 </h:panelGroup>
                                                             </div>
                                                         </td>
-                                                    </tr>
-                                                    <tr>
                                                         <td>
-
-                                                            <div  class="alert fade in" role="alert" style="width: 100%;text-align:right;border:solid silver 1px;background:white;color:silver;padding-bottom:5px;padding-top:5px;margin-bottom:3px">
-                                                                <input type="hidden" id="idTipoClasificacion" jsf:value="#{registroController.expediente.tipoClasificion}" />
-
-                                                                <span id="idTextTipoClasificacion" class="text-primary" style="float: left; font-weight: bold;">Seleccione</span>
-                                                                <a class="trigger2">
-                                                                    <span style="color:#3183b9;font-size:large;vertical-align: top" class="glyphicon glyphicon-chevron-down trigger2"></span>
+                                                            <script>
+                                                                function modalAsignar(data) {
+                                                                    if (data.status === 'success') {
+                                                                        $("#loadModal").modal('hide');
+                                                                        $('body').removeClass('modal-open');
+                                                                        $(".modal-backdrop").removeClass("modal-backdrop");
+                                                                        $("#idModalAsignar").modal('show');
+                                                                    }
+                                                                }
+                                                            </script>
+                                                            <h:panelGroup rendered="#{((registroController.etapaEstado.verEtapa == 1 or registroController.etapaEstado.verEtapa == 5) and seguridadUtilController.tieneRecurso('REC_EXP015') and registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo) or ((registroController.etapaEstado.verEtapa == 1 or registroController.etapaEstado.verEtapa == 5) and seguridadUtilController.tieneRecurso('REC_EXP016'))}">
+                                                                <a class="btn btn-warning" jsf:action="#{registroController.limpiarModalAsignar()}" jsf:onclick="loadingModal()">
+                                                                    <span class="glyphicon glyphicon-user" />Asignar Expediente
+                                                                    <f:ajax render="idPanelAsignar" onevent="modalAsignar" />
                                                                 </a>
+                                                            </h:panelGroup>
+                                                            <h:panelGroup id="idPanelAsignar">
+                                                                <div class="modal fade" data-backdrop="static" data-keyboard="false" id="idModalAsignar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                                    <div class="modal-dialog" style="text-align: left">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <a type="button" class="close" data-dismiss="modal">
+                                                                                    <span style="color:red" class="glyphicon glyphicon-remove"></span>
+                                                                                </a>
+                                                                                <span class="text-resalt-primary">Asignar expediente</span>
+                                                                            </div>
+                                                                            <div class="modal-body" style="padding:5px">
+
+                                                                                <span class="text-bold">Seleccione Comisionado:</span>
+                                                                                <h:selectOneMenu value="#{registroController.expediente.usuarioAsignado}">
+                                                                                    <f:selectItems value="#{registroController.listaUsuarioOD}" var="item" itemLabel="#{item.nombre} #{item.apellidoPaterno} #{item.apellidoMaterno}" itemValue="#{item.codigo}" />
+                                                                                </h:selectOneMenu>
+                                                                                <div class="modal-footer">
+                                                                                    <a class="btn btn-primary" data-dismiss="modal" jsf:action="#{registroController.guardarAsignado()}">
+                                                                                        <span class="glyphicon glyphicon-floppy-disk"/>Guardar
+                                                                                    </a>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </h:panelGroup>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                                <table style="width: 90%">
+                                                    <tr>
+                                                        <td style="width: 50%">
+
+                                                            <div  class="alert fade in" role="alert" style="width: 50%;text-align:right;border:solid silver 1px;background:white;color:silver;padding-bottom:5px;padding-top:5px;margin-bottom:3px">
+                                                                <input type="hidden" id="idTipoClasificacion" jsf:value="#{registroController.expediente.tipoClasificion}" />
+                                                                <span id="idTextTipoClasificacion" class="text-primary" style="float: left; font-weight: bold;">Seleccione</span>
+                                                                <h:panelGroup rendered="#{registroController.etapaEstado.verEtapa == 0 or registroController.etapaEstado.verEtapa == null or registroController.expediente.version == 0}">
+                                                                    <a href="#" class="trigger2">
+                                                                        <span style="color:#3183b9;font-size:large;vertical-align: top" class="glyphicon glyphicon-chevron-down trigger2"></span>
+                                                                    </a>
+                                                                </h:panelGroup>
+                                                                <h:panelGroup  rendered="#{registroController.etapaEstado.verEtapa != 0 and registroController.etapaEstado.verEtapa != null and !seguridadUtilController.tieneRecurso('REC_EXP017')}">
+                                                                    <a class="trigger2">
+                                                                        <span style="color:#3183b9;font-size:large;vertical-align: top" class="glyphicon glyphicon-chevron-down trigger2"></span>
+                                                                    </a>
+                                                                </h:panelGroup>
+                                                                <h:panelGroup  rendered="#{(registroController.etapaEstado.verEtapa == 1 or registroController.etapaEstado.verEtapa == 5) and seguridadUtilController.tieneRecurso('REC_EXP017')}">
+                                                                    <a href="#" class="trigger2">
+                                                                        <span style="color:#3183b9;font-size:large;vertical-align: top" class="glyphicon glyphicon-chevron-down trigger2"></span>
+                                                                    </a>
+                                                                </h:panelGroup>
+
                                                                 <div class="popover-markup" style="float:left">
-                                                                    <div class="head hide"><b class="text-primary">Seleccione</b></div>
+                                                                    <div class="head hide">
+                                                                        <b class="text-primary">Seleccione</b>
+                                                                    </div>
                                                                     <div class="content hide">
                                                                         <div style="width:100%">
                                                                             <c:forEach var="x" items="#{listasComunesController.buscarExpedienteTipoClasificacion(false,false,false)}">
                                                                                 <a class="alink" onclick="asignarTipo('${x.valorParametro}')">
                                                                                     <div class="alert fade in alert-warning" role="alert" style="padding-bottom:5px;padding-top:5px;margin-bottom:3px">
-
                                                                                         <h:outputText value="${x.nombreParametro}" style="cursor:pointer"/>
-
                                                                                     </div>
                                                                                 </a>
                                                                             </c:forEach>
@@ -346,16 +440,25 @@
                                                                         }
                                                                     });</script>
                                                             </div>
+                                                            <h:panelGroup  rendered="#{(registroController.etapaEstado.verEtapa == 1 or registroController.etapaEstado.verEtapa == 5) and seguridadUtilController.tieneRecurso('REC_EXP017') and registroController.expediente.general != 'C'}">
+                                                                <a class="btn btn-warning" jsf:action="#{registroController.guardarVersionSupervisor(0)}" jsf:onclick="loadingModal()">
+                                                                        <span class="glyphicon glyphicon-floppy-disk"/>Cambiar tipo
+                                                                    </a>
+                                                                </h:panelGroup>
+                                                            <h:panelGroup  rendered="#{seguridadUtilController.tieneRecurso('REC_EXP018') and registroController.expediente.general == 'C'}">
+                                                                <a class="btn btn-default" jsf:action="#{registroController.guardarVersionSupervisor(1)}" jsf:onclick="loadingModal()">
+                                                                        <span class="glyphicon glyphicon-floppy-disk"/>Levantar conclusión
+                                                                    </a>
+                                                                </h:panelGroup>
                                                         </td>
                                                         <td style="text-align: right">
-                                                            
                                                             <h:panelGroup  id="idPanel3" rendered="#{registroController.expediente.id == null || registroController.expediente.version == 0}">
-                                                                <a class="btn btn-info" jsf:action="#{registroController.guardarBorrador()}"  jsf:onclick="loadingModal()">
+                                                                <a class="btn btn-info" jsf:action="#{registroController.guardarBorrador()}" jsf:onclick="loadingModal()">
                                                                     <span class="glyphicon glyphicon-floppy-disk" />Borrador
                                                                 </a>
                                                             </h:panelGroup>
                                                             &#160;&#160;
-                                                            <h:panelGroup rendered="#{registroController.expediente.general != 'C' and registroController.verBotonRegistrarExpediente and registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo}" >
+                                                            <h:panelGroup rendered="#{(registroController.expediente.general != 'C' and registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo) or (registroController.expediente.usuarioRegistro == null) }">
                                                                 <a class="btn btn-primary" jsf:action="#{registroController.guardarVersion()}"  jsf:onclick="loadingModal()">
                                                                     <span class="glyphicon glyphicon-floppy-disk" />Guardar
                                                                 </a>
@@ -367,17 +470,17 @@
                                                                 </a>
                                                             </h:panelGroup>
                                                             &#160;&#160;
-                                                            <h:panelGroup rendered="#{registroController.etapaEstado.verEtapa == 1 or registroController.etapaEstado.verEtapa == 5 }">
-                                                            <a class="btn btn-info">
-                                                                <span class="glyphicon glyphicon-link" />Mayor información
-                                                            </a>
-                                                             </h:panelGroup> 
+                                                            <h:panelGroup rendered="#{(registroController.etapaEstado.verEtapa == 1 or registroController.etapaEstado.verEtapa == 5) and !registroController.expediente.indicadorOficio }">
+                                                                <a class="btn btn-info">
+                                                                    <span class="glyphicon glyphicon-link" />Mayor información
+                                                                </a>
+                                                            </h:panelGroup>   
                                                             &#160;&#160;
-                                                            <h:panelGroup rendered="#{registroController.expediente.id != null and registroController.expediente.version > 0 and registroController.expediente.general != 'C' and registroController.verBotonRegistrarExpediente and registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo}">
-                                                            <a class="btn btn-danger" onclick="confirmar0()" >
+                                                            <h:panelGroup rendered="#{registroController.expediente.id != null and registroController.expediente.version > 0 and registroController.expediente.general != 'C' and registroController.verBotonRegistrarExpediente and registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo and !registroController.expediente.indicadorOficio}">
+                                                                <a class="btn btn-danger" onclick="confirmar0()" >
                                                                     <span class="glyphicon glyphicon-remove" />Desistir
                                                                 </a>
-                                                                </h:panelGroup>
+                                                            </h:panelGroup>
                                                         </td>
                                                     </tr>
                                                 </table>
@@ -400,4 +503,4 @@
             </h:form>
         </ui:define>
     </ui:composition>
-</html>            
+</html>

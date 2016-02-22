@@ -16,7 +16,9 @@ public interface ExpedienteDAO {
     
     public void expedienteInsertar(Expediente expediente);
             
-    public void expedienteUpdate(Expediente expediente);  
+    public void expedienteUpdate(Expediente expediente);
+    
+    public void expedienteUpdateNoClasificacion(Expediente expediente);
     
     public List<Expediente> expedienteBuscar(Expediente expediente); 
     
@@ -49,4 +51,8 @@ public interface ExpedienteDAO {
     public List<Expediente> expedienteBuscarUsuarioCompleto(Expediente expediente);
     
     public List<Expediente> expedienteBuscarUsuarioODPaginado(Expediente expediente);
+    
+    public Integer expedienteMayorInformacionCount(String numeroExpediente);
+    
+    public void expedienteInactivar(Expediente expediente);
 }

@@ -202,16 +202,16 @@
                                             </tr>
                                             <tr>
                                                             <td style="padding-right: 5px;padding-bottom: 10px" >
-                                                                <div class="classdocumentoGestion">
+                                                                <!--<div class="classdocumentoGestion">
                                                                     <label  jsf:rendered="#{registroController.expedienteGestion.tipo != '01' and registroController.expedienteGestion.tipo != '02'}">Número del documento de gestión:</label>
                                                                     <input type="text" placeholder="Número del documento de gestión:" jsf:rendered="#{registroController.expedienteGestion.tipo != '01' and registroController.expedienteGestion.tipo != '02'}" jsf:value="#{registroController.expedienteGestion.documentoGestionDetalle}" maxlength="100"/>
-                                                                </div>
+                                                                </div>-->
                                                                 
                                                             </td>
                                                 <td>
-                                                    <h:selectBooleanCheckbox id="idCheckbox2" value="#{registroController.expedienteGestion.indicadorRecomendacion}" rendered="#{registroController.etapaEstado.verEtapa == 3 or registroController.etapaEstado.verEtapa == 7}">
+                                                    <!--<h:selectBooleanCheckbox id="idCheckbox2" value="#{registroController.expedienteGestion.indicadorRecomendacion}" rendered="#{registroController.etapaEstado.verEtapa == 3 or registroController.etapaEstado.verEtapa == 7}">
                                                                         Contiene recomendación
-                                                                    </h:selectBooleanCheckbox>
+                                                                    </h:selectBooleanCheckbox>-->
                                                 </td>
                                                         </tr>
                                         </table>
@@ -424,17 +424,17 @@
                                                 <td colspan="2">
                                                     <table style="width: 100%">
                                                         <tr>
-                                                            <td style="width: 34%;padding-right: 10px">
-                                                                <label>Nombre:</label>
+                                                            <td style="width: 90%;padding-right: 10px">
+                                                                <label>Nombre del funcionario:</label>
                                                                 <input type="text" jsf:value="#{registroController.expedienteGestion.nombre}" placeholder="Nombre"/>
                                                             </td>
                                                             <td style="width: 34%;padding-right: 10px">
-                                                                <label>Apellido paterno:</label>
-                                                                <input type="text" jsf:value="#{registroController.expedienteGestion.apellidoPaterno}" placeholder="Apellido paterno"/>
+                                                                <!--<label>Apellido paterno:</label>
+                                                                <input type="text" jsf:value="#{registroController.expedienteGestion.apellidoPaterno}" placeholder="Apellido paterno"/>-->
                                                             </td>
                                                             <td>
-                                                                <label>Apellido materno:</label>
-                                                                <input type="text" jsf:value="#{registroController.expedienteGestion.apellidoMaterno}" placeholder="Apellido Materno"/>
+                                                                <!--<label>Apellido materno:</label>
+                                                                <input type="text" jsf:value="#{registroController.expedienteGestion.apellidoMaterno}" placeholder="Apellido Materno"/>-->
                                                             </td>
                                                         </tr>
                                                         <tr>
@@ -635,8 +635,8 @@
                                             </tr>
                                             <tr>
                                                 <td style="padding-bottom: 10px">
-                                                    <label>Documento de respuesta:</label>
-                                                    <input type="text" placeholder="Documento de respuesta" jsf:value="#{registroController.expedienteGestion.documentoRespuesta}" style="width: 50%"/>
+                                                    <!--<label>Documento de respuesta:</label>
+                                                    <input type="text" placeholder="Documento de respuesta" jsf:value="#{registroController.expedienteGestion.documentoRespuesta}" style="width: 50%"/>-->
                                                 </td>
                                                 <td></td>
                                             </tr>

@@ -15,7 +15,7 @@
                         <div class="file-manager">
                             <a href="mail_compose.html" class="btn btn-block btn-primary compose-mail">Folder</a>
                             <div class="space-25"></div>
-                            
+
                             <ul style="padding: 0" class="folder-list m-b-md">
                                 <li><a jsf:action="#{bandejaController.cargarTotalInternos()}" style="text-decoration: none; cursor: pointer; font-size: 13px"> <i class="fa fa-inbox "></i> Alertas internas <span class="label label-warning pull-right">#{bandejaController.listaMensajesInternos.size()}</span> </a></li>
                                 <li><a jsf:action="#{bandejaController.cargarTotalAutomaticos()}" style="text-decoration: none; cursor: pointer; font-size: 13px"> <i class="fa fa-envelope-o"></i> Alertas automáticas <span class="label label-warning pull-right">#{bandejaController.listaMensajesAutomaticos.size()}</span></a></li>
@@ -38,7 +38,7 @@
 
                                             <div class="input-group">
 
-                                                
+
                                             </div>
                                         </div>
                                     </td>
@@ -48,7 +48,7 @@
                                         <a jsf:action="#{bandejaController.cargarBandeja()}" style="color: #676a6c;" class="btn btn-sm btn-default">
                                             <span class="glyphicon glyphicon-refresh" />Actualizar
                                         </a>
-                                        
+
                                         <a style="color: #676a6c;" class="btn btn-sm btn-default" jsf:action="#{bandejaController.eliminarMensajes()}">
                                             <span class="glyphicon glyphicon-trash" />
                                         </a>
@@ -75,12 +75,12 @@
                                     $(".icheckbox_square-green").click(function () {
                                         if ($(this).attr('class') === "icheckbox_square-green hover") {
                                             $(this).addClass("checked");
-                                        } else{
+                                        } else {
                                             $(this).removeClass("checked");
                                         }
                                     });
-                                    
-                                    
+
+
                                     $(".importante_check").click(function () {
                                         if ($(this).attr('class') === "importante_check icheckbox_important_gmail") {
                                             $(this).removeClass("icheckbox_important_gmail").addClass("icheckbox_important_check_gmail");
@@ -94,29 +94,31 @@
                             <table style="width: 100%;border-top: 1px solid #ddd;" class="table table-hover table-mail" >
                                 <c:forEach var="x" items="#{bandejaController.listaMensajes}">
                                     <tr class="read">
-                                        <td class="check-mail" style="width: 11%">
-                                            
-                                                <h:selectBooleanCheckbox value="#{x.indicador}"  class="i-checks" />
-                                            
+                                        <td class="check-mail">
+
+                                            <h:selectBooleanCheckbox value="#{x.indicador}"  class="i-checks" />
+
                                             &#160;
                                             <div class="importante_check icheckbox_important_gmail" style="position: relative;">
-                                                
+
                                             </div>
                                         </td>
-                                        <td class="mail-ontact" style="width: 34%;">
+                                        <td class="mail-ontact">
                                             <a jsf:action="#{bandejaController.verMensajeBandeja(x)}" style="color: #{x.estado == 'VIS'? '' : 'black'} ;">
                                                 #{x.nombreRemitente}
                                             </a>
                                         </td>
-                                        <td class="mail-subject" style="width: 35%">
+                                        <td class="mail-subject">
                                             <span class="label pull-left" style="color: white; background-color: #{x.colorTipo}">#{x.detalleTipo}</span>
+                                        </td>
+                                        <td class="mail-subject">
                                             <a jsf:action="#{bandejaController.verMensajeBandeja(x)}" style="color: #{x.estado == 'VIS'? '' : 'black'} ;">
-                                                #{x.titulo}
+                                                Expediente: #{x.numeroExpediente}
                                             </a>
                                         </td>
-                                        <td class="text-right mail-date" style="width: 20%">
+                                        <td class="text-right mail-date">
                                             <h:outputText value="#{x.fechaEnvio}" >
-                                                <f:convertDateTime pattern="dd/MM/yyyy h:mm a" timeZone="America/Lima" />
+                                                <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
                                             </h:outputText>
                                         </td>
                                     </tr>

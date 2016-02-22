@@ -37,14 +37,12 @@ public enum EstadoExpedienteType {
         
         //GESTION_CONCLUIDO_PETITORIO(13, "Concluido por desestimiento", 6),
         
-        PERSUACION_DEVIENEN_PETITORIO(14, "Devienen en solucionados", 7),
+        PERSUACION_ACOGIDO_PETITORIO(14, "Acogido", 7),
         
-        PERSUACION_NEGATIVA_PETITORIO(15, "Por negativa expresa", 7),
+        PERSUACION_NO_ACOGIDO_PETITORIO(15, "No Acogido", 7),
         
-        PERSUACION_FALTA_RESPUESTA_PETITORIO(16, "Falta de respuesta", 7),
+        PERSUACION_ACOGIMIENTO_PETITORIO(16, "Acogimiento parcial", 7);
         
-        PERSUACION_ACOGIMIENTO_PARCIAL2(18, "Acogimiento parcial", 7);
-	
 	
 	/** La Constante list. */
 	private static final List<EstadoExpedienteType> list = new ArrayList<>();
@@ -168,16 +166,15 @@ public enum EstadoExpedienteType {
                 valorRetorno = GESTION_NO_SOLUCIONADO_PETITORIO.getValue();
             if(keys == GESTION_SOLUCIONADO_PETITORIO.getKey())
                 valorRetorno = GESTION_SOLUCIONADO_PETITORIO.getValue();
-            if(keys == PERSUACION_DEVIENEN_PETITORIO.getKey())
-                valorRetorno = PERSUACION_DEVIENEN_PETITORIO.getValue();
-            if(keys == PERSUACION_FALTA_RESPUESTA_PETITORIO.getKey())
-                valorRetorno = PERSUACION_FALTA_RESPUESTA_PETITORIO.getValue();
-            if(keys == PERSUACION_NEGATIVA_PETITORIO.getKey())
-                valorRetorno = PERSUACION_NEGATIVA_PETITORIO.getValue();
+            if(keys == PERSUACION_ACOGIDO_PETITORIO.getKey())
+                valorRetorno = PERSUACION_ACOGIDO_PETITORIO.getValue();
+            if(keys == PERSUACION_NO_ACOGIDO_PETITORIO.getKey())
+                valorRetorno = PERSUACION_NO_ACOGIDO_PETITORIO.getValue();
+            if(keys == PERSUACION_ACOGIMIENTO_PETITORIO.getKey())
+                valorRetorno = PERSUACION_ACOGIMIENTO_PETITORIO.getValue();
             if(keys == PERSUACION_ACOGIMIENTO_PARCIAL.getKey())
                 valorRetorno = PERSUACION_ACOGIMIENTO_PARCIAL.getValue();
-            if(keys == PERSUACION_ACOGIMIENTO_PARCIAL2.getKey())
-                valorRetorno = PERSUACION_ACOGIMIENTO_PARCIAL2.getValue();
+            
             return valorRetorno;
 	}
         
