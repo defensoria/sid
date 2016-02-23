@@ -3,7 +3,6 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:jsf="http://xmlns.jcp.org/jsf"
-      xmlns:c="http://java.sun.com/jsp/jstl/core"
       xmlns:gc="http://xmlns.jcp.org/jsf/composite/gc">
 
     <ui:composition template="../template/templateCabeceraExpediente.xhtml">
@@ -48,7 +47,7 @@
             <div class="panel panel-default">
 
                 <div class="panel-body">
-                    <h:panelGroup rendered="#{registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo}">
+                    <h:panelGroup>
                         <div class="btn-group" role="group" style="float: right; width: 10%">
                             <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="glyphicon glyphicon-th-list" /> Acciones
@@ -110,8 +109,8 @@
                                                 <tr>
                                                     <td style="padding-right: 30px; width: 60%" rowspan="2">
                                                         <label>Descripción:</label>
-                                                        <textarea jsf:value="#{registroController.expedienteDerivacionEnvia.detalle}" jsf:rendered="#{registroController.expedienteDerivacionEnvia.id == null}" rows="6" style="width: 100%" maxlength="1300" placeholder="Motivo"/>
-                                                        <h:outputText value="#{registroController.expedienteDerivacionEnvia.detalle}" rendered="#{registroController.expedienteDerivacionEnvia.id != null}"/>
+                                                        <textarea jsf:value="#{registroController.expedienteDerivacionEnvia.detalle}" jsf:rendered="#{registroController.expedienteDerivacionEnvia.id == null}" rows="6" style="width: 100%" maxlength="1300" placeholder="Descripción"/>
+                                                        <br/><h:outputText value="#{registroController.expedienteDerivacionEnvia.detalle}" rendered="#{registroController.expedienteDerivacionEnvia.id != null}"/>
                                                     </td>
                                                     <td style="vertical-align: top">
                                                         <label>Oficina Defensorial:</label>
@@ -165,8 +164,7 @@
                                                 <tr>
                                                     <td style="padding-right: 30px; width: 60%" rowspan="2">
                                                         <label>Descripción:</label>
-                                                        <textarea jsf:rendered="#{registroController.expedienteDerivacionEnvia.id == null}" jsf:value="#{registroController.expedienteDerivacionEnvia.detalle}" rows="6" style="width: 100%" maxlength="1300" placeholder="Motivo"/>
-                                                        <h:outputText rendered="#{registroController.expedienteDerivacionEnvia.id != null}" value="#{registroController.expedienteDerivacionEnvia.detalle}" />
+                                                        <br/><h:outputText rendered="#{registroController.expedienteDerivacionEnvia.id != null}" value="#{registroController.expedienteDerivacionEnvia.detalle}" />
                                                     </td>
                                                     <td style="vertical-align: top">
                                                         <label>Oficina Defensorial:</label>
@@ -216,13 +214,13 @@
                                                 <table style="width: 100%">
                                                     <tr>
                                                         <td style="padding-right: 30px; width: 60%">
-                                                            <label>Motivo de la aprobación / desaprobación</label>
+                                                            <label>Motivo de la aprobación / desaprobación:</label>
                                                             <textarea jsf:rendered="#{registroController.expedienteDerivacionAprueba.id == null}" jsf:value="#{registroController.expedienteDerivacionAprueba.detalle}" rows="6" style="width: 100%" maxlength="1300" placeholder="Motivo"/>
-                                                            <h:outputText rendered="#{registroController.expedienteDerivacionAprueba.id != null}" value="#{registroController.expedienteDerivacionAprueba.detalle}" />
+                                                            <br/><h:outputText rendered="#{registroController.expedienteDerivacionAprueba.id != null}" value="#{registroController.expedienteDerivacionAprueba.detalle}" />
                                                         </td>
                                                         <td style="vertical-align: top">
                                                             <h:panelGroup id="idPanelapob">
-                                                                <h:selectOneRadio value="#{registroController.expedienteDerivacionAprueba.aprueba}">
+                                                                <h:selectOneRadio value="#{registroController.expedienteDerivacionAprueba.aprueba}" disabled="#{registroController.expedienteDerivacionAprueba.id == null? 'false' : 'true'}">
                                                                     <f:selectItem itemLabel="Aprobar" itemValue="SI" />
                                                                     <f:selectItem itemLabel="Desaprobar" itemValue="NO" />
                                                                     <f:ajax render="idPanelapob" />
@@ -369,4 +367,4 @@
             </div>
         </ui:define>
     </ui:composition>
-</html>            
+</html>

@@ -21,7 +21,7 @@ public enum MensajeType {
     
     MENSAJE_CONSULTA(2, "Mensaje por Consulta", "Consulta", "blue"),
     
-    MENSAJE_SUSPENCION(3, "Mensaje por Suspención", "Suspención", "red"),
+    MENSAJE_SUSPENCION(3, "Mensaje por Suspensión", "Suspensión", "red"),
     
     MENSAJE_AMPLIACION(4, "Mensaje por Ampliación", "Ampliación", "orange");
 

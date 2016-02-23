@@ -48,7 +48,7 @@
                                     <a type="button" class="close" data-dismiss="modal">
                                         <span style="color:red" class="glyphicon glyphicon-remove"></span>
                                     </a>
-                                    <span class="text-resalt-primary">Culminar Expediente</span>
+                                    <span class="text-resalt-primary" style="font-size: 2em">¿Está seguro de concluir el expediente?</span>
                                 </div>
                                 <div class="modal-body" style="padding:5px">
                                     <h:selectBooleanCheckbox rendered="#{registroController.expediente.tipoClasificion != '02'}" value="#{registroController.expediente.indRelevante}" >
@@ -56,9 +56,9 @@
                                     </h:selectBooleanCheckbox>
                                     <br/><br/>
                                     <h:outputText rendered="#{registroController.expediente.tipoClasificion == '02'}" value="Orientación" class="text-bold"/>
-                                    <h:outputText rendered="#{registroController.expediente.tipoClasificion != '02'}" value="Justificación" class="text-bold"/>
+                                    <h:outputText rendered="#{registroController.expediente.tipoClasificion != '02'}" value="Detalle de la conclusión:" class="text-bold" style="font-size: 1.5em"/>
                                     <textarea rows="5" jsf:rendered="#{registroController.expediente.tipoClasificion == '02'}" jsf:value="#{registroController.expediente.conclusion}" style="width: 100%;" placeholder="Orientación" maxlength="1950"/>
-                                    <textarea rows="5" jsf:rendered="#{registroController.expediente.tipoClasificion != '02'}" jsf:value="#{registroController.expediente.conclusion}" style="width: 100%;" placeholder="Justificación" maxlength="1950"/>
+                                    <textarea rows="5" jsf:rendered="#{registroController.expediente.tipoClasificion != '02'}" jsf:value="#{registroController.expediente.conclusion}" style="width: 100%;" placeholder="Detalle de la conclusión" maxlength="1950"/>
                                     <div class="modal-footer">
                                         <a class="btn btn-primary" data-dismiss="modal" jsf:action="#{registroController.guardarConclusionFinExpediente()}">
                                             <span class="glyphicon glyphicon-floppy-disk"/>Guardar
@@ -90,8 +90,66 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td colspan="2">
+                                            <td>
                                                 <h:outputText rendered="#{registroController.etapaEstado.ultimoEstado != null}" value="Estado: #{registroController.etapaEstado.ultimoEstado}" style="font-size: 2em" class="text-resalt-primary"/>
+                                            </td>
+                                            <td>
+                                                <script>
+                                                                function modalReconsideracion() {
+                                                                        $("#loadModal").modal('hide');
+                                                                        $('body').removeClass('modal-open');
+                                                                        $(".modal-backdrop").removeClass("modal-backdrop");
+                                                                        $("#idModalReconsideracion").modal('show');
+                                                                }
+                                                            </script>
+                                                <h:panelGroup rendered="#{!registroController.expediente.indiceReconsideracion and registroController.expediente.version >= 1}">
+                                                <a onclick="modalReconsideracion()">
+                                                    <span class="glyphicon glyphicon-pencil" /> registrar reconsideración
+                                                </a>
+                                                    </h:panelGroup>
+                                                <h:panelGroup rendered="#{registroController.expediente.indiceReconsideracion and registroController.expediente.version >= 1}">
+                                                <a onclick="modalReconsideracion()">
+                                                    <span class="glyphicon glyphicon-eye-open" /> ver / modificar reconsideración
+                                                </a>
+                                                    </h:panelGroup>
+                                                <div class="modal fade" data-backdrop="static" data-keyboard="false" id="idModalReconsideracion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                                    <div class="modal-dialog" style="text-align: left">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <a type="button" class="close" data-dismiss="modal">
+                                                                                    <span style="color:red" class="glyphicon glyphicon-remove"></span>
+                                                                                </a>
+                                                                                <span class="text-resalt-primary">Reconsideración</span>
+                                                                            </div>
+                                                                            <div class="modal-body" style="padding:5px">
+                                                                                <table style="width: 100%">
+                                                                                    <tr>
+                                                                                        <td style="width: 20%; padding-bottom: 5px">
+                                                                                            <label style="font-size: 1.5em">Reconsideración</label>
+                                                                                        </td>
+                                                                                        <td style="vertical-align: top">
+                                                                                            <h:selectBooleanCheckbox value="#{registroController.expediente.indiceReconsideracion}"/>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td colspan="2">
+                                                                                            <label style="font-size: 1.5em">Detalle</label>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <textarea rows="5" jsf:value="#{registroController.expediente.detalleReconsideracion}" style="width: 100%;" placeholder="Detalle" maxlength="1900"/>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                </table>
+                                                                                <br/>
+                                                                                <div class="modal-footer">
+                                                                                    <a class="btn btn-primary" data-dismiss="modal" jsf:action="#{registroController.guardarReconsideracion()}">
+                                                                                        <span class="glyphicon glyphicon-floppy-disk"/>Guardar
+                                                                                    </a>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
                                             </td>
                                         </tr>    
                                         <tr>
@@ -447,14 +505,14 @@
                                                             </div>
                                                             <h:panelGroup  rendered="#{(registroController.etapaEstado.verEtapa == 1 or registroController.etapaEstado.verEtapa == 5) and seguridadUtilController.tieneRecurso('REC_EXP017') and registroController.expediente.general != 'C'}">
                                                                 <a class="btn btn-warning" jsf:action="#{registroController.guardarVersionSupervisor(0)}" jsf:onclick="loadingModal()">
-                                                                        <span class="glyphicon glyphicon-floppy-disk"/>Cambiar tipo
-                                                                    </a>
-                                                                </h:panelGroup>
+                                                                    <span class="glyphicon glyphicon-floppy-disk"/>Cambiar tipo
+                                                                </a>
+                                                            </h:panelGroup>
                                                             <h:panelGroup  rendered="#{seguridadUtilController.tieneRecurso('REC_EXP018') and registroController.expediente.general == 'C'}">
                                                                 <a class="btn btn-default" jsf:action="#{registroController.guardarVersionSupervisor(1)}" jsf:onclick="loadingModal()">
-                                                                        <span class="glyphicon glyphicon-floppy-disk"/>Levantar conclusión
-                                                                    </a>
-                                                                </h:panelGroup>
+                                                                    <span class="glyphicon glyphicon-floppy-disk"/>Levantar conclusión
+                                                                </a>
+                                                            </h:panelGroup>
                                                         </td>
                                                         <td style="text-align: right">
                                                             <h:panelGroup  id="idPanel3" rendered="#{registroController.expediente.id == null || registroController.expediente.version == 0}">
@@ -1086,22 +1144,22 @@
                                                                 <span style="font-size: large" class="glyphicon glyphicon-link" />
                                                             </a>
                                                         </h:panelGroup>
-                                                        
+
                                                     </td>
                                                 </tr>
                                             </table>
                                             <br/><br/>
-                                                        <br/>
-                                                        <h:selectBooleanCheckbox value="#{registroController.expediente.indiceRecomendacion}" rendered="#{registroController.etapaEstado.verEtapa == 3 or registroController.etapaEstado.verEtapa == 7}">
-                                                                        Contiene recomendación
-                                                                    </h:selectBooleanCheckbox>
-                                                        <br/><br/>
-                                                        <h:selectBooleanCheckbox disabled="#{registroController.expediente.indiceMayorInformacion? 'true':'false'}" value="#{registroController.expediente.indiceMayorInformacion}" rendered="#{registroController.etapaEstado.verEtapa == 1 or registroController.etapaEstado.verEtapa == 5}">
-                                                                        Mayor información
-                                                                    </h:selectBooleanCheckbox>
-                                                        <h:selectBooleanCheckbox disabled="true" value="#{registroController.expediente.indiceMayorInformacion}" rendered="#{registroController.etapaEstado.verEtapa != 1 and registroController.etapaEstado.verEtapa != 5}">
-                                                                        Mayor información
-                                                                    </h:selectBooleanCheckbox>
+                                            <br/>
+                                            <h:selectBooleanCheckbox value="#{registroController.expediente.indiceRecomendacion}" rendered="#{registroController.etapaEstado.verEtapa == 3 or registroController.etapaEstado.verEtapa == 7}">
+                                                Contiene recomendación
+                                            </h:selectBooleanCheckbox>
+                                            <br/><br/>
+                                            <h:selectBooleanCheckbox disabled="#{registroController.expediente.indiceMayorInformacion? 'true':'false'}" value="#{registroController.expediente.indiceMayorInformacion}" rendered="#{registroController.etapaEstado.verEtapa == 1 or registroController.etapaEstado.verEtapa == 5}">
+                                                Mayor información
+                                            </h:selectBooleanCheckbox>
+                                            <h:selectBooleanCheckbox disabled="true" value="#{registroController.expediente.indiceMayorInformacion}" rendered="#{registroController.etapaEstado.verEtapa != 1 and registroController.etapaEstado.verEtapa != 5}">
+                                                Mayor información
+                                            </h:selectBooleanCheckbox>
                                         </div>
                                     </div>
                                 </td>
@@ -2038,6 +2096,69 @@
                                 </div>
                             </h:panelGroup>
                         </td>                    
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div class="panel panel-featured-top-warning" style="height: auto">
+                                <div class="panel-body">
+                                    <span class="text-resalt-primary">Datos de archivo </span>
+                                    <br/>
+                                    <table style="width: 100%">
+                                        <tr>
+                                            <td style="width: 20%; padding-bottom: 5px">
+                                                <label>Tipo:</label>
+                                            </td>
+                                            <td style="padding-bottom: 5px">
+                                                <h:selectOneRadio value="#{registroController.expediente.tipoArchivo}">
+                                                                                                            <f:selectItem itemLabel="Archivo periférico" itemValue="PER"/>
+                                                                                                            <f:selectItem itemLabel="Archivo central" itemValue="CEN"/>
+                                                                                                        </h:selectOneRadio>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding-bottom: 5px">
+                                                <label>Recepción:</label>
+                                            </td>
+                                            <td style="padding-bottom: 5px">
+                                                <h:selectBooleanCheckbox value="#{registroController.expediente.indicadorRecepcionArchivo}"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding-bottom: 5px">
+                                                <label>fecha:</label>
+                                            </td>
+                                            <td style="padding-bottom: 5px">
+                                                <gc:calendar value="#{registroController.expediente.fechaArchivo}"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding-bottom: 5px">
+                                                <label>Expedientes acumulados:</label>
+                                            </td>
+                                            <td style="padding-bottom: 5px">
+                                                <textarea rows="5" jsf:value="#{registroController.expediente.expedienteAcumulado}" style="width: 50%;" placeholder="Expedientes acumulados" maxlength="1400"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding-bottom: 5px">
+                                                <label>Ubicación tipográfica:</label>
+                                            </td>
+                                            <td style="padding-bottom: 5px">
+                                                <textarea rows="5" jsf:value="#{registroController.expediente.ubicacionTipologica}" style="width: 50%;" placeholder="Ubicación tipográfica" maxlength="1400"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding-bottom: 5px">
+                                                <label>Observaciones:</label>
+                                            </td>
+                                            <td style="padding-bottom: 5px">
+                                                <textarea rows="5" jsf:value="#{registroController.expediente.observacionArchivo}" style="width: 50%;" placeholder="Observaciones" maxlength="1400"/>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </td>                  
                     </tr>
                     <tr>
                         <td colspan="2">

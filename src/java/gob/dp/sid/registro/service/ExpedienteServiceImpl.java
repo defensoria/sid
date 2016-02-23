@@ -154,5 +154,10 @@ public class ExpedienteServiceImpl implements ExpedienteService{
     public void expedienteInactivar(Expediente expediente) {
         expedienteDAO.expedienteInactivar(expediente);
     }
+
+    @Override
+    public void expedienteReconsideracion(Expediente expediente) {
+        expedienteDAO.expedienteReconsideracion(expediente);
+    }
     
 }

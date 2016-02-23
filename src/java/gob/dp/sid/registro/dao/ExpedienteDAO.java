@@ -55,4 +55,6 @@ public interface ExpedienteDAO {
     public Integer expedienteMayorInformacionCount(String numeroExpediente);
     
     public void expedienteInactivar(Expediente expediente);
+    
+    public void expedienteReconsideracion(Expediente expediente);
 }

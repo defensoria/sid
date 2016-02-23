@@ -47,6 +47,15 @@
         <result property="indiceRecomendacion" column="N_INDRECOMENDACION"/>
         <result property="indiceMayorInformacion" column="N_INDMAYORINFORMA"/>
         
+        <result property="tipoArchivo" column="C_TIPOARCHIVO"/>
+        <result property="indicadorRecepcionArchivo" column="N_RECEPCIONARCHIVO"/>
+        <result property="fechaArchivo" column="D_FECHAARCHIVO"/>
+        <result property="expedienteAcumulado" column="C_EXPEDIENTESACUMULADOS"/>
+        <result property="ubicacionTipologica" column="C_UBICACIONTIPOLOGICA"/>
+        <result property="observacionArchivo" column="C_OBSERVACIONARCHIVO"/>
+        <result property="indiceReconsideracion" column="N_INDRECONSIDERACION"/>
+        <result property="detalleReconsideracion" column="C_DETALLERECONSIDERACION"/>
+
         <result property="etapaDetalle" column="C_VALOR"/>
         <result property="indicadorEtapa" column="C_INDICADORETAPA"/>
         <result property="idEtapa" column="N_ID_ETAPA"/>
@@ -161,7 +170,24 @@
         <if test="indiceMayorInformacion != null">
             N_INDMAYORINFORMA,
         </if>
-        
+        <if test="tipoArchivo != null">
+            C_TIPOARCHIVO,
+        </if>
+        <if test="indicadorRecepcionArchivo != null">
+            N_RECEPCIONARCHIVO,
+        </if>
+        <if test="fechaArchivo != null">
+            D_FECHAARCHIVO,
+        </if>
+        <if test="expedienteAcumulado != null">
+            C_EXPEDIENTESACUMULADOS,
+        </if>
+        <if test="ubicacionTipologica != null">
+            C_UBICACIONTIPOLOGICA,
+        </if>
+        <if test="observacionArchivo != null">
+            C_OBSERVACIONARCHIVO,
+        </if>
         C_ESTADOGENERAL,
         N_IDEXPEDIENTE
         )
@@ -269,6 +295,24 @@
         <if test="indiceMayorInformacion != null">
             #{indiceMayorInformacion},
         </if>
+        <if test="tipoArchivo != null">
+            #{tipoArchivo},
+        </if>
+        <if test="indicadorRecepcionArchivo != null">
+            #{indicadorRecepcionArchivo},
+        </if>
+        <if test="fechaArchivo != null">
+            #{fechaArchivo},
+        </if>
+        <if test="expedienteAcumulado != null">
+            #{expedienteAcumulado},
+        </if>
+        <if test="ubicacionTipologica != null">
+            #{ubicacionTipologica},
+        </if>
+        <if test="observacionArchivo != null">
+            #{observacionArchivo},
+        </if>
         'A',
         SEQ_SID_REG_EXPEDIENTE.NextVal
         )
@@ -335,7 +379,24 @@
             <if test="usuarioResponsable != null">
             C_USUARIORESPONSABLE = #{usuarioResponsable},
         </if>
-            
+            <if test="tipoArchivo != null">
+            C_TIPOARCHIVO = #{tipoArchivo},
+        </if>
+        <if test="indicadorRecepcionArchivo != null">
+            N_RECEPCIONARCHIVO = #{indicadorRecepcionArchivo},
+        </if>
+        <if test="fechaArchivo != null">
+            D_FECHAARCHIVO = #{fechaArchivo},
+        </if>
+        <if test="expedienteAcumulado != null">
+            C_EXPEDIENTESACUMULADOS = #{expedienteAcumulado},
+        </if>
+        <if test="ubicacionTipologica != null">
+            C_UBICACIONTIPOLOGICA = #{ubicacionTipologica},
+        </if>
+        <if test="observacionArchivo != null">
+            C_OBSERVACIONARCHIVO = #{observacionArchivo},
+        </if>
         <if test="numero != null">
                 C_NUMEROEXPEDIENTE = #{numero}
             </if>
@@ -413,6 +474,17 @@
         UPDATE SID_REG_EXPEDIENTE
         <set>
             C_ESTADOGENERAL = 'C'
+        </set>
+        <where>
+            N_IDEXPEDIENTE = #{id}
+        </where>
+    </update>
+    
+    <update id="expedienteReconsideracion" parameterType="expediente">
+        UPDATE SID_REG_EXPEDIENTE
+        <set>
+            N_INDRECONSIDERACION = #{indiceReconsideracion},
+            C_DETALLERECONSIDERACION = #{detalleReconsideracion}
         </set>
         <where>
             N_IDEXPEDIENTE = #{id}

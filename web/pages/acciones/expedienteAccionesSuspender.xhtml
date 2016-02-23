@@ -9,9 +9,9 @@
     <ui:composition template="../template/templateCabeceraExpediente.xhtml">
 
         <ui:define name="content2">
-            <gc:confirmSubmit bean="#{registroController.enviarSuspencion()}" classGC="confirmacion7" mensaje="Esta seguro de crear la solicitud de suspención?" />
-            <gc:confirmSubmit bean="#{registroController.aprobarSuspencion()}" classGC="confirmacion5" mensaje="Esta seguro de aprobar / desaprobar la solicitud de suspención?" />
-            <gc:confirmSubmit bean="#{registroController.aceptarSuspencion()}" classGC="confirmacion6" mensaje="Esta seguro de aceptar / rechazar la solicitud de suspención?" />
+            <gc:confirmSubmit bean="#{registroController.enviarSuspencion()}" classGC="confirmacion7" mensaje="Esta seguro de crear la solicitud de suspensión?" />
+            <gc:confirmSubmit bean="#{registroController.aprobarSuspencion()}" classGC="confirmacion5" mensaje="Esta seguro de aprobar / desaprobar la solicitud de suspensión?" />
+            <gc:confirmSubmit bean="#{registroController.aceptarSuspencion()}" classGC="confirmacion6" mensaje="Esta seguro de aceptar / rechazar la solicitud de suspensión?" />
             <script>
                 function confirmar5() {
                     $(".confirmacion5").modal('show');
@@ -84,7 +84,7 @@
                             </tr>
                             <tr>
                                 <td style="width: 20%; vertical-align: top">
-                                    <h3>Crar solicitud de Suspención</h3>
+                                    <h3>Crear solicitud de suspensión</h3>
                                     <span class="text-bold">fecha de envio: 
                                         <h:outputText value="#{registroController.expedienteSuspencionEnvia.fecha}">
                                             <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
@@ -146,7 +146,7 @@
                             </tr>
                             <tr>
                                 <td style="width: 20%; vertical-align: top">
-                                    <h3>Aprobar solicitud de suspención</h3>
+                                    <h3>Aprobar solicitud de suspensión</h3>
                                     <span style="color: gray; font-weight: bold">#{registroController.expedienteSuspencionEnvia.nombreUsuario}</span>
                                     <br/><br/>
                                     <span class="text-bold">fecha de envio: 
@@ -190,7 +190,7 @@
                             </tr>
                             <tr>
                                 <td style="width: 20%; vertical-align: top">
-                                    <h3>Aprobar suspención</h3>
+                                    <h3>Aprobar suspensión</h3>
                                     <span class="text-bold">fecha de envio: 
                                         <h:outputText value="#{registroController.expedienteSuspencionAprueba.fecha}">
                                             <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
@@ -257,7 +257,7 @@
                             </tr>
                             <tr>
                                 <td style="width: 20%; vertical-align: top">
-                                    <h3>Aceptar la suspención</h3>
+                                    <h3>Aceptar la suspensión</h3>
                                     <span style="color: gray; font-weight: bold">#{registroController.expedienteSuspencionAprueba.nombreUsuario}</span>
                                     <br/><br/>
                                     <span class="text-bold">fecha de envio: 
@@ -306,7 +306,7 @@
                             </tr>
                             <tr>
                                 <td style="width: 20%; vertical-align: top">
-                                    <h3>Aceptar suspención</h3>
+                                    <h3>Aceptar suspensión</h3>
                                     <br/>
                                     <span class="text-bold">fecha de envio: 
                                         <h:outputText value="#{registroController.expedienteSuspencionAcepta.fecha}">
@@ -337,8 +337,8 @@
                                                         <td style="vertical-align: top">
                                                             <h:panelGroup id="idPanelrech">
                                                                 <h:selectOneRadio value="#{registroController.expedienteSuspencionAcepta.aprueba}" disabled="#{registroController.expedienteSuspencionAcepta.id == null? 'false' : 'true'}">
-                                                                    <f:selectItem itemLabel="Aceptar suspención" itemValue="SI" />
-                                                                    <f:selectItem itemLabel="Rechazar suspención" itemValue="NO" />
+                                                                    <f:selectItem itemLabel="Aceptar suspensión" itemValue="SI" />
+                                                                    <f:selectItem itemLabel="Rechazar suspensión" itemValue="NO" />
                                                                     <f:ajax render="idPanelrech" />
                                                                 </h:selectOneRadio>
                                                                 <br/>

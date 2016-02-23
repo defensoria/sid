@@ -139,7 +139,23 @@ public class Expediente implements Serializable{
     private Boolean indiceRecomendacion;
     
     private Boolean indiceMayorInformacion;
-
+    
+    private String tipoArchivo;
+    
+    private Boolean indicadorRecepcionArchivo;
+    
+    private Date fechaArchivo;
+    
+    private String expedienteAcumulado;
+    
+    private String ubicacionTipologica;
+    
+    private String observacionArchivo;
+    
+    private Boolean indiceReconsideracion;
+    
+    private String detalleReconsideracion;
+    
     public Long getId() {
         return id;
     }
@@ -636,6 +652,70 @@ public class Expediente implements Serializable{
 
     public void setIndiceMayorInformacion(Boolean indiceMayorInformacion) {
         this.indiceMayorInformacion = indiceMayorInformacion;
+    }
+
+    public String getTipoArchivo() {
+        return tipoArchivo;
+    }
+
+    public void setTipoArchivo(String tipoArchivo) {
+        this.tipoArchivo = tipoArchivo;
+    }
+
+    public Date getFechaArchivo() {
+        return fechaArchivo;
+    }
+
+    public void setFechaArchivo(Date fechaArchivo) {
+        this.fechaArchivo = fechaArchivo;
+    }
+
+    public String getExpedienteAcumulado() {
+        return expedienteAcumulado;
+    }
+
+    public void setExpedienteAcumulado(String expedienteAcumulado) {
+        this.expedienteAcumulado = expedienteAcumulado;
+    }
+
+    public String getUbicacionTipologica() {
+        return ubicacionTipologica;
+    }
+
+    public void setUbicacionTipologica(String ubicacionTipologica) {
+        this.ubicacionTipologica = ubicacionTipologica;
+    }
+
+    public String getObservacionArchivo() {
+        return observacionArchivo;
+    }
+
+    public void setObservacionArchivo(String observacionArchivo) {
+        this.observacionArchivo = observacionArchivo;
+    }
+
+    public String getDetalleReconsideracion() {
+        return detalleReconsideracion;
+    }
+
+    public void setDetalleReconsideracion(String detalleReconsideracion) {
+        this.detalleReconsideracion = detalleReconsideracion;
+    }
+
+    public Boolean getIndicadorRecepcionArchivo() {
+        return indicadorRecepcionArchivo;
+    }
+
+    public void setIndicadorRecepcionArchivo(Boolean indicadorRecepcionArchivo) {
+        this.indicadorRecepcionArchivo = indicadorRecepcionArchivo;
+    }
+
+    public Boolean getIndiceReconsideracion() {
+        return indiceReconsideracion;
+    }
+
+    public void setIndiceReconsideracion(Boolean indiceReconsideracion) {
+        this.indiceReconsideracion = indiceReconsideracion;
     }
 
 }

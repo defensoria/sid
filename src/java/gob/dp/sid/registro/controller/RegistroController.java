@@ -954,6 +954,24 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         u.setCodigoOD(usuarioSession.getCodigoOD());
         listaUsuarioOD = usuarioService.listaUsuariosPorOD(u);
     }
+    
+    public boolean guardarReconsideracion(){
+        if(!expediente.getIndiceReconsideracion()){
+            msg.messageAlert("Debe marcar el check de reconsideración", null);
+            expediente.setIndiceReconsideracion(false);
+            expediente.setDetalleReconsideracion(null);
+            return false;
+        }
+        if(StringUtils.isBlank(expediente.getDetalleReconsideracion())){
+            expediente.setIndiceReconsideracion(false);
+            expediente.setDetalleReconsideracion(null);
+            msg.messageAlert("Debe ingresar un detalle reconsideración", null);
+            return false;
+        }
+        expedienteService.expedienteReconsideracion(expediente);
+        msg.messageInfo("Se registro la reconsideración", null);
+        return true;
+    }
 
     public void guardarAsignado() {
         FacesContext context = FacesContext.getCurrentInstance();
@@ -1372,6 +1390,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         if (expedienteDerivacionAprueba == null) {
             expedienteDerivacionAprueba = new ExpedienteDerivacion();
             expedienteDerivacionAprueba.setCodigoUsuario(usuarioSession.getCodigo());
+            expedienteDerivacionAprueba.setIdOficinaDefensorial(expedienteDerivacionEnvia.getIdOficinaDefensorial());
             return "expedienteAccionesDerivacion";
         } else {
             if (StringUtils.equals(expedienteDerivacionAprueba.getCodigoUsuario(), usuarioSession.getCodigo())) {
@@ -1786,13 +1805,13 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         expedienteSuspencionEnvia.setRuta(ruta);
         expedienteSuspencionService.expedienteSuspencionInsertar(expedienteSuspencionEnvia);
         enviarMensajeSupensionEnvio();
-        msg.messageInfo("Se envio la Suspención", null);
+        msg.messageInfo("Se envio la Suspensión", null);
         return true;
     }
     
     public boolean aprobarSuspencion() {
         if (StringUtils.isBlank(expedienteSuspencionAprueba.getAprueba())) {
-            msg.messageAlert("Debe aprobar o desaprobar la solicitud de suspención", null);
+            msg.messageAlert("Debe aprobar o desaprobar la solicitud de Suspensión", null);
             return false;
         }
 
@@ -1822,7 +1841,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     
     public boolean aceptarSuspencion() {
         if (StringUtils.isBlank(expedienteSuspencionAcepta.getAprueba())) {
-            msg.messageAlert("Debe aceptar o rechazar la solicitud de suspención", null);
+            msg.messageAlert("Debe aceptar o rechazar la solicitud de Suspensión", null);
             return false;
         }
 
@@ -1843,11 +1862,11 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             guardarVersion2();
             enviarMensajeSuspencionAcepta();
             aumentarDisminuirTiempoEtapa(1, 20);
-            msg.messageInfo("Se acepta la solicitud de suspención se agregan 20 dias habiles en la etapa actual", null);
+            msg.messageInfo("Se acepta la solicitud de Suspensión se agregan 20 dias habiles en la etapa actual", null);
         } else {
             guardarVersion2();
             enviarMensajeSuspencionRechaza();
-            msg.messageInfo("Se rechaza la solicitud de suspención", null);
+            msg.messageInfo("Se rechaza la solicitud de Suspensión", null);
         }
         return true;
     }
@@ -3409,7 +3428,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
          * GENERAR NUEVO ESTADO
          */
 
-        msg.messageInfo("Se concluyó la etapa", null);
+        msg.messageInfo("Se concluyó el expediente", null);
         if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_PETITORIO.getKey()) || Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_QUEJA.getKey())) {
                 setearExpedienteTiempo();
                 verModalConclusion = false;
@@ -3545,6 +3564,12 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_QUEJA.getKey())) {
                 if (expediente.getListaExpedienteNivel().size() == 0) {
                     msg.messageAlert("Debe ingresar al menos una clasificación", null);
+                    return false;
+                }
+            }
+            if (StringUtils.equals(expediente.getTipoClasificion(), ExpedienteType.QUEJA.getKey())){
+                if(entidadSeleccionadas.size() == 0){
+                    msg.messageAlert("Debe ingresar al menos una Entidad", null);
                     return false;
                 }
             }
