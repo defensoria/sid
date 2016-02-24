@@ -349,6 +349,15 @@
                                                             <td><span class="text-bold">Correo electrónico: </span><span>#{registroController.personaSeleccionada.email}</span></td>
                                                         </tr>
                                                         <tr>
+                                                            <td jsf:rendered="#{registroController.personaSeleccionada.sexo == 'M'}"><span class="text-bold">Sexo: </span><span>Masculino</span></td>
+                                                            <td jsf:rendered="#{registroController.personaSeleccionada.sexo == 'F'}"><span class="text-bold">Sexo: </span><span>Femenino</span></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><span class="text-bold">Fecha de nacimiento: </span><span><h:outputText value="#{registroController.personaSeleccionada.fechaNacimiento}" >
+                                                                        <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
+                                                                    </h:outputText></span></td>
+                                                        </tr>
+                                                        <tr>
                                                             <td><span class="text-bold">Ultima actualización: </span><span><h:outputText value="#{registroController.personaSeleccionada.fechaModificacion}" >
                                                                         <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
                                                                     </h:outputText></span></td>
