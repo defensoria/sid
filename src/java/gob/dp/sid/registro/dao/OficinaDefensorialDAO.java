@@ -20,4 +20,6 @@ public interface OficinaDefensorialDAO {
     
     public OficinaDefensorial obtenerOficinaDefensorial(Long id);
     
+    public List<OficinaDefensorial> listaAdjuntiasDefensorialesConsulta();
+    
 }

@@ -47,6 +47,8 @@ public class ExpedienteNivel implements Serializable{
     
     private String sextoNivel;
     
+    private String indicadorSegundoTipo;
+    
     private List<ExpedienteClasificacionTipo> listaClasificacionTipo;
 
     public Long getId() {
@@ -175,6 +177,14 @@ public class ExpedienteNivel implements Serializable{
 
     public void setListaClasificacionTipo(List<ExpedienteClasificacionTipo> listaClasificacionTipo) {
         this.listaClasificacionTipo = listaClasificacionTipo;
+    }
+
+    public String getIndicadorSegundoTipo() {
+        return indicadorSegundoTipo;
+    }
+
+    public void setIndicadorSegundoTipo(String indicadorSegundoTipo) {
+        this.indicadorSegundoTipo = indicadorSegundoTipo;
     }
     
 }

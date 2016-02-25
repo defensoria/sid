@@ -860,6 +860,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 listaExpedientesPersuacionPetitorio.add(ee);
             }
         }
+        verModalConclusion = false;
         return "expedienteGestionLista";
     }
 
@@ -1131,10 +1132,10 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 expedienteNivel.setNumeroExpediente(expediente.getNumero());
                 expedienteNivel.setEstado("ACT");
                 expedienteNivelService.expedienteNivelInsertar(expedienteNivel);
-                msg.messageInfo("Se agrego una nueva clasificacion temática", null);
+                msg.messageInfo("Se agrego una nueva clasificación temática", null);
             } else {
                 expedienteNivelService.expedienteNivelActualizar(expedienteNivel);
-                msg.messageInfo("Se actualizo la clasificacion temática", null);
+                msg.messageInfo("Se actualizo la clasificación temática", null);
             }
             List<ExpedienteNivel> nivels = expedienteNivelService.expedienteNivelPorExpediente(expediente.getNumero());
             expediente.setListaExpedienteNivel(nivels);
@@ -1543,7 +1544,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         expedienteConsultaEnvia.setId(null);
         expedienteConsultaService.expedienteConsultaInsertar(expedienteConsultaEnvia);
         /**
-         * 
+         *
          */
         enviarMensajeConsulta();
         inicioAccionesConsulta();
@@ -1602,7 +1603,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         expedienteConsultaAprueba.setEstado("ACT");
         expedienteConsultaService.expedienteConsultaInsertar(expedienteConsultaAprueba);
         /**
-         * 
+         *
          */
         if (StringUtils.equals(expedienteConsultaAprueba.getAprueba(), "NO")) {
             enviarMensajeDesaprobacionConsulta();
@@ -1667,7 +1668,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         expedienteConsultaReasigna.setEstado("ACT");
         expedienteConsultaService.expedienteConsultaInsertar(expedienteConsultaReasigna);
         /**
-         * 
+         *
          */
         if (StringUtils.equals(expedienteConsultaReasigna.getAprueba(), "NO")) {
             enviarMensajeDesaprobacionReasignacionConsulta();
@@ -1708,7 +1709,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         expedienteConsultaResponde.setId(null);
         expedienteConsultaService.expedienteConsultaInsertar(expedienteConsultaResponde);
         /**
-         * 
+         *
          */
         enviarMensajeRespondeConsulta();
         inicioAccionesConsulta();
@@ -1756,7 +1757,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         expedienteRespuestaAprueba.setId(null);
         expedienteConsultaService.expedienteConsultaInsertar(expedienteRespuestaAprueba);
         /**
-         * 
+         *
          */
         if (StringUtils.equals(expedienteRespuestaAprueba.getAprueba(), "NO")) {
             enviarMensajeDesaprobarRespuesta();
@@ -1809,7 +1810,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         expedienteRespuestaAcepta.setId(null);
         expedienteConsultaService.expedienteConsultaInsertar(expedienteRespuestaAcepta);
         /**
-         * 
+         *
          */
         if (StringUtils.equals(expedienteRespuestaAcepta.getAprueba(), "NO")) {
             enviarMensajeRechazaRespuesta();
@@ -2161,9 +2162,12 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             guardarGestionEtapa();
             msg.messageInfo("Se registro una nueva gestión", null);
         } else {
-            if (sumarRestarDiasFecha(expedienteGestion.getFechaRecepcion(), 1).compareTo(expedienteGestion.getFecha()) < 0) {
-                msg.messageAlert("La fecha de recepción no puede ser menos que la fecha de registro de la gestión", null);
-                return null;
+            if(expedienteGestion.getFechaRecepcion() != null){
+                if (sumarRestarDiasFecha(expedienteGestion.getFechaRecepcion(), 1).compareTo(expedienteGestion.getFecha()) < 0) {
+                    expedienteGestion.setFechaRecepcion(null);
+                    msg.messageAlert("La fecha de recepción no puede ser menos que la fecha de registro de la gestión", null);
+                    return null;
+                }
             }
             expedienteGestion.setUsuarioModificacion(usuarioSession.getCodigo());
             expedienteGestion.setFechaModificacion(new Date());
@@ -3458,6 +3462,10 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         }
         return "expedienteGestionLista";
     }
+    
+    public void cancelarConclusion(){
+        verModalConclusion = false;
+    }
 
     public String guardarConclusionFinExpediente() {
         Long idExpedienteOld = expediente.getId();
@@ -3617,38 +3625,48 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                     return false;
                 }
             }
-            /*
+
             if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.INVESTIGACION_QUEJA.getKey())) {
-                if(listaExpedientesInvestigacionQueja == null){
-                    msg.messageAlert("Debe ingresar por lo menos una gestion para culminar la etapa", null);
-                    return false;
+                if (listaExpedientesInvestigacionQueja != null) {
+                    if (listaExpedientesInvestigacionQueja.size() == 0) {
+                        msg.messageAlert("Debe ingresar por lo menos una gestion para culminar la etapa", null);
+                        return false;
+                    }
                 }
             }
             if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.PERSUACION_QUEJA.getKey())) {
-                if(listaExpedientesPersuacionQueja == null){
-                    msg.messageAlert("Debe ingresar por lo menos una gestion para culminar la etapa", null);
-                    return false;
+                if (listaExpedientesPersuacionQueja != null) {
+                    if (listaExpedientesPersuacionQueja.size() == 0) {
+                        msg.messageAlert("Debe ingresar por lo menos una gestion para culminar la etapa", null);
+                        return false;
+                    }
                 }
             }
             if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.SEGUIMIENTO_QUEJA.getKey())) {
-                if(listaExpedientesSeguimientoQueja == null){
-                    msg.messageAlert("Debe ingresar por lo menos una gestion para culminar la etapa", null);
-                    return false;
+                if (listaExpedientesSeguimientoQueja != null) {
+                    if (listaExpedientesSeguimientoQueja.size() == 0) {
+                        msg.messageAlert("Debe ingresar por lo menos una gestion para culminar la etapa", null);
+                        return false;
+                    }
                 }
             }
             if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.GESTION_PETITORIO.getKey())) {
-                if(listaExpedientesGestionPetitorio == null){
-                    msg.messageAlert("Debe ingresar por lo menos una gestion para culminar la etapa", null);
-                    return false;
+                if (listaExpedientesGestionPetitorio != null) {
+                    if (listaExpedientesGestionPetitorio.size() == 0) {
+                        msg.messageAlert("Debe ingresar por lo menos una gestion para culminar la etapa", null);
+                        return false;
+                    }
                 }
             }
             if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.PERSUASION_PETITORIO.getKey())) {
-                if(listaExpedientesPersuacionPetitorio == null){
-                    msg.messageAlert("Debe ingresar por lo menos una gestion para culminar la etapa", null);
-                    return false;
+                if (listaExpedientesPersuacionPetitorio != null) {
+                    if (listaExpedientesPersuacionPetitorio.size() == 0) {
+                        msg.messageAlert("Debe ingresar por lo menos una gestion para culminar la etapa", null);
+                        return false;
+                    }
                 }
             }
-            */
+
         }
         return true;
     }
@@ -4617,10 +4635,9 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     }
 
     public List<SelectItem> getListaAdjuntiaDefensoriales() {
-        System.out.println("getListaAdjuntiaDefensoriales");
         List<SelectItem> listaAdjuntiaDef = new ArrayList<>();
         try {
-            List<OficinaDefensorial> list = oficinaDefensorialService.listaAdjuntiasDefensoriales();
+            List<OficinaDefensorial> list = oficinaDefensorialService.listaAdjuntiasDefensorialesConsulta();
             for (OficinaDefensorial od : list) {
                 listaAdjuntiaDef.add(new SelectItem(od.getId(), od.getNombre()));
             }

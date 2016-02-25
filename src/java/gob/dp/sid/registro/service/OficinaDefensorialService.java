@@ -20,4 +20,6 @@ public interface OficinaDefensorialService {
     
     public List<OficinaDefensorial> listaAdjuntiasDefensoriales();
     
+    public List<OficinaDefensorial> listaAdjuntiasDefensorialesConsulta();
+    
 }

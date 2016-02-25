@@ -20,4 +20,9 @@
         SELECT * FROM SID_SEG_OFICINA_DEFENSORIAL WHERE N_ID_OD = #{id}
     </select>
     
+    <select id="listaAdjuntiasDefensorialesConsulta" resultMap="oficinaDefensorialMap" >
+        SELECT N_ID_OD, C_NOMBRE FROM SID_SEG_OFICINA_DEFENSORIAL WHERE C_TIPO IN ('AD','PG')
+        ORDER BY C_NOMBRE
+    </select>
+    
 </mapper>

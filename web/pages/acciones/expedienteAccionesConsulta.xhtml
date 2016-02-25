@@ -182,14 +182,6 @@
                                     </a>
                                 </h:panelGroup>    
                             </h:column>
-                            <h:column>
-                                <f:facet name="header">Archivo respuesta</f:facet>
-                                <h:panelGroup rendered="#{envia.rutaRespuesta != null}">
-                                    <a target="_blank" href="/filesystem/#{envia.rutaRespuesta}">
-                                        <span style="font-size: large" class="glyphicon glyphicon-link" />
-                                    </a>
-                                </h:panelGroup>
-                            </h:column>
                             <h:column >
                                 <f:facet name="header">ver respuesta</f:facet>
                                 <a jsf:rendered="#{envia.etapa == 6}" jsf:action="#{registroController.limpiarModalRespuestaRecibe(envia)}">
@@ -314,14 +306,7 @@
                                     </a>
                                 </h:panelGroup>
                             </h:column>
-                            <h:column>
-                                <f:facet name="header">Archivo respuesta</f:facet>
-                                <h:panelGroup rendered="#{aprueba.rutaRespuesta != null}">
-                                    <a target="_blank" href="/filesystem/#{aprueba.rutaRespuesta}">
-                                        <span style="font-size: large" class="glyphicon glyphicon-link" />
-                                    </a>
-                                </h:panelGroup>
-                            </h:column>
+                            
                             <h:column>
                                 <f:facet name="header">Responder</f:facet>
                                 <a jsf:rendered="#{aprueba.etapa == 1 and aprueba.estado == 'ACT'}" jsf:action="#{registroController.limpiarModalConsultaAprueba(aprueba)}">
@@ -551,14 +536,7 @@
                                     </a>
                                 </h:panelGroup>
                             </h:column>
-                            <h:column>
-                                <f:facet name="header">Archivo respuesta</f:facet>
-                                <h:panelGroup rendered="#{reasigna.rutaRespuesta != null}">
-                                    <a target="_blank" href="/filesystem/#{reasigna.rutaRespuesta}">
-                                        <span style="font-size: large" class="glyphicon glyphicon-link" />
-                                    </a>
-                                </h:panelGroup>
-                            </h:column>
+                            
                             <h:column>
                                 <f:facet name="header">Responde</f:facet>
                                 <a jsf:rendered="#{reasigna.etapa == 2 and reasigna.estado == 'ACT'}" jsf:action="#{registroController.limpiarModalConsultaReasigna(reasigna)}">
@@ -709,7 +687,8 @@
                                                                 <br/><br/>
                                                                 <label><span style="font-size: large" class="glyphicon glyphicon-paperclip" />Cambiar archivo:</label>
                                                                 <h:inputFile value="#{registroController.file6}"/>
-                                                                <br/>
+                                                                <br/><br/>
+                                                                <label>Archivo de respuesta:</label>
                                                                 <h:panelGroup rendered="#{registroController.expedienteRespuestaAprueba.rutaRespuesta != null}">
                                                                     <a target="_blank" href="/filesystem/#{registroController.expedienteRespuestaAprueba.rutaRespuesta}">
                                                                         <span style="font-size: large" class="glyphicon glyphicon-link" />
@@ -779,14 +758,7 @@
                                     </a>
                                 </h:panelGroup>
                             </h:column>
-                            <h:column>
-                                <f:facet name="header">Archivo respuesta</f:facet>
-                                <h:panelGroup rendered="#{responde.rutaRespuesta != null}">
-                                    <a jsf:rendered="#{responde.rutaRespuesta != null}" target="_blank" href="/filesystem/#{responde.rutaRespuesta}">
-                                        <span style="font-size: large" class="glyphicon glyphicon-link" />
-                                    </a>
-                                </h:panelGroup>
-                            </h:column>
+                            
                             <h:column>
                                 <f:facet name="header">Responder</f:facet>
                                 <a jsf:rendered="#{responde.etapa == 3 and responde.estado == 'ACT'}" jsf:action="#{registroController.limpiarModalConsultaResponde(responde)}">

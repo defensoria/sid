@@ -45,9 +45,6 @@
                         <div class="modal-dialog" style="text-align: left">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <a type="button" class="close" data-dismiss="modal">
-                                        <span style="color:red" class="glyphicon glyphicon-remove"></span>
-                                    </a>
                                     <span class="text-resalt-primary" style="font-size: 2em">¿Está seguro de concluir el expediente?</span>
                                 </div>
                                 <div class="modal-body" style="padding:5px">
@@ -60,8 +57,11 @@
                                     <textarea rows="5" jsf:rendered="#{registroController.expediente.tipoClasificion == '02'}" jsf:value="#{registroController.expediente.conclusion}" style="width: 100%;" placeholder="Orientación" maxlength="1950"/>
                                     <textarea rows="5" jsf:rendered="#{registroController.expediente.tipoClasificion != '02'}" jsf:value="#{registroController.expediente.conclusion}" style="width: 100%;" placeholder="Detalle de la conclusión" maxlength="1950"/>
                                     <div class="modal-footer">
-                                        <a class="btn btn-primary" data-dismiss="modal" jsf:action="#{registroController.guardarConclusionFinExpediente()}">
+                                        <a class="btn btn-primary" data-dismiss="modal" jsf:action="#{registroController.guardarConclusionFinExpediente()}" jsf:onclick="loadingModal()">
                                             <span class="glyphicon glyphicon-floppy-disk"/>Guardar
+                                        </a>
+                                        <a class="btn btn-danger" data-dismiss="modal" jsf:action="#{registroController.cancelarConclusion()}" jsf:onclick="loadingModal()">
+                                            <span class="glyphicon glyphicon-remove"/>Cerrar
                                         </a>
                                     </div>
                                 </div>
@@ -540,12 +540,6 @@
                                                                 </a>
                                                             </h:panelGroup>
                                                             &#160;&#160;
-                                                            <h:panelGroup rendered="#{(registroController.etapaEstado.verEtapa == 1 or registroController.etapaEstado.verEtapa == 5) and !registroController.expediente.indicadorOficio }">
-                                                                <a class="btn btn-info">
-                                                                    <span class="glyphicon glyphicon-link" />Mayor información
-                                                                </a>
-                                                            </h:panelGroup>   
-                                                            &#160;&#160;
                                                             <h:panelGroup rendered="#{registroController.expediente.id != null and registroController.expediente.version > 0 and registroController.expediente.general != 'C' and registroController.verBotonRegistrarExpediente and registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo and !registroController.expediente.indicadorOficio}">
                                                                 <a class="btn btn-danger" onclick="confirmar0()" >
                                                                     <span class="glyphicon glyphicon-remove" />Desistir
@@ -930,7 +924,7 @@
                                                                                         </div> 
                                                                                     </td>
                                                                                     <td style="vertical-align: top">
-                                                                                        <h:panelGroup rendered="#{registroController.expediente.tipoClasificion == '01'}">
+                                                                                        <h:panelGroup rendered="#{registroController.expediente.tipoClasificion == '01' and nivel.indicadorSegundoTipo == 'S'}">
                                                                                             <div class="alert alert-info fade in" style="margin-bottom: 3px; padding: 5px">
                                                                                                 <style>
                                                                                                     .columnRed{

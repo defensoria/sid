@@ -64,44 +64,13 @@
                                 </tr>
                             </table>
                             <br/><br/>
-                            <script>
-                                $(document).ready(function () {
-                                    $(".icheckbox_square-green").mouseover(function () {
-                                        $(this).addClass("hover");
-                                    });
-                                    $(".icheckbox_square-green").mouseout(function () {
-                                        $(this).removeClass("hover");
-                                    });
-                                    $(".icheckbox_square-green").click(function () {
-                                        if ($(this).attr('class') === "icheckbox_square-green hover") {
-                                            $(this).addClass("checked");
-                                        } else {
-                                            $(this).removeClass("checked");
-                                        }
-                                    });
-
-
-                                    $(".importante_check").click(function () {
-                                        if ($(this).attr('class') === "importante_check icheckbox_important_gmail") {
-                                            $(this).removeClass("icheckbox_important_gmail").addClass("icheckbox_important_check_gmail");
-                                        } else {
-                                            $(this).removeClass("icheckbox_important_check_gmail").addClass("icheckbox_important_gmail");
-                                        }
-                                    });
-                                });
-                            </script>
+                            
 
                             <table style="width: 100%;border-top: 1px solid #ddd;" class="table table-hover table-mail" >
                                 <c:forEach var="x" items="#{bandejaController.listaMensajes}">
                                     <tr class="read">
                                         <td class="check-mail">
-
                                             <h:selectBooleanCheckbox value="#{x.indicador}"  class="i-checks" />
-
-                                            &#160;
-                                            <div class="importante_check icheckbox_important_gmail" style="position: relative;">
-
-                                            </div>
                                         </td>
                                         <td class="mail-ontact">
                                             <a jsf:action="#{bandejaController.verMensajeBandeja(x)}" style="color: #{x.estado == 'VIS'? '' : 'black'} ;">
