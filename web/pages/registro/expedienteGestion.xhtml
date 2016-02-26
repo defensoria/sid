@@ -42,9 +42,11 @@
                                 <span style="font-size: 2em" class="text-resalt-primary">N° Gestión: #{registroController.expedienteGestion.codigoGestion}</span>
                             </td>
                             <td style="width: 50%; text-align: right">
-                                <a class="btn btn-primary" onclick="confirmar6()">
-                                    <span class="glyphicon glyphicon-floppy-disk" />Guardar gestión
-                                </a>
+                                <h:panelGroup rendered="#{registroController.etapaEstado.idEtapa > 0 and registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo and registroController.expediente.general != 'C'}">
+                                    <a class="btn btn-primary" onclick="confirmar6()">
+                                        <span class="glyphicon glyphicon-floppy-disk" />Guardar gestión
+                                    </a>
+                                </h:panelGroup>
                             </td>
                         </tr>
                     </table>
@@ -168,7 +170,7 @@
                                                 <td style="width: 50%; padding-right: 5px;padding-bottom: 10px">
                                                     <label>Tipo de acción:</label>
                                                     <h:selectOneMenu class="idTipoDocumento" value="#{registroController.expedienteGestion.tipo}" >
-                                                        <f:selectItem itemValue="0" itemLabel="Selecione" />
+                                                        <f:selectItem itemValue="" itemLabel="Selecione" />
                                                         <f:selectItems value="#{listasComunesController.buscarGestionTipoAccion(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
                                                     </h:selectOneMenu>
                                                 </td>
@@ -206,7 +208,10 @@
                                                                 
                                                             </td>
                                                 <td>
-                                                    
+                                                   <h:selectBooleanCheckbox id="idCheckbox2" value="#{registroController.expedienteGestion.indicadorRecomendacion}" rendered="#{registroController.etapaEstado.verEtapa == 3 or registroController.etapaEstado.verEtapa == 7}">
+                                                                        Contiene recomendación
+                                                                    </h:selectBooleanCheckbox>
+                                                 
                                                 </td>
                                                         </tr>
                                         </table>
@@ -772,4 +777,4 @@
             </div>
         </ui:define>
     </ui:composition>
-</html>            
+</html>

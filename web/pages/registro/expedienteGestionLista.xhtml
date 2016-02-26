@@ -38,7 +38,7 @@
                                 <td></td>
                                 <td></td>
                                 <td style="padding-bottom: 15px; float: right">
-                                    <a class="btn btn-primary" jsf:rendered="#{registroController.etapaEstado.idEtapa > 0 and registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo}" jsf:action="#{registroController.cargarExpedienteGestion()}">
+                                    <a class="btn btn-primary" jsf:rendered="#{registroController.etapaEstado.idEtapa > 0 and registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo and registroController.expediente.general != 'C'}" jsf:action="#{registroController.cargarExpedienteGestion()}">
                                         <span class="glyphicon glyphicon-list-alt" />&#160;Nueva Gestión
                                     </a>
                                 </td>

@@ -1587,6 +1587,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             expedienteConsultaPadre.setEtapa(EtapaConsultaType.CONSULTA_ETAPA_ENVIA.getKey());
         } else {
             expedienteConsultaPadre.setEtapa(EtapaConsultaType.CONSULTA_ETAPA_APRUEBA.getKey());
+            aumentarDisminuirTiempoEtapa(1, 20);
         }
         expedienteConsultaPadre.setFecha(new Date());
         /**
@@ -2147,6 +2148,14 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     }
 
     public String registarExpedienteGestion() {
+        if(StringUtils.isBlank(expedienteGestion.getTipo())){
+            msg.messageAlert("Debe seleccionar el tipo de acción", null);
+            return null;
+        }
+        if(StringUtils.isBlank(expedienteGestion.getDescripcion())){
+            msg.messageAlert("Debe ingresar la descripción", null);
+            return null;
+        }
         String ruta1 = uploadArchive(file1);
         String ruta2 = uploadArchive(file2);
         expedienteGestion.setRuta1(ruta1);
@@ -3460,6 +3469,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             setearExpedienteTiempo();
             return "expedienteEdit";
         }
+        cargarExpedienteGestionLista();
         return "expedienteGestionLista";
     }
     

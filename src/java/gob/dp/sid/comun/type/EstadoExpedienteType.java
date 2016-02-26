@@ -37,11 +37,11 @@ public enum EstadoExpedienteType {
         
         //GESTION_CONCLUIDO_PETITORIO(13, "Concluido por desestimiento", 6),
         
-        PERSUACION_ACOGIDO_PETITORIO(14, "Acogido", 7),
+        PERSUACION_SOLUCIONADO_PETITORIO(14, "Solucionado", 7),
         
-        PERSUACION_NO_ACOGIDO_PETITORIO(15, "No Acogido", 7),
+        PERSUACION_NO_SOLUCIONADO_PETITORIO(15, "No solucionado", 7);
         
-        PERSUACION_ACOGIMIENTO_PETITORIO(16, "Acogimiento parcial", 7);
+       //PERSUACION_ACOGIMIENTO_PETITORIO(16, "Acogimiento parcial", 7);
         
 	
 	/** La Constante list. */
@@ -166,12 +166,12 @@ public enum EstadoExpedienteType {
                 valorRetorno = GESTION_NO_SOLUCIONADO_PETITORIO.getValue();
             if(keys == GESTION_SOLUCIONADO_PETITORIO.getKey())
                 valorRetorno = GESTION_SOLUCIONADO_PETITORIO.getValue();
-            if(keys == PERSUACION_ACOGIDO_PETITORIO.getKey())
-                valorRetorno = PERSUACION_ACOGIDO_PETITORIO.getValue();
-            if(keys == PERSUACION_NO_ACOGIDO_PETITORIO.getKey())
-                valorRetorno = PERSUACION_NO_ACOGIDO_PETITORIO.getValue();
-            if(keys == PERSUACION_ACOGIMIENTO_PETITORIO.getKey())
-                valorRetorno = PERSUACION_ACOGIMIENTO_PETITORIO.getValue();
+            if(keys == PERSUACION_SOLUCIONADO_PETITORIO.getKey())
+                valorRetorno = PERSUACION_SOLUCIONADO_PETITORIO.getValue();
+            if(keys == PERSUACION_NO_SOLUCIONADO_PETITORIO.getKey())
+                valorRetorno = PERSUACION_NO_SOLUCIONADO_PETITORIO.getValue();
+            /*if(keys == PERSUACION_ACOGIMIENTO_PETITORIO.getKey())
+                valorRetorno = PERSUACION_ACOGIMIENTO_PETITORIO.getValue();*/
             if(keys == PERSUACION_ACOGIMIENTO_PARCIAL.getKey())
                 valorRetorno = PERSUACION_ACOGIMIENTO_PARCIAL.getValue();
             

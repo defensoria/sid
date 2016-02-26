@@ -156,6 +156,8 @@ public class Expediente implements Serializable{
     
     private String detalleReconsideracion;
     
+    private Integer indiceAsignacion;
+    
     public Long getId() {
         return id;
     }
@@ -716,6 +718,14 @@ public class Expediente implements Serializable{
 
     public void setIndiceReconsideracion(Boolean indiceReconsideracion) {
         this.indiceReconsideracion = indiceReconsideracion;
+    }
+
+    public Integer getIndiceAsignacion() {
+        return indiceAsignacion;
+    }
+
+    public void setIndiceAsignacion(Integer indiceAsignacion) {
+        this.indiceAsignacion = indiceAsignacion;
     }
 
 }

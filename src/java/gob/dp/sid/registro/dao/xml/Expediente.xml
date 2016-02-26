@@ -55,6 +55,7 @@
         <result property="observacionArchivo" column="C_OBSERVACIONARCHIVO"/>
         <result property="indiceReconsideracion" column="N_INDRECONSIDERACION"/>
         <result property="detalleReconsideracion" column="C_DETALLERECONSIDERACION"/>
+        <result property="indiceAsignacion" column="N_INDASIGNACION"/>
 
         <result property="etapaDetalle" column="C_VALOR"/>
         <result property="indicadorEtapa" column="C_INDICADORETAPA"/>
@@ -495,8 +496,8 @@
         UPDATE SID_REG_EXPEDIENTE
         <set>
             C_USUREGISTRO = #{usuarioAsignado},
-            C_USUARIORESPONSABLE = #{usuarioResponsable}
-            
+            C_USUARIORESPONSABLE = #{usuarioResponsable},
+            N_INDASIGNACION = 1
         </set>
         <where>
             N_IDEXPEDIENTE = #{id}

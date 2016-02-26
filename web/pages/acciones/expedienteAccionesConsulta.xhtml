@@ -35,7 +35,7 @@
                         </button>
                         <ul class="dropdown-menu">
                             <li>
-                                <a jsf:action="#{registroController.inicioAccionesDerivacion()}">
+                                <a jsf:action="#{registroController.inicioAccionesDerivacion()}" jsf:rendered="#{(registroController.etapaEstado.verEtapa == 1 or registroController.etapaEstado.verEtapa == 5) and registroController.expediente.indiceAsignacion != 1 and registroController.expediente.indDerivado == 1}">
                                     <span class="glyphicon glyphicon-export" />Derivar
                                 </a>
                             </li>

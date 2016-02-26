@@ -671,7 +671,7 @@
 
                                                                     </td>
                                                                     <td>
-                                                                        <a jsf:rendered="#{registroController.expediente.numero != null}" style="cursor: pointer" jsf:action="#{registroController.limpiarModalBusquedaClasificacion()}" jsf:onclick="loadingModal()">
+                                                                        <a jsf:rendered="#{registroController.expediente.numero != null and registroController.expediente.tipoClasificion == '01'}" style="cursor: pointer" jsf:action="#{registroController.limpiarModalBusquedaClasificacion()}" jsf:onclick="loadingModal()">
                                                                             <span class="glyphicon glyphicon-search" style="font-size: large" />
                                                                             <f:ajax render="idPanelModalBusquedaClasificacion" onevent="openModalBusquedaClasificacion" />
                                                                         </a>
@@ -1149,11 +1149,7 @@
                                                     </td>
                                                 </tr>
                                             </table>
-                                            <br/><br/>
-                                            <br/>
-                                            <h:selectBooleanCheckbox value="#{registroController.expediente.indiceRecomendacion}" rendered="#{registroController.etapaEstado.verEtapa == 3 or registroController.etapaEstado.verEtapa == 7}">
-                                                Contiene recomendación
-                                            </h:selectBooleanCheckbox>
+                                        
                                             <br/><br/>
                                             <h:selectBooleanCheckbox disabled="#{registroController.expediente.indiceMayorInformacion? 'true':'false'}" value="#{registroController.expediente.indiceMayorInformacion}" rendered="#{registroController.etapaEstado.verEtapa == 1 or registroController.etapaEstado.verEtapa == 5}">
                                                 Mayor información
@@ -1618,14 +1614,29 @@
                                                                                 <div class="panel-body">
                                                                                     <table style="width: 100%">   
                                                                                         <tr>
-                                                                                            <td style="width: 20%; padding-bottom: 10px"><b>Nombre completo:</b></td>
-                                                                                            <td style="padding-bottom: 10px">
+                                                                                            <td style="width: 20%; padding-bottom: 5px"><b>Nombre completo:</b></td>
+                                                                                            <td style="padding-bottom: 5px">
                                                                                                 <h:outputText style="font-size: 1.5em; font-weight: bold" value="#{registroController.expedientepersonaModalEdit.persona.nombre} #{registroController.expedientepersonaModalEdit.persona.apellidoPat} #{registroController.expedientepersonaModalEdit.persona.apellidoMat}" />
                                                                                             </td>
                                                                                         </tr>
                                                                                         <tr>
+                                                                                            <td style="padding-top: 5px"><b>Sexo:</b></td>
+                                                                                            <td style="padding-bottom: 5px; padding-top: 5px" colspan="2">
+                                                                                                <h:outputText style="font-weight: bold; font-size: 1.5em" rendered="#{registroController.expedientepersonaModalEdit.persona.sexo == 'M'}" value="Masculino"/>                                                                                            
+                                                                                                <h:outputText style="font-weight: bold; font-size: 1.5em" rendered="#{registroController.expedientepersonaModalEdit.persona.sexo == 'F'}" value="Femenino"/>
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <td style="padding-top: 5px"><b>Nacimiento:</b></td>
+                                                                                            <td style="padding-bottom: 5px; padding-top: 5px" colspan="2">
+                                                                                                <h:outputText value="#{registroController.expedientepersonaModalEdit.persona.fechaNacimiento}" style="font-weight: bold; font-size: 1.5em">
+                                                                                                    <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
+                                                                                                </h:outputText>
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                        <tr>
                                                                                             <td style="width: 20%"><b>Dirección:</b></td>
-                                                                                            <td style="padding-bottom: 10px">
+                                                                                            <td style="padding-bottom: 5px">
                                                                                                 <input type="text" placeholder="Dirección" jsf:value="#{registroController.expedientepersonaModalEdit.direccion}" style="width: 90%" maxlength="300"/><br/>
                                                                                                 <h:panelGroup id="idUbigeoPersona2">
                                                                                                     <table style="width:90%">
@@ -1656,8 +1667,8 @@
                                                                                             </td>
                                                                                         </tr>
                                                                                         <tr>
-                                                                                            <td style="padding-top: 10px"><b>Lengua materna:</b></td>
-                                                                                            <td style="padding-bottom: 10px; padding-top: 10px" colspan="2">
+                                                                                            <td style="padding-top: 5px"><b>Lengua materna:</b></td>
+                                                                                            <td style="padding-bottom: 5px; padding-top: 10px" colspan="2">
                                                                                                 <h:selectOneMenu value="#{registroController.expedientepersonaModalEdit.tipoLengua}" style="width: 50%">
                                                                                                     <f:selectItem itemLabel="Seleccione" itemValue="0"/>
                                                                                                     <f:selectItems value="#{listasComunesController.listaLenguaMaterna(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
@@ -1665,8 +1676,8 @@
                                                                                             </td>
                                                                                         </tr>
                                                                                         <tr>
-                                                                                            <td style="padding-top: 10px"><b>Pueblo indígena u originarios:</b></td>
-                                                                                            <td style="padding-bottom: 10px; padding-top: 10px" colspan="2">
+                                                                                            <td style="padding-top: 5px"><b>Población indígena:</b></td>
+                                                                                            <td style="padding-bottom: 5px; padding-top: 10px" colspan="2">
                                                                                                 <h:selectOneMenu value="#{registroController.expedientepersonaModalEdit.tipoLengua}" style="width: 50%">
                                                                                                     <f:selectItem itemLabel="Seleccione" itemValue="0"/>
                                                                                                     <f:selectItems value="#{listasComunesController.listaPuebloIndigena(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
@@ -1675,31 +1686,31 @@
                                                                                         </tr>
                                                                                         <tr>
                                                                                             <td><b>Persona con discapacidad</b></td>
-                                                                                            <td style="padding-bottom: 10px" colspan="2">
+                                                                                            <td style="padding-bottom: 5px" colspan="2">
                                                                                                 <h:selectBooleanCheckbox value="#{registroController.expedientepersonaModalEdit.indicadorDiscapacitado}" />
                                                                                             </td>
                                                                                         </tr>
                                                                                         <tr>
                                                                                             <td><b>Correo:</b></td>
-                                                                                            <td style="padding-bottom: 10px">
+                                                                                            <td style="padding-bottom: 5px">
                                                                                                 <input type="text" placeholder="Correo electrónico" jsf:value="#{registroController.expedientepersonaModalEdit.email}" style="width: 90%" maxlength="100"/>
                                                                                             </td>
                                                                                         </tr>
                                                                                         <tr>
                                                                                             <td><b>Telefono 1:</b></td>
-                                                                                            <td style="padding-bottom: 10px">
-                                                                                                <input type="text" placeholder="Telefono 1" jsf:value="#{registroController.expedientepersonaModalEdit.telefono1}" style="width: 90%" maxlength="50"/>
+                                                                                            <td style="padding-bottom: 5px">
+                                                                                                <input type="text" placeholder="Telefono 1" jsf:value="#{registroController.expedientepersonaModalEdit.telefono1}" style="width: 50%" maxlength="50"/>
                                                                                             </td>
                                                                                         </tr>
                                                                                         <tr>
                                                                                             <td><b>Telefono 2:</b></td>
-                                                                                            <td style="padding-bottom: 10px">
-                                                                                                <input type="text" placeholder="Telefono 2" jsf:value="#{registroController.expedientepersonaModalEdit.telefono2}" style="width: 90%" maxlength="50"/>
+                                                                                            <td style="padding-bottom: 5px">
+                                                                                                <input type="text" placeholder="Telefono 2" jsf:value="#{registroController.expedientepersonaModalEdit.telefono2}" style="width: 50%" maxlength="50"/>
                                                                                             </td>
                                                                                         </tr>
                                                                                         <tr jsf:rendered="#{registroController.expedientepersonaModalEdit.persona.tipo == 'ORG'}">
                                                                                             <td><b>Contacto:</b></td>
-                                                                                            <td style="padding-bottom: 10px">
+                                                                                            <td style="padding-bottom: 5px">
                                                                                                 <input type="text" placeholder="Contacto" jsf:value="#{registroController.expedientepersonaModalEdit.contacto}" style="width: 90%" maxlength="50"/>
                                                                                             </td>
                                                                                         </tr>
@@ -1769,7 +1780,8 @@
                                                                                 <tr>
                                                                                     <td style="padding-bottom: 10px" colspan="2">
                                                                                         <br/>
-                                                                                        <span class="text-bold" style="font-size: 1.2em; color: red">Actuación o responsabilidad de Entidades del Estado</span>
+                                                                                        <h:outputText rendered="#{registroController.expediente.tipoClasificion == '01'}" value="Atuación o responsabilidad de entidad" class="text-bold" style="font-size: 1.2em; color: red"/>
+                                                                                        
                                                                                     </td>
                                                                                 </tr>
                                                                                 <tr>
