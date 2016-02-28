@@ -29,6 +29,7 @@ import java.util.Date;
 import java.util.List;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -286,7 +287,7 @@ public class BandejaController extends AbstractManagedBean implements Serializab
     
     public void mensajeEnviaReasignacion(ExpedienteDerivacion ed, Expediente e){
         mensajeBandeja = new Bandeja();
-        mensajeBandeja.setTituloMensaje("Se reasigna el exp: "+ed.getNumeroExpediente());
+        mensajeBandeja.setTituloMensaje("Se deriva el exp: "+ed.getNumeroExpediente());
         List<Usuario> listaDestinatarios = new ArrayList<>();
         Usuario u = new Usuario();
         u.setCodigo(ed.getCodigoUsuarioDerivado());
@@ -573,7 +574,10 @@ public class BandejaController extends AbstractManagedBean implements Serializab
     private String cargarDerivacionPorId() {
         FacesContext context = FacesContext.getCurrentInstance();
         RegistroController registroController = (RegistroController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "registroController");
-        registroController.cargarExpedientePorId(mensajeBandeja.getIdExpediente());
+        String retorno = registroController.cargarExpedientePorId(mensajeBandeja.getIdExpediente());
+        if(StringUtils.equals(registroController.getExpediente().getUsuarioRegistro(), usuarioSession.getCodigo())){
+            return retorno;
+        }
         return registroController.inicioAccionesDerivacion();
     }
     

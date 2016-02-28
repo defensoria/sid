@@ -38,7 +38,7 @@
                                 <td></td>
                                 <td></td>
                                 <td style="padding-bottom: 15px; float: right">
-                                    <a class="btn btn-primary" jsf:rendered="#{registroController.etapaEstado.idEtapa > 0 and registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo and registroController.expediente.general != 'C'}" jsf:action="#{registroController.cargarExpedienteGestion()}">
+                                    <a class="btn btn-primary" jsf:rendered="#{registroController.etapaEstado.verEtapa > 1 and registroController.etapaEstado.verEtapa != 5 and registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo and registroController.expediente.general != 'C'}" jsf:action="#{registroController.cargarExpedienteGestion()}">
                                         <span class="glyphicon glyphicon-list-alt" />&#160;Nueva Gestión
                                     </a>
                                 </td>
@@ -47,13 +47,6 @@
                         <h:panelGroup rendered="#{registroController.expediente.tipoClasificion == '01'}">
                             <table style="width:100%">    
                                 <tr>
-                                    <td>
-                                        <span class="glyphicon glyphicon-folder-open" style="font-size:medium"></span>
-                                        <span class="text-resalt-comun">&#160;&#160;Calificación&#160;(#{registroController.listaExpedientesCalificacionQueja.size()})</span>
-                                        <a id="addCalificacion">
-                                            <span id="spanAddCalificacion" class="glyphicon glyphicon-plus" style="font-size:medium;cursor:pointer"></span>
-                                        </a>
-                                    </td>
                                     <td>
                                         <span class="glyphicon glyphicon-folder-open" style="font-size:medium"></span>
                                         <span class="text-resalt-comun">&#160;&#160;Investigación&#160;(#{registroController.listaExpedientesInvestigacionQueja.size()})</span>
@@ -83,13 +76,6 @@
                                 <tr>
                                     <td>
                                         <span class="glyphicon glyphicon-folder-open" style="font-size:medium"></span>
-                                        <span class="text-resalt-comun">&#160;&#160;Calificación&#160;(#{registroController.listaExpedientesCalificacionPetitorio.size()})</span>
-                                        <a id="addCalificacion">
-                                            <span id="spanAddCalificacion" class="glyphicon glyphicon-plus" style="font-size:medium;cursor:pointer"></span>
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <span class="glyphicon glyphicon-folder-open" style="font-size:medium"></span>
                                         <span class="text-resalt-comun">&#160;&#160;Gestión&#160;(#{registroController.listaExpedientesGestionPetitorio.size()})</span>
                                         <a id="addInvestigacion">
                                             <span id="spanAddInvestigacion" class="glyphicon glyphicon-plus" style="font-size:medium;cursor:pointer"></span>
@@ -108,59 +94,7 @@
                         <br/>
                         <br/>
                         <h:panelGroup rendered="#{registroController.expediente.tipoClasificion == '01'}">
-                            <div id="idPanelBodyCalificacion" class="panel panel-warning">
-                                <div class="panel-heading">
-                                    <span style="font-size: 1.5em">Gestiones registradas en la etapa de Calificiación:</span>
-                                </div>
-                                <div  class="panel-body">
-                                    <h:dataTable value="#{registroController.listaExpedientesCalificacionQueja}" var="calificacion" binding="#{rowx1}" class="table table-hover">
-                                        <h:column>
-                                            <f:facet name="header">N°</f:facet>
-                                            <h:outputText value="#{rowx1.rowIndex+1}" />
-                                        </h:column>
-                                        <h:column>
-                                            <f:facet name="header">Codigo de gestión</f:facet>
-                                            <h:outputText value="#{calificacion.codigoGestion}" />
-                                        </h:column>
-                                        <h:column>
-                                            <f:facet name="header">Tipo de acción</f:facet>
-                                            <h:outputText value="#{calificacion.detalleTipo}" />
-                                        </h:column>
-                                        <h:column>
-                                            <f:facet name="header">Fecha registro</f:facet>
-                                            <h:outputText value="#{calificacion.fechaRegistro}" >
-                                                <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
-                                            </h:outputText>
-                                        </h:column>
-                                        <h:column>
-                                            <f:facet name="header">Fecha modificación</f:facet>
-                                            <h:outputText value="#{calificacion.fechaModificacion}" >
-                                                <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
-                                            </h:outputText>
-                                        </h:column>
-                                        <h:column>
-                                            <f:facet name="header">Hubo respuesta</f:facet>
-                                            <h:outputText value="#{calificacion.respuesta}" />
-                                        </h:column>
-                                        <h:column>
-                                            <f:facet name="header">Origen</f:facet>
-                                            <h:outputText value="#{calificacion.codigoGestionOrigen}" />
-                                        </h:column>
-                                        <h:column rendered="#{registroController.etapaEstado.verEtapa == 1}">
-                                            <f:facet  name="header">Editar</f:facet>
-                                            <a jsf:rendered="#{registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo}" jsf:action="#{registroController.setearExpedienteGestion(calificacion)}">
-                                                <span class="glyphicon glyphicon-pencil" />
-                                            </a>
-                                        </h:column>
-                                        <h:column rendered="#{registroController.etapaEstado.verEtapa != 1}">
-                                            <f:facet  name="header">Ver</f:facet>
-                                            <a jsf:action="#{registroController.verExpedienteGestion(calificacion)}">
-                                                <span class="glyphicon glyphicon-search" />
-                                            </a>
-                                        </h:column>
-                                    </h:dataTable>
-                                </div>
-                            </div>
+                            
                             <div id="idPanelBodyInvestigacion" class="panel panel-info">
                                 <div class="panel-heading">
                                     <span style="font-size: 1.5em">Gestiones registradas en la etapa de Investigación:</span>
@@ -323,59 +257,6 @@
                             </div>
                         </h:panelGroup>
                         <h:panelGroup rendered="#{registroController.expediente.tipoClasificion == '03'}">
-                            <div id="idPanelBodyCalificacion" class="panel panel-warning">
-                                <div class="panel-heading">
-                                    <span style="font-size: 1.5em">Gestiones registradas en la etapa de Calificiación:</span>
-                                </div>
-                                <div  class="panel-body">
-                                    <h:dataTable value="#{registroController.listaExpedientesCalificacionPetitorio}" var="calificacion" binding="#{rowx5}" class="table table-hover">
-                                        <h:column>
-                                            <f:facet name="header">N°</f:facet>
-                                            <h:outputText value="#{rowx5.rowIndex+1}" />
-                                        </h:column>
-                                        <h:column>
-                                            <f:facet name="header">Codigo de gestión</f:facet>
-                                            <h:outputText value="#{calificacion.codigoGestion}" />
-                                        </h:column>
-                                        <h:column>
-                                            <f:facet name="header">Tipo de acción</f:facet>
-                                            <h:outputText value="#{calificacion.detalleTipo}" />
-                                        </h:column>
-                                        <h:column>
-                                            <f:facet name="header">Fecha registro</f:facet>
-                                            <h:outputText value="#{calificacion.fechaRegistro}" >
-                                                <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
-                                            </h:outputText>
-                                        </h:column>
-                                        <h:column>
-                                            <f:facet name="header">Fecha modificación</f:facet>
-                                            <h:outputText value="#{calificacion.fechaModificacion}" >
-                                                <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
-                                            </h:outputText>
-                                        </h:column>
-                                        <h:column>
-                                            <f:facet name="header">Hubo respuesta</f:facet>
-                                            <h:outputText value="#{calificacion.respuesta}" />
-                                        </h:column>
-                                        <h:column>
-                                            <f:facet name="header">Origen</f:facet>
-                                            <h:outputText value="#{calificacion.codigoGestionOrigen}" />
-                                        </h:column>
-                                        <h:column rendered="#{registroController.etapaEstado.verEtapa == 5}">
-                                            <f:facet  name="header">Editar</f:facet>
-                                            <a jsf:action="#{registroController.setearExpedienteGestion(calificacion)}">
-                                                <span class="glyphicon glyphicon-pencil" />
-                                            </a>
-                                        </h:column>
-                                        <h:column rendered="#{registroController.etapaEstado.verEtapa != 5}">
-                                            <f:facet  name="header">Ver</f:facet>
-                                            <a jsf:action="#{registroController.verExpedienteGestion(calificacion)}">
-                                                <span class="glyphicon glyphicon-search" />
-                                            </a>
-                                        </h:column>
-                                    </h:dataTable>
-                                </div>
-                            </div>
                             <div id="idPanelBodyInvestigacion" class="panel panel-info">
                                 <div class="panel-heading">
                                     <span style="font-size: 1.5em">Gestiones registradas en la etapa de Gestión:</span>

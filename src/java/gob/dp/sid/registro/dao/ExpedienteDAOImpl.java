@@ -126,5 +126,10 @@ public class ExpedienteDAOImpl extends SqlSessionDaoSupport implements Expedient
     public void expedienteReconsideracion(Expediente expediente) {
         getSqlSession().update("gob.dp.sid.registro.dao.ExpedienteDAO.expedienteReconsideracion", expediente);
     }
+
+    @Override
+    public void expedienteUpdateArchivo(Expediente expediente) {
+        getSqlSession().update("gob.dp.sid.registro.dao.ExpedienteDAO.expedienteUpdateArchivo", expediente);
+    }
     
 }

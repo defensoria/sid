@@ -95,61 +95,61 @@
                                             </td>
                                             <td>
                                                 <script>
-                                                                function modalReconsideracion() {
-                                                                        $("#loadModal").modal('hide');
-                                                                        $('body').removeClass('modal-open');
-                                                                        $(".modal-backdrop").removeClass("modal-backdrop");
-                                                                        $("#idModalReconsideracion").modal('show');
-                                                                }
-                                                            </script>
-                                                <h:panelGroup rendered="#{!registroController.expediente.indiceReconsideracion and registroController.expediente.version >= 1}">
-                                                <a onclick="modalReconsideracion()">
-                                                    <span class="glyphicon glyphicon-pencil" /> registrar reconsideración
-                                                </a>
-                                                    </h:panelGroup>
+                                                    function modalReconsideracion() {
+                                                        $("#loadModal").modal('hide');
+                                                        $('body').removeClass('modal-open');
+                                                        $(".modal-backdrop").removeClass("modal-backdrop");
+                                                        $("#idModalReconsideracion").modal('show');
+                                                    }
+                                                </script>
+                                                <h:panelGroup rendered="#{!registroController.expediente.indiceReconsideracion and registroController.expediente.version >= 1 and registroController.expediente.general != 'C'}">
+                                                    <a onclick="modalReconsideracion()">
+                                                        <span class="glyphicon glyphicon-pencil" /> registrar reconsideración
+                                                    </a>
+                                                </h:panelGroup>
                                                 <h:panelGroup rendered="#{registroController.expediente.indiceReconsideracion and registroController.expediente.version >= 1}">
-                                                <a onclick="modalReconsideracion()">
-                                                    <span class="glyphicon glyphicon-eye-open" /> ver / modificar reconsideración
-                                                </a>
-                                                    </h:panelGroup>
+                                                    <a onclick="modalReconsideracion()">
+                                                        <span class="glyphicon glyphicon-eye-open" /> ver / modificar reconsideración
+                                                    </a>
+                                                </h:panelGroup>
                                                 <div class="modal fade" data-backdrop="static" data-keyboard="false" id="idModalReconsideracion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                                                    <div class="modal-dialog" style="text-align: left">
-                                                                        <div class="modal-content">
-                                                                            <div class="modal-header">
-                                                                                <a type="button" class="close" data-dismiss="modal">
-                                                                                    <span style="color:red" class="glyphicon glyphicon-remove"></span>
-                                                                                </a>
-                                                                                <span class="text-resalt-primary">Reconsideración</span>
-                                                                            </div>
-                                                                            <div class="modal-body" style="padding:5px">
-                                                                                <table style="width: 100%">
-                                                                                    <tr>
-                                                                                        <td style="width: 20%; padding-bottom: 5px">
-                                                                                            <label style="font-size: 1.5em">Reconsideración</label>
-                                                                                        </td>
-                                                                                        <td style="vertical-align: top">
-                                                                                            <h:selectBooleanCheckbox value="#{registroController.expediente.indiceReconsideracion}"/>
-                                                                                        </td>
-                                                                                    </tr>
-                                                                                    <tr>
-                                                                                        <td colspan="2">
-                                                                                            <label style="font-size: 1.5em">Detalle</label>
-                                                                                        </td>
-                                                                                        <td>
-                                                                                            <textarea rows="5" jsf:value="#{registroController.expediente.detalleReconsideracion}" style="width: 100%;" placeholder="Detalle" maxlength="1900"/>
-                                                                                        </td>
-                                                                                    </tr>
-                                                                                </table>
-                                                                                <br/>
-                                                                                <div class="modal-footer">
-                                                                                    <a class="btn btn-primary" data-dismiss="modal" jsf:action="#{registroController.guardarReconsideracion()}">
-                                                                                        <span class="glyphicon glyphicon-floppy-disk"/>Guardar
-                                                                                    </a>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
+                                                    <div class="modal-dialog" style="text-align: left">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <a type="button" class="close" data-dismiss="modal">
+                                                                    <span style="color:red" class="glyphicon glyphicon-remove"></span>
+                                                                </a>
+                                                                <span class="text-resalt-primary">Reconsideración</span>
+                                                            </div>
+                                                            <div class="modal-body" style="padding:5px">
+                                                                <table style="width: 100%">
+                                                                    <tr>
+                                                                        <td style="width: 20%; padding-bottom: 5px">
+                                                                            <label style="font-size: 1.5em">Reconsideración</label>
+                                                                        </td>
+                                                                        <td style="vertical-align: top">
+                                                                            <h:selectBooleanCheckbox value="#{registroController.expediente.indiceReconsideracion}"/>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td colspan="2">
+                                                                            <label style="font-size: 1.5em">Detalle</label>
+                                                                        </td>
+                                                                        <td>
+                                                                            <textarea rows="5" jsf:value="#{registroController.expediente.detalleReconsideracion}" style="width: 100%;" placeholder="Detalle" maxlength="1900"/>
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                                <br/>
+                                                                <div class="modal-footer">
+                                                                    <a class="btn btn-primary" data-dismiss="modal" jsf:action="#{registroController.guardarReconsideracion()}">
+                                                                        <span class="glyphicon glyphicon-floppy-disk"/>Guardar
+                                                                    </a>
                                                                 </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </td>
                                         </tr>    
                                         <tr>
@@ -357,19 +357,19 @@
                                                                     }
                                                                 }
                                                             </script>
-                                                            <h:panelGroup rendered="#{((registroController.etapaEstado.verEtapa == 1 or registroController.etapaEstado.verEtapa == 5) and seguridadUtilController.tieneRecurso('REC_EXP015') and registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo)}">
+                                                            <h:panelGroup rendered="#{(registroController.etapaEstado.verEtapa == 1 or registroController.etapaEstado.verEtapa == 5) and seguridadUtilController.tieneRecurso('REC_EXP015') and registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo and registroController.expediente.general != 'C'}">
                                                                 <a class="btn btn-warning" jsf:action="#{registroController.limpiarModalAsignar()}" jsf:onclick="loadingModal()">
                                                                     <span class="glyphicon glyphicon-user" />Asignar Expediente
                                                                     <f:ajax render="idPanelAsignar" onevent="modalAsignar" />
                                                                 </a>
                                                             </h:panelGroup>
-                                                            <h:panelGroup rendered="#{seguridadUtilController.tieneRecurso('REC_EXP016')}">
+                                                            <h:panelGroup rendered="#{seguridadUtilController.tieneRecurso('REC_EXP016') and registroController.expediente.general != 'C'}">
                                                                 <a class="btn btn-warning" jsf:action="#{registroController.limpiarModalAsignar()}" jsf:onclick="loadingModal()">
                                                                     <span class="glyphicon glyphicon-user" />Asignar Expediente
                                                                     <f:ajax render="idPanelAsignar" onevent="modalAsignar" />
                                                                 </a>
                                                             </h:panelGroup>
-                                                            
+
                                                             <h:panelGroup id="idPanelAsignar">
                                                                 <div class="modal fade" data-backdrop="static" data-keyboard="false" id="idModalAsignar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                                                     <div class="modal-dialog" style="text-align: left">
@@ -1149,7 +1149,7 @@
                                                     </td>
                                                 </tr>
                                             </table>
-                                        
+
                                             <br/><br/>
                                             <h:selectBooleanCheckbox disabled="#{registroController.expediente.indiceMayorInformacion? 'true':'false'}" value="#{registroController.expediente.indiceMayorInformacion}" rendered="#{registroController.etapaEstado.verEtapa == 1 or registroController.etapaEstado.verEtapa == 5}">
                                                 Mayor información
@@ -1308,7 +1308,7 @@
 
                                                             </td>
                                                             <td style="text-align: right">
-                                                                <a style="text-decoration:none" class="btn btn-primary" jsf:action="#{registroController.cargarModalActor()}" jsf:onclick="loadingModal()">
+                                                                <a style="text-decoration:none" class="btn btn-primary" jsf:action="#{registroController.cargarModalActor()}" jsf:onclick="loadingModal()" jsf:rendered="#{registroController.expediente.general != 'C'}">
                                                                     <span class="glyphicon glyphicon-user"/>Nueva Persona
                                                                     <f:ajax render="idPanelAgregarPersona" onevent="openModalNuevaPersona"/> 
                                                                 </a>
@@ -1781,10 +1781,10 @@
                                                                                     <td style="padding-bottom: 10px" colspan="2">
                                                                                         <br/>
                                                                                         <h:outputText rendered="#{registroController.expediente.tipoClasificion == '01'}" value="Atuación o responsabilidad de entidad" class="text-bold" style="font-size: 1.2em; color: red"/>
-                                                                                        
+
                                                                                     </td>
                                                                                 </tr>
-                                                                                <tr>
+                                                                                <tr jsf:rendered="#{registroController.expediente.tipoClasificion == '01'}">
                                                                                     <td style="padding-bottom: 20px">
                                                                                         <span class="text-bold">Actuación o responsabilidad :</span>
                                                                                     </td>
@@ -2114,61 +2114,175 @@
                         <td colspan="2">
                             <div class="panel panel-featured-top-warning" style="height: auto">
                                 <div class="panel-body">
-                                    <span class="text-resalt-primary">Datos de archivo </span>
-                                    <br/>
                                     <table style="width: 100%">
                                         <tr>
-                                            <td style="width: 20%; padding-bottom: 5px">
-                                                <label>Tipo:</label>
+                                            <td>
+                                                <span class="text-resalt-primary">Datos de archivo </span>
                                             </td>
-                                            <td style="padding-bottom: 5px">
-                                                <h:selectOneRadio value="#{registroController.expediente.tipoArchivo}">
-                                                                                                            <f:selectItem itemLabel="Archivo periférico" itemValue="PER"/>
-                                                                                                            <f:selectItem itemLabel="Archivo central" itemValue="CEN"/>
-                                                                                                        </h:selectOneRadio>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="padding-bottom: 5px">
-                                                <label>Recepción:</label>
-                                            </td>
-                                            <td style="padding-bottom: 5px">
-                                                <h:selectBooleanCheckbox value="#{registroController.expediente.indicadorRecepcionArchivo}"/>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="padding-bottom: 5px">
-                                                <label>fecha:</label>
-                                            </td>
-                                            <td style="padding-bottom: 5px">
-                                                <gc:calendar value="#{registroController.expediente.fechaArchivo}"/>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="padding-bottom: 5px">
-                                                <label>Expedientes acumulados:</label>
-                                            </td>
-                                            <td style="padding-bottom: 5px">
-                                                <textarea rows="5" jsf:value="#{registroController.expediente.expedienteAcumulado}" style="width: 50%;" placeholder="Expedientes acumulados" maxlength="1400"/>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="padding-bottom: 5px">
-                                                <label>Ubicación tipográfica:</label>
-                                            </td>
-                                            <td style="padding-bottom: 5px">
-                                                <textarea rows="5" jsf:value="#{registroController.expediente.ubicacionTipologica}" style="width: 50%;" placeholder="Ubicación tipográfica" maxlength="1400"/>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="padding-bottom: 5px">
-                                                <label>Observaciones:</label>
-                                            </td>
-                                            <td style="padding-bottom: 5px">
-                                                <textarea rows="5" jsf:value="#{registroController.expediente.observacionArchivo}" style="width: 50%;" placeholder="Observaciones" maxlength="1400"/>
+                                            <td style="text-align: right">
+                                                <a jsf:action="#{registroController.actualizarArchivo()}" class="btn btn-info" jsf:rendered="#{registroController.expediente.general == 'C'}">
+                                                    <span class="glyphicon glyphicon-floppy-disk" />Guardar datos de archivo
+                                                </a>
                                             </td>
                                         </tr>
                                     </table>
+
+                                    <br/>
+                                    <table style="width: 100%">
+                                        <tr>
+                                            <td style="width: 50%; padding-right: 10px">
+                                                <table style="width: 100%">
+                                                    <tr>
+                                                        <td style="width: 20%; padding-bottom: 5px">
+                                                            <label>Tipo:</label>
+                                                        </td>
+                                                        <td style="padding-bottom: 5px">
+                                                            <h:selectOneRadio value="#{registroController.expediente.tipoArchivo}">
+                                                                <f:selectItem itemLabel="Archivo periférico" itemValue="PER"/>
+                                                                <f:selectItem itemLabel="Archivo central" itemValue="CEN"/>
+                                                            </h:selectOneRadio>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="padding-bottom: 5px">
+                                                            <label>Recepción:</label>
+                                                        </td>
+                                                        <td style="padding-bottom: 5px">
+                                                            <h:selectBooleanCheckbox value="#{registroController.expediente.indicadorRecepcionArchivo}"/>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="padding-bottom: 5px">
+                                                            <label>fecha:</label>
+                                                        </td>
+                                                        <td style="padding-bottom: 5px">
+                                                            <gc:calendar value="#{registroController.expediente.fechaArchivo}"/>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="padding-bottom: 5px">
+                                                            <label>Ubicación topográfica:</label>
+                                                        </td>
+                                                        <td style="padding-bottom: 5px">
+                                                            <textarea rows="5" jsf:value="#{registroController.expediente.ubicacionTipologica}" style="width: 100%;" placeholder="Ubicación tipográfica" maxlength="1400"/>
+                                                        </td>
+                                                    </tr>
+
+
+                                                </table>
+                                            </td>
+                                            <td style="padding-left: 10px">
+                                                <table style="width: 100%">
+
+                                                    <tr>
+                                                        <td style="padding-bottom: 5px">
+                                                            <label>Observaciones:</label>
+                                                        </td>
+                                                        <td style="padding-bottom: 5px">
+                                                            <textarea rows="5" jsf:value="#{registroController.expediente.observacionArchivo}" style="width: 100%;" placeholder="Observaciones" maxlength="1400"/>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td style="padding-bottom: 5px">
+                                                            <label>Documento:</label>
+                                                        </td>
+                                                        <td style="padding-bottom: 5px">
+                                                            <h:selectOneMenu value="#{registroController.expediente.tipoDocumentoArchivo}" style="width: 50%">
+                                                                <f:selectItem itemValue="0" itemLabel="Seleccione" />
+                                                                <f:selectItems value="#{listasComunesController.listaTipoArchivo(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
+                                                            </h:selectOneMenu>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td style="padding-bottom: 5px">
+                                                            <label>Nro. de folios</label>
+                                                        </td>
+                                                        <td style="padding-bottom: 5px">
+                                                            <input type="text" placeholder="Nro de folios" jsf:value="#{registroController.expediente.numeroFolios}" style="width: 30%" />
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td style="padding-bottom: 5px">
+                                                            <label>Otros soportes:</label>
+                                                        </td>
+                                                        <td style="padding-bottom: 5px">
+                                                            <h:selectOneMenu value="#{registroController.expediente.tipoSoporteArchivo}" style="width: 50%">
+                                                                <f:selectItem itemValue="0" itemLabel="Seleccione" />
+                                                                <f:selectItems value="#{listasComunesController.listaTipoSoporteArchivo(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
+                                                            </h:selectOneMenu>
+                                                        </td>
+                                                    </tr>
+
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+                                </div>
+                            </div>
+                        </td>                  
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div class="panel panel-featured-top-warning">
+                                <div class="panel-body">
+                                    <h:panelGroup id="idTrEjercicioAtr">
+                                        <span class="text-resalt-primary">Ejercicio de atribuciones </span>
+                                        <table style="width: 100%">
+                                            <tr>
+                                                <td colspan="2" style="padding-bottom: 10px">
+                                                    <h:selectBooleanCheckbox value="#{registroController.expediente.indicadorAtr}" >
+                                                        Ejercicio de atribuciones 
+                                                        <f:ajax render="idTrEjercicioAtr" />
+                                                    </h:selectBooleanCheckbox>
+                                                </td>
+
+                                            </tr>
+                                        </table>
+                                        <table style="width: 100%">    
+                                            <tr>
+                                                <td  style="padding-bottom: 10px">
+                                                    <label jsf:rendered="#{registroController.expediente.indicadorAtr}">Tipo:</label>
+                                                </td>
+                                                <td style="padding-bottom: 10px">
+                                                    <h:selectOneMenu value="#{registroController.expediente.tipoAtr}" rendered="#{registroController.expediente.indicadorAtr}" style="width: 25%">
+                                                        <f:selectItem itemValue="0" itemLabel="Seleccione" />
+                                                        <f:selectItems value="#{listasComunesController.listaTipoAtr(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
+                                                    </h:selectOneMenu>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding-bottom: 10px">
+                                                    <label jsf:rendered="#{registroController.expediente.indicadorAtr}">Fecha:</label>
+                                                </td>
+                                                <td style="padding-bottom: 10px">
+                                                    <script>
+                                                        $(document).ready(function () {
+                                                            $('.datepicker').datetimepicker({
+                                                                pickTime: false
+                                                            });
+                                                            $(".datepicker").on("changeDate", function (ev) {
+                                                                $(this).datetimepicker("hide");
+                                                            });
+                                                        });
+
+                                                    </script>
+                                                    <gc:calendar value="#{registroController.expediente.fechaAtr}" rendered="#{registroController.expediente.indicadorAtr}"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding-bottom: 10px">
+                                                    <label jsf:rendered="#{registroController.expediente.indicadorAtr}">Detalle:</label>
+                                                </td>
+                                                <td style="padding-bottom: 10px">
+                                                    <textarea rows="5" jsf:rendered="#{registroController.expediente.indicadorAtr}" jsf:value="#{registroController.expediente.detalleAtr}" style="width: 50%;" placeholder="Detalle" maxlength="1400"/>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </h:panelGroup>
                                 </div>
                             </div>
                         </td>                  

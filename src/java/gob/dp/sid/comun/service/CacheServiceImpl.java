@@ -67,6 +67,12 @@ public class CacheServiceImpl implements CacheService{
     
     private static final Integer CACHE_PARAMETRO_LISTA_PUEBLO_INDIGENA = 230;
     
+    private static final Integer CACHE_PARAMETRO_TIPO_ARCHIVO = 240;
+    
+    private static final Integer CACHE_PARAMETRO_TIPO_SOPORTE_ARCHIVO = 250;
+    
+    private static final Integer CACHE_PARAMETRO_TIPO_ATR = 260;
+    
 
     private volatile HashMap<Integer, Object> contenedor = null;
 
@@ -211,6 +217,21 @@ public class CacheServiceImpl implements CacheService{
         return buscarParametro(CACHE_PARAMETRO_LISTA_PUEBLO_INDIGENA, CACHE_PARAMETRO_LISTA_PUEBLO_INDIGENA);
     }
     
+    @Override
+    public List<Parametro> listaTipoArchivo() {
+        return buscarParametro(CACHE_PARAMETRO_TIPO_ARCHIVO, CACHE_PARAMETRO_TIPO_ARCHIVO);
+    }
+
+    @Override
+    public List<Parametro> listaTipoSoporteArchivo() {
+        return buscarParametro(CACHE_PARAMETRO_TIPO_SOPORTE_ARCHIVO, CACHE_PARAMETRO_TIPO_SOPORTE_ARCHIVO);
+    }
+    
+    @Override
+    public List<Parametro> listaTipoAtr() {
+        return buscarParametro(CACHE_PARAMETRO_TIPO_ATR, CACHE_PARAMETRO_TIPO_ATR);
+    }
+    
     private Object getElemento(Integer key) {
         if (this.contenedor == null) {
             return null;
@@ -225,6 +246,7 @@ public class CacheServiceImpl implements CacheService{
         this.contenedor.put(key, objeto);
         notifyAll();
     }
+
 }
 
 

@@ -59,4 +59,6 @@ public interface ExpedienteService {
     public void expedienteInactivar(Expediente expediente);
     
     public void expedienteReconsideracion(Expediente expediente);
+    
+    public void expedienteUpdateArchivo(Expediente expediente);
 }

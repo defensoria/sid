@@ -158,6 +158,20 @@ public class Expediente implements Serializable{
     
     private Integer indiceAsignacion;
     
+    private String tipoDocumentoArchivo;
+    
+    private Integer numeroFolios;
+    
+    private String tipoSoporteArchivo;
+    
+    private Boolean indicadorAtr;
+    
+    private String tipoAtr;
+    
+    private Date fechaAtr;
+    
+    private String detalleAtr;
+    
     public Long getId() {
         return id;
     }
@@ -726,6 +740,62 @@ public class Expediente implements Serializable{
 
     public void setIndiceAsignacion(Integer indiceAsignacion) {
         this.indiceAsignacion = indiceAsignacion;
+    }
+
+    public String getTipoDocumentoArchivo() {
+        return tipoDocumentoArchivo;
+    }
+
+    public void setTipoDocumentoArchivo(String tipoDocumentoArchivo) {
+        this.tipoDocumentoArchivo = tipoDocumentoArchivo;
+    }
+
+    public Integer getNumeroFolios() {
+        return numeroFolios;
+    }
+
+    public void setNumeroFolios(Integer numeroFolios) {
+        this.numeroFolios = numeroFolios;
+    }
+
+    public String getTipoSoporteArchivo() {
+        return tipoSoporteArchivo;
+    }
+
+    public void setTipoSoporteArchivo(String tipoSoporteArchivo) {
+        this.tipoSoporteArchivo = tipoSoporteArchivo;
+    }
+
+    public Boolean getIndicadorAtr() {
+        return indicadorAtr;
+    }
+
+    public void setIndicadorAtr(Boolean indicadorAtr) {
+        this.indicadorAtr = indicadorAtr;
+    }
+
+    public String getTipoAtr() {
+        return tipoAtr;
+    }
+
+    public void setTipoAtr(String tipoAtr) {
+        this.tipoAtr = tipoAtr;
+    }
+
+    public Date getFechaAtr() {
+        return fechaAtr;
+    }
+
+    public void setFechaAtr(Date fechaAtr) {
+        this.fechaAtr = fechaAtr;
+    }
+
+    public String getDetalleAtr() {
+        return detalleAtr;
+    }
+
+    public void setDetalleAtr(String detalleAtr) {
+        this.detalleAtr = detalleAtr;
     }
 
 }

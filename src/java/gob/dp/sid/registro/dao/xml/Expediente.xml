@@ -56,6 +56,15 @@
         <result property="indiceReconsideracion" column="N_INDRECONSIDERACION"/>
         <result property="detalleReconsideracion" column="C_DETALLERECONSIDERACION"/>
         <result property="indiceAsignacion" column="N_INDASIGNACION"/>
+        <result property="tipoDocumentoArchivo" column="C_TIPODOCUMENTOARCHIVO"/>
+        <result property="numeroFolios" column="N_NROFOLIOS"/>
+        <result property="tipoSoporteArchivo" column="C_TIPOSOPORTEARCHIVO"/>
+        
+        <result property="indicadorAtr" column="N_INDEJERCIATR"/>
+        <result property="tipoAtr" column="C_TIPOEJERCICIOATR"/>
+        <result property="fechaAtr" column="D_FECHAEJERCICIOATR"/>
+        <result property="detalleAtr" column="C_DETALLEEJERCICIOATR"/>
+
 
         <result property="etapaDetalle" column="C_VALOR"/>
         <result property="indicadorEtapa" column="C_INDICADORETAPA"/>
@@ -189,6 +198,27 @@
         <if test="observacionArchivo != null">
             C_OBSERVACIONARCHIVO,
         </if>
+        <if test="tipoDocumentoArchivo != null">
+            C_TIPODOCUMENTOARCHIVO,
+        </if>
+        <if test="numeroFolios != null">
+            N_NROFOLIOS,
+        </if>
+        <if test="tipoSoporteArchivo != null">
+            C_TIPOSOPORTEARCHIVO,
+        </if>
+        <if test="indicadorAtr != null">
+            N_INDEJERCIATR,
+        </if>
+        <if test="tipoAtr != null">
+            C_TIPOEJERCICIOATR,
+        </if>
+        <if test="fechaAtr != null">
+            D_FECHAEJERCICIOATR,
+        </if>
+        <if test="detalleAtr != null">
+            C_DETALLEEJERCICIOATR,
+        </if>
         C_ESTADOGENERAL,
         N_IDEXPEDIENTE
         )
@@ -314,6 +344,27 @@
         <if test="observacionArchivo != null">
             #{observacionArchivo},
         </if>
+        <if test="tipoDocumentoArchivo != null">
+            #{tipoDocumentoArchivo},
+        </if>
+        <if test="numeroFolios != null">
+            #{numeroFolios},
+        </if>
+        <if test="tipoSoporteArchivo != null">
+            #{tipoSoporteArchivo},
+        </if>
+        <if test="indicadorAtr != null">
+            #{indicadorAtr},
+        </if>
+        <if test="tipoAtr != null">
+            #{tipoAtr},
+        </if>
+        <if test="fechaAtr != null">
+            #{fechaAtr},
+        </if>
+        <if test="detalleAtr != null">
+            #{detalleAtr},
+        </if>
         'A',
         SEQ_SID_REG_EXPEDIENTE.NextVal
         )
@@ -397,6 +448,66 @@
         </if>
         <if test="observacionArchivo != null">
             C_OBSERVACIONARCHIVO = #{observacionArchivo},
+        </if>
+        <if test="tipoDocumentoArchivo != null">
+            C_TIPODOCUMENTOARCHIVO = #{tipoDocumentoArchivo},
+        </if>
+        <if test="numeroFolios != null">
+            N_NROFOLIOS = #{numeroFolios},
+        </if>
+        <if test="tipoSoporteArchivo != null">
+            C_TIPOSOPORTEARCHIVO = #{tipoSoporteArchivo},
+        </if>
+        <if test="indicadorAtr != null">
+            N_INDEJERCIATR = #{indicadorAtr},
+        </if>
+        <if test="tipoAtr != null">
+            C_TIPOEJERCICIOATR = #{tipoAtr},
+        </if>
+        <if test="fechaAtr != null">
+            D_FECHAEJERCICIOATR = #{fechaAtr},
+        </if>
+        <if test="detalleAtr != null">
+            C_DETALLEEJERCICIOATR = #{detalleAtr},
+        </if>
+        <if test="numero != null">
+                C_NUMEROEXPEDIENTE = #{numero}
+            </if>
+        </set>
+        <where>
+            N_IDEXPEDIENTE = #{id}
+        </where>
+    </update>
+    
+    <update id="expedienteUpdateArchivo" parameterType="expediente">
+        UPDATE SID_REG_EXPEDIENTE
+        <set>
+        <if test="tipoArchivo != null">
+            C_TIPOARCHIVO = #{tipoArchivo},
+        </if>
+        <if test="indicadorRecepcionArchivo != null">
+            N_RECEPCIONARCHIVO = #{indicadorRecepcionArchivo},
+        </if>
+        <if test="fechaArchivo != null">
+            D_FECHAARCHIVO = #{fechaArchivo},
+        </if>
+        <if test="expedienteAcumulado != null">
+            C_EXPEDIENTESACUMULADOS = #{expedienteAcumulado},
+        </if>
+        <if test="ubicacionTipologica != null">
+            C_UBICACIONTIPOLOGICA = #{ubicacionTipologica},
+        </if>
+        <if test="observacionArchivo != null">
+            C_OBSERVACIONARCHIVO = #{observacionArchivo},
+        </if>
+        <if test="tipoDocumentoArchivo != null">
+            C_TIPODOCUMENTOARCHIVO = #{tipoDocumentoArchivo},
+        </if>
+        <if test="numeroFolios != null">
+            N_NROFOLIOS = #{numeroFolios},
+        </if>
+        <if test="tipoSoporteArchivo != null">
+            C_TIPOSOPORTEARCHIVO = #{tipoSoporteArchivo},
         </if>
         <if test="numero != null">
                 C_NUMEROEXPEDIENTE = #{numero}

@@ -161,6 +161,18 @@ public class ListasComunesController {
         return insertarValoresDefectoParametro(cacheService.listaPuebloIndigena(), insertarTODOS, insertarNINGUNO, insertarSELECCIONE);
     }
     
+    public List<Parametro> listaTipoArchivo(boolean insertarTODOS, boolean insertarNINGUNO, boolean insertarSELECCIONE) {
+        return insertarValoresDefectoParametro(cacheService.listaTipoArchivo(), insertarTODOS, insertarNINGUNO, insertarSELECCIONE);
+    }
+    
+    public List<Parametro> listaTipoSoporteArchivo(boolean insertarTODOS, boolean insertarNINGUNO, boolean insertarSELECCIONE) {
+        return insertarValoresDefectoParametro(cacheService.listaTipoSoporteArchivo(), insertarTODOS, insertarNINGUNO, insertarSELECCIONE);
+    }
+    
+    public List<Parametro> listaTipoAtr(boolean insertarTODOS, boolean insertarNINGUNO, boolean insertarSELECCIONE) {
+        return insertarValoresDefectoParametro(cacheService.listaTipoAtr(), insertarTODOS, insertarNINGUNO, insertarSELECCIONE);
+    }
+    
 
     private List insertarValoresDefectoParametro(List lst, boolean insertarTODOS, boolean insertarNINGUNO, boolean insertarSELECCIONE) {
         if (insertarTODOS) {

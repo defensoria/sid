@@ -7,7 +7,11 @@
 
     <ui:composition template="../template/templateCabeceraExpediente.xhtml">
         <ui:define name="content2">
-            
+            <script>
+                function confirmar6() {
+                    $(".confirmacion6").modal('show');
+                }
+            </script>
             <gc:confirmSubmit bean="#{registroController.registarExpedienteGestion()}" classGC="confirmacion6" mensaje="Esta seguro de registrar la gestión?" />
             <ul class="nav nav-tabs">
                 <li role="presentation">
@@ -38,7 +42,11 @@
                                 <span style="font-size: 2em" class="text-resalt-primary">N° Gestión: #{registroController.expedienteGestion.codigoGestion}</span>
                             </td>
                             <td style="width: 50%; text-align: right">
-                                
+                                <h:panelGroup rendered="#{registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo and registroController.expediente.general != 'C'}">
+                                    <a class="btn btn-primary" onclick="confirmar6()">
+                                        <span class="glyphicon glyphicon-floppy-disk" />Guardar gestión
+                                    </a>
+                                </h:panelGroup>
                             </td>
                         </tr>
                     </table>
@@ -161,8 +169,8 @@
                                             <tr>
                                                 <td style="width: 50%; padding-right: 5px;padding-bottom: 10px">
                                                     <label>Tipo de acción:</label>
-                                                    <h:selectOneMenu class="idTipoDocumento" value="#{registroController.expedienteGestion.tipo}" >
-                                                        <f:selectItem itemValue="0" itemLabel="Selecione" />
+                                                    <h:selectOneMenu disabled="true" style="color: silver" class="idTipoDocumento disabled-form" value="#{registroController.expedienteGestion.tipo}" >
+                                                        <f:selectItem itemValue="" itemLabel="Selecione" />
                                                         <f:selectItems value="#{listasComunesController.buscarGestionTipoAccion(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
                                                     </h:selectOneMenu>
                                                 </td>
@@ -182,7 +190,7 @@
                                             <tr>
                                                 <td style="width: 50%; padding-right: 5px;padding-bottom: 10px">
                                                     <label class="classdocumentoGestion" jsf:rendered="#{registroController.expedienteGestion.tipo != '01' and registroController.expedienteGestion.tipo != '02'}">Documento de gestión:</label>
-                                                    <h:selectOneMenu  class="classdocumentoGestion" value="#{registroController.expedienteGestion.documentoGestion}" rendered="#{registroController.expedienteGestion.tipo != '01' and registroController.expedienteGestion.tipo != '02'}" >
+                                                    <h:selectOneMenu  disabled="true" style="color: silver" class="classdocumentoGestion" value="#{registroController.expedienteGestion.documentoGestion}" rendered="#{registroController.expedienteGestion.tipo != '01' and registroController.expedienteGestion.tipo != '02'}" >
                                                         <f:selectItem itemValue="0" itemLabel="Selecione" />
                                                         <f:selectItems value="#{listasComunesController.buscarDocumentoGestion(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
                                                     </h:selectOneMenu>
@@ -200,7 +208,7 @@
                                                                 
                                                             </td>
                                                 <td>
-                                                   <h:selectBooleanCheckbox id="idCheckbox2" value="#{registroController.expedienteGestion.indicadorRecomendacion}" rendered="#{registroController.etapaEstado.verEtapa == 3 or registroController.etapaEstado.verEtapa == 7}">
+                                                   <h:selectBooleanCheckbox id="idCheckbox2" disabled="true" style="color: silver" value="#{registroController.expedienteGestion.indicadorRecomendacion}" rendered="#{registroController.etapaEstado.verEtapa == 3 or registroController.etapaEstado.verEtapa == 7}">
                                                                         Contiene recomendación
                                                                     </h:selectBooleanCheckbox>
                                                  
@@ -243,7 +251,7 @@
                                             <tr>
                                                 <td colspan="2" style="padding-bottom: 10px">
                                                     <label>Descripción:</label>
-                                                    <textarea rows="6" jsf:value="#{registroController.expedienteGestion.descripcion}" style="width: 100%;" placeholder="Descripción"/>
+                                                    <textarea rows="6" class="disabled-form" disabled="true" style="color: silver;width: 100%;" jsf:value="#{registroController.expedienteGestion.descripcion}" placeholder="Descripción"/>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -283,10 +291,7 @@
 
                                                                             </td>
                                                                             <td style="vertical-align: bottom">
-                                                                                <a style="vertical-align: bottom" href="#" class="trigger1" jsf:action="#{registroController.cargarPopoverEntidad(1)}" jsf:onclick="loadingModal()">
-                                                                                    <span style="color: #3183B9; font-size: large;" class="glyphicon glyphicon-search"></span>
-                                                                                    <f:ajax render="idPanerl" onevent="popove1" execute="idPanerl"/>
-                                                                                </a>
+                                                                                
                                                                                 <div class="popover-markup" style="float: right"> 
                                                                                     <div class="head hide ">
                                                                                         <table style="width: 100%">
@@ -395,11 +400,11 @@
                                                                     <br/>
 
                                                                     <h:inputHidden value="#{registroController.expedienteGestion.idEntidad}" />
-                                                                    <input type="text" jsf:value="#{registroController.expedienteGestion.nombreEntidad}" placeholder="Institución" readonly="true"/>
+                                                                    <input type="text" disabled="true" style="color: silver" jsf:value="#{registroController.expedienteGestion.nombreEntidad}" placeholder="Institución" readonly="true"/>
                                                                 </td>
                                                                 <td style="vertical-align: bottom;padding-bottom: 10px">
                                                                     Entidad quejada
-                                                                    <h:selectBooleanCheckbox value="#{registroController.expedienteGestion.indEntidadQuejada}" >
+                                                                    <h:selectBooleanCheckbox disabled="true" style="color: silver" value="#{registroController.expedienteGestion.indEntidadQuejada}" >
                                                                         <f:ajax render="idPanerl" listener="#{registroController.entidadQuejada()}" />
                                                                     </h:selectBooleanCheckbox>
                                                                 </td>
@@ -414,28 +419,26 @@
                                                         <tr>
                                                             <td style="width: 90%;padding-right: 10px">
                                                                 <label>Nombre del funcionario:</label>
-                                                                <input type="text" jsf:value="#{registroController.expedienteGestion.nombre}" placeholder="Nombre"/>
+                                                                <input  disabled="true" style="color: silver" type="text" jsf:value="#{registroController.expedienteGestion.nombre}" placeholder="Nombre"/>
                                                             </td>
                                                             <td style="width: 34%;padding-right: 10px">
-                                                                <!--<label>Apellido paterno:</label>
-                                                                <input type="text" jsf:value="#{registroController.expedienteGestion.apellidoPaterno}" placeholder="Apellido paterno"/>-->
+                                                                
                                                             </td>
                                                             <td>
-                                                                <!--<label>Apellido materno:</label>
-                                                                <input type="text" jsf:value="#{registroController.expedienteGestion.apellidoMaterno}" placeholder="Apellido Materno"/>-->
+                                                                
                                                             </td>
                                                         </tr>
                                                         <tr>
                                                             <td colspan="3" style="padding-top: 10px">
                                                                 <label>Cargo del funcionario:</label>
-                                                                <input type="text" style="width: 50%" jsf:value="#{registroController.expedienteGestion.cargo}" placeholder="Cargo del funcionario" maxlength="190"/>
+                                                                <input disabled="true" style="color: silver;width: 50%" type="text" jsf:value="#{registroController.expedienteGestion.cargo}" placeholder="Cargo del funcionario" maxlength="190"/>
                                                             </td>
                                                         </tr>
                                                         
                                                         <tr>
                                                             <td style="padding-top: 20px">
                                                                 <label><span style="font-size: large" class="glyphicon glyphicon-paperclip" />Adjuntar archivo:</label>
-                                                                <h:inputFile class="cMedio" value="#{registroController.file1}"/>
+                                                                <h:inputFile class="cMedio" value="#{registroController.file1}" disabled="true"/>
                                                             </td>
                                                             <td>
                                                                 <h:panelGroup rendered="#{registroController.expedienteGestion.ruta1 != null}">
@@ -701,10 +704,8 @@
                                                                             </td>
                                                                             <td style="width:25%">
                                                                                 <div class="input-group datepicker" id="idDivTxtInicioDefinitivo">
-                                                                                    <div class="input-group-addon add-on">
-                                                                                        <span class="glyphicon glyphicon-calendar"></span>
-                                                                                    </div>
-                                                                                    <input type="text" id="txtInicioDefinitivo" data-format="dd/MM/yyyy" jsf:value="#{registroController.expedienteGestion.inicioDefinitivo}">
+                                                                                    
+                                                                                    <input type="text" class="disabled-form" id="txtInicioDefinitivo" data-format="dd/MM/yyyy" jsf:value="#{registroController.expedienteGestion.inicioDefinitivo}">
                                                                                         <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
                                                                                     </input>
                                                                                 </div>
@@ -734,10 +735,8 @@
                                                                             </td>
                                                                             <td style="width:25%">
                                                                                 <div class="input-group datepicker" id="idDivTxtFinDefinitivo">
-                                                                                    <div class="input-group-addon add-on">
-                                                                                        <span class="glyphicon glyphicon-calendar"></span>
-                                                                                    </div>
-                                                                                    <input type="text" id="txtFinDefinitivo" data-format="dd/MM/yyyy" jsf:value="#{registroController.expedienteGestion.finDefinitivo}">
+                                                                                    
+                                                                                    <input type="text" class="disabled-form" id="txtFinDefinitivo" data-format="dd/MM/yyyy" jsf:value="#{registroController.expedienteGestion.finDefinitivo}">
                                                                                         <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
                                                                                     </input>
                                                                                 </div>
@@ -753,7 +752,7 @@
                                                 </td>
                                                 <td style="vertical-align: top;  padding-left: 2px">
                                                     <label>Notas:</label>
-                                                    <textarea rows="6" jsf:value="#{registroController.expedienteGestion.nota}" style="width: 100%;" placeholder="Notas"/>
+                                                    <textarea rows="6" jsf:value="#{registroController.expedienteGestion.nota}" class="disabled-form" style="width: 100%; color: silver" disabled="true" placeholder="Notas"/>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -769,4 +768,4 @@
             </div>
         </ui:define>
     </ui:composition>
-</html>            
+</html>

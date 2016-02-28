@@ -61,4 +61,9 @@ public interface CacheService {
     
     public List<Parametro> listaPuebloIndigena();
     
+    public List<Parametro> listaTipoArchivo();
+    
+    public List<Parametro> listaTipoSoporteArchivo();
+    
+    public List<Parametro> listaTipoAtr();
 }

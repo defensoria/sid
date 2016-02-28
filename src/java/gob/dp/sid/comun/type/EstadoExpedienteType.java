@@ -27,6 +27,8 @@ public enum EstadoExpedienteType {
         
         SEGUIMIENTO_NO_ACOGIDO_QUEJA(8, "No Acogido", 4),
         
+        SEGUIMIENTO_ACOGIMIENTO_PARCIAL(18, "Acogimiento parcial", 4),
+        
         CALIFICACION_ADMITIDA_PETITORIO(9, "Admitida", 5),
 
 	CALIFICACION_NO_ADMITIDA_PETITORIO(10, "No Admitida", 5),
@@ -156,6 +158,8 @@ public enum EstadoExpedienteType {
                 valorRetorno = SEGUIMIENTO_ACOGIDO_QUEJA.getValue();
             if(keys == SEGUIMIENTO_NO_ACOGIDO_QUEJA.getKey())
                 valorRetorno = SEGUIMIENTO_NO_ACOGIDO_QUEJA.getValue();
+            if(keys == SEGUIMIENTO_ACOGIMIENTO_PARCIAL.getKey())
+                valorRetorno = SEGUIMIENTO_ACOGIMIENTO_PARCIAL.getValue();
             if(keys == CALIFICACION_ADMITIDA_PETITORIO.getKey())
                 valorRetorno = CALIFICACION_ADMITIDA_PETITORIO.getValue();
             if(keys == CALIFICACION_NO_ADMITIDA_PETITORIO.getKey())
