@@ -516,7 +516,7 @@
                                                                 </a>
                                                             </h:panelGroup>
                                                             <h:panelGroup  rendered="#{seguridadUtilController.tieneRecurso('REC_EXP018') and registroController.expediente.general == 'C'}">
-                                                                <a class="btn btn-default" jsf:action="#{registroController.guardarVersionSupervisor(1)}" jsf:onclick="loadingModal()">
+                                                                <a class="btn btn-danger" jsf:action="#{registroController.guardarVersionSupervisor(1)}" jsf:onclick="loadingModal()">
                                                                     <span class="glyphicon glyphicon-floppy-disk"/>Levantar conclusión
                                                                 </a>
                                                             </h:panelGroup>
@@ -571,6 +571,11 @@
                     <li role="presentation">
                         <a style="cursor: pointer" jsf:rendered="#{registroController.etapaEstado.idEtapa > 0}" jsf:action="#{registroController.inicioAcciones()}">
                             <span style="font-size: medium; color: purple" class="glyphicon glyphicon-list-alt" > Gestiones internas</span>
+                        </a>
+                    </li>
+                    <li role="presentation">
+                        <a style="cursor: pointer" jsf:rendered="#{registroController.etapaEstado.idEtapa > 0}" jsf:action="#{registroController.cargarHistorial()}">
+                            <span style="font-size: medium; color: purple" class="glyphicon glyphicon-list-alt" > Historial</span>
                         </a>
                     </li>
                 </ul>

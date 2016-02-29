@@ -95,61 +95,61 @@
                                             </td>
                                             <td>
                                                 <script>
-                                                                function modalReconsideracion() {
-                                                                        $("#loadModal").modal('hide');
-                                                                        $('body').removeClass('modal-open');
-                                                                        $(".modal-backdrop").removeClass("modal-backdrop");
-                                                                        $("#idModalReconsideracion").modal('show');
-                                                                }
-                                                            </script>
-                                                <h:panelGroup rendered="#{!registroController.expediente.indiceReconsideracion and registroController.expediente.version >= 1}">
-                                                <a onclick="modalReconsideracion()">
-                                                    <span class="glyphicon glyphicon-pencil" /> registrar reconsideración
-                                                </a>
-                                                    </h:panelGroup>
+                                                    function modalReconsideracion() {
+                                                        $("#loadModal").modal('hide');
+                                                        $('body').removeClass('modal-open');
+                                                        $(".modal-backdrop").removeClass("modal-backdrop");
+                                                        $("#idModalReconsideracion").modal('show');
+                                                    }
+                                                </script>
+                                                <h:panelGroup rendered="#{!registroController.expediente.indiceReconsideracion and registroController.expediente.version >= 1 and registroController.expediente.general != 'C'}">
+                                                    <a onclick="modalReconsideracion()">
+                                                        <span class="glyphicon glyphicon-pencil" /> registrar reconsideración
+                                                    </a>
+                                                </h:panelGroup>
                                                 <h:panelGroup rendered="#{registroController.expediente.indiceReconsideracion and registroController.expediente.version >= 1}">
-                                                <a onclick="modalReconsideracion()">
-                                                    <span class="glyphicon glyphicon-eye-open" /> ver / modificar reconsideración
-                                                </a>
-                                                    </h:panelGroup>
+                                                    <a onclick="modalReconsideracion()">
+                                                        <span class="glyphicon glyphicon-eye-open" /> ver / modificar reconsideración
+                                                    </a>
+                                                </h:panelGroup>
                                                 <div class="modal fade" data-backdrop="static" data-keyboard="false" id="idModalReconsideracion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                                                    <div class="modal-dialog" style="text-align: left">
-                                                                        <div class="modal-content">
-                                                                            <div class="modal-header">
-                                                                                <a type="button" class="close" data-dismiss="modal">
-                                                                                    <span style="color:red" class="glyphicon glyphicon-remove"></span>
-                                                                                </a>
-                                                                                <span class="text-resalt-primary">Reconsideración</span>
-                                                                            </div>
-                                                                            <div class="modal-body" style="padding:5px">
-                                                                                <table style="width: 100%">
-                                                                                    <tr>
-                                                                                        <td style="width: 20%; padding-bottom: 5px">
-                                                                                            <label style="font-size: 1.5em">Reconsideración</label>
-                                                                                        </td>
-                                                                                        <td style="vertical-align: top">
-                                                                                            <h:selectBooleanCheckbox value="#{registroController.expediente.indiceReconsideracion}"/>
-                                                                                        </td>
-                                                                                    </tr>
-                                                                                    <tr>
-                                                                                        <td colspan="2">
-                                                                                            <label style="font-size: 1.5em">Detalle</label>
-                                                                                        </td>
-                                                                                        <td>
-                                                                                            <textarea rows="5" jsf:value="#{registroController.expediente.detalleReconsideracion}" style="width: 100%;" placeholder="Detalle" maxlength="1900"/>
-                                                                                        </td>
-                                                                                    </tr>
-                                                                                </table>
-                                                                                <br/>
-                                                                                <div class="modal-footer">
-                                                                                    <a class="btn btn-primary" data-dismiss="modal" jsf:action="#{registroController.guardarReconsideracion()}">
-                                                                                        <span class="glyphicon glyphicon-floppy-disk"/>Guardar
-                                                                                    </a>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
+                                                    <div class="modal-dialog" style="text-align: left">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <a type="button" class="close" data-dismiss="modal">
+                                                                    <span style="color:red" class="glyphicon glyphicon-remove"></span>
+                                                                </a>
+                                                                <span class="text-resalt-primary">Reconsideración</span>
+                                                            </div>
+                                                            <div class="modal-body" style="padding:5px">
+                                                                <table style="width: 100%">
+                                                                    <tr>
+                                                                        <td style="width: 20%; padding-bottom: 5px">
+                                                                            <label style="font-size: 1.5em">Reconsideración</label>
+                                                                        </td>
+                                                                        <td style="vertical-align: top">
+                                                                            <h:selectBooleanCheckbox value="#{registroController.expediente.indiceReconsideracion}"/>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td colspan="2">
+                                                                            <label style="font-size: 1.5em">Detalle</label>
+                                                                        </td>
+                                                                        <td>
+                                                                            <textarea rows="5" jsf:value="#{registroController.expediente.detalleReconsideracion}" style="width: 100%;" placeholder="Detalle" maxlength="1900"/>
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                                <br/>
+                                                                <div class="modal-footer">
+                                                                    <a class="btn btn-primary" data-dismiss="modal" jsf:action="#{registroController.guardarReconsideracion()}">
+                                                                        <span class="glyphicon glyphicon-floppy-disk"/>Guardar
+                                                                    </a>
                                                                 </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </td>
                                         </tr>    
                                         <tr>
@@ -357,19 +357,19 @@
                                                                     }
                                                                 }
                                                             </script>
-                                                            <h:panelGroup rendered="#{((registroController.etapaEstado.verEtapa == 1 or registroController.etapaEstado.verEtapa == 5) and seguridadUtilController.tieneRecurso('REC_EXP015') and registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo)}">
+                                                            <h:panelGroup rendered="#{(registroController.etapaEstado.verEtapa == 1 or registroController.etapaEstado.verEtapa == 5) and seguridadUtilController.tieneRecurso('REC_EXP015') and registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo and registroController.expediente.general != 'C'}">
                                                                 <a class="btn btn-warning" jsf:action="#{registroController.limpiarModalAsignar()}" jsf:onclick="loadingModal()">
                                                                     <span class="glyphicon glyphicon-user" />Asignar Expediente
                                                                     <f:ajax render="idPanelAsignar" onevent="modalAsignar" />
                                                                 </a>
                                                             </h:panelGroup>
-                                                            <h:panelGroup rendered="#{seguridadUtilController.tieneRecurso('REC_EXP016')}">
+                                                            <h:panelGroup rendered="#{seguridadUtilController.tieneRecurso('REC_EXP016') and registroController.expediente.general != 'C'}">
                                                                 <a class="btn btn-warning" jsf:action="#{registroController.limpiarModalAsignar()}" jsf:onclick="loadingModal()">
                                                                     <span class="glyphicon glyphicon-user" />Asignar Expediente
                                                                     <f:ajax render="idPanelAsignar" onevent="modalAsignar" />
                                                                 </a>
                                                             </h:panelGroup>
-                                                            
+
                                                             <h:panelGroup id="idPanelAsignar">
                                                                 <div class="modal fade" data-backdrop="static" data-keyboard="false" id="idModalAsignar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                                                     <div class="modal-dialog" style="text-align: left">
@@ -516,7 +516,7 @@
                                                                 </a>
                                                             </h:panelGroup>
                                                             <h:panelGroup  rendered="#{seguridadUtilController.tieneRecurso('REC_EXP018') and registroController.expediente.general == 'C'}">
-                                                                <a class="btn btn-default" jsf:action="#{registroController.guardarVersionSupervisor(1)}" jsf:onclick="loadingModal()">
+                                                                <a class="btn btn-danger" jsf:action="#{registroController.guardarVersionSupervisor(1)}" jsf:onclick="loadingModal()">
                                                                     <span class="glyphicon glyphicon-floppy-disk"/>Levantar conclusión
                                                                 </a>
                                                             </h:panelGroup>

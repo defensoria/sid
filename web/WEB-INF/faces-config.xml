@@ -172,6 +172,13 @@
   
   <navigation-rule>
         <navigation-case>
+                <from-outcome>expedienteHistorial</from-outcome>
+                <to-view-id>/pages/registro/expedienteHistorial.xhtml</to-view-id>
+        </navigation-case>
+  </navigation-rule>
+  
+  <navigation-rule>
+        <navigation-case>
                 <from-outcome>expedienteUsuario</from-outcome>
                 <to-view-id>/pages/registro/expedienteUsuario.xhtml</to-view-id>
         </navigation-case>

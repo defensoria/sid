@@ -27,6 +27,7 @@ import gob.dp.sid.comun.type.EtapaDerivacionType;
 import gob.dp.sid.comun.type.EtapaSuspencionType;
 import gob.dp.sid.comun.type.EtapaType;
 import gob.dp.sid.comun.type.ExpedienteType;
+import gob.dp.sid.comun.type.HistorialType;
 import gob.dp.sid.comun.type.RolType;
 import gob.dp.sid.registro.entity.Entidad;
 import gob.dp.sid.registro.entity.EtapaEstado;
@@ -40,6 +41,7 @@ import gob.dp.sid.registro.entity.ExpedienteDerivacion;
 import gob.dp.sid.registro.entity.ExpedienteEntidad;
 import gob.dp.sid.registro.entity.ExpedienteEtapa;
 import gob.dp.sid.registro.entity.ExpedienteGestion;
+import gob.dp.sid.registro.entity.ExpedienteHistorial;
 import gob.dp.sid.registro.entity.ExpedienteNivel;
 import gob.dp.sid.registro.entity.ExpedienteONP;
 import gob.dp.sid.registro.entity.ExpedientePersona;
@@ -59,6 +61,7 @@ import gob.dp.sid.registro.service.ExpedienteDerivacionService;
 import gob.dp.sid.registro.service.ExpedienteEntidadService;
 import gob.dp.sid.registro.service.ExpedienteEtapaService;
 import gob.dp.sid.registro.service.ExpedienteGestionService;
+import gob.dp.sid.registro.service.ExpedienteHistorialService;
 import gob.dp.sid.registro.service.ExpedienteNivelService;
 import gob.dp.sid.registro.service.ExpedienteONPService;
 import gob.dp.sid.registro.service.ExpedientePersonaService;
@@ -330,6 +333,10 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     private Boolean verSeccionONP;
 
     private Boolean verModalConclusion;
+    
+    private ExpedienteHistorial historial;
+    
+    private List<ExpedienteHistorial> listaHistorialExpediente;
 
     @Autowired
     private ExpedienteService expedienteService;
@@ -399,24 +406,27 @@ public class RegistroController extends AbstractManagedBean implements Serializa
 
     @Autowired
     private ExpedienteAmpliacionService expedienteAmpliacionService;
+    
+    @Autowired
+    private ExpedienteHistorialService expedienteHistorialService;
 
     public String cargarNuevoExpediente() {
         try {
             cargarObjetoExpediente();
-        expedienteNivel = new ExpedienteNivel();
-        etapaEstado = new EtapaEstado();
-        cadenaPersonaPopover = "";
-        personasSeleccionadas = new ArrayList<>();
-        cadenaEntidadPopover = "";
-        entidadSeleccionadas = new ArrayList<>();
-        cadenaEtiquetaAutocomplete = expedienteService.etiquetaBuscarAutocomplete();
-        listaEtiquetasSeleccionadas = new ArrayList<>();
-        setVerBotonRegistrarExpediente(true);
-        expedienteClasificacionBusqueda = new ExpedienteClasificacion();
-        expedientepersonaModalEdit = new ExpedientePersona();
-        return "expedienteNuevo";
+            expedienteNivel = new ExpedienteNivel();
+            etapaEstado = new EtapaEstado();
+            cadenaPersonaPopover = "";
+            personasSeleccionadas = new ArrayList<>();
+            cadenaEntidadPopover = "";
+            entidadSeleccionadas = new ArrayList<>();
+            cadenaEtiquetaAutocomplete = expedienteService.etiquetaBuscarAutocomplete();
+            listaEtiquetasSeleccionadas = new ArrayList<>();
+            setVerBotonRegistrarExpediente(true);
+            expedienteClasificacionBusqueda = new ExpedienteClasificacion();
+            expedientepersonaModalEdit = new ExpedientePersona();
+            return "expedienteNuevo";
         } catch (Exception e) {
-            log.error("ERROR - cargarNuevoExpediente()"+e);
+            log.error("ERROR - cargarNuevoExpediente()" + e);
         }
         return null;
     }
@@ -424,34 +434,38 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     private void cargarObjetoExpediente() {
         try {
             expediente = new Expediente();
-        listaExpedienteNivel = new ArrayList<>();
-        expediente.setListaExpedienteNivel(listaExpedienteNivel);
+            listaExpedienteNivel = new ArrayList<>();
+            expediente.setListaExpedienteNivel(listaExpedienteNivel);
         } catch (Exception e) {
-            log.error("ERROR - cargarObjetoExpediente()"+e);
+            log.error("ERROR - cargarObjetoExpediente()" + e);
         }
-        
+    }
+    
+    public String cargarHistorial(){
+        listaHistorialExpediente = expedienteHistorialService.expedienteHistorialBuscar(expediente.getNumero());
+        return "expedienteHistorial";
     }
 
     public String iniciarExpedienteNuevo() {
         try {
             if (StringUtils.equals(personaSeleccionada.getTipoExpediente(), "0")) {
-            msg.messageAlert("Debe selecionar un tipo de expediente", null);
-            return null;
-        }
-        persona = new Persona();
-        expedientepersonaModalEdit = new ExpedientePersona();
-        entidad = new Entidad();
-        cargarNuevoExpediente();
-        ExpedientePersona ep = new ExpedientePersona();
-        expediente.setTipoClasificion(personaSeleccionada.getTipoExpediente());
-        ep.setPersona(personaSeleccionada);
-        personasSeleccionadas.add(ep);
-        inicializarEtapaEstado(0);
-        setVerBotonRegistrarExpediente(true);
-        expedienteClasificacionBusqueda = new ExpedienteClasificacion();
-        return "expedienteNuevo";
+                msg.messageAlert("Debe selecionar un tipo de expediente", null);
+                return null;
+            }
+            persona = new Persona();
+            expedientepersonaModalEdit = new ExpedientePersona();
+            entidad = new Entidad();
+            cargarNuevoExpediente();
+            ExpedientePersona ep = new ExpedientePersona();
+            expediente.setTipoClasificion(personaSeleccionada.getTipoExpediente());
+            ep.setPersona(personaSeleccionada);
+            personasSeleccionadas.add(ep);
+            inicializarEtapaEstado(0);
+            setVerBotonRegistrarExpediente(true);
+            expedienteClasificacionBusqueda = new ExpedienteClasificacion();
+            return "expedienteNuevo";
         } catch (Exception e) {
-            log.error("ERROR - cargarObjetoExpediente()"+e);
+            log.error("ERROR - cargarObjetoExpediente()" + e);
         }
         return null;
     }
@@ -459,69 +473,69 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     public void inactivarExpediente(Expediente e) {
         try {
             expedienteService.expedienteInactivar(e);
-        listarExpedienteUsuarioPaginadoOrder(1, 1);
-        msg.messageInfo("Se ha inactivado el expediente, ya no podra verlo en el sistema", null);
+            listarExpedienteUsuarioPaginadoOrder(1, 1);
+            msg.messageInfo("Se ha inactivado el expediente, ya no podra verlo en el sistema", null);
         } catch (Exception ex) {
-            log.error("ERROR - inactivarExpediente()"+ex);
+            log.error("ERROR - inactivarExpediente()" + ex);
         }
-        
     }
 
     private void cargarFichaONP() {
         try {
             listaGestionesONP = new ArrayList<>();
-        List<ExpedienteGestion> list = expedienteGestionService.expedienteGestionListaXexpediente(expediente.getNumero());
-        for (ExpedienteGestion eg : list) {
-            if (StringUtils.isNotBlank(eg.getCodigoONP())) {
-                listaGestionesONP.add(eg);
+            List<ExpedienteGestion> list = expedienteGestionService.expedienteGestionListaXexpediente(expediente.getNumero());
+            for (ExpedienteGestion eg : list) {
+                if (StringUtils.isNotBlank(eg.getCodigoONP())) {
+                    listaGestionesONP.add(eg);
+                }
             }
-        }
-        if (listaGestionesONP.size() > 0) {
-            expedienteONP = expedienteONPService.expedienteONPBuscarExpediente(expediente.getNumero());
-            if (expedienteONP == null) {
-                expedienteONP = new ExpedienteONP();
+            if (listaGestionesONP.size() > 0) {
+                expedienteONP = expedienteONPService.expedienteONPBuscarExpediente(expediente.getNumero());
+                if (expedienteONP == null) {
+                    expedienteONP = new ExpedienteONP();
+                }
+            } else {
+                expedienteONP = null;
             }
-        } else {
-            expedienteONP = null;
-        }
         } catch (Exception e) {
-            log.error("ERROR - cargarFichaONP()"+e);
+            log.error("ERROR - cargarFichaONP()" + e);
         }
-        
     }
 
     private void insertarActualizarTiempos() {
         try {
-            ExpedienteEtapa etapa = expedienteEtapaService.expedienteEtapaBuscar(etapaEstado.getVerEtapa());
-            if (expediente.getVersion() == 1) {
-                setearExpedienteTiempo(etapa, 1);
-            } else {
-                ExpedienteTiempo et = expedienteTiempoService.expedienteTiempoOne(expediente.getNumero());
-                if (!Objects.equals(et.getEtapa(), etapa.getIdEtapa())) {
-                    setearExpedienteTiempo(etapa, 2);
+            if(!StringUtils.equals(expediente.getTipoClasificion(), "02")){
+                ExpedienteEtapa etapa = expedienteEtapaService.expedienteEtapaBuscar(etapaEstado.getVerEtapa());
+                if (expediente.getVersion() == 1) {
+                    setearExpedienteTiempo(etapa, 1);
+                } else {
+                    ExpedienteTiempo et = expedienteTiempoService.expedienteTiempoOne(expediente.getNumero());
+                    if (!Objects.equals(et.getEtapa(), etapa.getIdEtapa())) {
+                        setearExpedienteTiempo(etapa, 2);
+                    }
                 }
             }
         } catch (Exception ex) {
-            log.error("ERROR - insertarActualizarTiempos()"+ex);
+            log.error("ERROR - insertarActualizarTiempos()" + ex);
         }
     }
 
     private void setearExpedienteTiempo(ExpedienteEtapa etapa, int tip) {
         try {
-         expedienteTiempo = new ExpedienteTiempo();
-        expedienteTiempo.setNumeroExpediente(expediente.getNumero());
-        expedienteTiempo.setEtapa(etapaEstado.getVerEtapa());
-        expedienteTiempo.setDiasRestante(etapa.getDiasTotal());
-        expedienteTiempo.setDiasAlerta(etapa.getDiasAlerta());
-        expedienteTiempo.setEstado("ACT");
-        expedienteTiempo.setTipoExpediente(expediente.getTipoClasificion());
-        if (tip == 1) {
-            expedienteTiempoService.expedienteTiempoInsertar(expedienteTiempo);
-        } else {
-            expedienteTiempoService.expedienteTiempoUpdate(expedienteTiempo);
-        }   
+            expedienteTiempo = new ExpedienteTiempo();
+            expedienteTiempo.setNumeroExpediente(expediente.getNumero());
+            expedienteTiempo.setEtapa(etapaEstado.getVerEtapa());
+            expedienteTiempo.setDiasRestante(etapa.getDiasTotal());
+            expedienteTiempo.setDiasAlerta(etapa.getDiasAlerta());
+            expedienteTiempo.setEstado("ACT");
+            expedienteTiempo.setTipoExpediente(expediente.getTipoClasificion());
+            if (tip == 1) {
+                expedienteTiempoService.expedienteTiempoInsertar(expedienteTiempo);
+            } else {
+                expedienteTiempoService.expedienteTiempoUpdate(expedienteTiempo);
+            }
         } catch (Exception e) {
-            log.error("ERROR - setearExpedienteTiempo()"+e);
+            log.error("ERROR - setearExpedienteTiempo()" + e);
         }
     }
 
@@ -529,141 +543,137 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         try {
             expedienteTiempo = expedienteTiempoService.expedienteTiempoOne(expediente.getNumero());
         } catch (Exception e) {
-            log.error("ERROR - setearExpedienteTiempo()"+e);
+            log.error("ERROR - setearExpedienteTiempo()" + e);
         }
     }
 
     public void guardarExpedienteONP() {
         try {
             if (expedienteONP.getId() == null) {
-            expedienteONP.setNumeroExpediente(expediente.getNumero());
-            expedienteONPService.expedienteONPInsertar(expedienteONP);
-        } else {
-            expedienteONPService.expedienteONPUpdate(expedienteONP);
-        }
-        msg.messageInfo("Se realizaron los cambios", null);
+                expedienteONP.setNumeroExpediente(expediente.getNumero());
+                expedienteONPService.expedienteONPInsertar(expedienteONP);
+            } else {
+                expedienteONPService.expedienteONPUpdate(expedienteONP);
+            }
+            msg.messageInfo("Se realizaron los cambios", null);
         } catch (Exception e) {
-            log.error("ERROR - guardarExpedienteONP()"+e);
+            log.error("ERROR - guardarExpedienteONP()" + e);
         }
     }
 
     public void aumentarDisminuirTiempoEtapa(int tipo, int nroDias) {
         try {
             if (tipo == 1) {
-            expedienteTiempo.setDiasRestante(expedienteTiempo.getDiasRestante() + nroDias);
-        } else {
-            expedienteTiempo.setDiasRestante(expedienteTiempo.getDiasRestante() - nroDias);
-        }
-        expedienteTiempoService.expedienteTiempoUpdate(expedienteTiempo);
+                expedienteTiempo.setDiasRestante(expedienteTiempo.getDiasRestante() + nroDias);
+            } else {
+                expedienteTiempo.setDiasRestante(expedienteTiempo.getDiasRestante() - nroDias);
+            }
+            expedienteTiempoService.expedienteTiempoUpdate(expedienteTiempo);
         } catch (Exception e) {
-            log.error("ERROR - aumentarDisminuirTiempoEtapa()"+e);
+            log.error("ERROR - aumentarDisminuirTiempoEtapa()" + e);
         }
     }
 
     public void setearTiempoEtapa(int nroDias) {
         try {
             expedienteTiempo.setDiasRestante(nroDias);
-        expedienteTiempoService.expedienteTiempoUpdate(expedienteTiempo);
+            expedienteTiempoService.expedienteTiempoUpdate(expedienteTiempo);
         } catch (Exception e) {
-            log.error("ERROR - setearTiempoEtapa()"+e);
+            log.error("ERROR - setearTiempoEtapa()" + e);
         }
-        
     }
 
     public void consultarReniec() throws ParseException {
         try {
             /* String proxyHost = "172.30.1.250";
-         String proxyPort = "8080";
-         System.out.println("Setting up with proxy: " + proxyHost + ":" + proxyPort);
-         System.setProperty("http.proxyHost", proxyHost);
-         System.setProperty("http.proxyPort", proxyPort);
-         System.setProperty("http.nonProxyHosts", "localhost|127.0.0.1");*/
-        ServiceReniec reniec = new ServiceReniec();
-        List<String> list = reniec.getConsultarServicio("DEPUWS", "DEPUWS!=", null, "08715701", persona.getNumeroDocumento());
-        if (list != null) {
-            persona.setApellidoPat(list.get(1));
-            persona.setApellidoMat(list.get(2));
-            persona.setNombre(list.get(4));
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
-            Date date = formatter.parse(list.get(20));
-            persona.setFechaNacimiento(date);
-            if (StringUtils.equals(list.get(13), "1")) {
-                persona.setSexo("M");
+             String proxyPort = "8080";
+             System.out.println("Setting up with proxy: " + proxyHost + ":" + proxyPort);
+             System.setProperty("http.proxyHost", proxyHost);
+             System.setProperty("http.proxyPort", proxyPort);
+             System.setProperty("http.nonProxyHosts", "localhost|127.0.0.1");*/
+            ServiceReniec reniec = new ServiceReniec();
+            List<String> list = reniec.getConsultarServicio("DEPUWS", "DEPUWS!=", null, "08715701", persona.getNumeroDocumento());
+            if (list != null) {
+                persona.setApellidoPat(list.get(1));
+                persona.setApellidoMat(list.get(2));
+                persona.setNombre(list.get(4));
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+                Date date = formatter.parse(list.get(20));
+                persona.setFechaNacimiento(date);
+                if (StringUtils.equals(list.get(13), "1")) {
+                    persona.setSexo("M");
+                } else {
+                    persona.setSexo("F");
+                }
+                persona.setDireccion(list.get(11));
+                persona.setIdDepartamento(list.get(5));
+                persona.setIdProvincia(list.get(6));
+                persona.setIdDistrito(list.get(7));
+                if (StringUtils.isNotBlank(persona.getIdDepartamento())) {
+                    comboProvincia();
+                }
+                if (StringUtils.isNotBlank(persona.getIdProvincia()) && StringUtils.isNotBlank(persona.getIdDepartamento())) {
+                    comboDistrito();
+                }
             } else {
-                persona.setSexo("F");
+                msg.messageAlert("No se encontraron datos en la RENIEC con el DNI ingresado", null);
+                persona = new Persona();
+                persona.setTipo("PER");
             }
-            persona.setDireccion(list.get(11));
-            persona.setIdDepartamento(list.get(5));
-            persona.setIdProvincia(list.get(6));
-            persona.setIdDistrito(list.get(7));
-
-            if (StringUtils.isNotBlank(persona.getIdDepartamento())) {
-                comboProvincia();
-            }
-            if (StringUtils.isNotBlank(persona.getIdProvincia()) && StringUtils.isNotBlank(persona.getIdDepartamento())) {
-                comboDistrito();
-            }
-
-        } else {
-            msg.messageAlert("No se encontraron datos en la RENIEC con el DNI ingresado", null);
-            persona = new Persona();
-            persona.setTipo("PER");
-        }
         } catch (Exception e) {
-            log.error("ERROR - consultarReniec()"+e);
+            log.error("ERROR - consultarReniec()" + e);
             msg.messageError("El servicio de RENIEC no esta disponible", null);
         }
-        
     }
 
     public void cargarSegundaClasificacion(long idClasifica, int idPrimerNivel) {
         try {
-        idClasificacion = idClasifica;
-        idSegundaClasificacion = null;
-        listaExpedienteClasificacion = expedienteClasificacionTipoService.clasificacioneExpedienteClasiTipo(idClasificacion);
-        if (listaExpedienteClasificacion.isEmpty()) {
-            listaExpedienteClasificacion = new ArrayList<>();
-        }
-
-        listadoClasificacionTipo = new ArrayList<>();
-        List<ExpedienteClasificacionTipo> list = expedienteClasificacionTipoService.clasificacionCabecera(idPrimerNivel);
-        if (list.size() > 0) {
-            for (ExpedienteClasificacionTipo tipo : list) {
-                ListadoClasificacion lc = new ListadoClasificacion();
-                lc.setTitulo(tipo.getDetalle());
-                lc.setItems(expedienteClasificacionTipoService.clasificacionPorIdPadre(tipo.getId()));
-                listadoClasificacionTipo.add(lc);
+            idClasificacion = idClasifica;
+            idSegundaClasificacion = null;
+            listaExpedienteClasificacion = expedienteClasificacionTipoService.clasificacioneExpedienteClasiTipo(idClasificacion);
+            if (listaExpedienteClasificacion.isEmpty()) {
+                listaExpedienteClasificacion = new ArrayList<>();
             }
-        }    
+
+            listadoClasificacionTipo = new ArrayList<>();
+            List<ExpedienteClasificacionTipo> list = expedienteClasificacionTipoService.clasificacionCabecera(idPrimerNivel);
+            if (list.size() > 0) {
+                for (ExpedienteClasificacionTipo tipo : list) {
+                    ListadoClasificacion lc = new ListadoClasificacion();
+                    lc.setTitulo(tipo.getDetalle());
+                    lc.setItems(expedienteClasificacionTipoService.clasificacionPorIdPadre(tipo.getId()));
+                    listadoClasificacionTipo.add(lc);
+                }
+            }
         } catch (Exception e) {
-            log.error("ERROR - cargarSegundaClasificacion()"+e);
+            log.error("ERROR - cargarSegundaClasificacion()" + e);
         }
     }
 
     public boolean addSegundaClasificacion() {
         try {
             if (idSegundaClasificacion != null && idSegundaClasificacion != 0) {
-            ExpedienteClasificacionTipo ect = expedienteClasificacionTipoService.clasificacionOne(idSegundaClasificacion);
-            listaExpedienteClasificacion = expedienteClasificacionTipoService.clasificacioneExpedienteClasiTipo(idClasificacion);
-            if (listaExpedienteClasificacion.size() > 0) {
-                for (ExpedienteClasificacionTipo ect1 : listaExpedienteClasificacion) {
-                    if (Objects.equals(ect1.getId(), ect.getId())) {
-                        return true;
+                ExpedienteClasificacionTipo ect = expedienteClasificacionTipoService.clasificacionOne(idSegundaClasificacion);
+                listaExpedienteClasificacion = expedienteClasificacionTipoService.clasificacioneExpedienteClasiTipo(idClasificacion);
+                if (listaExpedienteClasificacion.size() > 0) {
+                    for (ExpedienteClasificacionTipo ect1 : listaExpedienteClasificacion) {
+                        if (Objects.equals(ect1.getId(), ect.getId())) {
+                            return true;
+                        }
                     }
+                    expedienteClasiTipoService.expedienteClasiTipoInsertar(new ExpedienteClasiTipo(idClasificacion, ect.getId()));
+                } else {
+                    expedienteClasiTipoService.expedienteClasiTipoInsertar(new ExpedienteClasiTipo(idClasificacion, ect.getId()));
                 }
-                expedienteClasiTipoService.expedienteClasiTipoInsertar(new ExpedienteClasiTipo(idClasificacion, ect.getId()));
-            } else {
-                expedienteClasiTipoService.expedienteClasiTipoInsertar(new ExpedienteClasiTipo(idClasificacion, ect.getId()));
-            }
-            listaExpedienteClasificacion = expedienteClasificacionTipoService.clasificacioneExpedienteClasiTipo(idClasificacion);
+                listaExpedienteClasificacion = expedienteClasificacionTipoService.clasificacioneExpedienteClasiTipo(idClasificacion);
 
-        } else {
-            msg.messageAlert("Debe seleccionar una clasificación", null);
-        }
-        idSegundaClasificacion = null;
-        listarNiveles();
+            } else {
+                msg.messageAlert("Debe seleccionar una clasificación", null);
+            }
+            idSegundaClasificacion = null;
+            listarNiveles();
         } catch (Exception e) {
-            log.error("ERROR - addSegundaClasificacion()"+e);
+            log.error("ERROR - addSegundaClasificacion()" + e);
         }
         return false;
     }
@@ -671,25 +681,24 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     public void removeSegundaClasificacion(ExpedienteClasificacionTipo ect) {
         try {
             expedienteClasiTipoService.expedienteClasiTipoEliminar(new ExpedienteClasiTipo(idClasificacion, ect.getId()));
-        listaExpedienteClasificacion = expedienteClasificacionTipoService.clasificacioneExpedienteClasiTipo(idClasificacion);
-        listarNiveles();
+            listaExpedienteClasificacion = expedienteClasificacionTipoService.clasificacioneExpedienteClasiTipo(idClasificacion);
+            listarNiveles();
         } catch (Exception e) {
-            log.error("ERROR - removeSegundaClasificacion()"+e);
+            log.error("ERROR - removeSegundaClasificacion()" + e);
         }
-        
     }
 
     public String cargarNuevaBusqueda() {
         try {
             persona = new Persona();
-        personaBusqueda = new Persona();
-        personaSeleccionada = new Persona();
-        listaPersonaGeneral = null;
-        listaExpedienteXPersona = null;
-        indSeleccion = true;
-        return "expedienteUsuario";
+            personaBusqueda = new Persona();
+            personaSeleccionada = new Persona();
+            listaPersonaGeneral = null;
+            listaExpedienteXPersona = null;
+            indSeleccion = true;
+            return "expedienteUsuario";
         } catch (Exception e) {
-            log.error("ERROR - cargarNuevaBusqueda()"+e);
+            log.error("ERROR - cargarNuevaBusqueda()" + e);
         }
         return null;
     }
@@ -697,11 +706,11 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     public String irOficio() {
         try {
             iniciarExpedienteNuevo();
-        expediente.setIndicadorOficio(true);
-        personasSeleccionadas = new ArrayList<>();
-        return "expedienteNuevo";
+            expediente.setIndicadorOficio(true);
+            personasSeleccionadas = new ArrayList<>();
+            return "expedienteNuevo";
         } catch (Exception e) {
-            log.error("ERROR - irOficio()"+e);
+            log.error("ERROR - irOficio()" + e);
         }
         return null;
     }
@@ -759,7 +768,6 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 list);
         jasperPrint = JasperFillManager.fillReport("C:\\recursos\\reportesSID\\expedienteConsulta.jasper",
                 new HashMap(), beanCollectionDataSource);
-
     }
 
     public void initPetitorio() throws JRException {
@@ -890,9 +898,9 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     public String cargarExpedientePorId(Long idExpediente) {
         try {
             expediente = expedienteService.expedienteBuscarPorId(idExpediente);
-        return cargarExpedienteEdit(expediente);
+            return cargarExpedienteEdit(expediente);
         } catch (Exception e) {
-            log.error("ERROR - cargarExpedientePorId()"+e);
+            log.error("ERROR - cargarExpedientePorId()" + e);
         }
         return null;
     }
@@ -900,9 +908,9 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     public String cargarExpedientePorNumero(String numeroExpediente) {
         try {
             expediente = expedienteService.expedienteBuscarPorNumero(numeroExpediente);
-        return cargarExpedienteEdit(expediente);
+            return cargarExpedienteEdit(expediente);
         } catch (Exception e) {
-            log.error("ERROR - cargarExpedientePorNumero()"+e);
+            log.error("ERROR - cargarExpedientePorNumero()" + e);
         }
         return null;
     }
@@ -910,10 +918,10 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     public String cargarExpedienteGestion() {
         try {
             expedienteGestion = new ExpedienteGestion();
-        expedienteBusquedaReplica = new Expediente();
-        return "expedienteGestion";
+            expedienteBusquedaReplica = new Expediente();
+            return "expedienteGestion";
         } catch (Exception e) {
-            log.error("ERROR - cargarExpedienteGestion()"+e);
+            log.error("ERROR - cargarExpedienteGestion()" + e);
         }
         return null;
     }
@@ -921,40 +929,40 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     public String cargarExpedienteGestionLista() {
         try {
             listaExpedientesCalificacionQueja = new ArrayList<>();
-        listaExpedientesInvestigacionQueja = new ArrayList<>();
-        listaExpedientesPersuacionQueja = new ArrayList<>();
-        listaExpedientesSeguimientoQueja = new ArrayList<>();
-        listaExpedientesCalificacionPetitorio = new ArrayList<>();
-        listaExpedientesGestionPetitorio = new ArrayList<>();
-        listaExpedientesPersuacionPetitorio = new ArrayList<>();
-        List<ExpedienteGestion> list = expedienteGestionService.expedienteGestionListaXexpediente(expediente.getNumero());
-        for (ExpedienteGestion ee : list) {
-            if (Objects.equals(ee.getIdEtapa(), EtapaType.CALIFICACION_QUEJA.getKey())) {
-                listaExpedientesCalificacionQueja.add(ee);
+            listaExpedientesInvestigacionQueja = new ArrayList<>();
+            listaExpedientesPersuacionQueja = new ArrayList<>();
+            listaExpedientesSeguimientoQueja = new ArrayList<>();
+            listaExpedientesCalificacionPetitorio = new ArrayList<>();
+            listaExpedientesGestionPetitorio = new ArrayList<>();
+            listaExpedientesPersuacionPetitorio = new ArrayList<>();
+            List<ExpedienteGestion> list = expedienteGestionService.expedienteGestionListaXexpediente(expediente.getNumero());
+            for (ExpedienteGestion ee : list) {
+                if (Objects.equals(ee.getIdEtapa(), EtapaType.CALIFICACION_QUEJA.getKey())) {
+                    listaExpedientesCalificacionQueja.add(ee);
+                }
+                if (Objects.equals(ee.getIdEtapa(), EtapaType.INVESTIGACION_QUEJA.getKey())) {
+                    listaExpedientesInvestigacionQueja.add(ee);
+                }
+                if (Objects.equals(ee.getIdEtapa(), EtapaType.PERSUACION_QUEJA.getKey())) {
+                    listaExpedientesPersuacionQueja.add(ee);
+                }
+                if (Objects.equals(ee.getIdEtapa(), EtapaType.SEGUIMIENTO_QUEJA.getKey())) {
+                    listaExpedientesSeguimientoQueja.add(ee);
+                }
+                if (Objects.equals(ee.getIdEtapa(), EtapaType.CALIFICACION_PETITORIO.getKey())) {
+                    listaExpedientesCalificacionPetitorio.add(ee);
+                }
+                if (Objects.equals(ee.getIdEtapa(), EtapaType.GESTION_PETITORIO.getKey())) {
+                    listaExpedientesGestionPetitorio.add(ee);
+                }
+                if (Objects.equals(ee.getIdEtapa(), EtapaType.PERSUASION_PETITORIO.getKey())) {
+                    listaExpedientesPersuacionPetitorio.add(ee);
+                }
             }
-            if (Objects.equals(ee.getIdEtapa(), EtapaType.INVESTIGACION_QUEJA.getKey())) {
-                listaExpedientesInvestigacionQueja.add(ee);
-            }
-            if (Objects.equals(ee.getIdEtapa(), EtapaType.PERSUACION_QUEJA.getKey())) {
-                listaExpedientesPersuacionQueja.add(ee);
-            }
-            if (Objects.equals(ee.getIdEtapa(), EtapaType.SEGUIMIENTO_QUEJA.getKey())) {
-                listaExpedientesSeguimientoQueja.add(ee);
-            }
-            if (Objects.equals(ee.getIdEtapa(), EtapaType.CALIFICACION_PETITORIO.getKey())) {
-                listaExpedientesCalificacionPetitorio.add(ee);
-            }
-            if (Objects.equals(ee.getIdEtapa(), EtapaType.GESTION_PETITORIO.getKey())) {
-                listaExpedientesGestionPetitorio.add(ee);
-            }
-            if (Objects.equals(ee.getIdEtapa(), EtapaType.PERSUASION_PETITORIO.getKey())) {
-                listaExpedientesPersuacionPetitorio.add(ee);
-            }
-        }
-        verModalConclusion = false;
-        return "expedienteGestionLista";
+            verModalConclusion = false;
+            return "expedienteGestionLista";
         } catch (Exception e) {
-            log.error("ERROR - cargarExpedienteGestionLista()"+e);
+            log.error("ERROR - cargarExpedienteGestionLista()" + e);
         }
         return null;
     }
@@ -962,28 +970,27 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     public void cargarExpedienteEtapa(int etapa) {
         try {
             if (etapaEstado.getVerEtapa() == etapa) {
-            expediente = expedienteService.expedienteBuscarActivo(expediente);
-        } else {
-            expediente.setIdEtapa(etapa);
-            expediente = expedienteService.expedienteBuscarActivoEtapa(expediente);
-        }
-        setearExpediente(expediente);
+                expediente = expedienteService.expedienteBuscarActivo(expediente);
+            } else {
+                expediente.setIdEtapa(etapa);
+                expediente = expedienteService.expedienteBuscarActivoEtapa(expediente);
+            }
+            setearExpediente(expediente);
         } catch (Exception e) {
-            log.error("ERROR - cargarExpedienteEtapa()"+e);
+            log.error("ERROR - cargarExpedienteEtapa()" + e);
         }
-        
     }
 
     public void inicio() {
         try {
             usuarioSession();
-        listaExpedienteXUsuario = expedienteService.expedienteBuscarUsuario(usuarioSession.getCodigo());
-        listarExpedienteUsuarioPaginadoOrder(1, 1);
-        cargarGraficos001();
-        cargarGraficos002();
-        cargarGraficos003();
+            listaExpedienteXUsuario = expedienteService.expedienteBuscarUsuario(usuarioSession.getCodigo());
+            listarExpedienteUsuarioPaginadoOrder(1, 1);
+            cargarGraficos001();
+            cargarGraficos002();
+            cargarGraficos003();
         } catch (Exception e) {
-            log.error("ERROR - inicio()"+e);
+            log.error("ERROR - inicio()" + e);
         }
     }
 
@@ -999,12 +1006,11 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     public void limpiarModalConsulta() {
         try {
             expedienteConsultaEnvia = new ExpedienteConsulta();
-        expedienteConsultaEnvia.setIdExpediente(expediente.getId());
-        expedienteConsultaEnvia.setNumeroExpediente(expediente.getNumero());
+            expedienteConsultaEnvia.setIdExpediente(expediente.getId());
+            expedienteConsultaEnvia.setNumeroExpediente(expediente.getNumero());
         } catch (Exception e) {
-            log.error("ERROR - inicio()"+e);
+            log.error("ERROR - inicio()" + e);
         }
-        
     }
 
     public void limpiarModalConsultaAprueba(ExpedienteConsulta ec) {
@@ -1049,50 +1055,50 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             }
             listaUsuariosComisionadosPorAD = listaUsuario;
         } catch (Exception e) {
-            log.error("ERROR - cargarListaComisionadoAD()"+e);
+            log.error("ERROR - cargarListaComisionadoAD()" + e);
         }
     }
 
     public void limpiarModalBusquedaClasificacion() {
         try {
             expedienteClasificacionBusqueda = new ExpedienteClasificacion();
-        listaExpedienteNivelModal = new ArrayList<>();
-        nroPaginaModal = 1;
+            listaExpedienteNivelModal = new ArrayList<>();
+            nroPaginaModal = 1;
         } catch (Exception e) {
-            log.error("ERROR - limpiarModalBusquedaClasificacion()"+e);
+            log.error("ERROR - limpiarModalBusquedaClasificacion()" + e);
         }
-        
+
     }
 
     public void limpiarModalAsignar() {
         try {
             Usuario u = new Usuario();
-        u.setCodigoOD(usuarioSession.getCodigoOD());
-        listaUsuarioOD = usuarioService.listaUsuariosPorOD(u);
+            u.setCodigoOD(usuarioSession.getCodigoOD());
+            listaUsuarioOD = usuarioService.listaUsuariosPorOD(u);
         } catch (Exception e) {
-            log.error("ERROR - limpiarModalAsignar()"+e);
+            log.error("ERROR - limpiarModalAsignar()" + e);
         }
     }
 
     public boolean guardarReconsideracion() {
         try {
             if (!expediente.getIndiceReconsideracion()) {
-            msg.messageAlert("Debe marcar el check de reconsideración", null);
-            expediente.setIndiceReconsideracion(false);
-            expediente.setDetalleReconsideracion(null);
-            return false;
-        }
-        if (StringUtils.isBlank(expediente.getDetalleReconsideracion())) {
-            expediente.setIndiceReconsideracion(false);
-            expediente.setDetalleReconsideracion(null);
-            msg.messageAlert("Debe ingresar un detalle reconsideración", null);
-            return false;
-        }
-        expedienteService.expedienteReconsideracion(expediente);
-        msg.messageInfo("Se registro la reconsideración", null);
-        return true;
+                msg.messageAlert("Debe marcar el check de reconsideración", null);
+                expediente.setIndiceReconsideracion(false);
+                expediente.setDetalleReconsideracion(null);
+                return false;
+            }
+            if (StringUtils.isBlank(expediente.getDetalleReconsideracion())) {
+                expediente.setIndiceReconsideracion(false);
+                expediente.setDetalleReconsideracion(null);
+                msg.messageAlert("Debe ingresar un detalle reconsideración", null);
+                return false;
+            }
+            expedienteService.expedienteReconsideracion(expediente);
+            msg.messageInfo("Se registro la reconsideración", null);
+            return true;
         } catch (Exception e) {
-            log.error("ERROR - guardarReconsideracion()"+e);
+            log.error("ERROR - guardarReconsideracion()" + e);
         }
         return false;
     }
@@ -1100,196 +1106,193 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     public void guardarAsignado() {
         try {
             FacesContext context = FacesContext.getCurrentInstance();
-        SeguridadUtilController seguridadUtilController = (SeguridadUtilController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "seguridadUtilController");
+            SeguridadUtilController seguridadUtilController = (SeguridadUtilController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "seguridadUtilController");
 
-        if (StringUtils.isBlank(expediente.getUsuarioAsignado())) {
-            msg.messageAlert("Debe ingresar el usuario asignado", null);
-        } else {
-            //si es practicante o sesigrista
-            if (seguridadUtilController.tieneRol("ROL0000005") || seguridadUtilController.tieneRol("ROL0000006")) {
-                expediente.setUsuarioResponsable(usuarioSession.getCodigo());
+            if (StringUtils.isBlank(expediente.getUsuarioAsignado())) {
+                msg.messageAlert("Debe ingresar el usuario asignado", null);
             } else {
-                expediente.setUsuarioResponsable(expediente.getUsuarioAsignado());
+                //si es practicante o sesigrista
+                if (seguridadUtilController.tieneRol("ROL0000005") || seguridadUtilController.tieneRol("ROL0000006")) {
+                    expediente.setUsuarioResponsable(usuarioSession.getCodigo());
+                } else {
+                    expediente.setUsuarioResponsable(expediente.getUsuarioAsignado());
+                }
+                expediente.setUsuarioRegistro(expediente.getUsuarioAsignado());
+                expedienteService.expedienteAsignar(expediente);
+                msg.messageInfo("Se asigno el expediente correctamente", null);
             }
-            expediente.setUsuarioRegistro(expediente.getUsuarioAsignado());
-            expedienteService.expedienteAsignar(expediente);
-            msg.messageInfo("Se asigno el expediente correctamente", null);
-        }
         } catch (Exception e) {
-            log.error("ERROR - guardarAsignado()"+e);
+            log.error("ERROR - guardarAsignado()" + e);
         }
-        
+
     }
 
     public boolean buscarClasificacion(Integer pagina) {
         try {
             List<ExpedienteNivel> ens = new ArrayList<>();
-        if (pagina > 0) {
-            int paginado = ConstantesUtil.PAGINADO_10;
-            Integer ini = paginado * (pagina - 1) + 1;
-            Integer fin = paginado * pagina;
-            if (pagina == 0) {
-                ini = 1;
-                fin = 10;
-            }
-            expedienteClasificacionBusqueda.setIni(ini);
-            expedienteClasificacionBusqueda.setFin(fin);
-
-            if (StringUtils.equals(expediente.getTipoClasificion(), "01")) {
-                List<ExpedienteClasificacion> list = expedienteClasificacionService.expedienteClasificacionBusqueda(expedienteClasificacionBusqueda);
-                for (ExpedienteClasificacion ec : list) {
-                    ExpedienteNivel en = new ExpedienteNivel();
-                    clasificarNivel(ec, en);
-                    Integer idPadre = ec.getPadre();
-
-                    while (idPadre != 0) {
-                        ExpedienteClasificacion ec1 = expedienteClasificacionService.expedienteClasificacionOne(idPadre);
-                        idPadre = ec1.getPadre();
-                        clasificarNivel(ec1, en);
-                    }
-                    ens.add(en);
+            if (pagina > 0) {
+                int paginado = ConstantesUtil.PAGINADO_10;
+                Integer ini = paginado * (pagina - 1) + 1;
+                Integer fin = paginado * pagina;
+                if (pagina == 0) {
+                    ini = 1;
+                    fin = 10;
                 }
-                if (list.size() > 0) {
-                    listaExpedienteNivelModal = ens;
-                    nroPaginaModal = pagina;
+                expedienteClasificacionBusqueda.setIni(ini);
+                expedienteClasificacionBusqueda.setFin(fin);
+
+                if (StringUtils.equals(expediente.getTipoClasificion(), "01")) {
+                    List<ExpedienteClasificacion> list = expedienteClasificacionService.expedienteClasificacionBusqueda(expedienteClasificacionBusqueda);
+                    for (ExpedienteClasificacion ec : list) {
+                        ExpedienteNivel en = new ExpedienteNivel();
+                        clasificarNivel(ec, en);
+                        Integer idPadre = ec.getPadre();
+
+                        while (idPadre != 0) {
+                            ExpedienteClasificacion ec1 = expedienteClasificacionService.expedienteClasificacionOne(idPadre);
+                            idPadre = ec1.getPadre();
+                            clasificarNivel(ec1, en);
+                        }
+                        ens.add(en);
+                    }
+                    if (list.size() > 0) {
+                        listaExpedienteNivelModal = ens;
+                        nroPaginaModal = pagina;
+                    } else {
+                        if (expedienteClasificacionBusqueda.getIni() == 1) {
+                            listaExpedienteNivelModal = null;
+                        }
+                    }
                 } else {
-                    if (expedienteClasificacionBusqueda.getIni() == 1) {
-                        listaExpedienteNivelModal = null;
-                    }
-                }
-            } else {
-                List<ExpedienteClasificacion> list = expedienteClasificacionService.expedienteClasificacionBusquedaGrupo1(expedienteClasificacionBusqueda);
-                for (ExpedienteClasificacion ec : list) {
-                    ExpedienteNivel en = new ExpedienteNivel();
-                    clasificarNivel(ec, en);
-                    Integer idPadre = ec.getPadre();
+                    List<ExpedienteClasificacion> list = expedienteClasificacionService.expedienteClasificacionBusquedaGrupo1(expedienteClasificacionBusqueda);
+                    for (ExpedienteClasificacion ec : list) {
+                        ExpedienteNivel en = new ExpedienteNivel();
+                        clasificarNivel(ec, en);
+                        Integer idPadre = ec.getPadre();
 
-                    while (idPadre != 0) {
-                        ExpedienteClasificacion ec1 = expedienteClasificacionService.expedienteClasificacionOne(idPadre);
-                        idPadre = ec1.getPadre();
-                        clasificarNivel(ec1, en);
+                        while (idPadre != 0) {
+                            ExpedienteClasificacion ec1 = expedienteClasificacionService.expedienteClasificacionOne(idPadre);
+                            idPadre = ec1.getPadre();
+                            clasificarNivel(ec1, en);
+                        }
+                        ens.add(en);
                     }
-                    ens.add(en);
-                }
-                if (list.size() > 0) {
-                    listaExpedienteNivelModal = ens;
-                    nroPaginaModal = pagina;
-                } else {
-                    if (expedienteClasificacionBusqueda.getIni() == 1) {
-                        listaExpedienteNivelModal = null;
+                    if (list.size() > 0) {
+                        listaExpedienteNivelModal = ens;
+                        nroPaginaModal = pagina;
+                    } else {
+                        if (expedienteClasificacionBusqueda.getIni() == 1) {
+                            listaExpedienteNivelModal = null;
+                        }
                     }
                 }
             }
-        }
-        return true;
+            return true;
         } catch (Exception e) {
-            log.error("ERROR - buscarClasificacion()"+e);
+            log.error("ERROR - buscarClasificacion()" + e);
         }
         return false;
     }
 
     private void clasificarNivel(ExpedienteClasificacion ec2, ExpedienteNivel en) {
         try {
-         if (ec2.getGrupo() == 1) {
-            en.setIdPrimerNivel(ec2.getId());
-            en.setPrimerNivel(ec2.getNombre());
-        }
-        if (ec2.getGrupo() == 2) {
-            en.setIdSegundoNivel(ec2.getId());
-            en.setSegundoNivel(ec2.getNombre());
-        }
-        if (ec2.getGrupo() == 3) {
-            en.setIdTercerNivel(ec2.getId());
-            en.setTercerNivel(ec2.getNombre());
-        }
-        if (ec2.getGrupo() == 4) {
-            en.setIdCuartoNivel(ec2.getId());
-            en.setCuartoNivel(ec2.getNombre());
-        }
-        if (ec2.getGrupo() == 5) {
-            en.setIdQuintoNivel(ec2.getId());
-            en.setQuintoNivel(ec2.getNombre());
-        }
-        if (ec2.getGrupo() == 6) {
-            en.setIdSextoNivel(ec2.getId());
-            en.setSextoNivel(ec2.getNombre());
-        }   
+            if (ec2.getGrupo() == 1) {
+                en.setIdPrimerNivel(ec2.getId());
+                en.setPrimerNivel(ec2.getNombre());
+            }
+            if (ec2.getGrupo() == 2) {
+                en.setIdSegundoNivel(ec2.getId());
+                en.setSegundoNivel(ec2.getNombre());
+            }
+            if (ec2.getGrupo() == 3) {
+                en.setIdTercerNivel(ec2.getId());
+                en.setTercerNivel(ec2.getNombre());
+            }
+            if (ec2.getGrupo() == 4) {
+                en.setIdCuartoNivel(ec2.getId());
+                en.setCuartoNivel(ec2.getNombre());
+            }
+            if (ec2.getGrupo() == 5) {
+                en.setIdQuintoNivel(ec2.getId());
+                en.setQuintoNivel(ec2.getNombre());
+            }
+            if (ec2.getGrupo() == 6) {
+                en.setIdSextoNivel(ec2.getId());
+                en.setSextoNivel(ec2.getNombre());
+            }
         } catch (Exception e) {
-            log.error("ERROR - clasificarNivel()"+e);
+            log.error("ERROR - clasificarNivel()" + e);
         }
-        
     }
 
     public void cargarNivelesClasificacion(Integer idPadre, Integer grupo) {
         try {
             List<ExpedienteClasificacion> listaClasi = expedienteClasificacionService.listaExpedienteClasificacion(new ExpedienteClasificacion(idPadre, grupo, "ACT"));
-        if (grupo == 2) {
-            listaClasificacionSegundoLevel = new ArrayList<>();
-            listaClasificacionTercerLevel = new ArrayList<>();
-            listaClasificacionCuartoLevel = new ArrayList<>();
-            listaClasificacionQuintoLevel = new ArrayList<>();
-            listaClasificacionSextoLevel = new ArrayList<>();
-            for (ExpedienteClasificacion ec : listaClasi) {
-                listaClasificacionSegundoLevel.add(new SelectItem(ec.getId(), ec.getNombre()));
+            if (grupo == 2) {
+                listaClasificacionSegundoLevel = new ArrayList<>();
+                listaClasificacionTercerLevel = new ArrayList<>();
+                listaClasificacionCuartoLevel = new ArrayList<>();
+                listaClasificacionQuintoLevel = new ArrayList<>();
+                listaClasificacionSextoLevel = new ArrayList<>();
+                for (ExpedienteClasificacion ec : listaClasi) {
+                    listaClasificacionSegundoLevel.add(new SelectItem(ec.getId(), ec.getNombre()));
+                }
             }
-        }
-        if (grupo == 3) {
-            listaClasificacionTercerLevel = new ArrayList<>();
-            listaClasificacionCuartoLevel = new ArrayList<>();
-            listaClasificacionQuintoLevel = new ArrayList<>();
-            listaClasificacionSextoLevel = new ArrayList<>();
-            for (ExpedienteClasificacion ec : listaClasi) {
-                listaClasificacionTercerLevel.add(new SelectItem(ec.getId(), ec.getNombre()));
+            if (grupo == 3) {
+                listaClasificacionTercerLevel = new ArrayList<>();
+                listaClasificacionCuartoLevel = new ArrayList<>();
+                listaClasificacionQuintoLevel = new ArrayList<>();
+                listaClasificacionSextoLevel = new ArrayList<>();
+                for (ExpedienteClasificacion ec : listaClasi) {
+                    listaClasificacionTercerLevel.add(new SelectItem(ec.getId(), ec.getNombre()));
+                }
             }
-        }
-        if (grupo == 4) {
-            listaClasificacionCuartoLevel = new ArrayList<>();
-            listaClasificacionQuintoLevel = new ArrayList<>();
-            listaClasificacionSextoLevel = new ArrayList<>();
-            for (ExpedienteClasificacion ec : listaClasi) {
-                listaClasificacionCuartoLevel.add(new SelectItem(ec.getId(), ec.getNombre()));
+            if (grupo == 4) {
+                listaClasificacionCuartoLevel = new ArrayList<>();
+                listaClasificacionQuintoLevel = new ArrayList<>();
+                listaClasificacionSextoLevel = new ArrayList<>();
+                for (ExpedienteClasificacion ec : listaClasi) {
+                    listaClasificacionCuartoLevel.add(new SelectItem(ec.getId(), ec.getNombre()));
+                }
             }
-        }
-        if (grupo == 5) {
-            listaClasificacionQuintoLevel = new ArrayList<>();
-            listaClasificacionSextoLevel = new ArrayList<>();
-            for (ExpedienteClasificacion ec : listaClasi) {
-                listaClasificacionQuintoLevel.add(new SelectItem(ec.getId(), ec.getNombre()));
+            if (grupo == 5) {
+                listaClasificacionQuintoLevel = new ArrayList<>();
+                listaClasificacionSextoLevel = new ArrayList<>();
+                for (ExpedienteClasificacion ec : listaClasi) {
+                    listaClasificacionQuintoLevel.add(new SelectItem(ec.getId(), ec.getNombre()));
+                }
             }
-        }
-        if (grupo == 6) {
-            listaClasificacionSextoLevel = new ArrayList<>();
-            for (ExpedienteClasificacion ec : listaClasi) {
-                listaClasificacionSextoLevel.add(new SelectItem(ec.getId(), ec.getNombre()));
+            if (grupo == 6) {
+                listaClasificacionSextoLevel = new ArrayList<>();
+                for (ExpedienteClasificacion ec : listaClasi) {
+                    listaClasificacionSextoLevel.add(new SelectItem(ec.getId(), ec.getNombre()));
+                }
             }
-        }
         } catch (Exception e) {
-            log.error("ERROR - cargarNivelesClasificacion()"+e);
+            log.error("ERROR - cargarNivelesClasificacion()" + e);
         }
-        
     }
 
     public void guardarNivel() {
         try {
             if (expedienteNivel.getIdPrimerNivel() != null && expedienteNivel.getIdPrimerNivel() != 0) {
-            if (expedienteNivel.getId() == null) {
-                expedienteNivel.setNumeroExpediente(expediente.getNumero());
-                expedienteNivel.setEstado("ACT");
-                expedienteNivelService.expedienteNivelInsertar(expedienteNivel);
-                msg.messageInfo("Se agrego una nueva clasificación temática", null);
-            } else {
-                expedienteNivelService.expedienteNivelActualizar(expedienteNivel);
-                msg.messageInfo("Se actualizo la clasificación temática", null);
+                if (expedienteNivel.getId() == null) {
+                    expedienteNivel.setNumeroExpediente(expediente.getNumero());
+                    expedienteNivel.setEstado("ACT");
+                    expedienteNivelService.expedienteNivelInsertar(expedienteNivel);
+                    msg.messageInfo("Se agrego una nueva clasificación temática", null);
+                } else {
+                    expedienteNivelService.expedienteNivelActualizar(expedienteNivel);
+                    msg.messageInfo("Se actualizo la clasificación temática", null);
+                }
+                List<ExpedienteNivel> nivels = expedienteNivelService.expedienteNivelPorExpediente(expediente.getNumero());
+                expediente.setListaExpedienteNivel(nivels);
+                expedienteNivel = new ExpedienteNivel();
             }
-            List<ExpedienteNivel> nivels = expedienteNivelService.expedienteNivelPorExpediente(expediente.getNumero());
-            expediente.setListaExpedienteNivel(nivels);
-            expedienteNivel = new ExpedienteNivel();
-        }
-        listarNiveles();
+            listarNiveles();
         } catch (Exception e) {
-            log.error("ERROR - guardarNivel()"+e);
+            log.error("ERROR - guardarNivel()" + e);
         }
-        
     }
 
     public void limpiarNivelesAll() {
@@ -1303,92 +1306,91 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     public void guardarNivel(ExpedienteNivel en) {
         try {
             if (en.getIdPrimerNivel() != null && en.getIdPrimerNivel() != 0) {
-            en.setNumeroExpediente(expediente.getNumero());
-            en.setEstado("ACT");
-            expedienteNivelService.expedienteNivelInsertar(en);
-            List<ExpedienteNivel> nivels = expedienteNivelService.expedienteNivelPorExpediente(expediente.getNumero());
-            expediente.setListaExpedienteNivel(nivels);
-            msg.messageInfo("Se agrego una nueva clasificacion temática", null);
-        }
+                en.setNumeroExpediente(expediente.getNumero());
+                en.setEstado("ACT");
+                expedienteNivelService.expedienteNivelInsertar(en);
+                List<ExpedienteNivel> nivels = expedienteNivelService.expedienteNivelPorExpediente(expediente.getNumero());
+                expediente.setListaExpedienteNivel(nivels);
+                msg.messageInfo("Se agrego una nueva clasificacion temática", null);
+            }
         } catch (Exception e) {
-            log.error("ERROR - guardarNivel()"+e);
+            log.error("ERROR - guardarNivel()" + e);
         }
-        
     }
 
     public void inactivarNivel(ExpedienteNivel en) {
         try {
             expedienteNivelService.expedienteNivelUpdate(en.getId());
-        List<ExpedienteNivel> nivels = expedienteNivelService.expedienteNivelPorExpediente(expediente.getNumero());
-        expediente.setListaExpedienteNivel(nivels);
-        listarNiveles();
+            List<ExpedienteNivel> nivels = expedienteNivelService.expedienteNivelPorExpediente(expediente.getNumero());
+            expediente.setListaExpedienteNivel(nivels);
+            listarNiveles();
         } catch (Exception e) {
-            log.error("ERROR - inactivarNivel()"+e);
+            log.error("ERROR - inactivarNivel()" + e);
         }
     }
 
     public void editarNivel(ExpedienteNivel en) {
         try {
             expedienteNivel.setId(en.getId());
-        if (en.getIdPrimerNivel() != null && en.getIdPrimerNivel() != 0) {
-            cargarNivelesClasificacion(en.getIdPrimerNivel(), 2);
-            expedienteNivel.setIdPrimerNivel(en.getIdPrimerNivel());
-        }
-        if (en.getIdSegundoNivel() != null && en.getIdSegundoNivel() != 0) {
-            cargarNivelesClasificacion(en.getIdSegundoNivel(), 3);
-            expedienteNivel.setIdSegundoNivel(en.getIdSegundoNivel());
-        }
-        if (en.getIdTercerNivel() != null && en.getIdTercerNivel() != 0) {
-            cargarNivelesClasificacion(en.getIdTercerNivel(), 4);
-            expedienteNivel.setIdTercerNivel(en.getIdTercerNivel());
-        }
-        if (en.getIdCuartoNivel() != null && en.getIdCuartoNivel() != 0) {
-            cargarNivelesClasificacion(en.getIdCuartoNivel(), 5);
-            expedienteNivel.setIdCuartoNivel(en.getIdCuartoNivel());
-        }
-        if (en.getIdQuintoNivel() != null && en.getIdQuintoNivel() != 0) {
-            cargarNivelesClasificacion(en.getIdQuintoNivel(), 6);
-            expedienteNivel.setIdQuintoNivel(en.getIdQuintoNivel());
-        }
-        if (en.getIdSextoNivel() != null && en.getIdSextoNivel() != 0) {
-            expedienteNivel.setIdSextoNivel(en.getIdSextoNivel());
-        }
+            if (en.getIdPrimerNivel() != null && en.getIdPrimerNivel() != 0) {
+                cargarNivelesClasificacion(en.getIdPrimerNivel(), 2);
+                expedienteNivel.setIdPrimerNivel(en.getIdPrimerNivel());
+            }
+            if (en.getIdSegundoNivel() != null && en.getIdSegundoNivel() != 0) {
+                cargarNivelesClasificacion(en.getIdSegundoNivel(), 3);
+                expedienteNivel.setIdSegundoNivel(en.getIdSegundoNivel());
+            }
+            if (en.getIdTercerNivel() != null && en.getIdTercerNivel() != 0) {
+                cargarNivelesClasificacion(en.getIdTercerNivel(), 4);
+                expedienteNivel.setIdTercerNivel(en.getIdTercerNivel());
+            }
+            if (en.getIdCuartoNivel() != null && en.getIdCuartoNivel() != 0) {
+                cargarNivelesClasificacion(en.getIdCuartoNivel(), 5);
+                expedienteNivel.setIdCuartoNivel(en.getIdCuartoNivel());
+            }
+            if (en.getIdQuintoNivel() != null && en.getIdQuintoNivel() != 0) {
+                cargarNivelesClasificacion(en.getIdQuintoNivel(), 6);
+                expedienteNivel.setIdQuintoNivel(en.getIdQuintoNivel());
+            }
+            if (en.getIdSextoNivel() != null && en.getIdSextoNivel() != 0) {
+                expedienteNivel.setIdSextoNivel(en.getIdSextoNivel());
+            }
         } catch (Exception e) {
-            log.error("ERROR - editarNivel()"+e);
+            log.error("ERROR - editarNivel()" + e);
         }
     }
 
     public void desistirExpediente() {
         try {
             expediente.setIndicadorDesestimiento(1);
-        expediente.setGeneral("C");
-        expedienteService.expedienteDesistir(expediente);
-        msg.messageInfo("Se ha concluido el expediente, pasa al estado desistido", null);
+            expediente.setGeneral("C");
+            expedienteService.expedienteDesistir(expediente);
+            msg.messageInfo("Se ha concluido el expediente, pasa al estado desistido", null);
         } catch (Exception e) {
-            log.error("ERROR - desistirExpediente()"+e);
+            log.error("ERROR - desistirExpediente()" + e);
         }
     }
 
     private void defineBotonRegistro() {
         try {
             listaExpedienteDerivacion = null;
-        listaExpedienteDerivacion = expedienteDerivacionService.expedienteDerivacionSelectList(expediente.getId());
-        if (listaExpedienteDerivacion.size() > 0) {
-            setVerBotonRegistrarExpediente(false);
-        } else {
-            setVerBotonRegistrarExpediente(true);
+            listaExpedienteDerivacion = expedienteDerivacionService.expedienteDerivacionSelectList(expediente.getId());
+            if (listaExpedienteDerivacion.size() > 0) {
+                setVerBotonRegistrarExpediente(false);
+            } else {
+                setVerBotonRegistrarExpediente(true);
+            }
+
+            /*en general*/
+            if (StringUtils.equals(expediente.getUsuarioRegistro(), usuarioSession.getCodigo())) {
+                setVerBotonRegistrarExpediente(true);
+            } else {
+                setVerBotonRegistrarExpediente(false);
+            }
+        } catch (Exception e) {
+            log.error("ERROR - defineBotonRegistro()" + e);
         }
 
-        /*en general*/
-        if (StringUtils.equals(expediente.getUsuarioRegistro(), usuarioSession.getCodigo())) {
-            setVerBotonRegistrarExpediente(true);
-        } else {
-            setVerBotonRegistrarExpediente(false);
-        }
-        } catch (Exception e) {
-            log.error("ERROR - defineBotonRegistro()"+e);
-        }
-        
     }
 
     private void limpiarElementosConsulta() {
@@ -1405,47 +1407,46 @@ public class RegistroController extends AbstractManagedBean implements Serializa
 
     private void inicioAccionesConsulta() {
         try {
-        listaExpedienteTotalesEnvia = new ArrayList<>();
-        listaExpedienteTotalesAprueba = new ArrayList<>();
-        listaExpedienteTotalesReasigna = new ArrayList<>();
-        listaExpedienteTotalesResponde = new ArrayList<>();
-        List<ExpedienteConsulta> lista = expedienteConsultaService.expedienteConsultaPorExpedientePadre(expediente.getNumero());
-        for (ExpedienteConsulta ec : lista) {
-            if (ec.getEtapa() == 1) {
-                listaExpedienteTotalesEnvia.add(ec);
-                listaExpedienteTotalesAprueba.add(ec);
-            }
-            if (ec.getEtapa() == 2) {
-                listaExpedienteTotalesEnvia.add(ec);
-                listaExpedienteTotalesAprueba.add(ec);
-                if (Objects.equals(ec.getIdAdjuntiaDefensorial(), usuarioSession.getCodigoOD())) {
-                    listaExpedienteTotalesReasigna.add(ec);
+            listaExpedienteTotalesEnvia = new ArrayList<>();
+            listaExpedienteTotalesAprueba = new ArrayList<>();
+            listaExpedienteTotalesReasigna = new ArrayList<>();
+            listaExpedienteTotalesResponde = new ArrayList<>();
+            List<ExpedienteConsulta> lista = expedienteConsultaService.expedienteConsultaPorExpedientePadre(expediente.getNumero());
+            for (ExpedienteConsulta ec : lista) {
+                if (ec.getEtapa() == 1) {
+                    listaExpedienteTotalesEnvia.add(ec);
+                    listaExpedienteTotalesAprueba.add(ec);
+                }
+                if (ec.getEtapa() == 2) {
+                    listaExpedienteTotalesEnvia.add(ec);
+                    listaExpedienteTotalesAprueba.add(ec);
+                    if (Objects.equals(ec.getIdAdjuntiaDefensorial(), usuarioSession.getCodigoOD())) {
+                        listaExpedienteTotalesReasigna.add(ec);
+                    }
+                }
+                if (ec.getEtapa() >= 3) {
+                    listaExpedienteTotalesEnvia.add(ec);
+                    listaExpedienteTotalesAprueba.add(ec);
+                    if (Objects.equals(ec.getIdAdjuntiaDefensorial(), usuarioSession.getCodigoOD())) {
+                        listaExpedienteTotalesReasigna.add(ec);
+                    }
+                    if (Objects.equals(ec.getIdAdjuntiaDefensorial(), usuarioSession.getCodigoOD())) {
+                        listaExpedienteTotalesResponde.add(ec);
+                    }
                 }
             }
-            if (ec.getEtapa() >= 3) {
-                listaExpedienteTotalesEnvia.add(ec);
-                listaExpedienteTotalesAprueba.add(ec);
-                if (Objects.equals(ec.getIdAdjuntiaDefensorial(), usuarioSession.getCodigoOD())) {
-                    listaExpedienteTotalesReasigna.add(ec);
-                }
-                if (Objects.equals(ec.getIdAdjuntiaDefensorial(), usuarioSession.getCodigoOD())) {
-                    listaExpedienteTotalesResponde.add(ec);
-                }
-            }
-        }    
         } catch (Exception e) {
-            log.error("ERROR - inicioAccionesConsulta()"+e);
+            log.error("ERROR - inicioAccionesConsulta()" + e);
         }
-        
     }
 
     public String inicioAccionesSuspenderPublic() {
         try {
-        limpiarElementosSuspencion();
-        inicioAccionesSuspencion();
-        return "expedienteAccionesSuspeder";    
+            limpiarElementosSuspencion();
+            inicioAccionesSuspencion();
+            return "expedienteAccionesSuspeder";
         } catch (Exception e) {
-            log.error("ERROR - inicioAccionesSuspenderPublic()"+e);
+            log.error("ERROR - inicioAccionesSuspenderPublic()" + e);
         }
         return null;
     }
@@ -1459,40 +1460,40 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     private String inicioAccionesSuspencion() {
         try {
             listaExpedienteSuspencion = null;
-        listaExpedienteSuspencion = expedienteSuspencionService.expedienteSuspencionSelectList(expediente.getId());
+            listaExpedienteSuspencion = expedienteSuspencionService.expedienteSuspencionSelectList(expediente.getId());
 
-        for (ExpedienteSuspencion es : listaExpedienteSuspencion) {
-            if (es.getEtapa() == EtapaSuspencionType.SUSPENCION_ETAPA_ENVIA.getKey()) {
-                setExpedienteSuspencionEnvia(es);
+            for (ExpedienteSuspencion es : listaExpedienteSuspencion) {
+                if (es.getEtapa() == EtapaSuspencionType.SUSPENCION_ETAPA_ENVIA.getKey()) {
+                    setExpedienteSuspencionEnvia(es);
+                }
+                if (es.getEtapa() == EtapaSuspencionType.SUSPENCION_ETAPA_APRUEBA.getKey()) {
+                    setExpedienteSuspencionAprueba(es);
+                }
+                if (es.getEtapa() == EtapaSuspencionType.SUSPENCION_ETAPA_ACEPTA.getKey()) {
+                    setExpedienteSuspencionAcepta(es);
+                }
             }
-            if (es.getEtapa() == EtapaSuspencionType.SUSPENCION_ETAPA_APRUEBA.getKey()) {
-                setExpedienteSuspencionAprueba(es);
+            if (expedienteSuspencionEnvia.getId() == null) {
+                expedienteSuspencionEnvia = new ExpedienteSuspencion();
             }
-            if (es.getEtapa() == EtapaSuspencionType.SUSPENCION_ETAPA_ACEPTA.getKey()) {
-                setExpedienteSuspencionAcepta(es);
-            }
-        }
-        if (expedienteSuspencionEnvia.getId() == null) {
-            expedienteSuspencionEnvia = new ExpedienteSuspencion();
-        }
 
-        if (expedienteSuspencionAprueba.getId() == null) {
-            expedienteSuspencionAprueba = new ExpedienteSuspencion();
-            expedienteSuspencionAprueba.setCodigoUsuario(usuarioSession.getCodigo());
-            return "expedienteAccionesSuspeder";
-        } else {
-            if (StringUtils.equals(expedienteSuspencionAprueba.getCodigoUsuario(), usuarioSession.getCodigo())) {
+            if (expedienteSuspencionAprueba.getId() == null) {
+                expedienteSuspencionAprueba = new ExpedienteSuspencion();
+                expedienteSuspencionAprueba.setCodigoUsuario(usuarioSession.getCodigo());
                 return "expedienteAccionesSuspeder";
+            } else {
+                if (StringUtils.equals(expedienteSuspencionAprueba.getCodigoUsuario(), usuarioSession.getCodigo())) {
+                    return "expedienteAccionesSuspeder";
+                }
             }
-        }
 
-        if (expedienteSuspencionAcepta.getId() == null) {
-            expedienteSuspencionAcepta = new ExpedienteSuspencion();
-            expedienteSuspencionAcepta.setCodigoUsuario(usuarioSession.getCodigo());
-        }
-        return "expedienteAccionesSuspeder";
+            if (expedienteSuspencionAcepta.getId() == null) {
+                expedienteSuspencionAcepta = new ExpedienteSuspencion();
+                expedienteSuspencionAcepta.setCodigoUsuario(usuarioSession.getCodigo());
+            }
+            return "expedienteAccionesSuspeder";
         } catch (Exception e) {
-            log.error("ERROR - inicioAccionesSuspencion()"+e);
+            log.error("ERROR - inicioAccionesSuspencion()" + e);
         }
         return null;
     }
@@ -1500,10 +1501,10 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     public String inicioAccionesAmpliarPublic() {
         try {
             limpiarElementosAmpliacion();
-        inicioAccionesAmpliacion();
-        return "expedienteAccionesAmpliar";
+            inicioAccionesAmpliacion();
+            return "expedienteAccionesAmpliar";
         } catch (Exception e) {
-            log.error("ERROR - inicioAccionesAmpliarPublic()"+e);
+            log.error("ERROR - inicioAccionesAmpliarPublic()" + e);
         }
         return null;
     }
@@ -1517,40 +1518,40 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     private String inicioAccionesAmpliacion() {
         try {
             listaExpedienteAmpliacion = null;
-        listaExpedienteAmpliacion = expedienteAmpliacionService.expedienteAmpliacionSelectList(expediente.getId());
+            listaExpedienteAmpliacion = expedienteAmpliacionService.expedienteAmpliacionSelectList(expediente.getId());
 
-        for (ExpedienteAmpliacion ea : listaExpedienteAmpliacion) {
-            if (ea.getEtapa() == EtapaAmpliacionType.AMPLIACION_ETAPA_ENVIA.getKey()) {
-                setExpedienteAmpliacionEnvia(ea);
+            for (ExpedienteAmpliacion ea : listaExpedienteAmpliacion) {
+                if (ea.getEtapa() == EtapaAmpliacionType.AMPLIACION_ETAPA_ENVIA.getKey()) {
+                    setExpedienteAmpliacionEnvia(ea);
+                }
+                if (ea.getEtapa() == EtapaAmpliacionType.AMPLIACION_ETAPA_APRUEBA.getKey()) {
+                    setExpedienteAmpliacionAprueba(ea);
+                }
+                if (ea.getEtapa() == EtapaAmpliacionType.AMPLIACION_ETAPA_ACEPTA.getKey()) {
+                    setExpedienteAmpliacionAcepta(ea);
+                }
             }
-            if (ea.getEtapa() == EtapaAmpliacionType.AMPLIACION_ETAPA_APRUEBA.getKey()) {
-                setExpedienteAmpliacionAprueba(ea);
+            if (expedienteAmpliacionEnvia.getId() == null) {
+                expedienteAmpliacionEnvia = new ExpedienteAmpliacion();
             }
-            if (ea.getEtapa() == EtapaAmpliacionType.AMPLIACION_ETAPA_ACEPTA.getKey()) {
-                setExpedienteAmpliacionAcepta(ea);
-            }
-        }
-        if (expedienteAmpliacionEnvia.getId() == null) {
-            expedienteAmpliacionEnvia = new ExpedienteAmpliacion();
-        }
 
-        if (expedienteAmpliacionAprueba.getId() == null) {
-            expedienteAmpliacionAprueba = new ExpedienteAmpliacion();
-            expedienteAmpliacionAprueba.setCodigoUsuario(usuarioSession.getCodigo());
-            return "expedienteAccionesAmpliar";
-        } else {
-            if (StringUtils.equals(expedienteAmpliacionAprueba.getCodigoUsuario(), usuarioSession.getCodigo())) {
+            if (expedienteAmpliacionAprueba.getId() == null) {
+                expedienteAmpliacionAprueba = new ExpedienteAmpliacion();
+                expedienteAmpliacionAprueba.setCodigoUsuario(usuarioSession.getCodigo());
                 return "expedienteAccionesAmpliar";
+            } else {
+                if (StringUtils.equals(expedienteAmpliacionAprueba.getCodigoUsuario(), usuarioSession.getCodigo())) {
+                    return "expedienteAccionesAmpliar";
+                }
             }
-        }
 
-        if (expedienteAmpliacionAcepta.getId() == null) {
-            expedienteAmpliacionAcepta = new ExpedienteAmpliacion();
-            expedienteAmpliacionAcepta.setCodigoUsuario(usuarioSession.getCodigo());
-        }
-        return "expedienteAccionesAmpliar";
+            if (expedienteAmpliacionAcepta.getId() == null) {
+                expedienteAmpliacionAcepta = new ExpedienteAmpliacion();
+                expedienteAmpliacionAcepta.setCodigoUsuario(usuarioSession.getCodigo());
+            }
+            return "expedienteAccionesAmpliar";
         } catch (Exception e) {
-            log.error("ERROR - inicioAccionesAmpliacion()"+e);
+            log.error("ERROR - inicioAccionesAmpliacion()" + e);
         }
         return null;
     }
@@ -1558,10 +1559,10 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     public String inicioAccionesConsultaPublic() {
         try {
             limpiarElementosConsulta();
-        inicioAccionesConsulta();
-        return "expedienteAccionesConsulta";
+            inicioAccionesConsulta();
+            return "expedienteAccionesConsulta";
         } catch (Exception e) {
-            log.error("ERROR - inicioAccionesConsultaPublic()"+e);
+            log.error("ERROR - inicioAccionesConsultaPublic()" + e);
         }
         return null;
     }
@@ -1569,43 +1570,43 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     public String inicioAccionesDerivacion() {
         try {
             listaExpedienteDerivacion = null;
-        listaExpedienteDerivacion = expedienteDerivacionService.expedienteDerivacionSelectList(expediente.getId());
-        expedienteDerivacionEnvia = null;
-        expedienteDerivacionAprueba = null;
-        expedienteDerivacionReasigna = null;
-        for (ExpedienteDerivacion ed : listaExpedienteDerivacion) {
-            if (ed.getEtapa() == EtapaDerivacionType.DERIVAR_ETAPA_ENVIA.getKey()) {
-                setExpedienteDerivacionEnvia(ed);
+            listaExpedienteDerivacion = expedienteDerivacionService.expedienteDerivacionSelectList(expediente.getId());
+            expedienteDerivacionEnvia = null;
+            expedienteDerivacionAprueba = null;
+            expedienteDerivacionReasigna = null;
+            for (ExpedienteDerivacion ed : listaExpedienteDerivacion) {
+                if (ed.getEtapa() == EtapaDerivacionType.DERIVAR_ETAPA_ENVIA.getKey()) {
+                    setExpedienteDerivacionEnvia(ed);
+                }
+                if (ed.getEtapa() == EtapaDerivacionType.DERIVAR_ETAPA_APRUEBA.getKey()) {
+                    setExpedienteDerivacionAprueba(ed);
+                }
+                if (ed.getEtapa() == EtapaDerivacionType.DERIVAR_ETAPA_REASIGNA.getKey()) {
+                    setExpedienteDerivacionReasigna(ed);
+                }
             }
-            if (ed.getEtapa() == EtapaDerivacionType.DERIVAR_ETAPA_APRUEBA.getKey()) {
-                setExpedienteDerivacionAprueba(ed);
+            if (expedienteDerivacionEnvia == null) {
+                expedienteDerivacionEnvia = new ExpedienteDerivacion();
             }
-            if (ed.getEtapa() == EtapaDerivacionType.DERIVAR_ETAPA_REASIGNA.getKey()) {
-                setExpedienteDerivacionReasigna(ed);
-            }
-        }
-        if (expedienteDerivacionEnvia == null) {
-            expedienteDerivacionEnvia = new ExpedienteDerivacion();
-        }
 
-        if (expedienteDerivacionAprueba == null) {
-            expedienteDerivacionAprueba = new ExpedienteDerivacion();
-            expedienteDerivacionAprueba.setCodigoUsuario(usuarioSession.getCodigo());
-            expedienteDerivacionAprueba.setIdOficinaDefensorial(expedienteDerivacionEnvia.getIdOficinaDefensorial());
-            return "expedienteAccionesDerivacion";
-        } else {
-            if (StringUtils.equals(expedienteDerivacionAprueba.getCodigoUsuario(), usuarioSession.getCodigo())) {
+            if (expedienteDerivacionAprueba == null) {
+                expedienteDerivacionAprueba = new ExpedienteDerivacion();
+                expedienteDerivacionAprueba.setCodigoUsuario(usuarioSession.getCodigo());
+                expedienteDerivacionAprueba.setIdOficinaDefensorial(expedienteDerivacionEnvia.getIdOficinaDefensorial());
                 return "expedienteAccionesDerivacion";
+            } else {
+                if (StringUtils.equals(expedienteDerivacionAprueba.getCodigoUsuario(), usuarioSession.getCodigo())) {
+                    return "expedienteAccionesDerivacion";
+                }
             }
-        }
 
-        if (expedienteDerivacionReasigna == null) {
-            expedienteDerivacionReasigna = new ExpedienteDerivacion();
-            expedienteDerivacionReasigna.setCodigoUsuario(usuarioSession.getCodigo());
-        }
-        return "expedienteAccionesDerivacion";
+            if (expedienteDerivacionReasigna == null) {
+                expedienteDerivacionReasigna = new ExpedienteDerivacion();
+                expedienteDerivacionReasigna.setCodigoUsuario(usuarioSession.getCodigo());
+            }
+            return "expedienteAccionesDerivacion";
         } catch (Exception e) {
-            log.error("ERROR - inicioAccionesDerivacion()"+e);
+            log.error("ERROR - inicioAccionesDerivacion()" + e);
         }
         return null;
     }
@@ -1613,31 +1614,31 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     public boolean enviarDerivacion() {
         try {
             if (StringUtils.isBlank(expedienteDerivacionEnvia.getDetalle())) {
-            msg.messageAlert("Debe ingresar el detalle", null);
-            return false;
-        }
-        if (expedienteDerivacionEnvia.getIdOficinaDefensorial() == 0) {
-            msg.messageAlert("Debe seleccionar una oficina defensorial", null);
-            return false;
-        }
-        if (expedienteDerivacionEnvia.getId() != null) {
-            return false;
-        }
-        expedienteDerivacionEnvia.setIdExpediente(expediente.getId());
-        expedienteDerivacionEnvia.setNumeroExpediente(expediente.getNumero());
-        expedienteDerivacionEnvia.setEstado("ACT");
-        expedienteDerivacionEnvia.setEtapa(EtapaDerivacionType.DERIVAR_ETAPA_ENVIA.getKey());
-        expedienteDerivacionEnvia.setCodigoUsuario(usuarioSession.getCodigo());
-        expedienteDerivacionEnvia.setNombreUsuario(usuarioSession.getNombre() + " " + usuarioSession.getApellidoPaterno() + " " + usuarioSession.getApellidoMaterno());
-        expedienteDerivacionEnvia.setFecha(new Date());
-        String ruta = uploadArchive(file4);
-        expedienteDerivacionEnvia.setRuta(ruta);
-        expedienteDerivacionService.expedienteDerivacionInsertar(expedienteDerivacionEnvia);
-        enviarMensajeDerivacion();
-        msg.messageInfo("Se envio la Derivación", null);
-        return true;
+                msg.messageAlert("Debe ingresar el detalle", null);
+                return false;
+            }
+            if (expedienteDerivacionEnvia.getIdOficinaDefensorial() == 0) {
+                msg.messageAlert("Debe seleccionar una oficina defensorial", null);
+                return false;
+            }
+            if (expedienteDerivacionEnvia.getId() != null) {
+                return false;
+            }
+            expedienteDerivacionEnvia.setIdExpediente(expediente.getId());
+            expedienteDerivacionEnvia.setNumeroExpediente(expediente.getNumero());
+            expedienteDerivacionEnvia.setEstado("ACT");
+            expedienteDerivacionEnvia.setEtapa(EtapaDerivacionType.DERIVAR_ETAPA_ENVIA.getKey());
+            expedienteDerivacionEnvia.setCodigoUsuario(usuarioSession.getCodigo());
+            expedienteDerivacionEnvia.setNombreUsuario(usuarioSession.getNombre() + " " + usuarioSession.getApellidoPaterno() + " " + usuarioSession.getApellidoMaterno());
+            expedienteDerivacionEnvia.setFecha(new Date());
+            String ruta = uploadArchive(file4);
+            expedienteDerivacionEnvia.setRuta(ruta);
+            expedienteDerivacionService.expedienteDerivacionInsertar(expedienteDerivacionEnvia);
+            enviarMensajeDerivacion();
+            msg.messageInfo("Se envio la Derivación", null);
+            return true;
         } catch (Exception e) {
-            log.error("ERROR - enviarDerivacion()"+e);
+            log.error("ERROR - enviarDerivacion()" + e);
         }
         return false;
     }
@@ -1645,40 +1646,40 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     public boolean aprobarDerivacion() {
         try {
             if (StringUtils.isBlank(expedienteDerivacionAprueba.getAprueba())) {
-            msg.messageAlert("Debe aprobar o desaprobar la solicitud de derivación", null);
-            return false;
-        }
-
-        if (StringUtils.isBlank(expedienteDerivacionAprueba.getDetalle())) {
-            msg.messageAlert("Debe ingresar el detalle", null);
-            return false;
-        }
-
-        if (StringUtils.equals(expedienteDerivacionAprueba.getAprueba(), "SI")) {
-            if (expedienteDerivacionAprueba.getIdOficinaDefensorial() == 0) {
-                msg.messageAlert("Debe seleccionar una oficina defensorial", null);
+                msg.messageAlert("Debe aprobar o desaprobar la solicitud de derivación", null);
                 return false;
             }
-        }
-        expedienteDerivacionAprueba.setIdExpediente(expediente.getId());
-        expedienteDerivacionAprueba.setNumeroExpediente(expediente.getNumero());
-        expedienteDerivacionAprueba.setEstado("ACT");
-        expedienteDerivacionAprueba.setEtapa(EtapaDerivacionType.DERIVAR_ETAPA_APRUEBA.getKey());
-        expedienteDerivacionAprueba.setCodigoUsuario(usuarioSession.getCodigo());
-        expedienteDerivacionAprueba.setNombreUsuario(usuarioSession.getNombre() + " " + usuarioSession.getApellidoPaterno() + " " + usuarioSession.getApellidoMaterno());
-        expedienteDerivacionAprueba.setFecha(new Date());
-        expedienteDerivacionService.expedienteDerivacionInsertar(expedienteDerivacionAprueba);
-        if (StringUtils.equals(expedienteDerivacionAprueba.getAprueba(), "SI")) {
-            enviarMensajeAprobacion();
-            msg.messageInfo("Se aprobó la Derivación", null);
-        } else {
-            guardarVersion2();
-            enviarMensajeDesaprobacion();
-            msg.messageInfo("No se aprobo la derivación", null);
-        }
-        return true;
+
+            if (StringUtils.isBlank(expedienteDerivacionAprueba.getDetalle())) {
+                msg.messageAlert("Debe ingresar el detalle", null);
+                return false;
+            }
+
+            if (StringUtils.equals(expedienteDerivacionAprueba.getAprueba(), "SI")) {
+                if (expedienteDerivacionAprueba.getIdOficinaDefensorial() == 0) {
+                    msg.messageAlert("Debe seleccionar una oficina defensorial", null);
+                    return false;
+                }
+            }
+            expedienteDerivacionAprueba.setIdExpediente(expediente.getId());
+            expedienteDerivacionAprueba.setNumeroExpediente(expediente.getNumero());
+            expedienteDerivacionAprueba.setEstado("ACT");
+            expedienteDerivacionAprueba.setEtapa(EtapaDerivacionType.DERIVAR_ETAPA_APRUEBA.getKey());
+            expedienteDerivacionAprueba.setCodigoUsuario(usuarioSession.getCodigo());
+            expedienteDerivacionAprueba.setNombreUsuario(usuarioSession.getNombre() + " " + usuarioSession.getApellidoPaterno() + " " + usuarioSession.getApellidoMaterno());
+            expedienteDerivacionAprueba.setFecha(new Date());
+            expedienteDerivacionService.expedienteDerivacionInsertar(expedienteDerivacionAprueba);
+            if (StringUtils.equals(expedienteDerivacionAprueba.getAprueba(), "SI")) {
+                enviarMensajeAprobacion();
+                msg.messageInfo("Se aprobó la Derivación", null);
+            } else {
+                guardarVersion2();
+                enviarMensajeDesaprobacion();
+                msg.messageInfo("No se aprobo la derivación", null);
+            }
+            return true;
         } catch (Exception e) {
-            log.error("ERROR - aprobarDerivacion()"+e);
+            log.error("ERROR - aprobarDerivacion()" + e);
         }
         return false;
     }
@@ -1686,41 +1687,41 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     public boolean reasignarDerivacion() {
         try {
             if (StringUtils.isBlank(expedienteDerivacionReasigna.getAprueba())) {
-            msg.messageAlert("Debe aceptar o rechazar la solicitud de derivación", null);
-            return false;
-        }
-
-        if (StringUtils.isBlank(expedienteDerivacionReasigna.getDetalle())) {
-            msg.messageAlert("Debe ingresar el detalle", null);
-            return false;
-        }
-
-        if (StringUtils.equals(expedienteDerivacionReasigna.getAprueba(), "SI")) {
-            if (StringUtils.equals(expedienteDerivacionReasigna.getCodigoUsuarioDerivado(), "0")) {
-                msg.messageAlert("Debe seleccionar el comisionado al cual derivará el expediente", null);
+                msg.messageAlert("Debe aceptar o rechazar la solicitud de derivación", null);
                 return false;
             }
-        }
-        expedienteDerivacionReasigna.setIdExpediente(expediente.getId());
-        expedienteDerivacionReasigna.setNumeroExpediente(expediente.getNumero());
-        expedienteDerivacionReasigna.setEstado("ACT");
-        expedienteDerivacionReasigna.setEtapa(EtapaDerivacionType.DERIVAR_ETAPA_REASIGNA.getKey());
-        expedienteDerivacionReasigna.setCodigoUsuario(usuarioSession.getCodigo());
-        expedienteDerivacionReasigna.setNombreUsuario(usuarioSession.getNombre() + " " + usuarioSession.getApellidoPaterno() + " " + usuarioSession.getApellidoMaterno());
-        expedienteDerivacionReasigna.setFecha(new Date());
-        expedienteDerivacionService.expedienteDerivacionInsertar(expedienteDerivacionReasigna);
-        if (StringUtils.equals(expedienteDerivacionReasigna.getAprueba(), "SI")) {
-            guardarVersion3(expedienteDerivacionReasigna.getCodigoUsuarioDerivado());
-            enviarMensajeReasignacion();
-            msg.messageInfo("Se reasigno por derivación el expediente", null);
-        } else {
-            guardarVersion2();
-            enviarMensajeReasignacionDesaprobada();
-            msg.messageInfo("Se rechaza la derivación", null);
-        }
-        return true;
+
+            if (StringUtils.isBlank(expedienteDerivacionReasigna.getDetalle())) {
+                msg.messageAlert("Debe ingresar el detalle", null);
+                return false;
+            }
+
+            if (StringUtils.equals(expedienteDerivacionReasigna.getAprueba(), "SI")) {
+                if (StringUtils.equals(expedienteDerivacionReasigna.getCodigoUsuarioDerivado(), "0")) {
+                    msg.messageAlert("Debe seleccionar el comisionado al cual derivará el expediente", null);
+                    return false;
+                }
+            }
+            expedienteDerivacionReasigna.setIdExpediente(expediente.getId());
+            expedienteDerivacionReasigna.setNumeroExpediente(expediente.getNumero());
+            expedienteDerivacionReasigna.setEstado("ACT");
+            expedienteDerivacionReasigna.setEtapa(EtapaDerivacionType.DERIVAR_ETAPA_REASIGNA.getKey());
+            expedienteDerivacionReasigna.setCodigoUsuario(usuarioSession.getCodigo());
+            expedienteDerivacionReasigna.setNombreUsuario(usuarioSession.getNombre() + " " + usuarioSession.getApellidoPaterno() + " " + usuarioSession.getApellidoMaterno());
+            expedienteDerivacionReasigna.setFecha(new Date());
+            expedienteDerivacionService.expedienteDerivacionInsertar(expedienteDerivacionReasigna);
+            if (StringUtils.equals(expedienteDerivacionReasigna.getAprueba(), "SI")) {
+                guardarVersion3(expedienteDerivacionReasigna.getCodigoUsuarioDerivado());
+                enviarMensajeReasignacion();
+                msg.messageInfo("Se reasigno por derivación el expediente", null);
+            } else {
+                guardarVersion2();
+                enviarMensajeReasignacionDesaprobada();
+                msg.messageInfo("Se rechaza la derivación", null);
+            }
+            return true;
         } catch (Exception e) {
-            log.error("ERROR - reasignarDerivacion()"+e);
+            log.error("ERROR - reasignarDerivacion()" + e);
         }
         return false;
     }
@@ -1728,50 +1729,50 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     public boolean enviarConsulta(int tipo) {
         try {
             if (expedienteConsultaEnvia.getId() != null) {
-            return false;
-        }
-        if (StringUtils.isBlank(expedienteConsultaEnvia.getDetalle())) {
-            msg.messageAlert("Debe ingresar la consulta", null);
-            return false;
-        }
-        if (expedienteConsultaEnvia.getIdAdjuntiaDefensorial() == null || expedienteConsultaEnvia.getIdAdjuntiaDefensorial() == 0) {
-            msg.messageAlert("Debe seleccionar el destino de la consulta", null);
-            return false;
-        }
-        String ruta1 = uploadArchive(file3);
-        expedienteConsultaEnvia.setRuta(ruta1);
-        expedienteConsultaEnvia.setIdExpediente(expediente.getId());
-        expedienteConsultaEnvia.setNumeroExpediente(expediente.getNumero());
-        expedienteConsultaEnvia.setEstado("ACT");
-        expedienteConsultaEnvia.setEtapa(EtapaConsultaType.CONSULTA_ETAPA_ENVIA.getKey());
-        expedienteConsultaEnvia.setCodigoUsuario(usuarioSession.getCodigo());
-        expedienteConsultaEnvia.setNombreUsuario(usuarioSession.getNombre() + " " + usuarioSession.getApellidoPaterno() + " " + usuarioSession.getApellidoMaterno());
-        expedienteConsultaEnvia.setTipo(tipo);
-        if (tipo == 1) {
-            String formato = RandomStringUtils.random(11, 0, 21, true, true, "WERTYUIO123456789KPBV".toCharArray());
-            expedienteConsultaEnvia.setCodigo("C" + formato);
-        }
-        expedienteConsultaEnvia.setFecha(new Date());
-        /**
-         * GRABAR EL PADRE
-         */
-        expedienteConsultaService.expedienteConsultaInsertar(expedienteConsultaEnvia);
-        /**
-         * GRABAR EL HIJO
-         */
-        expedienteConsultaEnvia.setIdPadre(expedienteConsultaEnvia.getId());
-        expedienteConsultaEnvia.setEtapa(EtapaConsultaType.CONSULTA_ETAPA_ENVIA.getKey());
-        expedienteConsultaEnvia.setId(null);
-        expedienteConsultaService.expedienteConsultaInsertar(expedienteConsultaEnvia);
-        /**
-         *
-         */
-        enviarMensajeConsulta();
-        inicioAccionesConsulta();
-        msg.messageInfo("Se envio la Consulta", null);
-        return true;
+                return false;
+            }
+            if (StringUtils.isBlank(expedienteConsultaEnvia.getDetalle())) {
+                msg.messageAlert("Debe ingresar la consulta", null);
+                return false;
+            }
+            if (expedienteConsultaEnvia.getIdAdjuntiaDefensorial() == null || expedienteConsultaEnvia.getIdAdjuntiaDefensorial() == 0) {
+                msg.messageAlert("Debe seleccionar el destino de la consulta", null);
+                return false;
+            }
+            String ruta1 = uploadArchive(file3);
+            expedienteConsultaEnvia.setRuta(ruta1);
+            expedienteConsultaEnvia.setIdExpediente(expediente.getId());
+            expedienteConsultaEnvia.setNumeroExpediente(expediente.getNumero());
+            expedienteConsultaEnvia.setEstado("ACT");
+            expedienteConsultaEnvia.setEtapa(EtapaConsultaType.CONSULTA_ETAPA_ENVIA.getKey());
+            expedienteConsultaEnvia.setCodigoUsuario(usuarioSession.getCodigo());
+            expedienteConsultaEnvia.setNombreUsuario(usuarioSession.getNombre() + " " + usuarioSession.getApellidoPaterno() + " " + usuarioSession.getApellidoMaterno());
+            expedienteConsultaEnvia.setTipo(tipo);
+            if (tipo == 1) {
+                String formato = RandomStringUtils.random(11, 0, 21, true, true, "WERTYUIO123456789KPBV".toCharArray());
+                expedienteConsultaEnvia.setCodigo("C" + formato);
+            }
+            expedienteConsultaEnvia.setFecha(new Date());
+            /**
+             * GRABAR EL PADRE
+             */
+            expedienteConsultaService.expedienteConsultaInsertar(expedienteConsultaEnvia);
+            /**
+             * GRABAR EL HIJO
+             */
+            expedienteConsultaEnvia.setIdPadre(expedienteConsultaEnvia.getId());
+            expedienteConsultaEnvia.setEtapa(EtapaConsultaType.CONSULTA_ETAPA_ENVIA.getKey());
+            expedienteConsultaEnvia.setId(null);
+            expedienteConsultaService.expedienteConsultaInsertar(expedienteConsultaEnvia);
+            /**
+             *
+             */
+            enviarMensajeConsulta();
+            inicioAccionesConsulta();
+            msg.messageInfo("Se envio la Consulta", null);
+            return true;
         } catch (Exception e) {
-            log.error("ERROR - enviarConsulta()"+e);
+            log.error("ERROR - enviarConsulta()" + e);
         }
         return false;
     }
@@ -1779,71 +1780,71 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     public boolean enviarAprobacion() {
         try {
             int contador = expedienteConsultaService.expedienteConsultaPorEtapaCount(new ExpedienteConsulta(EtapaConsultaType.CONSULTA_ETAPA_APRUEBA.getKey(), expedienteConsultaAprueba.getId()));
-        if (contador > 0) {
-            return false;
-        }
-
-        if (StringUtils.isBlank(expedienteConsultaAprueba.getDetalle())) {
-            msg.messageAlert("El campo de la consulta no puede estar vacio", null);
-            return false;
-        }
-        if (StringUtils.isBlank(expedienteConsultaAprueba.getAprueba())) {
-            msg.messageAlert("Debe aprobar o desaprobar la consulta", null);
-            return false;
-        } else {
-            if (StringUtils.equals(expedienteConsultaAprueba.getAprueba(), "NO")) {
-                expedienteConsultaAprueba.setEstado("INA");
-            } else {
-                expedienteConsultaAprueba.setEstado("ACT");
+            if (contador > 0) {
+                return false;
             }
-        }
-        if (expedienteConsultaAprueba.getIdAdjuntiaDefensorial() == null || expedienteConsultaAprueba.getIdAdjuntiaDefensorial() == 0) {
-            msg.messageAlert("Debe seleccionar el destino de la consulta", null);
-            return false;
-        }
-        setExpedienteConsultaPadre(expedienteConsultaAprueba);
-        String ruta1 = uploadArchive(file3);
-        if (ruta1 != null) {
-            expedienteConsultaPadre.setRuta(ruta1);
-        }
-        expedienteConsultaPadre.setCodigoUsuario(usuarioSession.getCodigo());
-        expedienteConsultaPadre.setNombreUsuario(usuarioSession.getNombre() + " " + usuarioSession.getApellidoPaterno() + " " + usuarioSession.getApellidoMaterno());
-        if (StringUtils.equals(expedienteConsultaPadre.getAprueba(), "NO")) {
-            expedienteConsultaPadre.setEtapa(EtapaConsultaType.CONSULTA_ETAPA_ENVIA.getKey());
-        } else {
-            expedienteConsultaPadre.setEtapa(EtapaConsultaType.CONSULTA_ETAPA_APRUEBA.getKey());
-            aumentarDisminuirTiempoEtapa(1, 20);
-        }
-        expedienteConsultaPadre.setFecha(new Date());
-        /**
-         * ACTUALIZAR PADRE
-         */
-        expedienteConsultaService.expedienteConsultaUpdate(expedienteConsultaPadre);
-        /**
-         * GRABAR EL HIJO
-         */
-        setExpedienteConsultaAprueba(expedienteConsultaPadre);
-        expedienteConsultaAprueba.setIdPadre(expedienteConsultaPadre.getId());
-        expedienteConsultaAprueba.setEtapa(EtapaConsultaType.CONSULTA_ETAPA_APRUEBA.getKey());
-        expedienteConsultaAprueba.setId(null);
-        expedienteConsultaAprueba.setEstado("ACT");
-        expedienteConsultaService.expedienteConsultaInsertar(expedienteConsultaAprueba);
-        /**
-         *
-         */
-        if (StringUtils.equals(expedienteConsultaAprueba.getAprueba(), "NO")) {
-            enviarMensajeDesaprobacionConsulta();
-            inicioAccionesConsulta();
-            msg.messageInfo("No se aprobo la Consulta", null);
-        } else {
-            enviarMensajeAprobacionConsulta();
-            inicioAccionesConsulta();
-            msg.messageInfo("Se aprobo la Consulta", null);
-        }
 
-        return true;
+            if (StringUtils.isBlank(expedienteConsultaAprueba.getDetalle())) {
+                msg.messageAlert("El campo de la consulta no puede estar vacio", null);
+                return false;
+            }
+            if (StringUtils.isBlank(expedienteConsultaAprueba.getAprueba())) {
+                msg.messageAlert("Debe aprobar o desaprobar la consulta", null);
+                return false;
+            } else {
+                if (StringUtils.equals(expedienteConsultaAprueba.getAprueba(), "NO")) {
+                    expedienteConsultaAprueba.setEstado("INA");
+                } else {
+                    expedienteConsultaAprueba.setEstado("ACT");
+                }
+            }
+            if (expedienteConsultaAprueba.getIdAdjuntiaDefensorial() == null || expedienteConsultaAprueba.getIdAdjuntiaDefensorial() == 0) {
+                msg.messageAlert("Debe seleccionar el destino de la consulta", null);
+                return false;
+            }
+            setExpedienteConsultaPadre(expedienteConsultaAprueba);
+            String ruta1 = uploadArchive(file3);
+            if (ruta1 != null) {
+                expedienteConsultaPadre.setRuta(ruta1);
+            }
+            expedienteConsultaPadre.setCodigoUsuario(usuarioSession.getCodigo());
+            expedienteConsultaPadre.setNombreUsuario(usuarioSession.getNombre() + " " + usuarioSession.getApellidoPaterno() + " " + usuarioSession.getApellidoMaterno());
+            if (StringUtils.equals(expedienteConsultaPadre.getAprueba(), "NO")) {
+                expedienteConsultaPadre.setEtapa(EtapaConsultaType.CONSULTA_ETAPA_ENVIA.getKey());
+            } else {
+                expedienteConsultaPadre.setEtapa(EtapaConsultaType.CONSULTA_ETAPA_APRUEBA.getKey());
+                aumentarDisminuirTiempoEtapa(1, 20);
+            }
+            expedienteConsultaPadre.setFecha(new Date());
+            /**
+             * ACTUALIZAR PADRE
+             */
+            expedienteConsultaService.expedienteConsultaUpdate(expedienteConsultaPadre);
+            /**
+             * GRABAR EL HIJO
+             */
+            setExpedienteConsultaAprueba(expedienteConsultaPadre);
+            expedienteConsultaAprueba.setIdPadre(expedienteConsultaPadre.getId());
+            expedienteConsultaAprueba.setEtapa(EtapaConsultaType.CONSULTA_ETAPA_APRUEBA.getKey());
+            expedienteConsultaAprueba.setId(null);
+            expedienteConsultaAprueba.setEstado("ACT");
+            expedienteConsultaService.expedienteConsultaInsertar(expedienteConsultaAprueba);
+            /**
+             *
+             */
+            if (StringUtils.equals(expedienteConsultaAprueba.getAprueba(), "NO")) {
+                enviarMensajeDesaprobacionConsulta();
+                inicioAccionesConsulta();
+                msg.messageInfo("No se aprobo la Consulta", null);
+            } else {
+                enviarMensajeAprobacionConsulta();
+                inicioAccionesConsulta();
+                msg.messageInfo("Se aprobo la Consulta", null);
+            }
+
+            return true;
         } catch (Exception e) {
-            log.error("ERROR - enviarAprobacion()"+e);
+            log.error("ERROR - enviarAprobacion()" + e);
         }
         return false;
     }
@@ -1851,67 +1852,67 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     public boolean reasignarConsulta() {
         try {
             int contador = expedienteConsultaService.expedienteConsultaPorEtapaCount(new ExpedienteConsulta(EtapaConsultaType.CONSULTA_ETAPA_REASIGNA.getKey(), expedienteConsultaReasigna.getId()));
-        if (contador > 0) {
-            return false;
-        }
+            if (contador > 0) {
+                return false;
+            }
 
-        if (StringUtils.isBlank(expedienteConsultaReasigna.getDetalle())) {
-            msg.messageAlert("El campo de la consulta no puede estar vacio", null);
-            return false;
-        }
-        if (StringUtils.isBlank(expedienteConsultaReasigna.getAprueba())) {
-            msg.messageAlert("Debe aprobar o desaprobar la consulta", null);
-            return false;
-        } else {
-            if (StringUtils.equals(expedienteConsultaReasigna.getAprueba(), "SI")) {
-                if (StringUtils.equals(expedienteConsultaReasigna.getCodigoUsuarioReasignado(), "0")) {
-                    msg.messageAlert("Debe seleccionar el comisionado al cual reasignara la consulta", null);
-                    return false;
+            if (StringUtils.isBlank(expedienteConsultaReasigna.getDetalle())) {
+                msg.messageAlert("El campo de la consulta no puede estar vacio", null);
+                return false;
+            }
+            if (StringUtils.isBlank(expedienteConsultaReasigna.getAprueba())) {
+                msg.messageAlert("Debe aprobar o desaprobar la consulta", null);
+                return false;
+            } else {
+                if (StringUtils.equals(expedienteConsultaReasigna.getAprueba(), "SI")) {
+                    if (StringUtils.equals(expedienteConsultaReasigna.getCodigoUsuarioReasignado(), "0")) {
+                        msg.messageAlert("Debe seleccionar el comisionado al cual reasignara la consulta", null);
+                        return false;
+                    }
                 }
             }
-        }
-        setExpedienteConsultaPadre(expedienteConsultaReasigna);
-        String ruta1 = uploadArchive(file3);
-        if (ruta1 != null) {
-            expedienteConsultaPadre.setRuta(ruta1);
-        }
-        expedienteConsultaPadre.setCodigoUsuario(usuarioSession.getCodigo());
-        expedienteConsultaPadre.setNombreUsuario(usuarioSession.getNombre() + " " + usuarioSession.getApellidoPaterno() + " " + usuarioSession.getApellidoMaterno());
-        if (StringUtils.equals(expedienteConsultaPadre.getAprueba(), "NO")) {
-            expedienteConsultaPadre.setEtapa(EtapaConsultaType.CONSULTA_ETAPA_APRUEBA.getKey());
-            expedienteConsultaPadre.setEstado("INA");
-        } else {
-            expedienteConsultaPadre.setEtapa(EtapaConsultaType.CONSULTA_ETAPA_REASIGNA.getKey());
-            expedienteConsultaPadre.setEstado("ACT");
-        }
-        expedienteConsultaPadre.setFecha(new Date());
-        /**
-         * ACTUALIZAR PADRE
-         */
-        expedienteConsultaService.expedienteConsultaUpdate(expedienteConsultaPadre);
-        /**
-         * GRABAR EL HIJO
-         */
-        setExpedienteConsultaReasigna(expedienteConsultaPadre);
-        expedienteConsultaReasigna.setIdPadre(expedienteConsultaPadre.getId());
-        expedienteConsultaReasigna.setEtapa(EtapaConsultaType.CONSULTA_ETAPA_REASIGNA.getKey());
-        expedienteConsultaReasigna.setId(null);
-        expedienteConsultaReasigna.setEstado("ACT");
-        expedienteConsultaService.expedienteConsultaInsertar(expedienteConsultaReasigna);
-        /**
-         *
-         */
-        if (StringUtils.equals(expedienteConsultaReasigna.getAprueba(), "NO")) {
-            enviarMensajeDesaprobacionReasignacionConsulta();
-            msg.messageInfo("Se rechaza la consulta", null);
-        } else {
-            enviarMensajeReasignacionConsulta();
-            msg.messageInfo("Se reasigno la consulta", null);
-        }
-        inicioAccionesConsulta();
-        return true;
+            setExpedienteConsultaPadre(expedienteConsultaReasigna);
+            String ruta1 = uploadArchive(file3);
+            if (ruta1 != null) {
+                expedienteConsultaPadre.setRuta(ruta1);
+            }
+            expedienteConsultaPadre.setCodigoUsuario(usuarioSession.getCodigo());
+            expedienteConsultaPadre.setNombreUsuario(usuarioSession.getNombre() + " " + usuarioSession.getApellidoPaterno() + " " + usuarioSession.getApellidoMaterno());
+            if (StringUtils.equals(expedienteConsultaPadre.getAprueba(), "NO")) {
+                expedienteConsultaPadre.setEtapa(EtapaConsultaType.CONSULTA_ETAPA_APRUEBA.getKey());
+                expedienteConsultaPadre.setEstado("INA");
+            } else {
+                expedienteConsultaPadre.setEtapa(EtapaConsultaType.CONSULTA_ETAPA_REASIGNA.getKey());
+                expedienteConsultaPadre.setEstado("ACT");
+            }
+            expedienteConsultaPadre.setFecha(new Date());
+            /**
+             * ACTUALIZAR PADRE
+             */
+            expedienteConsultaService.expedienteConsultaUpdate(expedienteConsultaPadre);
+            /**
+             * GRABAR EL HIJO
+             */
+            setExpedienteConsultaReasigna(expedienteConsultaPadre);
+            expedienteConsultaReasigna.setIdPadre(expedienteConsultaPadre.getId());
+            expedienteConsultaReasigna.setEtapa(EtapaConsultaType.CONSULTA_ETAPA_REASIGNA.getKey());
+            expedienteConsultaReasigna.setId(null);
+            expedienteConsultaReasigna.setEstado("ACT");
+            expedienteConsultaService.expedienteConsultaInsertar(expedienteConsultaReasigna);
+            /**
+             *
+             */
+            if (StringUtils.equals(expedienteConsultaReasigna.getAprueba(), "NO")) {
+                enviarMensajeDesaprobacionReasignacionConsulta();
+                msg.messageInfo("Se rechaza la consulta", null);
+            } else {
+                enviarMensajeReasignacionConsulta();
+                msg.messageInfo("Se reasigno la consulta", null);
+            }
+            inicioAccionesConsulta();
+            return true;
         } catch (Exception e) {
-            log.error("ERROR - reasignarConsulta()"+e);
+            log.error("ERROR - reasignarConsulta()" + e);
         }
         return false;
     }
@@ -1919,40 +1920,37 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     public boolean responderConsulta() {
         try {
             if (StringUtils.isBlank(expedienteConsultaResponde.getDetalle())) {
-            msg.messageAlert("Debe responder la consulta", null);
-            return false;
-        }
+                msg.messageAlert("Debe responder la consulta", null);
+                return false;
+            }
 
-        setExpedienteConsultaPadre(expedienteConsultaResponde);
-        String rutaRespuesta = uploadArchive(file6);
-        if (rutaRespuesta != null) {
-            expedienteConsultaPadre.setRutaRespuesta(rutaRespuesta);
-        }
-        expedienteConsultaPadre.setCodigoUsuario(usuarioSession.getCodigo());
-        expedienteConsultaPadre.setNombreUsuario(usuarioSession.getNombre() + " " + usuarioSession.getApellidoPaterno() + " " + usuarioSession.getApellidoMaterno());
-        expedienteConsultaPadre.setEtapa(EtapaConsultaType.CONSULTA_ETAPA_RESPONDE.getKey());
-        expedienteConsultaPadre.setFecha(new Date());
-        /**
-         * ACTUALIZAR PADRE
-         */
-        expedienteConsultaService.expedienteConsultaUpdate(expedienteConsultaPadre);
-        /**
-         * GRABAR EL HIJO
-         */
-        setExpedienteConsultaResponde(expedienteConsultaPadre);
-        expedienteConsultaResponde.setIdPadre(expedienteConsultaPadre.getId());
-        expedienteConsultaResponde.setEtapa(EtapaConsultaType.CONSULTA_ETAPA_RESPONDE.getKey());
-        expedienteConsultaResponde.setId(null);
-        expedienteConsultaService.expedienteConsultaInsertar(expedienteConsultaResponde);
-        /**
-         *
-         */
-        enviarMensajeRespondeConsulta();
-        inicioAccionesConsulta();
-        msg.messageInfo("Se respondío la consulta", null);
-        return true;
+            setExpedienteConsultaPadre(expedienteConsultaResponde);
+            String rutaRespuesta = uploadArchive(file6);
+            if (rutaRespuesta != null) {
+                expedienteConsultaPadre.setRutaRespuesta(rutaRespuesta);
+            }
+            expedienteConsultaPadre.setCodigoUsuario(usuarioSession.getCodigo());
+            expedienteConsultaPadre.setNombreUsuario(usuarioSession.getNombre() + " " + usuarioSession.getApellidoPaterno() + " " + usuarioSession.getApellidoMaterno());
+            expedienteConsultaPadre.setEtapa(EtapaConsultaType.CONSULTA_ETAPA_RESPONDE.getKey());
+            expedienteConsultaPadre.setFecha(new Date());
+            /**
+             * ACTUALIZAR PADRE
+             */
+            expedienteConsultaService.expedienteConsultaUpdate(expedienteConsultaPadre);
+            /**
+             * GRABAR EL HIJO
+             */
+            setExpedienteConsultaResponde(expedienteConsultaPadre);
+            expedienteConsultaResponde.setIdPadre(expedienteConsultaPadre.getId());
+            expedienteConsultaResponde.setEtapa(EtapaConsultaType.CONSULTA_ETAPA_RESPONDE.getKey());
+            expedienteConsultaResponde.setId(null);
+            expedienteConsultaService.expedienteConsultaInsertar(expedienteConsultaResponde);
+            enviarMensajeRespondeConsulta();
+            inicioAccionesConsulta();
+            msg.messageInfo("Se respondío la consulta", null);
+            return true;
         } catch (Exception e) {
-            log.error("ERROR - responderConsulta()"+e);
+            log.error("ERROR - responderConsulta()" + e);
         }
         return false;
     }
@@ -1960,57 +1958,57 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     public boolean respuestaAprobar() {
         try {
             if (StringUtils.isBlank(expedienteRespuestaAprueba.getDetalle())) {
-            msg.messageAlert("Debe responder la consulta", null);
-            return false;
-        }
-        if (StringUtils.isBlank(expedienteRespuestaAprueba.getAprueba())) {
-            msg.messageAlert("Debe aprobar o desaprobar la respuesta", null);
-            return false;
-        }
+                msg.messageAlert("Debe responder la consulta", null);
+                return false;
+            }
+            if (StringUtils.isBlank(expedienteRespuestaAprueba.getAprueba())) {
+                msg.messageAlert("Debe aprobar o desaprobar la respuesta", null);
+                return false;
+            }
 
-        setExpedienteConsultaPadre(expedienteRespuestaAprueba);
-        String rutaRespuesta = uploadArchive(file6);
-        if (rutaRespuesta != null) {
-            expedienteConsultaPadre.setRutaRespuesta(rutaRespuesta);
-        }
-        expedienteConsultaPadre.setCodigoUsuario(usuarioSession.getCodigo());
-        expedienteConsultaPadre.setNombreUsuario(usuarioSession.getNombre() + " " + usuarioSession.getApellidoPaterno() + " " + usuarioSession.getApellidoMaterno());
-        if (StringUtils.equals(expedienteConsultaPadre.getAprueba(), "NO")) {
-            expedienteConsultaPadre.setEtapa(EtapaConsultaType.CONSULTA_ETAPA_RESPONDE.getKey());
-            expedienteConsultaPadre.setEstado("INA");
-        } else {
+            setExpedienteConsultaPadre(expedienteRespuestaAprueba);
+            String rutaRespuesta = uploadArchive(file6);
+            if (rutaRespuesta != null) {
+                expedienteConsultaPadre.setRutaRespuesta(rutaRespuesta);
+            }
+            expedienteConsultaPadre.setCodigoUsuario(usuarioSession.getCodigo());
+            expedienteConsultaPadre.setNombreUsuario(usuarioSession.getNombre() + " " + usuarioSession.getApellidoPaterno() + " " + usuarioSession.getApellidoMaterno());
+            if (StringUtils.equals(expedienteConsultaPadre.getAprueba(), "NO")) {
+                expedienteConsultaPadre.setEtapa(EtapaConsultaType.CONSULTA_ETAPA_RESPONDE.getKey());
+                expedienteConsultaPadre.setEstado("INA");
+            } else {
+                expedienteConsultaPadre.setEtapa(EtapaConsultaType.RESPUESTA_ETAPA_APRUEBA.getKey());
+                expedienteConsultaPadre.setEstado("ACT");
+            }
             expedienteConsultaPadre.setEtapa(EtapaConsultaType.RESPUESTA_ETAPA_APRUEBA.getKey());
-            expedienteConsultaPadre.setEstado("ACT");
-        }
-        expedienteConsultaPadre.setEtapa(EtapaConsultaType.RESPUESTA_ETAPA_APRUEBA.getKey());
-        expedienteConsultaPadre.setFecha(new Date());
-        /**
-         * ACTUALIZAR PADRE
-         */
-        expedienteConsultaService.expedienteConsultaUpdate(expedienteConsultaPadre);
-        /**
-         * GRABAR EL HIJO
-         */
-        expedienteRespuestaAprueba = expedienteConsultaPadre;
-        expedienteRespuestaAprueba.setIdPadre(expedienteConsultaPadre.getId());
-        expedienteRespuestaAprueba.setEstado("ACT");
-        expedienteRespuestaAprueba.setEtapa(EtapaConsultaType.RESPUESTA_ETAPA_APRUEBA.getKey());
-        expedienteRespuestaAprueba.setId(null);
-        expedienteConsultaService.expedienteConsultaInsertar(expedienteRespuestaAprueba);
-        /**
-         *
-         */
-        if (StringUtils.equals(expedienteRespuestaAprueba.getAprueba(), "NO")) {
-            enviarMensajeDesaprobarRespuesta();
-            msg.messageInfo("Se rechaza la consulta", null);
-        } else {
-            enviarMensajeAprobarRespuesta();
-            msg.messageInfo("Se aprobo la respuesta", null);
-        }
-        inicioAccionesConsulta();
-        return true;
+            expedienteConsultaPadre.setFecha(new Date());
+            /**
+             * ACTUALIZAR PADRE
+             */
+            expedienteConsultaService.expedienteConsultaUpdate(expedienteConsultaPadre);
+            /**
+             * GRABAR EL HIJO
+             */
+            expedienteRespuestaAprueba = expedienteConsultaPadre;
+            expedienteRespuestaAprueba.setIdPadre(expedienteConsultaPadre.getId());
+            expedienteRespuestaAprueba.setEstado("ACT");
+            expedienteRespuestaAprueba.setEtapa(EtapaConsultaType.RESPUESTA_ETAPA_APRUEBA.getKey());
+            expedienteRespuestaAprueba.setId(null);
+            expedienteConsultaService.expedienteConsultaInsertar(expedienteRespuestaAprueba);
+            /**
+             *
+             */
+            if (StringUtils.equals(expedienteRespuestaAprueba.getAprueba(), "NO")) {
+                enviarMensajeDesaprobarRespuesta();
+                msg.messageInfo("Se rechaza la consulta", null);
+            } else {
+                enviarMensajeAprobarRespuesta();
+                msg.messageInfo("Se aprobo la respuesta", null);
+            }
+            inicioAccionesConsulta();
+            return true;
         } catch (Exception e) {
-            log.error("ERROR - respuestaAprobar()"+e);
+            log.error("ERROR - respuestaAprobar()" + e);
         }
         return false;
     }
@@ -2018,58 +2016,58 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     public boolean respuestaAceptar() {
         try {
             if (StringUtils.isBlank(expedienteRespuestaAcepta.getDetalle())) {
-            msg.messageAlert("Debe responder la consulta", null);
-            return false;
-        }
-        if (StringUtils.isBlank(expedienteRespuestaAcepta.getAprueba())) {
-            msg.messageAlert("Debe aceptar o rechazar la respuesta", null);
-            return false;
-        }
+                msg.messageAlert("Debe responder la consulta", null);
+                return false;
+            }
+            if (StringUtils.isBlank(expedienteRespuestaAcepta.getAprueba())) {
+                msg.messageAlert("Debe aceptar o rechazar la respuesta", null);
+                return false;
+            }
 
-        setExpedienteConsultaPadre(expedienteRespuestaAcepta);
-        String rutaRespuesta = uploadArchive(file6);
-        if (rutaRespuesta != null) {
-            expedienteConsultaPadre.setRutaRespuesta(rutaRespuesta);
-        }
-        expedienteConsultaPadre.setCodigoUsuario(usuarioSession.getCodigo());
-        expedienteConsultaPadre.setNombreUsuario(usuarioSession.getNombre() + " " + usuarioSession.getApellidoPaterno() + " " + usuarioSession.getApellidoMaterno());
-        if (StringUtils.equals(expedienteConsultaPadre.getAprueba(), "NO")) {
-            expedienteConsultaPadre.setEtapa(EtapaConsultaType.RESPUESTA_ETAPA_APRUEBA.getKey());
-            expedienteConsultaPadre.setEstado("INA");
-        } else {
+            setExpedienteConsultaPadre(expedienteRespuestaAcepta);
+            String rutaRespuesta = uploadArchive(file6);
+            if (rutaRespuesta != null) {
+                expedienteConsultaPadre.setRutaRespuesta(rutaRespuesta);
+            }
+            expedienteConsultaPadre.setCodigoUsuario(usuarioSession.getCodigo());
+            expedienteConsultaPadre.setNombreUsuario(usuarioSession.getNombre() + " " + usuarioSession.getApellidoPaterno() + " " + usuarioSession.getApellidoMaterno());
+            if (StringUtils.equals(expedienteConsultaPadre.getAprueba(), "NO")) {
+                expedienteConsultaPadre.setEtapa(EtapaConsultaType.RESPUESTA_ETAPA_APRUEBA.getKey());
+                expedienteConsultaPadre.setEstado("INA");
+            } else {
+                expedienteConsultaPadre.setEtapa(EtapaConsultaType.RESPUESTA_ETAPA_ACEPTA.getKey());
+                expedienteConsultaPadre.setEstado("ACT");
+            }
             expedienteConsultaPadre.setEtapa(EtapaConsultaType.RESPUESTA_ETAPA_ACEPTA.getKey());
-            expedienteConsultaPadre.setEstado("ACT");
-        }
-        expedienteConsultaPadre.setEtapa(EtapaConsultaType.RESPUESTA_ETAPA_ACEPTA.getKey());
-        expedienteConsultaPadre.setFecha(new Date());
-        /**
-         * ACTUALIZAR PADRE
-         */
-        expedienteConsultaService.expedienteConsultaUpdate(expedienteConsultaPadre);
-        /**
-         * GRABAR EL HIJO
-         */
-        expedienteRespuestaAcepta = expedienteConsultaPadre;
-        expedienteRespuestaAcepta.setIdPadre(expedienteConsultaPadre.getId());
-        expedienteRespuestaAcepta.setEtapa(EtapaConsultaType.RESPUESTA_ETAPA_ACEPTA.getKey());
-        expedienteRespuestaAcepta.setEstado("ACT");
-        expedienteRespuestaAcepta.setId(null);
-        expedienteConsultaService.expedienteConsultaInsertar(expedienteRespuestaAcepta);
-        /**
-         *
-         */
-        if (StringUtils.equals(expedienteRespuestaAcepta.getAprueba(), "NO")) {
-            enviarMensajeRechazaRespuesta();
-            msg.messageInfo("Se rechaza la respuesta", null);
-        } else {
-            enviarMensajeAceptarRespuesta();
-            msg.messageInfo("Se acepta la respuesta", null);
-        }
+            expedienteConsultaPadre.setFecha(new Date());
+            /**
+             * ACTUALIZAR PADRE
+             */
+            expedienteConsultaService.expedienteConsultaUpdate(expedienteConsultaPadre);
+            /**
+             * GRABAR EL HIJO
+             */
+            expedienteRespuestaAcepta = expedienteConsultaPadre;
+            expedienteRespuestaAcepta.setIdPadre(expedienteConsultaPadre.getId());
+            expedienteRespuestaAcepta.setEtapa(EtapaConsultaType.RESPUESTA_ETAPA_ACEPTA.getKey());
+            expedienteRespuestaAcepta.setEstado("ACT");
+            expedienteRespuestaAcepta.setId(null);
+            expedienteConsultaService.expedienteConsultaInsertar(expedienteRespuestaAcepta);
+            /**
+             *
+             */
+            if (StringUtils.equals(expedienteRespuestaAcepta.getAprueba(), "NO")) {
+                enviarMensajeRechazaRespuesta();
+                msg.messageInfo("Se rechaza la respuesta", null);
+            } else {
+                enviarMensajeAceptarRespuesta();
+                msg.messageInfo("Se acepta la respuesta", null);
+            }
 
-        inicioAccionesConsulta();
-        return true;
+            inicioAccionesConsulta();
+            return true;
         } catch (Exception e) {
-            log.error("ERROR - respuestaAceptar()"+e);
+            log.error("ERROR - respuestaAceptar()" + e);
         }
         return false;
     }
@@ -2077,28 +2075,28 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     public boolean enviarSuspencion() {
         try {
             if (StringUtils.isBlank(expedienteSuspencionEnvia.getDetalle())) {
-            msg.messageAlert("Debe ingresar el detalle", null);
-            return false;
-        }
+                msg.messageAlert("Debe ingresar el detalle", null);
+                return false;
+            }
 
-        if (expedienteSuspencionEnvia.getId() != null) {
-            return false;
-        }
-        expedienteSuspencionEnvia.setIdExpediente(expediente.getId());
-        expedienteSuspencionEnvia.setNumeroExpediente(expediente.getNumero());
-        expedienteSuspencionEnvia.setEstado("ACT");
-        expedienteSuspencionEnvia.setEtapa(EtapaSuspencionType.SUSPENCION_ETAPA_ENVIA.getKey());
-        expedienteSuspencionEnvia.setCodigoUsuario(usuarioSession.getCodigo());
-        expedienteSuspencionEnvia.setNombreUsuario(usuarioSession.getNombre() + " " + usuarioSession.getApellidoPaterno() + " " + usuarioSession.getApellidoMaterno());
-        expedienteSuspencionEnvia.setFecha(new Date());
-        String ruta = uploadArchive(file4);
-        expedienteSuspencionEnvia.setRuta(ruta);
-        expedienteSuspencionService.expedienteSuspencionInsertar(expedienteSuspencionEnvia);
-        enviarMensajeSupensionEnvio();
-        msg.messageInfo("Se envio la Suspensión", null);
-        return true;
+            if (expedienteSuspencionEnvia.getId() != null) {
+                return false;
+            }
+            expedienteSuspencionEnvia.setIdExpediente(expediente.getId());
+            expedienteSuspencionEnvia.setNumeroExpediente(expediente.getNumero());
+            expedienteSuspencionEnvia.setEstado("ACT");
+            expedienteSuspencionEnvia.setEtapa(EtapaSuspencionType.SUSPENCION_ETAPA_ENVIA.getKey());
+            expedienteSuspencionEnvia.setCodigoUsuario(usuarioSession.getCodigo());
+            expedienteSuspencionEnvia.setNombreUsuario(usuarioSession.getNombre() + " " + usuarioSession.getApellidoPaterno() + " " + usuarioSession.getApellidoMaterno());
+            expedienteSuspencionEnvia.setFecha(new Date());
+            String ruta = uploadArchive(file4);
+            expedienteSuspencionEnvia.setRuta(ruta);
+            expedienteSuspencionService.expedienteSuspencionInsertar(expedienteSuspencionEnvia);
+            enviarMensajeSupensionEnvio();
+            msg.messageInfo("Se envio la Suspensión", null);
+            return true;
         } catch (Exception e) {
-            log.error("ERROR - enviarSuspencion()"+e);
+            log.error("ERROR - enviarSuspencion()" + e);
         }
         return false;
     }
@@ -2106,34 +2104,32 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     public boolean aprobarSuspencion() {
         try {
             if (StringUtils.isBlank(expedienteSuspencionAprueba.getAprueba())) {
-            msg.messageAlert("Debe aprobar o desaprobar la solicitud de Suspensión", null);
-            return false;
-        }
-
-        if (StringUtils.isBlank(expedienteSuspencionAprueba.getDetalle())) {
-            msg.messageAlert("Debe ingresar el detalle", null);
-            return false;
-        }
-
-        expedienteSuspencionAprueba.setIdExpediente(expediente.getId());
-        expedienteSuspencionAprueba.setNumeroExpediente(expediente.getNumero());
-        expedienteSuspencionAprueba.setEstado("ACT");
-        expedienteSuspencionAprueba.setEtapa(EtapaSuspencionType.SUSPENCION_ETAPA_APRUEBA.getKey());
-        expedienteSuspencionAprueba.setCodigoUsuario(usuarioSession.getCodigo());
-        expedienteSuspencionAprueba.setNombreUsuario(usuarioSession.getNombre() + " " + usuarioSession.getApellidoPaterno() + " " + usuarioSession.getApellidoMaterno());
-        expedienteSuspencionAprueba.setFecha(new Date());
-        expedienteSuspencionService.expedienteSuspencionInsertar(expedienteSuspencionAprueba);
-        if (StringUtils.equals(expedienteSuspencionAprueba.getAprueba(), "SI")) {
-            enviarMensajeSuspencionAprobacion();
-            msg.messageInfo("Se aprobó la Derivación", null);
-        } else {
-            guardarVersion2();
-            enviarMensajeSuspencionDesaprobacion();
-            msg.messageInfo("No se aprobo la derivación", null);
-        }
-        return true;
+                msg.messageAlert("Debe aprobar o desaprobar la solicitud de Suspensión", null);
+                return false;
+            }
+            if (StringUtils.isBlank(expedienteSuspencionAprueba.getDetalle())) {
+                msg.messageAlert("Debe ingresar el detalle", null);
+                return false;
+            }
+            expedienteSuspencionAprueba.setIdExpediente(expediente.getId());
+            expedienteSuspencionAprueba.setNumeroExpediente(expediente.getNumero());
+            expedienteSuspencionAprueba.setEstado("ACT");
+            expedienteSuspencionAprueba.setEtapa(EtapaSuspencionType.SUSPENCION_ETAPA_APRUEBA.getKey());
+            expedienteSuspencionAprueba.setCodigoUsuario(usuarioSession.getCodigo());
+            expedienteSuspencionAprueba.setNombreUsuario(usuarioSession.getNombre() + " " + usuarioSession.getApellidoPaterno() + " " + usuarioSession.getApellidoMaterno());
+            expedienteSuspencionAprueba.setFecha(new Date());
+            expedienteSuspencionService.expedienteSuspencionInsertar(expedienteSuspencionAprueba);
+            if (StringUtils.equals(expedienteSuspencionAprueba.getAprueba(), "SI")) {
+                enviarMensajeSuspencionAprobacion();
+                msg.messageInfo("Se aprobó la Derivación", null);
+            } else {
+                guardarVersion2();
+                enviarMensajeSuspencionDesaprobacion();
+                msg.messageInfo("No se aprobo la derivación", null);
+            }
+            return true;
         } catch (Exception e) {
-            log.error("ERROR - aprobarSuspencion()"+e);
+            log.error("ERROR - aprobarSuspencion()" + e);
         }
         return false;
     }
@@ -2141,36 +2137,36 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     public boolean aceptarSuspencion() {
         try {
             if (StringUtils.isBlank(expedienteSuspencionAcepta.getAprueba())) {
-            msg.messageAlert("Debe aceptar o rechazar la solicitud de Suspensión", null);
-            return false;
-        }
+                msg.messageAlert("Debe aceptar o rechazar la solicitud de Suspensión", null);
+                return false;
+            }
 
-        if (StringUtils.isBlank(expedienteSuspencionAcepta.getDetalle())) {
-            msg.messageAlert("Debe ingresar el detalle", null);
-            return false;
-        }
+            if (StringUtils.isBlank(expedienteSuspencionAcepta.getDetalle())) {
+                msg.messageAlert("Debe ingresar el detalle", null);
+                return false;
+            }
 
-        expedienteSuspencionAcepta.setIdExpediente(expediente.getId());
-        expedienteSuspencionAcepta.setNumeroExpediente(expediente.getNumero());
-        expedienteSuspencionAcepta.setEstado("ACT");
-        expedienteSuspencionAcepta.setEtapa(EtapaSuspencionType.SUSPENCION_ETAPA_ACEPTA.getKey());
-        expedienteSuspencionAcepta.setCodigoUsuario(usuarioSession.getCodigo());
-        expedienteSuspencionAcepta.setNombreUsuario(usuarioSession.getNombre() + " " + usuarioSession.getApellidoPaterno() + " " + usuarioSession.getApellidoMaterno());
-        expedienteSuspencionAcepta.setFecha(new Date());
-        expedienteSuspencionService.expedienteSuspencionInsertar(expedienteSuspencionAcepta);
-        if (StringUtils.equals(expedienteSuspencionAcepta.getAprueba(), "SI")) {
-            guardarVersion2();
-            enviarMensajeSuspencionAcepta();
-            aumentarDisminuirTiempoEtapa(1, 20);
-            msg.messageInfo("Se acepta la solicitud de Suspensión se agregan 20 dias habiles en la etapa actual", null);
-        } else {
-            guardarVersion2();
-            enviarMensajeSuspencionRechaza();
-            msg.messageInfo("Se rechaza la solicitud de Suspensión", null);
-        }
-        return true;
+            expedienteSuspencionAcepta.setIdExpediente(expediente.getId());
+            expedienteSuspencionAcepta.setNumeroExpediente(expediente.getNumero());
+            expedienteSuspencionAcepta.setEstado("ACT");
+            expedienteSuspencionAcepta.setEtapa(EtapaSuspencionType.SUSPENCION_ETAPA_ACEPTA.getKey());
+            expedienteSuspencionAcepta.setCodigoUsuario(usuarioSession.getCodigo());
+            expedienteSuspencionAcepta.setNombreUsuario(usuarioSession.getNombre() + " " + usuarioSession.getApellidoPaterno() + " " + usuarioSession.getApellidoMaterno());
+            expedienteSuspencionAcepta.setFecha(new Date());
+            expedienteSuspencionService.expedienteSuspencionInsertar(expedienteSuspencionAcepta);
+            if (StringUtils.equals(expedienteSuspencionAcepta.getAprueba(), "SI")) {
+                guardarVersion2();
+                enviarMensajeSuspencionAcepta();
+                aumentarDisminuirTiempoEtapa(1, 20);
+                msg.messageInfo("Se acepta la solicitud de Suspensión se agregan 20 dias habiles en la etapa actual", null);
+            } else {
+                guardarVersion2();
+                enviarMensajeSuspencionRechaza();
+                msg.messageInfo("Se rechaza la solicitud de Suspensión", null);
+            }
+            return true;
         } catch (Exception e) {
-            log.error("ERROR - aceptarSuspencion()"+e);
+            log.error("ERROR - aceptarSuspencion()" + e);
         }
         return false;
     }
@@ -2178,28 +2174,27 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     public boolean enviarAmpliacion() {
         try {
             if (StringUtils.isBlank(expedienteAmpliacionEnvia.getDetalle())) {
-            msg.messageAlert("Debe ingresar el detalle", null);
-            return false;
-        }
-
-        if (expedienteAmpliacionEnvia.getId() != null) {
-            return false;
-        }
-        expedienteAmpliacionEnvia.setIdExpediente(expediente.getId());
-        expedienteAmpliacionEnvia.setNumeroExpediente(expediente.getNumero());
-        expedienteAmpliacionEnvia.setEstado("ACT");
-        expedienteAmpliacionEnvia.setEtapa(EtapaAmpliacionType.AMPLIACION_ETAPA_ENVIA.getKey());
-        expedienteAmpliacionEnvia.setCodigoUsuario(usuarioSession.getCodigo());
-        expedienteAmpliacionEnvia.setNombreUsuario(usuarioSession.getNombre() + " " + usuarioSession.getApellidoPaterno() + " " + usuarioSession.getApellidoMaterno());
-        expedienteAmpliacionEnvia.setFecha(new Date());
-        String ruta = uploadArchive(file4);
-        expedienteAmpliacionEnvia.setRuta(ruta);
-        expedienteAmpliacionService.expedienteAmpliacionInsertar(expedienteAmpliacionEnvia);
-        enviarMensajeAmpliacionEnvio();
-        msg.messageInfo("Se envio la solicitud de ampliación", null);
-        return true;
+                msg.messageAlert("Debe ingresar el detalle", null);
+                return false;
+            }
+            if (expedienteAmpliacionEnvia.getId() != null) {
+                return false;
+            }
+            expedienteAmpliacionEnvia.setIdExpediente(expediente.getId());
+            expedienteAmpliacionEnvia.setNumeroExpediente(expediente.getNumero());
+            expedienteAmpliacionEnvia.setEstado("ACT");
+            expedienteAmpliacionEnvia.setEtapa(EtapaAmpliacionType.AMPLIACION_ETAPA_ENVIA.getKey());
+            expedienteAmpliacionEnvia.setCodigoUsuario(usuarioSession.getCodigo());
+            expedienteAmpliacionEnvia.setNombreUsuario(usuarioSession.getNombre() + " " + usuarioSession.getApellidoPaterno() + " " + usuarioSession.getApellidoMaterno());
+            expedienteAmpliacionEnvia.setFecha(new Date());
+            String ruta = uploadArchive(file4);
+            expedienteAmpliacionEnvia.setRuta(ruta);
+            expedienteAmpliacionService.expedienteAmpliacionInsertar(expedienteAmpliacionEnvia);
+            enviarMensajeAmpliacionEnvio();
+            msg.messageInfo("Se envio la solicitud de ampliación", null);
+            return true;
         } catch (Exception e) {
-            log.error("ERROR - enviarAmpliacion()"+e);
+            log.error("ERROR - enviarAmpliacion()" + e);
         }
         return false;
     }
@@ -2207,34 +2202,32 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     public boolean aprobarAmpliacion() {
         try {
             if (StringUtils.isBlank(expedienteAmpliacionAprueba.getAprueba())) {
-            msg.messageAlert("Debe aprobar o desaprobar la solicitud de ampliación", null);
-            return false;
-        }
-
-        if (StringUtils.isBlank(expedienteAmpliacionAprueba.getDetalle())) {
-            msg.messageAlert("Debe ingresar el detalle", null);
-            return false;
-        }
-
-        expedienteAmpliacionAprueba.setIdExpediente(expediente.getId());
-        expedienteAmpliacionAprueba.setNumeroExpediente(expediente.getNumero());
-        expedienteAmpliacionAprueba.setEstado("ACT");
-        expedienteAmpliacionAprueba.setEtapa(EtapaAmpliacionType.AMPLIACION_ETAPA_APRUEBA.getKey());
-        expedienteAmpliacionAprueba.setCodigoUsuario(usuarioSession.getCodigo());
-        expedienteAmpliacionAprueba.setNombreUsuario(usuarioSession.getNombre() + " " + usuarioSession.getApellidoPaterno() + " " + usuarioSession.getApellidoMaterno());
-        expedienteAmpliacionAprueba.setFecha(new Date());
-        expedienteAmpliacionService.expedienteAmpliacionInsertar(expedienteAmpliacionAprueba);
-        if (StringUtils.equals(expedienteAmpliacionAprueba.getAprueba(), "SI")) {
-            enviarMensajeAmpliacionAprobacion();
-            msg.messageInfo("Se aprobó la ampliación", null);
-        } else {
-            guardarVersion2();
-            enviarMensajeAmpliacionDesaprobacion();
-            msg.messageInfo("Se desaprobo la ampliación", null);
-        }
-        return true;
+                msg.messageAlert("Debe aprobar o desaprobar la solicitud de ampliación", null);
+                return false;
+            }
+            if (StringUtils.isBlank(expedienteAmpliacionAprueba.getDetalle())) {
+                msg.messageAlert("Debe ingresar el detalle", null);
+                return false;
+            }
+            expedienteAmpliacionAprueba.setIdExpediente(expediente.getId());
+            expedienteAmpliacionAprueba.setNumeroExpediente(expediente.getNumero());
+            expedienteAmpliacionAprueba.setEstado("ACT");
+            expedienteAmpliacionAprueba.setEtapa(EtapaAmpliacionType.AMPLIACION_ETAPA_APRUEBA.getKey());
+            expedienteAmpliacionAprueba.setCodigoUsuario(usuarioSession.getCodigo());
+            expedienteAmpliacionAprueba.setNombreUsuario(usuarioSession.getNombre() + " " + usuarioSession.getApellidoPaterno() + " " + usuarioSession.getApellidoMaterno());
+            expedienteAmpliacionAprueba.setFecha(new Date());
+            expedienteAmpliacionService.expedienteAmpliacionInsertar(expedienteAmpliacionAprueba);
+            if (StringUtils.equals(expedienteAmpliacionAprueba.getAprueba(), "SI")) {
+                enviarMensajeAmpliacionAprobacion();
+                msg.messageInfo("Se aprobó la ampliación", null);
+            } else {
+                guardarVersion2();
+                enviarMensajeAmpliacionDesaprobacion();
+                msg.messageInfo("Se desaprobo la ampliación", null);
+            }
+            return true;
         } catch (Exception e) {
-            log.error("ERROR - aprobarAmpliacion()"+e);
+            log.error("ERROR - aprobarAmpliacion()" + e);
         }
         return false;
     }
@@ -2242,234 +2235,336 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     public boolean aceptarAmpliacion() {
         try {
             if (StringUtils.isBlank(expedienteAmpliacionAcepta.getAprueba())) {
-            msg.messageAlert("Debe aceptar o rechazar la solicitud de ampliación", null);
-            return false;
-        }
-
-        if (StringUtils.isBlank(expedienteAmpliacionAcepta.getDetalle())) {
-            msg.messageAlert("Debe ingresar el detalle", null);
-            return false;
-        }
-
-        expedienteAmpliacionAcepta.setIdExpediente(expediente.getId());
-        expedienteAmpliacionAcepta.setNumeroExpediente(expediente.getNumero());
-        expedienteAmpliacionAcepta.setEstado("ACT");
-        expedienteAmpliacionAcepta.setEtapa(EtapaAmpliacionType.AMPLIACION_ETAPA_ACEPTA.getKey());
-        expedienteAmpliacionAcepta.setCodigoUsuario(usuarioSession.getCodigo());
-        expedienteAmpliacionAcepta.setNombreUsuario(usuarioSession.getNombre() + " " + usuarioSession.getApellidoPaterno() + " " + usuarioSession.getApellidoMaterno());
-        expedienteAmpliacionAcepta.setFecha(new Date());
-        expedienteAmpliacionService.expedienteAmpliacionInsertar(expedienteAmpliacionAcepta);
-        if (StringUtils.equals(expedienteAmpliacionAcepta.getAprueba(), "SI")) {
-            guardarVersion2();
-            enviarMensajeAmpliacionAcepta();
-            aumentarDisminuirTiempoEtapa(1, 30);
-            msg.messageInfo("Se acepta la solicitud de ampliación se agregan 30 dias habiles en la etapa actual", null);
-        } else {
-            guardarVersion2();
-            enviarMensajeAmpliacionRechaza();
-            msg.messageInfo("Se rechaza la solicitud de ampliación", null);
-        }
-        return true;
+                msg.messageAlert("Debe aceptar o rechazar la solicitud de ampliación", null);
+                return false;
+            }
+            if (StringUtils.isBlank(expedienteAmpliacionAcepta.getDetalle())) {
+                msg.messageAlert("Debe ingresar el detalle", null);
+                return false;
+            }
+            expedienteAmpliacionAcepta.setIdExpediente(expediente.getId());
+            expedienteAmpliacionAcepta.setNumeroExpediente(expediente.getNumero());
+            expedienteAmpliacionAcepta.setEstado("ACT");
+            expedienteAmpliacionAcepta.setEtapa(EtapaAmpliacionType.AMPLIACION_ETAPA_ACEPTA.getKey());
+            expedienteAmpliacionAcepta.setCodigoUsuario(usuarioSession.getCodigo());
+            expedienteAmpliacionAcepta.setNombreUsuario(usuarioSession.getNombre() + " " + usuarioSession.getApellidoPaterno() + " " + usuarioSession.getApellidoMaterno());
+            expedienteAmpliacionAcepta.setFecha(new Date());
+            expedienteAmpliacionService.expedienteAmpliacionInsertar(expedienteAmpliacionAcepta);
+            if (StringUtils.equals(expedienteAmpliacionAcepta.getAprueba(), "SI")) {
+                guardarVersion2();
+                enviarMensajeAmpliacionAcepta();
+                aumentarDisminuirTiempoEtapa(1, 30);
+                msg.messageInfo("Se acepta la solicitud de ampliación se agregan 30 dias habiles en la etapa actual", null);
+            } else {
+                guardarVersion2();
+                enviarMensajeAmpliacionRechaza();
+                msg.messageInfo("Se rechaza la solicitud de ampliación", null);
+            }
+            return true;
         } catch (Exception e) {
-            log.error("ERROR - aceptarAmpliacion()"+e);
+            log.error("ERROR - aceptarAmpliacion()" + e);
         }
         return false;
     }
 
     private void enviarMensajeConsulta() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
-        bandejaController.mensajeEnviaConsulta(expedienteConsultaEnvia);
+        try {
+            FacesContext context = FacesContext.getCurrentInstance();
+            BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
+            bandejaController.mensajeEnviaConsulta(expedienteConsultaEnvia);
+        } catch (Exception e) {
+            log.error("ERROR - enviarMensajeConsulta()" + e);
+        }
     }
 
     private void enviarMensajeAprobacionConsulta() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
-        bandejaController.mensajeEnviaConsultaAprobacion(expedienteConsultaAprueba);
+        try {
+            FacesContext context = FacesContext.getCurrentInstance();
+            BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
+            bandejaController.mensajeEnviaConsultaAprobacion(expedienteConsultaAprueba);
+        } catch (Exception e) {
+            log.error("ERROR - enviarMensajeAprobacionConsulta()" + e);
+        }
     }
 
     private void enviarMensajeDesaprobacionConsulta() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
-        bandejaController.mensajeEnviaConsultaDesaprobacion(expedienteConsultaAprueba);
+        try {
+            FacesContext context = FacesContext.getCurrentInstance();
+            BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
+            bandejaController.mensajeEnviaConsultaDesaprobacion(expedienteConsultaAprueba);
+        } catch (Exception e) {
+            log.error("ERROR - enviarMensajeDesaprobacionConsulta()" + e);
+        }
     }
 
     private void enviarMensajeReasignacionConsulta() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
-        bandejaController.mensajeEnviaConsultaReasignacion(expedienteConsultaReasigna);
+        try {
+            FacesContext context = FacesContext.getCurrentInstance();
+            BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
+            bandejaController.mensajeEnviaConsultaReasignacion(expedienteConsultaReasigna);
+        } catch (Exception e) {
+            log.error("ERROR - enviarMensajeReasignacionConsulta()" + e);
+        }
     }
 
     private void enviarMensajeDesaprobacionReasignacionConsulta() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
-        bandejaController.mensajeEnviaDesapruebaConsultaReasignacion(expedienteConsultaReasigna);
+        try {
+            FacesContext context = FacesContext.getCurrentInstance();
+            BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
+            bandejaController.mensajeEnviaDesapruebaConsultaReasignacion(expedienteConsultaReasigna);
+        } catch (Exception e) {
+            log.error("ERROR - enviarMensajeDesaprobacionReasignacionConsulta()" + e);
+        }
     }
 
     private void enviarMensajeRespondeConsulta() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
-        bandejaController.mensajeEnviaConsultaResponde(expedienteConsultaResponde);
+        try {
+            FacesContext context = FacesContext.getCurrentInstance();
+            BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
+            bandejaController.mensajeEnviaConsultaResponde(expedienteConsultaResponde);
+        } catch (Exception e) {
+            log.error("ERROR - enviarMensajeRespondeConsulta()" + e);
+        }
     }
 
     private void enviarMensajeAprobarRespuesta() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
-        bandejaController.mensajeEnviaAprobarRespuesta(expedienteRespuestaAprueba);
+        try {
+            FacesContext context = FacesContext.getCurrentInstance();
+            BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
+            bandejaController.mensajeEnviaAprobarRespuesta(expedienteRespuestaAprueba);
+        } catch (Exception e) {
+            log.error("ERROR - enviarMensajeAprobarRespuesta()" + e);
+        }
     }
 
     private void enviarMensajeDesaprobarRespuesta() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
-        bandejaController.mensajeEnviaDesaprobarRespuesta(expedienteRespuestaAprueba);
+        try {
+            FacesContext context = FacesContext.getCurrentInstance();
+            BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
+            bandejaController.mensajeEnviaDesaprobarRespuesta(expedienteRespuestaAprueba);
+        } catch (Exception e) {
+            log.error("ERROR - enviarMensajeDesaprobarRespuesta()" + e);
+        }
     }
 
     private void enviarMensajeAceptarRespuesta() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
-        bandejaController.mensajeEnviaAceptarRespuesta(expedienteRespuestaAcepta);
+        try {
+            FacesContext context = FacesContext.getCurrentInstance();
+            BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
+            bandejaController.mensajeEnviaAceptarRespuesta(expedienteRespuestaAcepta);
+        } catch (Exception e) {
+            log.error("ERROR - enviarMensajeAceptarRespuesta()" + e);
+        }
     }
 
     private void enviarMensajeRechazaRespuesta() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
-        bandejaController.mensajeEnviaRechazarRespuesta(expedienteRespuestaAcepta);
+        try {
+            FacesContext context = FacesContext.getCurrentInstance();
+            BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
+            bandejaController.mensajeEnviaRechazarRespuesta(expedienteRespuestaAcepta);
+        } catch (Exception e) {
+            log.error("ERROR - enviarMensajeRechazaRespuesta()" + e);
+        }
     }
 
     private void enviarMensajeDerivacion() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
-        bandejaController.mensajeEnviaDerivacion(expedienteDerivacionEnvia);
+        try {
+            FacesContext context = FacesContext.getCurrentInstance();
+            BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
+            bandejaController.mensajeEnviaDerivacion(expedienteDerivacionEnvia);
+        } catch (Exception e) {
+            log.error("ERROR - enviarMensajeDerivacion()" + e);
+        }
     }
 
     private void enviarMensajeAprobacion() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
-        bandejaController.mensajeEnviaAprobacion(expedienteDerivacionAprueba);
+        try {
+            FacesContext context = FacesContext.getCurrentInstance();
+            BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
+            bandejaController.mensajeEnviaAprobacion(expedienteDerivacionAprueba);
+        } catch (Exception e) {
+            log.error("ERROR - enviarMensajeAprobacion()" + e);
+        }
     }
 
     private void enviarMensajeDesaprobacion() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
-        bandejaController.mensajeEnviaDesaprobacion(expedienteDerivacionAprueba, expediente);
+        try {
+            FacesContext context = FacesContext.getCurrentInstance();
+            BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
+            bandejaController.mensajeEnviaDesaprobacion(expedienteDerivacionAprueba, expediente);
+        } catch (Exception e) {
+            log.error("ERROR - enviarMensajeDesaprobacion()" + e);
+        }
     }
 
     private void enviarMensajeReasignacion() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
-        bandejaController.mensajeEnviaReasignacion(expedienteDerivacionReasigna, expediente);
+        try {
+            FacesContext context = FacesContext.getCurrentInstance();
+            BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
+            bandejaController.mensajeEnviaReasignacion(expedienteDerivacionReasigna, expediente);
+        } catch (Exception e) {
+            log.error("ERROR - enviarMensajeReasignacion()" + e);
+        }
     }
 
     private void enviarMensajeReasignacionDesaprobada() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
-        bandejaController.mensajeEnviaReasignacionDesaprobada(expedienteDerivacionReasigna, expedienteDerivacionAprueba.getCodigoUsuario(), expediente);
+        try {
+            FacesContext context = FacesContext.getCurrentInstance();
+            BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
+            bandejaController.mensajeEnviaReasignacionDesaprobada(expedienteDerivacionReasigna, expedienteDerivacionAprueba.getCodigoUsuario(), expediente);
+        } catch (Exception e) {
+            log.error("ERROR - enviarMensajeReasignacionDesaprobada()" + e);
+        }
     }
 
     private void enviarMensajeSupensionEnvio() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
-        bandejaController.mensajeEnviaSuspencionEnvia(expedienteSuspencionEnvia);
+        try {
+            FacesContext context = FacesContext.getCurrentInstance();
+            BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
+            bandejaController.mensajeEnviaSuspencionEnvia(expedienteSuspencionEnvia);
+        } catch (Exception e) {
+            log.error("ERROR - enviarMensajeSupensionEnvio()" + e);
+        }
     }
 
     private void enviarMensajeSuspencionAprobacion() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
-        bandejaController.mensajeEnviaSuspencionAprobacion(expedienteSuspencionAprueba);
+        try {
+            FacesContext context = FacesContext.getCurrentInstance();
+            BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
+            bandejaController.mensajeEnviaSuspencionAprobacion(expedienteSuspencionAprueba);
+        } catch (Exception e) {
+            log.error("ERROR - enviarMensajeSuspencionAprobacion()" + e);
+        }
     }
 
     private void enviarMensajeSuspencionDesaprobacion() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
-        bandejaController.mensajeEnviaSuspencionDesaprobacion(expedienteSuspencionEnvia, expedienteSuspencionAprueba, expediente);
+        try {
+            FacesContext context = FacesContext.getCurrentInstance();
+            BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
+            bandejaController.mensajeEnviaSuspencionDesaprobacion(expedienteSuspencionEnvia, expedienteSuspencionAprueba, expediente);
+        } catch (Exception e) {
+            log.error("ERROR - enviarMensajeSuspencionDesaprobacion()" + e);
+        }
     }
 
     private void enviarMensajeSuspencionAcepta() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
-        bandejaController.mensajeEnviaSuspencionAcepta(expedienteSuspencionAcepta, expedienteSuspencionEnvia, expedienteSuspencionAprueba);
+        try {
+            FacesContext context = FacesContext.getCurrentInstance();
+            BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
+            bandejaController.mensajeEnviaSuspencionAcepta(expedienteSuspencionAcepta, expedienteSuspencionEnvia, expedienteSuspencionAprueba);
+        } catch (Exception e) {
+            log.error("ERROR - enviarMensajeSuspencionAcepta()" + e);
+        }
     }
 
     private void enviarMensajeSuspencionRechaza() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
-        bandejaController.mensajeEnviaSuspencionRechaza(expedienteSuspencionAcepta, expedienteSuspencionEnvia, expedienteSuspencionAprueba, expediente);
+        try {
+            FacesContext context = FacesContext.getCurrentInstance();
+            BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
+            bandejaController.mensajeEnviaSuspencionRechaza(expedienteSuspencionAcepta, expedienteSuspencionEnvia, expedienteSuspencionAprueba, expediente);
+        } catch (Exception e) {
+            log.error("ERROR - enviarMensajeSuspencionRechaza()" + e);
+        }
     }
 
     private void enviarMensajeAmpliacionEnvio() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
-        bandejaController.mensajeEnviaAmpliacionEnvia(expedienteAmpliacionEnvia);
+        try {
+            FacesContext context = FacesContext.getCurrentInstance();
+            BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
+            bandejaController.mensajeEnviaAmpliacionEnvia(expedienteAmpliacionEnvia);
+        } catch (Exception e) {
+            log.error("ERROR - enviarMensajeAmpliacionEnvio()" + e);
+        }
     }
 
     private void enviarMensajeAmpliacionAprobacion() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
-        bandejaController.mensajeEnviaAmpliacionAprobacion(expedienteAmpliacionAprueba);
+        try {
+            FacesContext context = FacesContext.getCurrentInstance();
+            BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
+            bandejaController.mensajeEnviaAmpliacionAprobacion(expedienteAmpliacionAprueba);
+        } catch (Exception e) {
+            log.error("ERROR - enviarMensajeAmpliacionAprobacion()" + e);
+        }
     }
 
     private void enviarMensajeAmpliacionDesaprobacion() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
-        bandejaController.mensajeEnviaAmpliacionDesaprobacion(expedienteAmpliacionEnvia, expedienteAmpliacionAprueba, expediente);
+        try {
+            FacesContext context = FacesContext.getCurrentInstance();
+            BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
+            bandejaController.mensajeEnviaAmpliacionDesaprobacion(expedienteAmpliacionEnvia, expedienteAmpliacionAprueba, expediente);
+        } catch (Exception e) {
+            log.error("ERROR - enviarMensajeAmpliacionDesaprobacion()" + e);
+        }
     }
 
     private void enviarMensajeAmpliacionAcepta() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
-        bandejaController.mensajeEnviaAmpliacionAcepta(expedienteAmpliacionAcepta, expedienteAmpliacionEnvia, expedienteAmpliacionAprueba);
+        try {
+            FacesContext context = FacesContext.getCurrentInstance();
+            BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
+            bandejaController.mensajeEnviaAmpliacionAcepta(expedienteAmpliacionAcepta, expedienteAmpliacionEnvia, expedienteAmpliacionAprueba);
+        } catch (Exception e) {
+            log.error("ERROR - enviarMensajeAmpliacionAcepta()" + e);
+        }
     }
 
     private void enviarMensajeAmpliacionRechaza() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
-        bandejaController.mensajeEnviaAmpliacionRechaza(expedienteAmpliacionAcepta, expedienteAmpliacionEnvia, expedienteAmpliacionAprueba, expediente);
+        try {
+            FacesContext context = FacesContext.getCurrentInstance();
+            BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
+            bandejaController.mensajeEnviaAmpliacionRechaza(expedienteAmpliacionAcepta, expedienteAmpliacionEnvia, expedienteAmpliacionAprueba, expediente);
+        } catch (Exception e) {
+            log.error("ERROR - enviarMensajeAmpliacionRechaza()" + e);
+        }
     }
 
     public String registarExpedienteGestion() {
-        if(StringUtils.isBlank(expedienteGestion.getTipo())){
-            msg.messageAlert("Debe seleccionar el tipo de acción", null);
-            return null;
-        }
-        if(StringUtils.isBlank(expedienteGestion.getDescripcion())){
-            msg.messageAlert("Debe ingresar la descripción", null);
-            return null;
-        }
-        String ruta1 = uploadArchive(file1);
-        String ruta2 = uploadArchive(file2);
-        expedienteGestion.setRuta1(ruta1);
-        expedienteGestion.setRuta2(ruta2);
-        if (StringUtils.isBlank(expedienteGestion.getCodigoGestion())) {
-            DateFormat format = new SimpleDateFormat("yyMMddHHmmss");
-            String formato = format.format(new Date());
-            expedienteGestion.setUsuarioRegistro(usuarioSession.getCodigo());
-            expedienteGestion.setFechaRegistro(new Date());
-            expedienteGestion.setCodigoGestion("GES" + formato);
-            expedienteGestion.setFecha(new Date());
-            expedienteGestionService.expedienteGestionInsertar(expedienteGestion);
-            guardarGestionEtapa();
-            msg.messageInfo("Se registro una nueva gestión", null);
-        } else {
-            if(expedienteGestion.getFechaRecepcion() != null){
-                if (sumarRestarDiasFecha(expedienteGestion.getFechaRecepcion(), 1).compareTo(expedienteGestion.getFecha()) < 0) {
-                    expedienteGestion.setFechaRecepcion(null);
-                    msg.messageAlert("La fecha de recepción no puede ser menos que la fecha de registro de la gestión", null);
-                    return null;
+        try {
+            if (StringUtils.isBlank(expedienteGestion.getTipo())) {
+                msg.messageAlert("Debe seleccionar el tipo de acción", null);
+                return null;
+            }
+            if (StringUtils.isBlank(expedienteGestion.getDescripcion())) {
+                msg.messageAlert("Debe ingresar la descripción", null);
+                return null;
+            }
+            String ruta1 = uploadArchive(file1);
+            String ruta2 = uploadArchive(file2);
+            expedienteGestion.setRuta1(ruta1);
+            expedienteGestion.setRuta2(ruta2);
+            if (StringUtils.isBlank(expedienteGestion.getCodigoGestion())) {
+                DateFormat format = new SimpleDateFormat("yyMMddHHmmss");
+                String formato = format.format(new Date());
+                expedienteGestion.setUsuarioRegistro(usuarioSession.getCodigo());
+                expedienteGestion.setFechaRegistro(new Date());
+                expedienteGestion.setCodigoGestion("GES" + formato);
+                expedienteGestion.setFecha(new Date());
+                expedienteGestionService.expedienteGestionInsertar(expedienteGestion);
+                guardarGestionEtapa();
+                msg.messageInfo("Se registro una nueva gestión", null);
+            } else {
+                if (expedienteGestion.getFechaRecepcion() != null) {
+                    if (sumarRestarDiasFecha(expedienteGestion.getFechaRecepcion(), 1).compareTo(expedienteGestion.getFecha()) < 0) {
+                        expedienteGestion.setFechaRecepcion(null);
+                        msg.messageAlert("La fecha de recepción no puede ser menos que la fecha de registro de la gestión", null);
+                        return null;
+                    }
                 }
+                expedienteGestion.setUsuarioModificacion(usuarioSession.getCodigo());
+                expedienteGestion.setFechaModificacion(new Date());
+                if (StringUtils.isNotBlank(expedienteGestion.getCodigoONP())) {
+                    expedienteGestion.setCodigoONP(null);
+                }
+                expedienteGestionService.expedienteGestionUpdate(expedienteGestion);
+                msg.messageInfo("Se actualizo la gestión", null);
             }
-            expedienteGestion.setUsuarioModificacion(usuarioSession.getCodigo());
-            expedienteGestion.setFechaModificacion(new Date());
-            if (StringUtils.isNotBlank(expedienteGestion.getCodigoONP())) {
-                expedienteGestion.setCodigoONP(null);
-            }
-            expedienteGestionService.expedienteGestionUpdate(expedienteGestion);
-            msg.messageInfo("Se actualizo la gestión", null);
+            return cargarExpedienteGestionLista();
+        } catch (Exception e) {
+            log.error("ERROR - registarExpedienteGestion()" + e);
         }
-        return cargarExpedienteGestionLista();
+        return null;
     }
 
     private Date sumarRestarDiasFecha(Date fecha, int dias) {
-
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(fecha); // Configuramos la fecha que se recibe	
         calendar.add(Calendar.DAY_OF_YEAR, dias);  // numero de días a añadir, o restar en caso de días<0	
@@ -2477,8 +2572,13 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     }
 
     private String detalleUltimoEstado(String numeroExpediente) {
-        String retornaDetalle = etapaEstadoService.etapaEstadoUltimoEstado(numeroExpediente);
-        return retornaDetalle;
+        try {
+            String retornaDetalle = etapaEstadoService.etapaEstadoUltimoEstado(numeroExpediente);
+            return retornaDetalle;
+        } catch (Exception e) {
+            log.error("ERROR - detalleUltimoEstado()" + e);
+        }
+        return null;
     }
 
     public String setearExpedienteGestion(ExpedienteGestion eg) {
@@ -2493,140 +2593,165 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     }
 
     private void guardarGestionEtapa() {
-        GestionEtapa ge = new GestionEtapa(expedienteGestion.getId(), expediente.getId(), etapaEstado.getVerEtapa(), expediente.getNumero());
-        gestionEtapaService.gestionEtapaInsertar(ge);
+        try {
+            GestionEtapa ge = new GestionEtapa(expedienteGestion.getId(), expediente.getId(), etapaEstado.getVerEtapa(), expediente.getNumero());
+            gestionEtapaService.gestionEtapaInsertar(ge);
+        } catch (Exception e) {
+            log.error("ERROR - guardarGestionEtapa()" + e);
+        }
     }
 
     public void listarExpedienteUsuarioPaginado(Integer pagina) {
-        Expediente e = new Expediente();
-        e.setTipoBusqueda(tipoBusqueda);
-        if (pagina > 0) {
-            int paginado = ConstantesUtil.PAGINADO_10;
-            Integer ini = paginado * (pagina - 1) + 1;
-            Integer fin = paginado * pagina;
-            if (pagina == 0) {
-                ini = 1;
-                fin = 10;
-            }
-            e.setUsuarioRegistro(usuarioSession.getCodigo());
-            e.setIni(ini);
-            e.setFin(fin);
-            FacesContext context = FacesContext.getCurrentInstance();
-            SeguridadUtilController seguridadUtilController = (SeguridadUtilController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "seguridadUtilController");
-            List<Expediente> list;
-            if (seguridadUtilController.tieneRecurso("REC_EXP008")) {
-                e.setIdOficinaDefensorial(usuarioSession.getCodigoOD());
-                list = expedienteService.expedienteBuscarUsuarioODPaginado(e);
-            } else {
-                e.setUsuarioRegistro(usuarioSession.getCodigo());
-                list = expedienteService.expedienteBuscarUsuarioPaginado(e);
-            }
-            if (list.size() > 0) {
-                for (Expediente e1 : list) {
-                    e1.setEtapaDetalle(devolverEtapa(e1));
-                    if (StringUtils.isNoneBlank(e1.getNumero())) {
-                        e1.setEstadoDetalle(detalleUltimoEstado(e1.getNumero()));
-                    }
+        try {
+            Expediente e = new Expediente();
+            e.setTipoBusqueda(tipoBusqueda);
+            if (pagina > 0) {
+                int paginado = ConstantesUtil.PAGINADO_10;
+                Integer ini = paginado * (pagina - 1) + 1;
+                Integer fin = paginado * pagina;
+                if (pagina == 0) {
+                    ini = 1;
+                    fin = 10;
                 }
-                listaExpedienteXUsuarioPaginado = list;
-                nroPagina = pagina;
+                e.setUsuarioRegistro(usuarioSession.getCodigo());
+                e.setIni(ini);
+                e.setFin(fin);
+                FacesContext context = FacesContext.getCurrentInstance();
+                SeguridadUtilController seguridadUtilController = (SeguridadUtilController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "seguridadUtilController");
+                List<Expediente> list;
+                if (seguridadUtilController.tieneRecurso("REC_EXP008")) {
+                    e.setIdOficinaDefensorial(usuarioSession.getCodigoOD());
+                    list = expedienteService.expedienteBuscarUsuarioODPaginado(e);
+                } else {
+                    e.setUsuarioRegistro(usuarioSession.getCodigo());
+                    list = expedienteService.expedienteBuscarUsuarioPaginado(e);
+                }
+                if (list.size() > 0) {
+                    for (Expediente e1 : list) {
+                        e1.setEtapaDetalle(devolverEtapa(e1));
+                        if (StringUtils.isNoneBlank(e1.getNumero())) {
+                            e1.setEstadoDetalle(detalleUltimoEstado(e1.getNumero()));
+                        }
+                    }
+                    listaExpedienteXUsuarioPaginado = list;
+                    nroPagina = pagina;
+                }
             }
+        } catch (Exception e) {
+            log.error("ERROR - listarExpedienteUsuarioPaginado()" + e);
         }
     }
 
     public void listarExpedienteUsuarioPaginadoOrder(Integer pagina, int tipo) {
-        if (tipoBusqueda != null) {
-            if (tipo == tipoBusqueda) {
-                tipoBusqueda = tipo * (-1);
+        try {
+            if (tipoBusqueda != null) {
+                if (tipo == tipoBusqueda) {
+                    tipoBusqueda = tipo * (-1);
+                } else {
+                    tipoBusqueda = tipo;
+                }
             } else {
                 tipoBusqueda = tipo;
             }
-        } else {
-            tipoBusqueda = tipo;
-        }
-        Expediente e = new Expediente();
-        e.setTipoBusqueda(tipoBusqueda);
-        if (pagina > 0) {
-            int paginado = ConstantesUtil.PAGINADO_10;
-            Integer ini = paginado * (pagina - 1) + 1;
-            Integer fin = paginado * pagina;
-            if (pagina == 0) {
-                ini = 1;
-                fin = 10;
-            }
-            e.setIni(ini);
-            e.setFin(fin);
-            List<Expediente> list;
-            FacesContext context = FacesContext.getCurrentInstance();
-            SeguridadUtilController seguridadUtilController = (SeguridadUtilController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "seguridadUtilController");
-            if (seguridadUtilController.tieneRecurso("REC_EXP008")) {
-                e.setIdOficinaDefensorial(usuarioSession.getCodigoOD());
-                list = expedienteService.expedienteBuscarUsuarioODPaginado(e);
-            } else {
-                e.setUsuarioRegistro(usuarioSession.getCodigo());
-                list = expedienteService.expedienteBuscarUsuarioPaginado(e);
-            }
-
-            if (list.size() > 0) {
-                for (Expediente e1 : list) {
-                    e1.setEtapaDetalle(devolverEtapa(e1));
-                    if (StringUtils.isNoneBlank(e1.getNumero())) {
-                        e1.setEstadoDetalle(detalleUltimoEstado(e1.getNumero()));
-                    }
+            Expediente e = new Expediente();
+            e.setTipoBusqueda(tipoBusqueda);
+            if (pagina > 0) {
+                int paginado = ConstantesUtil.PAGINADO_10;
+                Integer ini = paginado * (pagina - 1) + 1;
+                Integer fin = paginado * pagina;
+                if (pagina == 0) {
+                    ini = 1;
+                    fin = 10;
                 }
-                listaExpedienteXUsuarioPaginado = list;
-                nroPagina = pagina;
+                e.setIni(ini);
+                e.setFin(fin);
+                List<Expediente> list;
+                FacesContext context = FacesContext.getCurrentInstance();
+                SeguridadUtilController seguridadUtilController = (SeguridadUtilController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "seguridadUtilController");
+                if (seguridadUtilController.tieneRecurso("REC_EXP008")) {
+                    e.setIdOficinaDefensorial(usuarioSession.getCodigoOD());
+                    list = expedienteService.expedienteBuscarUsuarioODPaginado(e);
+                } else {
+                    e.setUsuarioRegistro(usuarioSession.getCodigo());
+                    list = expedienteService.expedienteBuscarUsuarioPaginado(e);
+                }
+
+                if (list.size() > 0) {
+                    for (Expediente e1 : list) {
+                        e1.setEtapaDetalle(devolverEtapa(e1));
+                        if (StringUtils.isNoneBlank(e1.getNumero())) {
+                            e1.setEstadoDetalle(detalleUltimoEstado(e1.getNumero()));
+                        }
+                    }
+                    listaExpedienteXUsuarioPaginado = list;
+                    nroPagina = pagina;
+                }
             }
+        } catch (Exception e) {
+            log.error("ERROR - listarExpedienteUsuarioPaginadoOrder()" + e);
         }
     }
 
     public void listarExpedienteUsuarioPaginado(Integer pagina, Expediente e) {
-        if (pagina > 0) {
-            int paginado = ConstantesUtil.PAGINADO_10;
-            Integer ini = paginado * (pagina - 1) + 1;
-            Integer fin = paginado * pagina;
-            if (pagina == 0) {
-                ini = 1;
-                fin = 10;
-            }
-            e.setUsuarioRegistro(usuarioSession.getCodigo());
-            e.setIni(ini);
-            e.setFin(fin);
-
-            List<Expediente> list = expedienteService.expedienteBuscarUsuarioPaginado(e);
-            if (list.size() > 0) {
-                for (Expediente e1 : list) {
-                    e1.setEtapaDetalle(devolverEtapa(e1));
-                    if (StringUtils.isNoneBlank(e1.getNumero())) {
-                        e1.setEstadoDetalle(detalleUltimoEstado(e1.getNumero()));
-                    }
+        try {
+            if (pagina > 0) {
+                int paginado = ConstantesUtil.PAGINADO_10;
+                Integer ini = paginado * (pagina - 1) + 1;
+                Integer fin = paginado * pagina;
+                if (pagina == 0) {
+                    ini = 1;
+                    fin = 10;
                 }
-                listaExpedienteXUsuarioPaginado = list;
-                nroPagina = pagina;
+                e.setUsuarioRegistro(usuarioSession.getCodigo());
+                e.setIni(ini);
+                e.setFin(fin);
+
+                List<Expediente> list = expedienteService.expedienteBuscarUsuarioPaginado(e);
+                if (list.size() > 0) {
+                    for (Expediente e1 : list) {
+                        e1.setEtapaDetalle(devolverEtapa(e1));
+                        if (StringUtils.isNoneBlank(e1.getNumero())) {
+                            e1.setEstadoDetalle(detalleUltimoEstado(e1.getNumero()));
+                        }
+                    }
+                    listaExpedienteXUsuarioPaginado = list;
+                    nroPagina = pagina;
+                }
             }
+        } catch (Exception ex) {
+            log.error("ERROR - listarExpedienteUsuarioPaginado()" + ex);
         }
     }
 
     public void listarExpedienteUsuarioPaginadoCompleto(Integer pagina, Expediente e) {
-        listaExpedienteXUsuarioPaginadoReplica = new ArrayList<>();
-        if (pagina > 0) {
-            e.setUsuarioRegistro(usuarioSession.getCodigo());
-            listaExpedienteXUsuarioPaginadoReplica = expedienteService.expedienteBuscarUsuarioCompleto(e);
-            if (listaExpedienteXUsuarioPaginadoReplica.size() > 0) {
-                for (Expediente e1 : listaExpedienteXUsuarioPaginadoReplica) {
-                    e1.setEtapaDetalle(devolverEtapa(e1));
-                    if (StringUtils.isNoneBlank(e1.getNumero())) {
-                        e1.setEstadoDetalle(detalleUltimoEstado(e1.getNumero()));
+        try {
+            listaExpedienteXUsuarioPaginadoReplica = new ArrayList<>();
+            if (pagina > 0) {
+                e.setUsuarioRegistro(usuarioSession.getCodigo());
+                listaExpedienteXUsuarioPaginadoReplica = expedienteService.expedienteBuscarUsuarioCompleto(e);
+                if (listaExpedienteXUsuarioPaginadoReplica.size() > 0) {
+                    for (Expediente e1 : listaExpedienteXUsuarioPaginadoReplica) {
+                        e1.setEtapaDetalle(devolverEtapa(e1));
+                        if (StringUtils.isNoneBlank(e1.getNumero())) {
+                            e1.setEstadoDetalle(detalleUltimoEstado(e1.getNumero()));
+                        }
                     }
+                    listarExpedienteUsuarioPaginadoCompletoPagina(pagina);
                 }
-                listarExpedienteUsuarioPaginadoCompletoPagina(pagina);
             }
+        } catch (Exception ex) {
+            log.error("ERROR - listarExpedienteUsuarioPaginadoCompleto()" + ex);
         }
     }
 
     public void gestionesPorExpediente(String numeroExpediente) {
-        listaGestionesParaReplica = null;
-        listaGestionesParaReplica = expedienteGestionService.expedienteGestionListaXexpediente(numeroExpediente);
+        try {
+            listaGestionesParaReplica = null;
+            listaGestionesParaReplica = expedienteGestionService.expedienteGestionListaXexpediente(numeroExpediente);
+        } catch (Exception e) {
+            log.error("ERROR - gestionesPorExpediente()" + e);
+        }
+
     }
 
     public void insertarReplicaGestion1() {
@@ -2664,7 +2789,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                     }
                 }
             } catch (Exception ex) {
-                log.error(ex);
+                log.error("ERROR - insertarReplicaGestion1()" + ex);
             }
         }
         listarExpedienteUsuarioPaginadoCompleto(1, expedienteBusquedaReplica);
@@ -2689,7 +2814,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             }
             msg.messageInfo("Se actualizo la respuesta", null);
         } catch (Exception e) {
-            log.error(e);
+            log.error("ERROR - actualizarReplicaGestion()" + e);
         }
     }
 
@@ -2712,11 +2837,57 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     }
 
     private String devolverEtapa(Expediente e) {
-        String detalleEtapa = null;
-        if (e.getIdEtapa() != null) {
-            if (e.getIdEtapa() > 0) {
-                if (StringUtils.equals(e.getIndicadorEtapa(), "VIG")) {
-                    if (StringUtils.equals(e.getEstado(), "C")) {
+        try {
+            String detalleEtapa = null;
+            if (e.getIdEtapa() != null) {
+                if (e.getIdEtapa() > 0) {
+                    if (StringUtils.equals(e.getIndicadorEtapa(), "VIG")) {
+                        if (StringUtils.equals(e.getEstado(), "C")) {
+                            if (Objects.equals(e.getIdEtapa(), EtapaType.CALIFICACION_QUEJA.getKey())) {
+                                detalleEtapa = EtapaType.CALIFICACION_QUEJA.getValue();
+                            }
+                            if (Objects.equals(e.getIdEtapa(), EtapaType.INVESTIGACION_QUEJA.getKey())) {
+                                detalleEtapa = EtapaType.INVESTIGACION_QUEJA.getValue();
+                            }
+                            if (Objects.equals(e.getIdEtapa(), EtapaType.PERSUACION_QUEJA.getKey())) {
+                                detalleEtapa = EtapaType.PERSUACION_QUEJA.getValue();
+                            }
+                            if (Objects.equals(e.getIdEtapa(), EtapaType.SEGUIMIENTO_QUEJA.getKey())) {
+                                detalleEtapa = EtapaType.SEGUIMIENTO_QUEJA.getValue();
+                            }
+                            if (Objects.equals(e.getIdEtapa(), EtapaType.CALIFICACION_PETITORIO.getKey())) {
+                                detalleEtapa = EtapaType.CALIFICACION_PETITORIO.getValue();
+                            }
+                            if (Objects.equals(e.getIdEtapa(), EtapaType.GESTION_PETITORIO.getKey())) {
+                                detalleEtapa = EtapaType.GESTION_PETITORIO.getValue();
+                            }
+                            if (Objects.equals(e.getIdEtapa(), EtapaType.PERSUASION_PETITORIO.getKey())) {
+                                detalleEtapa = EtapaType.PERSUASION_PETITORIO.getValue();
+                            }
+                        } else {
+                            if (Objects.equals(e.getIdEtapa(), EtapaType.CALIFICACION_QUEJA.getKey())) {
+                                detalleEtapa = EtapaType.INVESTIGACION_QUEJA.getValue();
+                            }
+                            if (Objects.equals(e.getIdEtapa(), EtapaType.INVESTIGACION_QUEJA.getKey())) {
+                                detalleEtapa = EtapaType.PERSUACION_QUEJA.getValue();
+                            }
+                            if (Objects.equals(e.getIdEtapa(), EtapaType.PERSUACION_QUEJA.getKey())) {
+                                detalleEtapa = EtapaType.SEGUIMIENTO_QUEJA.getValue();
+                            }
+                            if (Objects.equals(e.getIdEtapa(), EtapaType.SEGUIMIENTO_QUEJA.getKey())) {
+                                detalleEtapa = EtapaType.SEGUIMIENTO_QUEJA.getValue();
+                            }
+                            if (Objects.equals(e.getIdEtapa(), EtapaType.CALIFICACION_PETITORIO.getKey())) {
+                                detalleEtapa = EtapaType.GESTION_PETITORIO.getValue();
+                            }
+                            if (Objects.equals(e.getIdEtapa(), EtapaType.GESTION_PETITORIO.getKey())) {
+                                detalleEtapa = EtapaType.PERSUASION_PETITORIO.getValue();
+                            }
+                            if (Objects.equals(e.getIdEtapa(), EtapaType.PERSUASION_PETITORIO.getKey())) {
+                                detalleEtapa = EtapaType.PERSUASION_PETITORIO.getValue();
+                            }
+                        }
+                    } else {
                         if (Objects.equals(e.getIdEtapa(), EtapaType.CALIFICACION_QUEJA.getKey())) {
                             detalleEtapa = EtapaType.CALIFICACION_QUEJA.getValue();
                         }
@@ -2738,162 +2909,142 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                         if (Objects.equals(e.getIdEtapa(), EtapaType.PERSUASION_PETITORIO.getKey())) {
                             detalleEtapa = EtapaType.PERSUASION_PETITORIO.getValue();
                         }
-                    } else {
-                        if (Objects.equals(e.getIdEtapa(), EtapaType.CALIFICACION_QUEJA.getKey())) {
-                            detalleEtapa = EtapaType.INVESTIGACION_QUEJA.getValue();
-                        }
-                        if (Objects.equals(e.getIdEtapa(), EtapaType.INVESTIGACION_QUEJA.getKey())) {
-                            detalleEtapa = EtapaType.PERSUACION_QUEJA.getValue();
-                        }
-                        if (Objects.equals(e.getIdEtapa(), EtapaType.PERSUACION_QUEJA.getKey())) {
-                            detalleEtapa = EtapaType.SEGUIMIENTO_QUEJA.getValue();
-                        }
-                        if (Objects.equals(e.getIdEtapa(), EtapaType.SEGUIMIENTO_QUEJA.getKey())) {
-                            detalleEtapa = EtapaType.SEGUIMIENTO_QUEJA.getValue();
-                        }
-                        if (Objects.equals(e.getIdEtapa(), EtapaType.CALIFICACION_PETITORIO.getKey())) {
-                            detalleEtapa = EtapaType.GESTION_PETITORIO.getValue();
-                        }
-                        if (Objects.equals(e.getIdEtapa(), EtapaType.GESTION_PETITORIO.getKey())) {
-                            detalleEtapa = EtapaType.PERSUASION_PETITORIO.getValue();
-                        }
-                        if (Objects.equals(e.getIdEtapa(), EtapaType.PERSUASION_PETITORIO.getKey())) {
-                            detalleEtapa = EtapaType.PERSUASION_PETITORIO.getValue();
-                        }
-                    }
-                } else {
-                    if (Objects.equals(e.getIdEtapa(), EtapaType.CALIFICACION_QUEJA.getKey())) {
-                        detalleEtapa = EtapaType.CALIFICACION_QUEJA.getValue();
-                    }
-                    if (Objects.equals(e.getIdEtapa(), EtapaType.INVESTIGACION_QUEJA.getKey())) {
-                        detalleEtapa = EtapaType.INVESTIGACION_QUEJA.getValue();
-                    }
-                    if (Objects.equals(e.getIdEtapa(), EtapaType.PERSUACION_QUEJA.getKey())) {
-                        detalleEtapa = EtapaType.PERSUACION_QUEJA.getValue();
-                    }
-                    if (Objects.equals(e.getIdEtapa(), EtapaType.SEGUIMIENTO_QUEJA.getKey())) {
-                        detalleEtapa = EtapaType.SEGUIMIENTO_QUEJA.getValue();
-                    }
-                    if (Objects.equals(e.getIdEtapa(), EtapaType.CALIFICACION_PETITORIO.getKey())) {
-                        detalleEtapa = EtapaType.CALIFICACION_PETITORIO.getValue();
-                    }
-                    if (Objects.equals(e.getIdEtapa(), EtapaType.GESTION_PETITORIO.getKey())) {
-                        detalleEtapa = EtapaType.GESTION_PETITORIO.getValue();
-                    }
-                    if (Objects.equals(e.getIdEtapa(), EtapaType.PERSUASION_PETITORIO.getKey())) {
-                        detalleEtapa = EtapaType.PERSUASION_PETITORIO.getValue();
                     }
                 }
             }
+            return detalleEtapa;
+        } catch (Exception ex) {
+            log.error("ERROR - devolverEtapa()" + ex);
         }
-        return detalleEtapa;
+        return null;
     }
 
     private void cargarGraficos001() {
-        StringBuilder sb = new StringBuilder();
-        int queja = 0;
-        int petitorio = 0;
-        int consulta = 0;
-        for (Expediente e : listaExpedienteXUsuario) {
-            if (e.getTipoClasificion().equals("01")) {
-                queja++;
+        try {
+            StringBuilder sb = new StringBuilder();
+            int queja = 0;
+            int petitorio = 0;
+            int consulta = 0;
+            for (Expediente e : listaExpedienteXUsuario) {
+                if (e.getTipoClasificion().equals("01")) {
+                    queja++;
+                }
+                if (e.getTipoClasificion().equals("02")) {
+                    consulta++;
+                }
+                if (e.getTipoClasificion().equals("03")) {
+                    petitorio++;
+                }
             }
-            if (e.getTipoClasificion().equals("02")) {
-                consulta++;
-            }
-            if (e.getTipoClasificion().equals("03")) {
-                petitorio++;
-            }
+            sb.append("{x: 'Queja', y: ").append(queja).append("},");
+            sb.append("{x: 'Petitorio', y: ").append(petitorio).append("},");
+            sb.append("{x: 'Consulta', y: ").append(consulta).append("}");
+            grafico001 = sb.toString();
+        } catch (Exception e) {
+            log.error("ERROR - cargarGraficos001()" + e);
         }
-        sb.append("{x: 'Queja', y: ").append(queja).append("},");
-        sb.append("{x: 'Petitorio', y: ").append(petitorio).append("},");
-        sb.append("{x: 'Consulta', y: ").append(consulta).append("}");
-        grafico001 = sb.toString();
+
     }
 
     private void cargarGraficos002() {
-        StringBuilder sb = new StringBuilder();
-        int quejax = 0;
-        int petitoriox = 0;
-        int consultax = 0;
-        int quejay = 0;
-        int petitorioy = 0;
-        int consultay = 0;
-        for (Expediente e : listaExpedienteXUsuario) {
-            if (e.getTipoClasificion().equals("01")) {
-                if (e.getGeneral().equals("C")) {
-                    quejay++;
-                } else {
-                    quejax++;
+        try {
+            StringBuilder sb = new StringBuilder();
+            int quejax = 0;
+            int petitoriox = 0;
+            int consultax = 0;
+            int quejay = 0;
+            int petitorioy = 0;
+            int consultay = 0;
+            for (Expediente e : listaExpedienteXUsuario) {
+                if (e.getTipoClasificion().equals("01")) {
+                    if (e.getGeneral().equals("C")) {
+                        quejay++;
+                    } else {
+                        quejax++;
+                    }
+                }
+                if (e.getTipoClasificion().equals("02")) {
+                    if (e.getGeneral().equals("C")) {
+                        consultay++;
+                    } else {
+                        consultax++;
+                    }
+                }
+                if (e.getTipoClasificion().equals("03")) {
+                    if (e.getGeneral().equals("C")) {
+                        petitorioy++;
+                    } else {
+                        petitoriox++;
+                    }
                 }
             }
-            if (e.getTipoClasificion().equals("02")) {
-                if (e.getGeneral().equals("C")) {
-                    consultay++;
-                } else {
-                    consultax++;
-                }
-            }
-            if (e.getTipoClasificion().equals("03")) {
-                if (e.getGeneral().equals("C")) {
-                    petitorioy++;
-                } else {
-                    petitoriox++;
-                }
-            }
+            sb.append("{x: 'Queja', y: " + quejax + ", z: " + quejay + "},");
+            sb.append("{x: 'Petitorio', y: " + petitoriox + ", z: " + petitorioy + "},");
+            sb.append("{x: 'Consulta', y: " + consultax + ", z: " + consultay + "}");
+            grafico002 = sb.toString();
+        } catch (Exception e) {
+            log.error("ERROR - cargarGraficos002()" + e);
         }
-        sb.append("{x: 'Queja', y: " + quejax + ", z: " + quejay + "},");
-        sb.append("{x: 'Petitorio', y: " + petitoriox + ", z: " + petitorioy + "},");
-        sb.append("{x: 'Consulta', y: " + consultax + ", z: " + consultay + "}");
-        grafico002 = sb.toString();
     }
 
     private void cargarGraficos003() {
-        Expediente e = new Expediente();
-        StringBuilder sb = new StringBuilder();
-        e.setTipoClasificion("01");
-        e.setUsuarioRegistro(usuarioSession.getCodigo());
-        List<Expediente> list001 = expedienteService.expedienteReporteMesUsuario(e);
-        e.setTipoClasificion("02");
-        List<Expediente> list002 = expedienteService.expedienteReporteMesUsuario(e);
-        e.setTipoClasificion("03");
-        List<Expediente> list003 = expedienteService.expedienteReporteMesUsuario(e);
-        for (Expediente e1 : list001) {
-            sb.append("{'period': '").append(e1.getMes()).append("', 'queja': ").append(e1.getCount()).append("},");
+        try {
+            Expediente e = new Expediente();
+            StringBuilder sb = new StringBuilder();
+            e.setTipoClasificion("01");
+            e.setUsuarioRegistro(usuarioSession.getCodigo());
+            List<Expediente> list001 = expedienteService.expedienteReporteMesUsuario(e);
+            e.setTipoClasificion("02");
+            List<Expediente> list002 = expedienteService.expedienteReporteMesUsuario(e);
+            e.setTipoClasificion("03");
+            List<Expediente> list003 = expedienteService.expedienteReporteMesUsuario(e);
+            for (Expediente e1 : list001) {
+                sb.append("{'period': '").append(e1.getMes()).append("', 'queja': ").append(e1.getCount()).append("},");
+            }
+            for (Expediente e1 : list002) {
+                sb.append("{'period': '").append(e1.getMes()).append("', 'consulta': ").append(e1.getCount()).append("},");
+            }
+            for (Expediente e1 : list003) {
+                sb.append("{'period': '").append(e1.getMes()).append("', 'petitorio': ").append(e1.getCount()).append("},");
+            }
+            grafico003 = sb.toString();
+        } catch (Exception e) {
+            log.error("ERROR - cargarGraficos003()" + e);
         }
-        for (Expediente e1 : list002) {
-            sb.append("{'period': '").append(e1.getMes()).append("', 'consulta': ").append(e1.getCount()).append("},");
-        }
-        for (Expediente e1 : list003) {
-            sb.append("{'period': '").append(e1.getMes()).append("', 'petitorio': ").append(e1.getCount()).append("},");
-        }
-        grafico003 = sb.toString();
     }
 
     public void setearPersonaSeleccionada(Persona perso) {
-        if (StringUtils.isNotBlank(perso.getIdDepartamento()) && !StringUtils.equals(perso.getIdDepartamento(), "0")) {
-            perso.setNombreDepartamento(ubigeoService.departamentoOne(perso.getIdDepartamento()).getDescripcion());
+        try {
+            if (StringUtils.isNotBlank(perso.getIdDepartamento()) && !StringUtils.equals(perso.getIdDepartamento(), "0")) {
+                perso.setNombreDepartamento(ubigeoService.departamentoOne(perso.getIdDepartamento()).getDescripcion());
+            }
+            if (StringUtils.isNotBlank(perso.getIdProvincia()) && !StringUtils.equals(perso.getIdProvincia(), "0")) {
+                Provincia p = new Provincia();
+                p.setIdDepartamento(perso.getIdDepartamento());
+                p.setIdProvincia(perso.getIdProvincia());
+                perso.setNombreProvincia(ubigeoService.provinciaOne(p).getDescripcion());
+            }
+            if (StringUtils.isNotBlank(perso.getIdDistrito()) && !StringUtils.equals(perso.getIdDistrito(), "0")) {
+                Distrito d = new Distrito();
+                d.setIdDepartamento(perso.getIdDepartamento());
+                d.setIdProvincia(perso.getIdProvincia());
+                d.setIdDistrito(perso.getIdDistrito());
+                perso.setNombreDistrito(ubigeoService.distritoOne(d).getDescripcion());
+            }
+            listarExpedientexPersona(perso.getId());
+            setPersonaSeleccionada(perso);
+            indSeleccion = false;
+        } catch (Exception e) {
+            log.error("ERROR - setearPersonaSeleccionada()" + e);
         }
-        if (StringUtils.isNotBlank(perso.getIdProvincia()) && !StringUtils.equals(perso.getIdProvincia(), "0")) {
-            Provincia p = new Provincia();
-            p.setIdDepartamento(perso.getIdDepartamento());
-            p.setIdProvincia(perso.getIdProvincia());
-            perso.setNombreProvincia(ubigeoService.provinciaOne(p).getDescripcion());
-        }
-        if (StringUtils.isNotBlank(perso.getIdDistrito()) && !StringUtils.equals(perso.getIdDistrito(), "0")) {
-            Distrito d = new Distrito();
-            d.setIdDepartamento(perso.getIdDepartamento());
-            d.setIdProvincia(perso.getIdProvincia());
-            d.setIdDistrito(perso.getIdDistrito());
-            perso.setNombreDistrito(ubigeoService.distritoOne(d).getDescripcion());
-        }
-        listarExpedientexPersona(perso.getId());
-        setPersonaSeleccionada(perso);
-        indSeleccion = false;
     }
 
     private void listarExpedientexPersona(long idPersona) {
-        listaExpedienteXPersona = expedienteService.expedientexPersona(idPersona);
+        try {
+            listaExpedienteXPersona = expedienteService.expedientexPersona(idPersona);
+        } catch (Exception e) {
+            log.error("ERROR - listarExpedientexPersona()" + e);
+        }
     }
 
     public void retornoListaPersonasSeleccionadas() {
@@ -2911,46 +3062,55 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     }
 
     public String cargarExpedienteEdit(Expediente e) {
-        persona = new Persona();
-        entidad = new Entidad();
-        FacesContext context = FacesContext.getCurrentInstance();
-        MenuController menuController = (MenuController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "menuController");
-        menuController.cargarPagina(1);
-        listaEtiquetasSeleccionadas = new ArrayList<>();
-        setExpediente(e);
-        cargarEtiquetas();
-        cargarPersonasEntidades();
-        if (expediente.getVersion() == 0) {
-            inicializarEtapaEstado(0);
-        } else {
-            inicializarEtapaEstado(1);
-        }
-        listarNiveles();
-        defineBotonRegistro();
-        expedienteClasificacionBusqueda = new ExpedienteClasificacion();
-        cargarFichaONP();
-        verONP();
-        if (StringUtils.isBlank(expediente.getNumero())) {
-            return "expedienteEdit";
-        }
-        if (StringUtils.equals(expediente.getTipoClasificion(), ExpedienteType.CONSULTA.getKey())) {
-            setearExpedienteTiempo();
-            return "expedienteEdit";
-        } else {
-            if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_PETITORIO.getKey()) || Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_QUEJA.getKey())) {
-                setearExpedienteTiempo();
+        try {
+            persona = new Persona();
+            entidad = new Entidad();
+            FacesContext context = FacesContext.getCurrentInstance();
+            MenuController menuController = (MenuController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "menuController");
+            menuController.cargarPagina(1);
+            listaEtiquetasSeleccionadas = new ArrayList<>();
+            setExpediente(e);
+            cargarEtiquetas();
+            cargarPersonasEntidades();
+            if (expediente.getVersion() == 0) {
+                inicializarEtapaEstado(0);
+            } else {
+                inicializarEtapaEstado(1);
+            }
+            listarNiveles();
+            defineBotonRegistro();
+            expedienteClasificacionBusqueda = new ExpedienteClasificacion();
+            cargarFichaONP();
+            verONP();
+            if (StringUtils.isBlank(expediente.getNumero())) {
                 return "expedienteEdit";
             }
-            cargarExpedienteGestionLista();
-            setearExpedienteTiempo();
-            verONP();
-            return "expedienteGestionLista";
+            if (StringUtils.equals(expediente.getTipoClasificion(), ExpedienteType.CONSULTA.getKey())) {
+                setearExpedienteTiempo();
+                return "expedienteEdit";
+            } else {
+                if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_PETITORIO.getKey()) || Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_QUEJA.getKey())) {
+                    setearExpedienteTiempo();
+                    return "expedienteEdit";
+                }
+                cargarExpedienteGestionLista();
+                setearExpedienteTiempo();
+                verONP();
+                return "expedienteGestionLista";
+            }
+        } catch (Exception ex) {
+            log.error("ERROR - cargarExpedienteEdit()" + ex);
         }
+        return null;
     }
-    
-    public void actualizarArchivo(){
-        expedienteService.expedienteUpdateArchivo(expediente);
-        msg.messageInfo("Se actualizaron los datos del archivo", null);
+
+    public void actualizarArchivo() {
+        try {
+            expedienteService.expedienteUpdateArchivo(expediente);
+            msg.messageInfo("Se actualizaron los datos del archivo", null);
+        } catch (Exception e) {
+            log.error("ERROR - actualizarArchivo()" + e);
+        }
     }
 
     private void verONP() {
@@ -2964,35 +3124,47 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     }
 
     private void listarNiveles() {
-        if (StringUtils.isNotBlank(expediente.getNumero())) {
-            List<ExpedienteNivel> list = expedienteNivelService.expedienteNivelPorExpediente(expediente.getNumero());
-            for (ExpedienteNivel en : list) {
-                listaExpedienteClasificacion = expedienteClasificacionTipoService.clasificacioneExpedienteClasiTipo(en.getId());
-                en.setListaClasificacionTipo(listaExpedienteClasificacion);
+        try {
+            if (StringUtils.isNotBlank(expediente.getNumero())) {
+                List<ExpedienteNivel> list = expedienteNivelService.expedienteNivelPorExpediente(expediente.getNumero());
+                for (ExpedienteNivel en : list) {
+                    listaExpedienteClasificacion = expedienteClasificacionTipoService.clasificacioneExpedienteClasiTipo(en.getId());
+                    en.setListaClasificacionTipo(listaExpedienteClasificacion);
+                }
+                expediente.setListaExpedienteNivel(list);
             }
-            expediente.setListaExpedienteNivel(list);
+            limpiarNivelesAll();
+        } catch (Exception e) {
+            log.error("ERROR - listarNiveles()" + e);
         }
-        limpiarNivelesAll();
     }
 
     public void setearExpediente(Expediente e) {
-        FacesContext context = FacesContext.getCurrentInstance();
-        MenuController menuController = (MenuController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "menuController");
-        menuController.cargarPagina(1);
-        listaEtiquetasSeleccionadas = new ArrayList<>();
-        setExpediente(e);
-        cargarEtiquetas();
-        cargarPersonasEntidades();
-        if (expediente.getVersion() == 0) {
-            inicializarEtapaEstado(0);
-        } else {
-            inicializarEtapaEstado(1);
+        try {
+            FacesContext context = FacesContext.getCurrentInstance();
+            MenuController menuController = (MenuController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "menuController");
+            menuController.cargarPagina(1);
+            listaEtiquetasSeleccionadas = new ArrayList<>();
+            setExpediente(e);
+            cargarEtiquetas();
+            cargarPersonasEntidades();
+            if (expediente.getVersion() == 0) {
+                inicializarEtapaEstado(0);
+            } else {
+                inicializarEtapaEstado(1);
+            }
+        } catch (Exception ex) {
+            log.error("ERROR - setearExpediente()" + ex);
         }
     }
 
     private void cargarPersonasEntidades() {
-        personasSeleccionadas = expedientePersonaService.expedientePersonaBuscarXExpediente(expediente.getId());
-        entidadSeleccionadas = expedienteEntidadService.expedienteEntidadBuscarXExpediente(expediente.getId());
+        try {
+            personasSeleccionadas = expedientePersonaService.expedientePersonaBuscarXExpediente(expediente.getId());
+            entidadSeleccionadas = expedienteEntidadService.expedienteEntidadBuscarXExpediente(expediente.getId());
+        } catch (Exception e) {
+            log.error("ERROR - cargarPersonasEntidades()" + e);
+        }
     }
 
     public void cargarModalActor() {
@@ -3001,31 +3173,137 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     }
 
     public boolean buscarPersonaGeneral(Long pagina) {
-        int i = 0;
-        if (stringUtil.isBlank(personaBusqueda.getNumeroDocumento())) {
-            personaBusqueda.setNumeroDocumento(null);
-            i++;
+        try {
+            int i = 0;
+            if (stringUtil.isBlank(personaBusqueda.getNumeroDocumento())) {
+                personaBusqueda.setNumeroDocumento(null);
+                i++;
+            }
+            if (stringUtil.isBlank(personaBusqueda.getApellidoPat())) {
+                personaBusqueda.setApellidoPat(null);
+                i++;
+            }
+            if (stringUtil.isBlank(personaBusqueda.getApellidoMat())) {
+                personaBusqueda.setApellidoMat(null);
+                i++;
+            }
+            if (stringUtil.isBlank(personaBusqueda.getNombre())) {
+                personaBusqueda.setNombre(null);
+                i++;
+            }
+            if (stringUtil.isBlank(personaBusqueda.getNumeroExpediente())) {
+                personaBusqueda.setNumeroExpediente(null);
+                i++;
+            }
+            if (i == 5) {
+                msg.messageAlert("Debe de ingresar almenos un criterio de busqueda", null);
+                return false;
+            } else {
+                if (pagina > 0) {
+                    int paginado = ConstantesUtil.PAGINADO_5;
+                    Long ini = paginado * (pagina - 1) + 1;
+                    Long fin = paginado * pagina;
+                    if (pagina == 0) {
+                        ini = 1L;
+                        fin = 5L;
+                    }
+
+                    personaBusqueda.setIni(ini);
+                    personaBusqueda.setFin(fin);
+                    try {
+                        List<Persona> list = personaService.personaBusarGeneral(personaBusqueda);
+                        if (list.size() > 0) {
+                            listaPersonaGeneral = list;
+                            nroPaginaPersona = pagina;
+                        } else {
+                            if (personaBusqueda.getIni() == 1) {
+                                listaPersonaGeneral = null;
+                                msg.messageAlert("No se han encontrado Personas", null);
+                            }
+                        }
+                    } catch (Exception e) {
+                        log.error("ERROR : BusquedaUsuarioController.listarPaginado: " + e.getMessage());
+                    }
+                }
+            }
+            indSeleccion = true;
+            personaBusqueda = new Persona();
+            listaExpedienteXPersona = null;
+            return true;
+        } catch (Exception e) {
+            log.error("ERROR - buscarPersonaGeneral()" + e);
         }
-        if (stringUtil.isBlank(personaBusqueda.getApellidoPat())) {
-            personaBusqueda.setApellidoPat(null);
-            i++;
+        return false;
+    }
+
+    private void cargarEtiquetas() {
+        try {
+            if (!stringUtil.isBlank(expediente.getEtiqueta())) {
+                String[] adArray = expediente.getEtiqueta().split(",");
+                for (String adArray1 : adArray) {
+                    Parametro p = codigoParamentro(60, adArray1);
+                    listaEtiquetasSeleccionadas.add(p);
+                }
+            }
+        } catch (Exception e) {
+            log.error("ERROR - cargarEtiquetas()" + e);
         }
-        if (stringUtil.isBlank(personaBusqueda.getApellidoMat())) {
-            personaBusqueda.setApellidoMat(null);
-            i++;
+    }
+
+    public String cargarBusquedaExpediente() {
+        try {
+            listaExpedientes = expedienteService.expedienteBuscar(expediente);
+            return "expedienteBusqueda";
+        } catch (Exception e) {
+            log.error("ERROR - cargarBusquedaExpediente()" + e);
         }
-        if (stringUtil.isBlank(personaBusqueda.getNombre())) {
-            personaBusqueda.setNombre(null);
-            i++;
+        return null;
+    }
+
+    private void usuarioSession() {
+        try {
+            usuarioSession = new Usuario();
+            FacesContext context = FacesContext.getCurrentInstance();
+            LoginController loginController = (LoginController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "loginController");
+            usuarioSession = loginController.getUsuarioSesion();
+            usuarioSession.setNombreDepartamento(ubigeoService.departamentoOne(usuarioSession.getIdDepartamento()).getDescripcion());
+        } catch (Exception e) {
+            log.error("ERROR - usuarioSession()" + e);
         }
-        if (stringUtil.isBlank(personaBusqueda.getNumeroExpediente())) {
-            personaBusqueda.setNumeroExpediente(null);
-            i++;
+    }
+
+    public void entidadQuejada() {
+        try {
+            if (expedienteGestion.getIndEntidadQuejada()) {
+                if (entidadSeleccionadas.size() == 1) {
+                    for (ExpedienteEntidad ee : entidadSeleccionadas) {
+                        expedienteGestion.setIdEntidad(Integer.parseInt(ee.getEntidad().getId().toString()));
+                        expedienteGestion.setNombreEntidad(ee.getEntidad().getNombre());
+                    }
+                }
+            } else {
+                expedienteGestion.setIdEntidad(null);
+                expedienteGestion.setNombreEntidad(null);
+            }
+        } catch (Exception e) {
+            log.error("ERROR - entidadQuejada()" + e);
         }
-        if (i == 5) {
-            msg.messageAlert("Debe de ingresar almenos un criterio de busqueda", null);
-            return false;
-        } else {
+    }
+
+    public void addEntidadQuejada(Entidad entidad) {
+        try {
+            expedienteGestion.setIdEntidad(Integer.parseInt(entidad.getId().toString()));
+            expedienteGestion.setNombreEntidad(entidad.getNombre());
+        } catch (Exception e) {
+            log.error("ERROR - entidadQuejada()" + e);
+        }
+    }
+
+    public boolean cargarPopoverPersona(Long pagina) {
+        try {
+            if (pagina == 1) {
+                nroPaginaPersona = 1L;
+            }
             if (pagina > 0) {
                 int paginado = ConstantesUtil.PAGINADO_5;
                 Long ini = paginado * (pagina - 1) + 1;
@@ -3035,16 +3313,16 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                     fin = 5L;
                 }
 
-                personaBusqueda.setIni(ini);
-                personaBusqueda.setFin(fin);
+                persona.setIni(ini);
+                persona.setFin(fin);
                 try {
-                    List<Persona> list = personaService.personaBusarGeneral(personaBusqueda);
+                    List<Persona> list = personaService.personaBuscarCadena(persona);
                     if (list.size() > 0) {
-                        listaPersonaGeneral = list;
+                        personasPopover = list;
                         nroPaginaPersona = pagina;
                     } else {
-                        if (personaBusqueda.getIni() == 1) {
-                            listaPersonaGeneral = null;
+                        if (persona.getIni() == 1) {
+                            personasPopover = null;
                             msg.messageAlert("No se han encontrado Personas", null);
                         }
                     }
@@ -3052,213 +3330,171 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                     log.error("ERROR : BusquedaUsuarioController.listarPaginado: " + e.getMessage());
                 }
             }
+            return true;
+        } catch (Exception e) {
+            log.error("ERROR - cargarPopoverPersona()" + e);
         }
-        indSeleccion = true;
-        personaBusqueda = new Persona();
-        listaExpedienteXPersona = null;
-        return true;
-    }
-
-    private void cargarEtiquetas() {
-        if (!stringUtil.isBlank(expediente.getEtiqueta())) {
-            String[] adArray = expediente.getEtiqueta().split(",");
-            for (String adArray1 : adArray) {
-                Parametro p = codigoParamentro(60, adArray1);
-                listaEtiquetasSeleccionadas.add(p);
-            }
-        }
-    }
-
-    public String cargarBusquedaExpediente() {
-        listaExpedientes = expedienteService.expedienteBuscar(expediente);
-        return "expedienteBusqueda";
-    }
-
-    private void usuarioSession() {
-        usuarioSession = new Usuario();
-        FacesContext context = FacesContext.getCurrentInstance();
-        LoginController loginController = (LoginController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "loginController");
-        usuarioSession = loginController.getUsuarioSesion();
-        usuarioSession.setNombreDepartamento(ubigeoService.departamentoOne(usuarioSession.getIdDepartamento()).getDescripcion());
-    }
-
-    public void entidadQuejada() {
-        if (expedienteGestion.getIndEntidadQuejada()) {
-            if (entidadSeleccionadas.size() == 1) {
-                for (ExpedienteEntidad ee : entidadSeleccionadas) {
-                    expedienteGestion.setIdEntidad(Integer.parseInt(ee.getEntidad().getId().toString()));
-                    expedienteGestion.setNombreEntidad(ee.getEntidad().getNombre());
-                }
-            }
-        } else {
-            expedienteGestion.setIdEntidad(null);
-            expedienteGestion.setNombreEntidad(null);
-        }
-    }
-
-    public void addEntidadQuejada(Entidad entidad) {
-        expedienteGestion.setIdEntidad(Integer.parseInt(entidad.getId().toString()));
-        expedienteGestion.setNombreEntidad(entidad.getNombre());
-    }
-
-    public boolean cargarPopoverPersona(Long pagina) {
-        if (pagina == 1) {
-            nroPaginaPersona = 1L;
-        }
-        if (pagina > 0) {
-            int paginado = ConstantesUtil.PAGINADO_5;
-            Long ini = paginado * (pagina - 1) + 1;
-            Long fin = paginado * pagina;
-            if (pagina == 0) {
-                ini = 1L;
-                fin = 5L;
-            }
-
-            persona.setIni(ini);
-            persona.setFin(fin);
-            try {
-                List<Persona> list = personaService.personaBuscarCadena(persona);
-                if (list.size() > 0) {
-                    personasPopover = list;
-                    nroPaginaPersona = pagina;
-                } else {
-                    if (persona.getIni() == 1) {
-                        personasPopover = null;
-                        msg.messageAlert("No se han encontrado Personas", null);
-                    }
-                }
-            } catch (Exception e) {
-                log.error("ERROR : BusquedaUsuarioController.listarPaginado: " + e.getMessage());
-            }
-        }
-        return true;
+        return false;
     }
 
     public boolean cargarPopoverEntidad(Long pagina) {
-        if (pagina == 1) {
-            nroPaginaPersona = 1L;
-        }
-        if (pagina > 0) {
-            int paginado = ConstantesUtil.PAGINADO_5;
-            Long ini = paginado * (pagina - 1) + 1;
-            Long fin = paginado * pagina;
-            if (pagina == 0) {
-                ini = 1L;
-                fin = 5L;
+        try {
+            if (pagina == 1) {
+                nroPaginaPersona = 1L;
             }
-            entidad.setIni(ini);
-            entidad.setFin(fin);
-            try {
-                List<Entidad> list = entidadService.entidadBuscarCadena(entidad);
-                if (list.size() > 0) {
-                    entidadPopover = list;
-                    nroPaginaPersona = pagina;
-                } else {
-                    if (entidad.getIni() == 1) {
-                        entidadPopover = null;
-                    }
+            if (pagina > 0) {
+                int paginado = ConstantesUtil.PAGINADO_5;
+                Long ini = paginado * (pagina - 1) + 1;
+                Long fin = paginado * pagina;
+                if (pagina == 0) {
+                    ini = 1L;
+                    fin = 5L;
                 }
-            } catch (Exception e) {
-                log.error("ERROR : BusquedaUsuarioController.listarPaginado: " + e.getMessage());
+                entidad.setIni(ini);
+                entidad.setFin(fin);
+                try {
+                    List<Entidad> list = entidadService.entidadBuscarCadena(entidad);
+                    if (list.size() > 0) {
+                        entidadPopover = list;
+                        nroPaginaPersona = pagina;
+                    } else {
+                        if (entidad.getIni() == 1) {
+                            entidadPopover = null;
+                        }
+                    }
+                } catch (Exception e) {
+                    log.error("ERROR : BusquedaUsuarioController.listarPaginado: " + e.getMessage());
+                }
             }
+            if (entidadPopover == null) {
+                msg.messageAlert("No se han encontrado Personas", null);
+            }
+            return true;
+        } catch (Exception e) {
+            log.error("ERROR - cargarPopoverEntidad()" + e);
         }
-        if (entidadPopover == null) {
-            msg.messageAlert("No se han encontrado Personas", null);
-        }
-        return true;
+        return false;
     }
 
     public boolean addPersona(Persona p) {
-        for (ExpedientePersona p1 : personasSeleccionadas) {
-            if (Objects.equals(p1.getPersona().getId(), p.getId())) {
-                msg.messageAlert("Esta persona ya se encuentra seleccionada", null);
-                cadenaPersonaPopover = null;
-                return false;
+        try {
+            for (ExpedientePersona p1 : personasSeleccionadas) {
+                if (Objects.equals(p1.getPersona().getId(), p.getId())) {
+                    msg.messageAlert("Esta persona ya se encuentra seleccionada", null);
+                    cadenaPersonaPopover = null;
+                    return false;
+                }
             }
+            ExpedientePersona ep = new ExpedientePersona(expediente, p);
+            ep.setContacto(p.getContacto());
+            personasSeleccionadas.add(ep);
+            cadenaPersonaPopover = null;
+            return true;
+        } catch (Exception e) {
+            log.error("ERROR - cargarPopoverEntidad()" + e);
         }
-        ExpedientePersona ep = new ExpedientePersona(expediente, p);
-        ep.setContacto(p.getContacto());
-        personasSeleccionadas.add(ep);
-        cadenaPersonaPopover = null;
-        return true;
+        return false;
     }
 
     public boolean seteaPersonaExpediente(ExpedientePersona ep) {
-        Persona p = personaService.personaBusquedaOne(ep.getPersona().getId());
-        ep.setPersona(p);
-        setExpedientepersonaModalEdit(ep);
-        expedientepersonaModalEdit.setDireccion(expedientepersonaModalEdit.getPersona().getDireccion());
-        expedientepersonaModalEdit.setIdDepartamento(expedientepersonaModalEdit.getPersona().getIdDepartamento());
-        expedientepersonaModalEdit.setIdProvincia(expedientepersonaModalEdit.getPersona().getIdProvincia());
-        expedientepersonaModalEdit.setIdDistrito(expedientepersonaModalEdit.getPersona().getIdDistrito());
-        expedientepersonaModalEdit.setTelefono1(expedientepersonaModalEdit.getPersona().getTelefono1());
-        expedientepersonaModalEdit.setTelefono2(expedientepersonaModalEdit.getPersona().getTelefono2());
-        expedientepersonaModalEdit.setEmail(expedientepersonaModalEdit.getPersona().getEmail());
-        expedientepersonaModalEdit.setTipoLengua(expedientepersonaModalEdit.getPersona().getTipoLengua());
-        expedientepersonaModalEdit.setIndicadorDiscapacitado(expedientepersonaModalEdit.getPersona().getIndicadorDiscapacitado());
-        expedientepersonaModalEdit.setTipoPueblo(expedientepersonaModalEdit.getPersona().getTipoPueblo());
-        if (StringUtils.isNotBlank(expedientepersonaModalEdit.getIdDepartamento()) && !StringUtils.equals(expedientepersonaModalEdit.getIdDepartamento(), "0")) {
-            comboProvinciaId(expedientepersonaModalEdit.getIdDepartamento());
+        try {
+            Persona p = personaService.personaBusquedaOne(ep.getPersona().getId());
+            ep.setPersona(p);
+            setExpedientepersonaModalEdit(ep);
+            expedientepersonaModalEdit.setDireccion(expedientepersonaModalEdit.getPersona().getDireccion());
+            expedientepersonaModalEdit.setIdDepartamento(expedientepersonaModalEdit.getPersona().getIdDepartamento());
+            expedientepersonaModalEdit.setIdProvincia(expedientepersonaModalEdit.getPersona().getIdProvincia());
+            expedientepersonaModalEdit.setIdDistrito(expedientepersonaModalEdit.getPersona().getIdDistrito());
+            expedientepersonaModalEdit.setTelefono1(expedientepersonaModalEdit.getPersona().getTelefono1());
+            expedientepersonaModalEdit.setTelefono2(expedientepersonaModalEdit.getPersona().getTelefono2());
+            expedientepersonaModalEdit.setEmail(expedientepersonaModalEdit.getPersona().getEmail());
+            expedientepersonaModalEdit.setTipoLengua(expedientepersonaModalEdit.getPersona().getTipoLengua());
+            expedientepersonaModalEdit.setIndicadorDiscapacitado(expedientepersonaModalEdit.getPersona().getIndicadorDiscapacitado());
+            expedientepersonaModalEdit.setTipoPueblo(expedientepersonaModalEdit.getPersona().getTipoPueblo());
+            if (StringUtils.isNotBlank(expedientepersonaModalEdit.getIdDepartamento()) && !StringUtils.equals(expedientepersonaModalEdit.getIdDepartamento(), "0")) {
+                comboProvinciaId(expedientepersonaModalEdit.getIdDepartamento());
+            }
+            if (StringUtils.isNotBlank(ep.getIdProvincia()) && !StringUtils.equals(expedientepersonaModalEdit.getIdProvincia(), "0")) {
+                comboDistritoId(expedientepersonaModalEdit.getIdProvincia(), expedientepersonaModalEdit.getIdDepartamento());
+            }
+            return true;
+        } catch (Exception e) {
+            log.error("ERROR - seteaPersonaExpediente()" + e);
         }
-        if (StringUtils.isNotBlank(ep.getIdProvincia()) && !StringUtils.equals(expedientepersonaModalEdit.getIdProvincia(), "0")) {
-            comboDistritoId(expedientepersonaModalEdit.getIdProvincia(), expedientepersonaModalEdit.getIdDepartamento());
-        }
-        return true;
+        return false;
     }
 
     public boolean editaPersonaExpediente() {
-        expedientepersonaModalEdit.getPersona().setUsuModificacion(usuarioSession.getCodigo());
-        expedientepersonaModalEdit.getPersona().setFechaModificacion(new Date());
-        expedientepersonaModalEdit.getPersona().setDireccion(expedientepersonaModalEdit.getDireccion());
-        expedientepersonaModalEdit.getPersona().setTelefono1(expedientepersonaModalEdit.getTelefono1());
-        expedientepersonaModalEdit.getPersona().setEmail(expedientepersonaModalEdit.getEmail());
-        expedientepersonaModalEdit.getPersona().setIdDepartamento(expedientepersonaModalEdit.getIdDepartamento());
-        expedientepersonaModalEdit.getPersona().setIdProvincia(expedientepersonaModalEdit.getIdProvincia());
-        expedientepersonaModalEdit.getPersona().setIdDistrito(expedientepersonaModalEdit.getIdDistrito());
-        expedientepersonaModalEdit.getPersona().setContacto(expedientepersonaModalEdit.getContacto());
-        expedientepersonaModalEdit.getPersona().setIndicadorDiscapacitado(expedientepersonaModalEdit.getIndicadorDiscapacitado());
-        expedientepersonaModalEdit.getPersona().setTipoLengua(expedientepersonaModalEdit.getTipoLengua());
-        expedientepersonaModalEdit.getPersona().setTipoPueblo(expedientepersonaModalEdit.getTipoPueblo());
-        personaService.personaUpdate(expedientepersonaModalEdit.getPersona());
-        expedientePersonaService.expedienteDatosPersonaUpdate(expedientepersonaModalEdit);
-        if (StringUtils.equals(expedientepersonaModalEdit.getPersona().getTipo(), "PER")) {
-            msg.messageInfo("Se actualizo los datos de la persona", null);
-        } else {
-            msg.messageInfo("Se actualizo los datos de la organización", null);
+        try {
+            expedientepersonaModalEdit.getPersona().setUsuModificacion(usuarioSession.getCodigo());
+            expedientepersonaModalEdit.getPersona().setFechaModificacion(new Date());
+            expedientepersonaModalEdit.getPersona().setDireccion(expedientepersonaModalEdit.getDireccion());
+            expedientepersonaModalEdit.getPersona().setTelefono1(expedientepersonaModalEdit.getTelefono1());
+            expedientepersonaModalEdit.getPersona().setEmail(expedientepersonaModalEdit.getEmail());
+            expedientepersonaModalEdit.getPersona().setIdDepartamento(expedientepersonaModalEdit.getIdDepartamento());
+            expedientepersonaModalEdit.getPersona().setIdProvincia(expedientepersonaModalEdit.getIdProvincia());
+            expedientepersonaModalEdit.getPersona().setIdDistrito(expedientepersonaModalEdit.getIdDistrito());
+            expedientepersonaModalEdit.getPersona().setContacto(expedientepersonaModalEdit.getContacto());
+            expedientepersonaModalEdit.getPersona().setIndicadorDiscapacitado(expedientepersonaModalEdit.getIndicadorDiscapacitado());
+            expedientepersonaModalEdit.getPersona().setTipoLengua(expedientepersonaModalEdit.getTipoLengua());
+            expedientepersonaModalEdit.getPersona().setTipoPueblo(expedientepersonaModalEdit.getTipoPueblo());
+            personaService.personaUpdate(expedientepersonaModalEdit.getPersona());
+            expedientePersonaService.expedienteDatosPersonaUpdate(expedientepersonaModalEdit);
+            if (StringUtils.equals(expedientepersonaModalEdit.getPersona().getTipo(), "PER")) {
+                msg.messageInfo("Se actualizo los datos de la persona", null);
+            } else {
+                msg.messageInfo("Se actualizo los datos de la organización", null);
+            }
+            return true;
+        } catch (Exception e) {
+            log.error("ERROR - editaPersonaExpediente()" + e);
         }
-        return true;
+        return false;
     }
 
     public void removePersona(ExpedientePersona ep) {
-        personasSeleccionadas.remove(ep);
-        int count = expedientePersonaService.expedientePersonaContar(ep);
-        if (count > 0) {
-            expedientePersonaService.expedientePersonaDelete(ep);
+        try {
+            personasSeleccionadas.remove(ep);
+            int count = expedientePersonaService.expedientePersonaContar(ep);
+            if (count > 0) {
+                expedientePersonaService.expedientePersonaDelete(ep);
+            }
+            msg.messageInfo("Se elimino el registo de la persona", null);
+        } catch (Exception e) {
+            log.error("ERROR - removePersona()" + e);
         }
-        msg.messageInfo("Se elimino el registo de la persona", null);
     }
 
     public boolean addEntidad(Entidad e) {
-        for (ExpedienteEntidad e1 : entidadSeleccionadas) {
-            if (Objects.equals(e1.getEntidad().getId(), e.getId())) {
-                msg.messageAlert("Esta Entidad ya se encuentra seleccionada", null);
-                cadenaEntidadPopover = null;
-                return false;
+        try {
+            for (ExpedienteEntidad e1 : entidadSeleccionadas) {
+                if (Objects.equals(e1.getEntidad().getId(), e.getId())) {
+                    msg.messageAlert("Esta Entidad ya se encuentra seleccionada", null);
+                    cadenaEntidadPopover = null;
+                    return false;
+                }
             }
+            ExpedienteEntidad ee = new ExpedienteEntidad(expediente, e);
+            entidadSeleccionadas.add(ee);
+            cadenaEntidadPopover = null;
+            return false;
+        } catch (Exception ex) {
+            log.error("ERROR - addEntidad()" + ex);
         }
-        ExpedienteEntidad ee = new ExpedienteEntidad(expediente, e);
-        entidadSeleccionadas.add(ee);
-        cadenaEntidadPopover = null;
         return false;
     }
 
     public void removeEntidad(ExpedienteEntidad e) {
-        entidadSeleccionadas.remove(e);
-        int count = expedienteEntidadService.expedienteEntidadContar(e);
-        if (count > 0) {
-            expedienteEntidadService.expedienteEntidadDelete(e);
+        try {
+            entidadSeleccionadas.remove(e);
+            int count = expedienteEntidadService.expedienteEntidadContar(e);
+            if (count > 0) {
+                expedienteEntidadService.expedienteEntidadDelete(e);
+            }
+            msg.messageInfo("Se elimino el registo de la Entidad", null);
+        } catch (Exception ex) {
+            log.error("ERROR - removeEntidad()" + ex);
         }
-        msg.messageInfo("Se elimino el registo de la Entidad", null);
     }
 
     private void inicializarEtapaEstado(int tip) {
@@ -3348,9 +3584,8 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 }
                 etapaEstado.setUltimoEstado(detalleUltimoEstado(expediente.getNumero()));
             }
-
         } catch (Exception e) {
-            log.error(e);
+            log.error("ERROR - inicializarEtapaEstado()" + e);
         }
     }
 
@@ -3441,28 +3676,39 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 }
                 etapaEstado.setUltimoEstado(detalleUltimoEstado(exp.getNumero()));
             }
-
         } catch (Exception e) {
-            log.error(e);
+            log.error("ERROR - inicializarEtapaEstado()" + e);
         }
     }
 
     public void guardarBorrador() {
-        expediente.setVersion(0);
-        expediente.setEstado("A");
-        expediente.setEtiqueta(encadenarEtiquetas());
-        expediente.setUsuarioRegistro(usuarioSession.getCodigo());
-        expediente.setNumero(" ");
-        if (expediente.getId() == null) {
-            expedienteService.expedienteInsertar(expediente);
-            insertUpdateListasPersonaEntidad();
-            msg.messageInfo("Se registro el borrador del Expediente", null);
-        } else {
-            expedienteService.expedienteUpdate(expediente);
-            insertUpdateListasPersonaEntidad();
-            msg.messageInfo("Se actualizo el borrador del Expediente", null);
+        try {
+            expediente.setVersion(0);
+            expediente.setEstado("A");
+            expediente.setEtiqueta(encadenarEtiquetas());
+            expediente.setUsuarioRegistro(usuarioSession.getCodigo());
+            expediente.setNumero(" ");
+            if (expediente.getId() == null) {
+                expedienteService.expedienteInsertar(expediente);
+                insertUpdateListasPersonaEntidad();
+                msg.messageInfo("Se registro el borrador del Expediente", null);
+            } else {
+                expedienteService.expedienteUpdate(expediente);
+                insertUpdateListasPersonaEntidad();
+                msg.messageInfo("Se actualizo el borrador del Expediente", null);
+            }
+            inicializarEtapaEstado(0);
+        } catch (Exception e) {
+            log.error("ERROR - guardarBorrador()" + e);
         }
-        inicializarEtapaEstado(0);
+    }
+    
+    private void guardarHistorial(ExpedienteHistorial historial){
+        historial.setIdExpediente(expediente.getId());
+        historial.setNumero(expediente.getNumero());
+        historial.setUsuario(usuarioSession.getCodigo());
+        historial.setFecha(new Date());
+        expedienteHistorialService.expedienteHistorialInsertar(historial);
     }
 
     public boolean guardarVersion() {
@@ -3471,7 +3717,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             return false;
         }
         if (StringUtils.equals(expediente.getTipoClasificion(), ExpedienteType.CONSULTA.getKey())) {
-            if(expediente.getIndicadorOficio() != null){
+            if (expediente.getIndicadorOficio() != null) {
                 if (expediente.getIndicadorOficio()) {
                     msg.messageAlert("Un expediente de oficio no puede ser del tipo consulta", null);
                     return false;
@@ -3488,7 +3734,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             inicializarEtapaEstado(1);
             insertarActualizarTiempos();
             verONP();
-            if(expediente.getIndiceMayorInformacion() != null){
+            if (expediente.getIndiceMayorInformacion() != null) {
                 if (expediente.getIndiceMayorInformacion()) {
                     if (etapaEstado.getVerEtapa() == 1 || etapaEstado.getVerEtapa() == 5) {
                         Integer contador = expedienteService.expedienteMayorInformacionCount(expediente.getNumero());
@@ -3498,9 +3744,13 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                     }
                 }
             }
+            historial = new ExpedienteHistorial();
+            historial.setTipo(HistorialType.HISTORIAL_GUARDAR_VERSION.getKey());
+            historial.setDescripcion(HistorialType.HISTORIAL_GUARDAR_VERSION.getValue());
+            guardarHistorial(historial);
             msg.messageInfo("Se genero una nueva version del Expediente", null);
         } catch (Exception e) {
-            log.error(e);
+            log.error("ERROR - guardarVersion()" + e);
         }
         return true;
     }
@@ -3529,9 +3779,19 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             if (tipo == 1) {
                 expediente.setGeneral("A");
             }
-            msg.messageInfo("Se genero una nueva version del Expediente", null);
+            historial = new ExpedienteHistorial();
+            if (tipo == 1) {
+                historial.setTipo(HistorialType.HISTORIAL_LEVANTAR_CONCLUSION.getKey());
+                historial.setDescripcion(HistorialType.HISTORIAL_LEVANTAR_CONCLUSION.getValue());
+                msg.messageInfo("Se levanto la conclusión", null);
+            }else{
+                historial.setTipo(HistorialType.HISTORIAL_CAMBIAR_TIPO.getKey());
+                historial.setDescripcion(HistorialType.HISTORIAL_CAMBIAR_TIPO.getValue());
+                msg.messageInfo("Se modifico el tipo de clasificación", null);
+            }
+            guardarHistorial(historial);
         } catch (Exception e) {
-            log.error(e);
+            log.error("ERROR - guardarVersionSupervisor()" + e);
         }
         return true;
     }
@@ -3548,7 +3808,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             insertarActualizarTiempos();
             verONP();
         } catch (Exception e) {
-            log.error(e);
+            log.error("ERROR - guardarVersion2()" + e);
         }
     }
 
@@ -3562,7 +3822,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             guardarEtapaEstado(idExpedienteOld);
             inicializarEtapaEstado(1);
         } catch (Exception e) {
-            log.error(e);
+            log.error("ERROR - guardarVersion3()" + e);
         }
     }
 
@@ -3593,12 +3853,11 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                     expediente.setRuta(ruta);
                 }
             }
-
             cargarGruposVulnerables();
             expedienteService.expedienteInsertar(expediente);
             insertListasPersonaEntidad();
         } catch (Exception e) {
-            log.error(e);
+            log.error("ERROR - guardar()" + e);
         }
     }
 
@@ -3628,26 +3887,30 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                     expediente.setRuta(ruta);
                 }
             }
-
             cargarGruposVulnerables();
             expedienteService.expedienteInsertar(expediente);
             insertListasPersonaEntidad();
         } catch (Exception e) {
-            log.error(e);
+            log.error("ERROR - guardarSinClasificacion()" + e);
         }
     }
 
     private void generarCodigoExpediente() {
-        Long consecutivo = expedienteService.expedienteCodigoPorOD(usuarioSession.getCodigoOD().longValue());
-        if (consecutivo == null) {
-            consecutivo = 0L;
+        try {
+            Long consecutivo = expedienteService.expedienteCodigoPorOD(usuarioSession.getCodigoOD().longValue());
+            if (consecutivo == null) {
+                consecutivo = 0L;
+            }
+            String stringCodigoOD = String.format("%4s", usuarioSession.getCodigoOD().toString()).replace(' ', '0');
+            expediente.setCodigoOD(usuarioSession.getCodigoOD());
+            expediente.setConsecutivo(consecutivo + 1);
+            Calendar c1 = Calendar.getInstance();
+            String numeroExpediente = stringCodigoOD + "-" + c1.get(Calendar.YEAR) + "-" + String.format("%6s", expediente.getConsecutivo().toString()).replace(' ', '0');
+            expediente.setNumero(numeroExpediente);
+        } catch (Exception e) {
+            log.error("ERROR - generarCodigoExpediente()" + e);
         }
-        String stringCodigoOD = String.format("%4s", usuarioSession.getCodigoOD().toString()).replace(' ', '0');
-        expediente.setCodigoOD(usuarioSession.getCodigoOD());
-        expediente.setConsecutivo(consecutivo + 1);
-        Calendar c1 = Calendar.getInstance();
-        String numeroExpediente = stringCodigoOD + "-" + c1.get(Calendar.YEAR) + "-" + String.format("%6s", expediente.getConsecutivo().toString()).replace(' ', '0');
-        expediente.setNumero(numeroExpediente);
+
     }
 
     private void guardar1(String codigoUsuario) {
@@ -3673,219 +3936,254 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             expedienteService.expedienteInsertar(expediente);
             insertListasPersonaEntidad();
         } catch (Exception e) {
-            log.error(e);
+            log.error("ERROR - guardar1()" + e);
         }
     }
 
     public String concluir() {
-        Long idExpedienteOld = expediente.getId();
-        if (idExpedienteOld == null) {
-            return null;
-        }
-        /**
-         * QUEJA
-         */
-        if (StringUtils.equals(expediente.getTipoClasificion(), ExpedienteType.QUEJA.getKey())) {
-            if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_QUEJA.getKey())) {
-                if (expediente.getEstadoCalificacion() == null) {
-                    msg.messageAlert("El expediente no cuenta con ningun estado, por favor seleccione si esta admitido o no admitido", null);
-                    return null;
+        try {
+            Long idExpedienteOld = expediente.getId();
+            if (idExpedienteOld == null) {
+                return null;
+            }
+            /**
+             * QUEJA
+             */
+            if (StringUtils.equals(expediente.getTipoClasificion(), ExpedienteType.QUEJA.getKey())) {
+                if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_QUEJA.getKey())) {
+                    if (expediente.getEstadoCalificacion() == null) {
+                        msg.messageAlert("El expediente no cuenta con ningun estado, por favor seleccione si esta admitido o no admitido", null);
+                        return null;
+                    }
+                }
+                if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.INVESTIGACION_QUEJA.getKey())) {
+                    if (expediente.getEstadoInvestigacion() == null) {
+                        msg.messageAlert("El expediente no cuenta con ningun estado, por favor seleccione si esta fundado o infundado", null);
+                        return null;
+                    }
+                }
+                if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.PERSUACION_QUEJA.getKey())) {
+                    if (expediente.getEstadoPersuacion() == null) {
+                        msg.messageAlert("El expediente no cuenta con ningun estado, por favor seleccione si esta acogido o no acogido", null);
+                        return null;
+                    }
+                }
+                if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.SEGUIMIENTO_QUEJA.getKey())) {
+                    if (expediente.getEstadoSeguimiento() == null) {
+                        msg.messageAlert("El expediente no cuenta con ningun estado, por favor seleccione si esta acogido o no acogido", null);
+                        return null;
+                    }
                 }
             }
-            if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.INVESTIGACION_QUEJA.getKey())) {
-                if (expediente.getEstadoInvestigacion() == null) {
-                    msg.messageAlert("El expediente no cuenta con ningun estado, por favor seleccione si esta fundado o infundado", null);
-                    return null;
-                }
-            }
-            if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.PERSUACION_QUEJA.getKey())) {
-                if (expediente.getEstadoPersuacion() == null) {
-                    msg.messageAlert("El expediente no cuenta con ningun estado, por favor seleccione si esta acogido o no acogido", null);
-                    return null;
-                }
-            }
-            if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.SEGUIMIENTO_QUEJA.getKey())) {
-                if (expediente.getEstadoSeguimiento() == null) {
-                    msg.messageAlert("El expediente no cuenta con ningun estado, por favor seleccione si esta acogido o no acogido", null);
-                    return null;
-                }
-            }
-        }
 
-        /**
-         * PETITORIO
-         */
-        if (StringUtils.equals(expediente.getTipoClasificion(), ExpedienteType.PETITORIO.getKey())) {
-            if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_PETITORIO.getKey())) {
-                if (expediente.getEstadoCalificacion() == null) {
-                    msg.messageAlert("El expediente no cuenta con ningun estado, por favor seleccione si esta admitido o no admitido", null);
-                    return null;
+            /**
+             * PETITORIO
+             */
+            if (StringUtils.equals(expediente.getTipoClasificion(), ExpedienteType.PETITORIO.getKey())) {
+                if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_PETITORIO.getKey())) {
+                    if (expediente.getEstadoCalificacion() == null) {
+                        msg.messageAlert("El expediente no cuenta con ningun estado, por favor seleccione si esta admitido o no admitido", null);
+                        return null;
+                    }
+                }
+                if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.GESTION_PETITORIO.getKey())) {
+                    if (expediente.getEstadoGestion() == null) {
+                        msg.messageAlert("El expediente no cuenta con ningun estado, por favor seleccione si esta solucionado o no solucionado", null);
+                        return null;
+                    }
+                }
+                if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.PERSUASION_PETITORIO.getKey())) {
+                    if (expediente.getEstadoPersuacion() == null) {
+                        msg.messageAlert("El expediente no cuenta con ningun estado, por favor seleccione si devienen en solucionados, por negativa expresa o falta de respuesta", null);
+                        return null;
+                    }
                 }
             }
-            if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.GESTION_PETITORIO.getKey())) {
-                if (expediente.getEstadoGestion() == null) {
-                    msg.messageAlert("El expediente no cuenta con ningun estado, por favor seleccione si esta solucionado o no solucionado", null);
-                    return null;
-                }
+            if (!validaConcluision()) {
+                return null;
             }
-            if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.PERSUASION_PETITORIO.getKey())) {
-                if (expediente.getEstadoPersuacion() == null) {
-                    msg.messageAlert("El expediente no cuenta con ningun estado, por favor seleccione si devienen en solucionados, por negativa expresa o falta de respuesta", null);
-                    return null;
-                }
-            }
-        }
-        if (!validaConcluision()) {
-            return null;
-        }
 
-        if (validaConclusionFinal()) {
-            return null;
+            if (validaConclusionFinal()) {
+                return null;
+            }
+            guardar();
+            guardarEtapaEstadoConcluir(idExpedienteOld);
+            inicializarEtapaEstado(1);
+            insertarActualizarTiempos();
+            verONP();
+            verModalConclusion = false;
+            /**
+             * GENERAR NUEVO ESTADO
+             */
+            historial = new ExpedienteHistorial();
+            historial.setTipo(HistorialType.HISTORIAL_CONCLUIR_ETAPA.getKey());
+            historial.setDescripcion(HistorialType.HISTORIAL_CONCLUIR_ETAPA.getValue());
+            guardarHistorial(historial);
+            msg.messageInfo("Se concluyó la etapa", null);
+            if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_PETITORIO.getKey()) || Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_QUEJA.getKey())) {
+                setearExpedienteTiempo();
+                return "expedienteEdit";
+            }
+            cargarExpedienteGestionLista();
+            return "expedienteGestionLista";
+        } catch (Exception e) {
+            log.error("ERROR - concluir()" + e);
         }
-        guardar();
-        guardarEtapaEstadoConcluir(idExpedienteOld);
-        inicializarEtapaEstado(1);
-        insertarActualizarTiempos();
-        verONP();
-        verModalConclusion = false;
-        /**
-         * GENERAR NUEVO ESTADO
-         */
-
-        msg.messageInfo("Se concluyó la etapa", null);
-        if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_PETITORIO.getKey()) || Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_QUEJA.getKey())) {
-            setearExpedienteTiempo();
-            return "expedienteEdit";
-        }
-        cargarExpedienteGestionLista();
-        return "expedienteGestionLista";
+        return null;
     }
-    
-    public void cancelarConclusion(){
+
+    public void cancelarConclusion() {
         verModalConclusion = false;
     }
 
     public String guardarConclusionFinExpediente() {
-        Long idExpedienteOld = expediente.getId();
-        if (idExpedienteOld == null) {
-            return null;
-        }
-        guardar();
-        guardarEtapaEstadoConcluir(idExpedienteOld);
-        inicializarEtapaEstado(1);
-        insertarActualizarTiempos();
-        verONP();
-        /**
-         * GENERAR NUEVO ESTADO
-         */
-
-        msg.messageInfo("Se concluyó el expediente", null);
-        if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_PETITORIO.getKey()) || Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_QUEJA.getKey())) {
-            setearExpedienteTiempo();
+        try {
+            Long idExpedienteOld = expediente.getId();
+            if (idExpedienteOld == null) {
+                return null;
+            }
+            guardar();
+            guardarEtapaEstadoConcluir(idExpedienteOld);
+            inicializarEtapaEstado(1);
+            insertarActualizarTiempos();
+            verONP();
+            /**
+             * GENERAR NUEVO ESTADO
+             */
+            msg.messageInfo("Se concluyó el expediente", null);
+            if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_PETITORIO.getKey()) || Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_QUEJA.getKey())) {
+                setearExpedienteTiempo();
+                verModalConclusion = false;
+                return "expedienteEdit";
+            }
             verModalConclusion = false;
-            return "expedienteEdit";
+            historial = new ExpedienteHistorial();
+            historial.setTipo(HistorialType.HISTORIAL_CONCLUIR_EXPEDIENTE.getKey());
+            historial.setDescripcion(HistorialType.HISTORIAL_CONCLUIR_EXPEDIENTE.getValue());
+            guardarHistorial(historial);
+            return "expedienteGestionLista";
+        } catch (Exception e) {
+            log.error("ERROR - guardarConclusionFinExpediente()" + e);
         }
-        verModalConclusion = false;
-        return "expedienteGestionLista";
+        return null;
     }
 
     private boolean validaConclusionFinal() {
-        verModalConclusion = false;
-        /**
-         * QUEJA
-         */
-        if (StringUtils.equals(expediente.getTipoClasificion(), ExpedienteType.QUEJA.getKey())) {
+        try {
+            verModalConclusion = false;
+            /**
+             * QUEJA
+             */
+            if (StringUtils.equals(expediente.getTipoClasificion(), ExpedienteType.QUEJA.getKey())) {
 
-            //actualizarEtapaEstado(idExpedienteOld);
-            if (etapaEstado != null) {
-                if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_QUEJA.getKey())) {
-                    if (expediente.getEstadoCalificacion() == EstadoExpedienteType.CALIFICACION_NO_ADMITIDA_QUEJA.getKey()) {
+                //actualizarEtapaEstado(idExpedienteOld);
+                if (etapaEstado != null) {
+                    if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_QUEJA.getKey())) {
+                        if (expediente.getEstadoCalificacion() == EstadoExpedienteType.CALIFICACION_NO_ADMITIDA_QUEJA.getKey()) {
+                            verModalConclusion = true;
+                            return verModalConclusion;
+                        }
+                    }
+                    if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.INVESTIGACION_QUEJA.getKey())) {
+                        if (expediente.getEstadoInvestigacion() == EstadoExpedienteType.INVESTIGACION_INFUNDADO_QUEJA.getKey()) {
+                            verModalConclusion = true;
+                            return verModalConclusion;
+                        }
+                    }
+                    if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.PERSUACION_QUEJA.getKey())) {
+                        if (expediente.getEstadoPersuacion() == EstadoExpedienteType.PERSUACION_ACOGIDO_QUEJA.getKey()) {
+                            verModalConclusion = true;
+                            return verModalConclusion;
+                        }
+                    }
+                    if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.SEGUIMIENTO_QUEJA.getKey())) {
                         verModalConclusion = true;
                         return verModalConclusion;
                     }
-                }
-                if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.INVESTIGACION_QUEJA.getKey())) {
-                    if (expediente.getEstadoInvestigacion() == EstadoExpedienteType.INVESTIGACION_INFUNDADO_QUEJA.getKey()) {
-                        verModalConclusion = true;
-                        return verModalConclusion;
-                    }
-                }
-                if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.PERSUACION_QUEJA.getKey())) {
-                    if (expediente.getEstadoPersuacion() == EstadoExpedienteType.PERSUACION_ACOGIDO_QUEJA.getKey()) {
-                        verModalConclusion = true;
-                        return verModalConclusion;
-                    }
-                }
-                if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.SEGUIMIENTO_QUEJA.getKey())) {
-                    verModalConclusion = true;
-                    return verModalConclusion;
                 }
             }
-        }
-
-        /**
-         * PETITORIO
-         */
-        if (StringUtils.equals(expediente.getTipoClasificion(), ExpedienteType.PETITORIO.getKey())) {
-            //actualizarEtapaEstado(idExpedienteOld);
-            if (etapaEstado != null) {
-                if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_PETITORIO.getKey())) {
-                    if (expediente.getEstadoCalificacion() == EstadoExpedienteType.CALIFICACION_NO_ADMITIDA_PETITORIO.getKey()) {
+            /**
+             * PETITORIO
+             */
+            if (StringUtils.equals(expediente.getTipoClasificion(), ExpedienteType.PETITORIO.getKey())) {
+                //actualizarEtapaEstado(idExpedienteOld);
+                if (etapaEstado != null) {
+                    if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_PETITORIO.getKey())) {
+                        if (expediente.getEstadoCalificacion() == EstadoExpedienteType.CALIFICACION_NO_ADMITIDA_PETITORIO.getKey()) {
+                            verModalConclusion = true;
+                            return verModalConclusion;
+                        }
+                    }
+                    if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.GESTION_PETITORIO.getKey())) {
+                        if (expediente.getEstadoGestion() == EstadoExpedienteType.GESTION_SOLUCIONADO_PETITORIO.getKey()) {
+                            verModalConclusion = true;
+                            return verModalConclusion;
+                        }
+                    }
+                    if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.PERSUASION_PETITORIO.getKey())) {
                         verModalConclusion = true;
                         return verModalConclusion;
                     }
                 }
-                if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.GESTION_PETITORIO.getKey())) {
-                    if (expediente.getEstadoGestion() == EstadoExpedienteType.GESTION_SOLUCIONADO_PETITORIO.getKey()) {
-                        verModalConclusion = true;
-                        return verModalConclusion;
-                    }
-                }
-                if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.PERSUASION_PETITORIO.getKey())) {
-                    verModalConclusion = true;
-                    return verModalConclusion;
-                }
-
             }
+            return false;
+        } catch (Exception e) {
+            log.error("ERROR - validaConclusionFinal()" + e);
         }
         return false;
     }
 
     private boolean validaConcluision() {
-        if (StringUtils.equals(expediente.getTipoClasificion(), ExpedienteType.QUEJA.getKey()) || StringUtils.equals(expediente.getTipoClasificion(), ExpedienteType.PETITORIO.getKey())) {
-            if (StringUtils.equals(expediente.getTipoIngreso(), "0")) {
-                msg.messageAlert("Debe ingresar el canal de ingreso", null);
-                return false;
-
-            }
-            if (StringUtils.isBlank(expediente.getSumilla())) {
-                msg.messageAlert("Debe ingresar la sumilla", null);
-                return false;
-
-            }
-            if (!expediente.getIndicadorOficio()) {
-                if (personasSeleccionadas.size() == 0) {
-                    msg.messageAlert("Debe ingresar el recurrente y el afectado", null);
+        try {
+            if (StringUtils.equals(expediente.getTipoClasificion(), ExpedienteType.QUEJA.getKey()) || StringUtils.equals(expediente.getTipoClasificion(), ExpedienteType.PETITORIO.getKey())) {
+                if (StringUtils.equals(expediente.getTipoIngreso(), "0")) {
+                    msg.messageAlert("Debe ingresar el canal de ingreso", null);
                     return false;
-                } else {
-                    int i = 0;
-                    int j = 0;
-                    int k = 0;
-                    for (ExpedientePersona ep : personasSeleccionadas) {
-                        if (StringUtils.equals(ep.getTipo(), "01")) {
-                            i++;
+                }
+                if (StringUtils.isBlank(expediente.getSumilla())) {
+                    msg.messageAlert("Debe ingresar la sumilla", null);
+                    return false;
+                }
+                if (!expediente.getIndicadorOficio()) {
+                    if (personasSeleccionadas.size() == 0) {
+                        msg.messageAlert("Debe ingresar el recurrente y el afectado", null);
+                        return false;
+                    } else {
+                        int i = 0;
+                        int j = 0;
+                        int k = 0;
+                        for (ExpedientePersona ep : personasSeleccionadas) {
+                            if (StringUtils.equals(ep.getTipo(), "01")) {
+                                i++;
+                            }
+                            if (StringUtils.equals(ep.getTipo(), "03")) {
+                                j++;
+                            }
+                            if (StringUtils.equals(ep.getTipo(), "02")) {
+                                k++;
+                            }
                         }
-                        if (StringUtils.equals(ep.getTipo(), "03")) {
-                            j++;
-                        }
-                        if (StringUtils.equals(ep.getTipo(), "02")) {
-                            k++;
+                        if (k == 0) {
+                            if (i == 0) {
+                                msg.messageAlert("Debe ingresar el recurrente", null);
+                                return false;
+                            }
+                            if (j == 0) {
+                                msg.messageAlert("Debe ingresar el afectado", null);
+                                return false;
+                            }
                         }
                     }
-                    if (k == 0) {
-                        if (i == 0) {
-                            msg.messageAlert("Debe ingresar el recurrente", null);
-                            return false;
+                } else {
+                    if (personasSeleccionadas.size() == 0) {
+                        msg.messageAlert("Debe ingresar el afectado", null);
+                        return false;
+                    } else {
+                        int j = 0;
+                        for (ExpedientePersona ep : personasSeleccionadas) {
+                            if (StringUtils.equals(ep.getTipo(), "03")) {
+                                j++;
+                            }
                         }
                         if (j == 0) {
                             msg.messageAlert("Debe ingresar el afectado", null);
@@ -3893,80 +4191,65 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                         }
                     }
                 }
-            } else {
-                if (personasSeleccionadas.size() == 0) {
-                    msg.messageAlert("Debe ingresar el afectado", null);
-                    return false;
-                } else {
-                    int j = 0;
-                    for (ExpedientePersona ep : personasSeleccionadas) {
-                        if (StringUtils.equals(ep.getTipo(), "03")) {
-                            j++;
+                if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_QUEJA.getKey())) {
+                    if (expediente.getListaExpedienteNivel().size() == 0) {
+                        msg.messageAlert("Debe ingresar al menos una clasificación", null);
+                        return false;
+                    }
+                }
+                if (StringUtils.equals(expediente.getTipoClasificion(), ExpedienteType.QUEJA.getKey())) {
+                    if (entidadSeleccionadas.size() == 0) {
+                        msg.messageAlert("Debe ingresar al menos una Entidad", null);
+                        return false;
+                    }
+                }
+
+                if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.INVESTIGACION_QUEJA.getKey())) {
+                    if (listaExpedientesInvestigacionQueja != null) {
+                        if (listaExpedientesInvestigacionQueja.size() == 0) {
+                            msg.messageAlert("Debe ingresar por lo menos una gestion para culminar la etapa", null);
+                            return false;
                         }
                     }
-
-                    if (j == 0) {
-                        msg.messageAlert("Debe ingresar el afectado", null);
-                        return false;
+                }
+                if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.PERSUACION_QUEJA.getKey())) {
+                    if (listaExpedientesPersuacionQueja != null) {
+                        if (listaExpedientesPersuacionQueja.size() == 0) {
+                            msg.messageAlert("Debe ingresar por lo menos una gestion para culminar la etapa", null);
+                            return false;
+                        }
+                    }
+                }
+                if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.SEGUIMIENTO_QUEJA.getKey())) {
+                    if (listaExpedientesSeguimientoQueja != null) {
+                        if (listaExpedientesSeguimientoQueja.size() == 0) {
+                            msg.messageAlert("Debe ingresar por lo menos una gestion para culminar la etapa", null);
+                            return false;
+                        }
+                    }
+                }
+                if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.GESTION_PETITORIO.getKey())) {
+                    if (listaExpedientesGestionPetitorio != null) {
+                        if (listaExpedientesGestionPetitorio.size() == 0) {
+                            msg.messageAlert("Debe ingresar por lo menos una gestion para culminar la etapa", null);
+                            return false;
+                        }
+                    }
+                }
+                if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.PERSUASION_PETITORIO.getKey())) {
+                    if (listaExpedientesPersuacionPetitorio != null) {
+                        if (listaExpedientesPersuacionPetitorio.size() == 0) {
+                            msg.messageAlert("Debe ingresar por lo menos una gestion para culminar la etapa", null);
+                            return false;
+                        }
                     }
                 }
             }
-            if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_QUEJA.getKey())) {
-                if (expediente.getListaExpedienteNivel().size() == 0) {
-                    msg.messageAlert("Debe ingresar al menos una clasificación", null);
-                    return false;
-                }
-            }
-            if (StringUtils.equals(expediente.getTipoClasificion(), ExpedienteType.QUEJA.getKey())) {
-                if (entidadSeleccionadas.size() == 0) {
-                    msg.messageAlert("Debe ingresar al menos una Entidad", null);
-                    return false;
-                }
-            }
-
-            if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.INVESTIGACION_QUEJA.getKey())) {
-                if (listaExpedientesInvestigacionQueja != null) {
-                    if (listaExpedientesInvestigacionQueja.size() == 0) {
-                        msg.messageAlert("Debe ingresar por lo menos una gestion para culminar la etapa", null);
-                        return false;
-                    }
-                }
-            }
-            if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.PERSUACION_QUEJA.getKey())) {
-                if (listaExpedientesPersuacionQueja != null) {
-                    if (listaExpedientesPersuacionQueja.size() == 0) {
-                        msg.messageAlert("Debe ingresar por lo menos una gestion para culminar la etapa", null);
-                        return false;
-                    }
-                }
-            }
-            if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.SEGUIMIENTO_QUEJA.getKey())) {
-                if (listaExpedientesSeguimientoQueja != null) {
-                    if (listaExpedientesSeguimientoQueja.size() == 0) {
-                        msg.messageAlert("Debe ingresar por lo menos una gestion para culminar la etapa", null);
-                        return false;
-                    }
-                }
-            }
-            if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.GESTION_PETITORIO.getKey())) {
-                if (listaExpedientesGestionPetitorio != null) {
-                    if (listaExpedientesGestionPetitorio.size() == 0) {
-                        msg.messageAlert("Debe ingresar por lo menos una gestion para culminar la etapa", null);
-                        return false;
-                    }
-                }
-            }
-            if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.PERSUASION_PETITORIO.getKey())) {
-                if (listaExpedientesPersuacionPetitorio != null) {
-                    if (listaExpedientesPersuacionPetitorio.size() == 0) {
-                        msg.messageAlert("Debe ingresar por lo menos una gestion para culminar la etapa", null);
-                        return false;
-                    }
-                }
-            }
-
+            return true;
+        } catch (Exception e) {
+            log.error("ERROR - validaConcluision()" + e);
         }
-        return true;
+        return false;
     }
 
     private void guardarEtapaEstado(Long idExpedienteOld) {
@@ -4044,7 +4327,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             etapaEstado1.setIndicador("ACT");
             etapaEstadoService.etapaEstadoInsertar(etapaEstado1);
         } catch (Exception e) {
-            log.error(e);
+            log.error("ERROR - guardarEtapaEstado()" + e);
         }
     }
 
@@ -4096,7 +4379,6 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                     etapaEstado1.setIdEtapa(EtapaType.CALIFICACION_QUEJA.getKey());
                 }
             }
-
             /**
              * PETITORIO
              */
@@ -4148,7 +4430,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             etapaEstadoService.etapaEstadoInsertar(etapaEstado1);
 
         } catch (Exception e) {
-            log.error(e);
+            log.error("ERROR - guardarEtapaEstadoConcluir()" + e);
         }
     }
 
@@ -4164,48 +4446,53 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 insertUpdateExpedienteEntidad(e);
             }
         } catch (Exception e) {
-            log.error(e);
+            log.error("ERROR - insertUpdateListasPersonaEntidad()" + e);
         }
     }
 
     public void cargarGruposVulnerables() {
-        int mujeres = 0;
-        int adultosMayores = 0;
-        int nin = 0;
-        StringBuilder sb = new StringBuilder();
-        sb.append(expediente.getTipoGrupoVulnerable());
-        for (ExpedientePersona ep : personasSeleccionadas) {
-            if (StringUtils.equals(ep.getTipo(), "01") || StringUtils.equals(ep.getTipo(), "03")) {
-                if (StringUtils.equals(ep.getPersona().getSexo(), "F")) {
-                    if (mujeres == 0) {
-                        if (!sb.toString().contains("01")) {
-                            sb.append(",01");
-                        }
-                        mujeres++;
-                    }
-                }
-                if (ep.getPersona().getFechaNacimiento() != null) {
-                    int year = getMonths(ep.getPersona().getFechaNacimiento(), new Date());
-                    if (year >= 60) {
-                        if (adultosMayores == 0) {
-                            if (!sb.toString().contains("03")) {
-                                sb.append(",03");
+        try {
+            int mujeres = 0;
+            int adultosMayores = 0;
+            int nin = 0;
+            StringBuilder sb = new StringBuilder();
+            sb.append(expediente.getTipoGrupoVulnerable());
+            for (ExpedientePersona ep : personasSeleccionadas) {
+                if (StringUtils.equals(ep.getTipo(), "01") || StringUtils.equals(ep.getTipo(), "03")) {
+                    if (StringUtils.equals(ep.getPersona().getSexo(), "F")) {
+                        if (mujeres == 0) {
+                            if (!sb.toString().contains("01")) {
+                                sb.append(",01");
                             }
-                            adultosMayores++;
+                            mujeres++;
                         }
                     }
-                    if (year <= 18) {
-                        if (nin == 0) {
-                            if (!sb.toString().contains("02")) {
-                                sb.append(",02");
+                    if (ep.getPersona().getFechaNacimiento() != null) {
+                        int year = getMonths(ep.getPersona().getFechaNacimiento(), new Date());
+                        if (year >= 60) {
+                            if (adultosMayores == 0) {
+                                if (!sb.toString().contains("03")) {
+                                    sb.append(",03");
+                                }
+                                adultosMayores++;
                             }
-                            nin++;
+                        }
+                        if (year <= 18) {
+                            if (nin == 0) {
+                                if (!sb.toString().contains("02")) {
+                                    sb.append(",02");
+                                }
+                                nin++;
+                            }
                         }
                     }
                 }
             }
+            expediente.setTipoGrupoVulnerable(sb.toString());
+        } catch (Exception e) {
+            log.error("ERROR - cargarGruposVulnerables()" + e);
         }
-        expediente.setTipoGrupoVulnerable(sb.toString());
+
     }
 
     public int getMonths(Date g1, Date g2) {
@@ -4224,123 +4511,164 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     }
 
     private void insertListasPersonaEntidad() {
-        for (ExpedientePersona p : personasSeleccionadas) {
-            p.setExpediente(expediente);
-            p.setContacto(p.getPersona().getContacto());
-            p.setDireccion(p.getPersona().getDireccion());
-            p.setEmail(p.getPersona().getEmail());
-            p.setIdDepartamento(p.getPersona().getIdDepartamento());
-            p.setIdProvincia(p.getPersona().getIdProvincia());
-            p.setIdDistrito(p.getPersona().getIdDistrito());
-            p.setIndicadorDiscapacitado(p.getPersona().getIndicadorDiscapacitado());
-            p.setNombreCompleto(p.getPersona().getNombre());
-            p.setTelefono1(p.getPersona().getTelefono1());
-            p.setTelefono2(p.getPersona().getTelefono2());
-            p.setTipoLengua(p.getPersona().getTipoLengua());
-            p.setTipoPueblo(p.getPersona().getTipoPueblo());
-            expedientePersonaService.expedientePersonaInsertar(p);
+        try {
+            for (ExpedientePersona p : personasSeleccionadas) {
+                p.setExpediente(expediente);
+                p.setContacto(p.getPersona().getContacto());
+                p.setDireccion(p.getPersona().getDireccion());
+                p.setEmail(p.getPersona().getEmail());
+                p.setIdDepartamento(p.getPersona().getIdDepartamento());
+                p.setIdProvincia(p.getPersona().getIdProvincia());
+                p.setIdDistrito(p.getPersona().getIdDistrito());
+                p.setIndicadorDiscapacitado(p.getPersona().getIndicadorDiscapacitado());
+                p.setNombreCompleto(p.getPersona().getNombre());
+                p.setTelefono1(p.getPersona().getTelefono1());
+                p.setTelefono2(p.getPersona().getTelefono2());
+                p.setTipoLengua(p.getPersona().getTipoLengua());
+                p.setTipoPueblo(p.getPersona().getTipoPueblo());
+                expedientePersonaService.expedientePersonaInsertar(p);
+            }
+            for (ExpedienteEntidad e : entidadSeleccionadas) {
+                e.setExpediente(expediente);
+                expedienteEntidadService.expedienteEntidadInsertar(e);
+            }
+        } catch (Exception e) {
+            log.error("ERROR - insertListasPersonaEntidad()" + e);
         }
-        for (ExpedienteEntidad e : entidadSeleccionadas) {
-            e.setExpediente(expediente);
-            expedienteEntidadService.expedienteEntidadInsertar(e);
-        }
+
     }
 
     private void actualizarEtapaEstado(long idExpediente) {
-        EtapaEstado ee = new EtapaEstado();
-        ee.setIndicador("INA");
-        ee.setIdExpediente(idExpediente);
-        etapaEstadoService.etapaEstadoUpdate(ee);
+        try {
+            EtapaEstado ee = new EtapaEstado();
+            ee.setIndicador("INA");
+            ee.setIdExpediente(idExpediente);
+            etapaEstadoService.etapaEstadoUpdate(ee);
+        } catch (Exception e) {
+            log.error("ERROR - actualizarEtapaEstado()" + e);
+        }
     }
 
     private void actualizarEtapaEstadosSeguimiento(long idExpediente) {
-        EtapaEstado ee = new EtapaEstado();
-        ee.setIndicadorEtapa("");
-        ee.setIdExpediente(idExpediente);
-        etapaEstadoService.etapaEstadoUpdate(ee);
+        try {
+            EtapaEstado ee = new EtapaEstado();
+            ee.setIndicadorEtapa("");
+            ee.setIdExpediente(idExpediente);
+            etapaEstadoService.etapaEstadoUpdate(ee);
+        } catch (Exception e) {
+            log.error("ERROR - actualizarEtapaEstadosSeguimiento()" + e);
+        }
     }
 
     private void actualizarEtapaEstadosPersuacion(long idExpediente) {
-        EtapaEstado ee = new EtapaEstado();
-        ee.setIndicadorEtapa("");
-        ee.setIdExpediente(idExpediente);
-        etapaEstadoService.etapaEstadoUpdate(ee);
+        try {
+            EtapaEstado ee = new EtapaEstado();
+            ee.setIndicadorEtapa("");
+            ee.setIdExpediente(idExpediente);
+            etapaEstadoService.etapaEstadoUpdate(ee);
+        } catch (Exception e) {
+            log.error("ERROR - actualizarEtapaEstadosPersuacion()" + e);
+        }
     }
 
     public void guardarPersona() {
-        personaService.personaInsertar(persona);
-        msg.messageInfo("Se registro la Persona", null);
+        try {
+            personaService.personaInsertar(persona);
+            msg.messageInfo("Se registro la Persona", null);
+        } catch (Exception e) {
+            log.error("ERROR - guardarPersona()" + e);
+        }
     }
 
     public boolean guardarVincularPersona2() {
-        persona.setUsuRegistro(usuarioSession.getCodigo());
-        persona.setFechaRegistro(new Date());
-        persona.setFechaModificacion(new Date());
-        persona.setUsuModificacion(usuarioSession.getCodigo());
-        setearPersonaSeleccionada(persona);
-        msg.messageInfo("Se registro la Persona", null);
-        return true;
+        try {
+            persona.setUsuRegistro(usuarioSession.getCodigo());
+            persona.setFechaRegistro(new Date());
+            persona.setFechaModificacion(new Date());
+            persona.setUsuModificacion(usuarioSession.getCodigo());
+            setearPersonaSeleccionada(persona);
+            msg.messageInfo("Se registro la Persona", null);
+            return true;
+        } catch (Exception e) {
+            log.error("ERROR - guardarVincularPersona2()" + e);
+        }
+        return false;
     }
 
     public boolean guardarVincularPersona() {
-        if (StringUtils.isBlank(persona.getTipo())) {
-            msg.messageAlert("Debe ingresar si es persona u organización", null);
-            return false;
-        } else {
-            if (StringUtils.isBlank(persona.getNombre().trim())) {
-                msg.messageAlert("Debe ingresar el nombre", null);
+        try {
+            if (StringUtils.isBlank(persona.getTipo())) {
+                msg.messageAlert("Debe ingresar si es persona u organización", null);
+                return false;
+            } else {
+                if (StringUtils.isBlank(persona.getNombre().trim())) {
+                    msg.messageAlert("Debe ingresar el nombre", null);
+                    return false;
+                }
+            }
+            persona.setUsuRegistro(usuarioSession.getCodigo());
+            persona.setFechaRegistro(new Date());
+            persona.setFechaModificacion(new Date());
+            persona.setUsuModificacion(usuarioSession.getCodigo());
+            boolean valid = personaService.personaInsertar(persona);
+            if (!valid) {
+                msg.messageAlert("El DNI ya se encuentra registrado", null);
                 return false;
             }
+            setearPersonaSeleccionada(persona);
+            if (StringUtils.equals(persona.getTipo(), "PER")) {
+                msg.messageInfo("Se registro la Persona", null);
+            } else {
+                msg.messageInfo("Se registro la Organización", null);
+            }
+            return true;
+        } catch (Exception e) {
+            log.error("ERROR - guardarVincularPersona()" + e);
         }
-        persona.setUsuRegistro(usuarioSession.getCodigo());
-        persona.setFechaRegistro(new Date());
-        persona.setFechaModificacion(new Date());
-        persona.setUsuModificacion(usuarioSession.getCodigo());
-        boolean valid = personaService.personaInsertar(persona);
-        if (!valid) {
-            msg.messageAlert("El DNI ya se encuentra registrado", null);
-            return false;
-        }
-        setearPersonaSeleccionada(persona);
-        if (StringUtils.equals(persona.getTipo(), "PER")) {
-            msg.messageInfo("Se registro la Persona", null);
-        } else {
-            msg.messageInfo("Se registro la Organización", null);
-        }
-        return true;
+        return false;
     }
 
     public boolean guardarVincularListaPersona() {
-        if (StringUtils.isBlank(persona.getTipo())) {
-            msg.messageAlert("Debe ingresar si es persona u organización", null);
-            return false;
-        } else {
-            if (StringUtils.isBlank(persona.getNombre().trim())) {
-                msg.messageAlert("Debe ingresar el nombre", null);
+        try {
+            if (StringUtils.isBlank(persona.getTipo())) {
+                msg.messageAlert("Debe ingresar si es persona u organización", null);
+                return false;
+            } else {
+                if (StringUtils.isBlank(persona.getNombre().trim())) {
+                    msg.messageAlert("Debe ingresar el nombre", null);
+                    return false;
+                }
+            }
+            persona.setUsuRegistro(usuarioSession.getCodigo());
+            persona.setFechaRegistro(new Date());
+            persona.setFechaModificacion(new Date());
+            persona.setUsuModificacion(usuarioSession.getCodigo());
+            boolean valid = personaService.personaInsertar(persona);
+            if (!valid) {
+                msg.messageAlert("El DNI ya se encuentra registrado", null);
                 return false;
             }
+            addPersona(persona);
+            if (StringUtils.equals(persona.getTipo(), "PER")) {
+                msg.messageInfo("Se registro la Persona", null);
+            } else {
+                msg.messageInfo("Se registro la Organización", null);
+            }
+            return true;
+        } catch (Exception e) {
+            log.error("ERROR - guardarVincularListaPersona()" + e);
         }
-        persona.setUsuRegistro(usuarioSession.getCodigo());
-        persona.setFechaRegistro(new Date());
-        persona.setFechaModificacion(new Date());
-        persona.setUsuModificacion(usuarioSession.getCodigo());
-        boolean valid = personaService.personaInsertar(persona);
-        if (!valid) {
-            msg.messageAlert("El DNI ya se encuentra registrado", null);
-            return false;
-        }
-        addPersona(persona);
-        if (StringUtils.equals(persona.getTipo(), "PER")) {
-            msg.messageInfo("Se registro la Persona", null);
-        } else {
-            msg.messageInfo("Se registro la Organización", null);
-        }
-        return true;
+        return false;
     }
 
     public void guardarEntidad() {
-        entidadService.entidadInsertar(entidad);
-        msg.messageInfo("Se registro la Entidad", null);
+        try {
+            entidadService.entidadInsertar(entidad);
+            msg.messageInfo("Se registro la Entidad", null);
+        } catch (Exception e) {
+            log.error("ERROR - guardarEntidad()" + e);
+        }
+
     }
 
     public void insertUpdateExpedientePersona(ExpedientePersona ep) {
@@ -4358,7 +4686,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 }
             }
         } catch (Exception e) {
-            log.error(e.getMessage());
+            log.error("ERROR - insertUpdateExpedientePersona()" + e);
         }
     }
 
@@ -4371,29 +4699,34 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 }
             }
         } catch (Exception e) {
-            log.error(e.getMessage());
+            log.error("ERROR - insertUpdateExpedienteEntidad()" + e);
         }
     }
 
     public boolean agregarEtiqueta() {
-        if (stringUtil.isBlank(expediente.getIdEtiqueta())) {
-            msg.messageAlert("Debe de seleccionar una Etiqueta", null);
-            return false;
-        }
-        for (Parametro p1 : listaEtiquetasSeleccionadas) {
-            if (p1.getValorParametro().equals(expediente.getIdEtiqueta())) {
-                expediente.setNombreEtiqueta(null);
-                expediente.setIdEtiqueta(null);
-                msg.messageAlert("La etiqueta seleccionada ya ha sido agregada", null);
+        try {
+            if (stringUtil.isBlank(expediente.getIdEtiqueta())) {
+                msg.messageAlert("Debe de seleccionar una Etiqueta", null);
                 return false;
             }
+            for (Parametro p1 : listaEtiquetasSeleccionadas) {
+                if (p1.getValorParametro().equals(expediente.getIdEtiqueta())) {
+                    expediente.setNombreEtiqueta(null);
+                    expediente.setIdEtiqueta(null);
+                    msg.messageAlert("La etiqueta seleccionada ya ha sido agregada", null);
+                    return false;
+                }
+            }
+            Parametro p = new Parametro(expediente.getNombreEtiqueta(), expediente.getIdEtiqueta());
+            listaEtiquetasSeleccionadas.add(p);
+            expediente.setNombreEtiqueta(null);
+            expediente.setIdEtiqueta(null);
+            msg.messageInfo("Se agrego correctamente la etiqueta", null);
+            return true;
+        } catch (Exception e) {
+            log.error("ERROR - agregarEtiqueta()" + e);
         }
-        Parametro p = new Parametro(expediente.getNombreEtiqueta(), expediente.getIdEtiqueta());
-        listaEtiquetasSeleccionadas.add(p);
-        expediente.setNombreEtiqueta(null);
-        expediente.setIdEtiqueta(null);
-        msg.messageInfo("Se agrego correctamente la etiqueta", null);
-        return true;
+        return false;
     }
 
     public void cargarModalReplica() {
@@ -4404,12 +4737,20 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     }
 
     public void buscarModalReplica() {
-        listarExpedienteUsuarioPaginadoCompleto(1, expedienteBusquedaReplica);
+        try {
+            listarExpedienteUsuarioPaginadoCompleto(1, expedienteBusquedaReplica);
+        } catch (Exception e) {
+            log.error("ERROR - buscarModalReplica()" + e);
+        }
     }
 
     public void removeEtiqueta(Parametro param) {
-        listaEtiquetasSeleccionadas.remove(param);
-        msg.messageInfo("Se elimino la Etiqueta", null);
+        try {
+            listaEtiquetasSeleccionadas.remove(param);
+            msg.messageInfo("Se elimino la Etiqueta", null);
+        } catch (Exception e) {
+            log.error("ERROR - removeEtiqueta()" + e);
+        }
     }
 
     private Parametro codigoParamentro(int codigo, String valor) {
@@ -4430,86 +4771,108 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     }
 
     public void comboProvincia() {
-        listaProvincia = new ArrayList<>();
-        listaDistrito = new ArrayList<>();
-        String idDepartamento = persona.getIdDepartamento();
-        if (StringUtils.equals(idDepartamento, "0")) {
-            listaProvincia.clear();
-        } else {
-            List<Provincia> list = ubigeoService.provinciaLista(idDepartamento);
-            if (list.size() > 0) {
-                for (Provincia provincia : list) {
-                    listaProvincia.add(new SelectItem(provincia.getIdProvincia(), provincia.getDescripcion()));
+        try {
+            listaProvincia = new ArrayList<>();
+            listaDistrito = new ArrayList<>();
+            String idDepartamento = persona.getIdDepartamento();
+            if (StringUtils.equals(idDepartamento, "0")) {
+                listaProvincia.clear();
+            } else {
+                List<Provincia> list = ubigeoService.provinciaLista(idDepartamento);
+                if (list.size() > 0) {
+                    for (Provincia provincia : list) {
+                        listaProvincia.add(new SelectItem(provincia.getIdProvincia(), provincia.getDescripcion()));
+                    }
                 }
             }
+        } catch (Exception e) {
+            log.error("ERROR - comboProvincia()" + e);
         }
     }
 
     public void comboDistrito() {
-        listaDistrito = new ArrayList<>();
-        String idProvincia = persona.getIdProvincia();
-        String idDepartamento = persona.getIdDepartamento();
-        if (StringUtils.equals(idProvincia, "0") || StringUtils.equals(idDepartamento, "0")) {
-            listaDistrito.clear();
-        } else {
-            Distrito d = new Distrito();
-            d.setIdDepartamento(idDepartamento);
-            d.setIdProvincia(idProvincia);
-            List<Distrito> list = ubigeoService.distritoLista(d);
-            if (list.size() > 0) {
-                for (Distrito distrito : list) {
-                    listaDistrito.add(new SelectItem(distrito.getIdDistrito(), distrito.getDescripcion()));
+        try {
+            listaDistrito = new ArrayList<>();
+            String idProvincia = persona.getIdProvincia();
+            String idDepartamento = persona.getIdDepartamento();
+            if (StringUtils.equals(idProvincia, "0") || StringUtils.equals(idDepartamento, "0")) {
+                listaDistrito.clear();
+            } else {
+                Distrito d = new Distrito();
+                d.setIdDepartamento(idDepartamento);
+                d.setIdProvincia(idProvincia);
+                List<Distrito> list = ubigeoService.distritoLista(d);
+                if (list.size() > 0) {
+                    for (Distrito distrito : list) {
+                        listaDistrito.add(new SelectItem(distrito.getIdDistrito(), distrito.getDescripcion()));
+                    }
                 }
             }
+        } catch (Exception e) {
+            log.error("ERROR - comboDistrito()" + e);
         }
     }
 
     public void comboProvinciaId(String idDepartamento) {
-        listaProvincia = new ArrayList<>();
-        listaDistrito = new ArrayList<>();
-        if (StringUtils.equals(idDepartamento, "0")) {
-            listaProvincia.clear();
-        } else {
-            List<Provincia> list = ubigeoService.provinciaLista(idDepartamento);
-            if (list.size() > 0) {
-                for (Provincia provincia : list) {
-                    listaProvincia.add(new SelectItem(provincia.getIdProvincia(), provincia.getDescripcion()));
+        try {
+            listaProvincia = new ArrayList<>();
+            listaDistrito = new ArrayList<>();
+            if (StringUtils.equals(idDepartamento, "0")) {
+                listaProvincia.clear();
+            } else {
+                List<Provincia> list = ubigeoService.provinciaLista(idDepartamento);
+                if (list.size() > 0) {
+                    for (Provincia provincia : list) {
+                        listaProvincia.add(new SelectItem(provincia.getIdProvincia(), provincia.getDescripcion()));
+                    }
                 }
             }
+        } catch (Exception e) {
+            log.error("ERROR - comboProvinciaId()" + e);
         }
     }
 
     public void comboDistritoId(String idProvincia, String idDepartamento) {
-        listaDistrito = new ArrayList<>();
-        if (StringUtils.equals(idProvincia, "0")) {
-            listaDistrito.clear();
-        } else {
-            Distrito d = new Distrito();
-            d.setIdDepartamento(idDepartamento);
-            d.setIdProvincia(idProvincia);
-            List<Distrito> list = ubigeoService.distritoLista(d);
-            if (list.size() > 0) {
-                for (Distrito distrito : list) {
-                    listaDistrito.add(new SelectItem(distrito.getIdDistrito(), distrito.getDescripcion()));
+        try {
+            listaDistrito = new ArrayList<>();
+            if (StringUtils.equals(idProvincia, "0")) {
+                listaDistrito.clear();
+            } else {
+                Distrito d = new Distrito();
+                d.setIdDepartamento(idDepartamento);
+                d.setIdProvincia(idProvincia);
+                List<Distrito> list = ubigeoService.distritoLista(d);
+                if (list.size() > 0) {
+                    for (Distrito distrito : list) {
+                        listaDistrito.add(new SelectItem(distrito.getIdDistrito(), distrito.getDescripcion()));
+                    }
                 }
             }
+        } catch (Exception e) {
+            log.error("ERROR - comboDistritoId()" + e);
         }
+
     }
 
     private String uploadArchive(Part fil) {
-        String nameArchive = getFilename(fil);
-        String extencion = getFileExtension(getFilename(fil));
-        if (StringUtils.isNoneBlank(nameArchive)) {
-            String formato = RandomStringUtils.random(32, 0, 20, true, true, "qw32rfHIJk9iQ8Ud7h0X".toCharArray());
-            String ruta = formato + extencion;
-            File file = new File(ConstantesUtil.FILE_SYSTEM + ruta);
-            try (InputStream input = fil.getInputStream()) {
-                Files.copy(input, file.toPath());
-            } catch (IOException ex) {
-                log.error(ex.getCause());
+        try {
+            String nameArchive = getFilename(fil);
+            String extencion = getFileExtension(getFilename(fil));
+            if (StringUtils.isNoneBlank(nameArchive)) {
+                String formato = RandomStringUtils.random(32, 0, 20, true, true, "qw32rfHIJk9iQ8Ud7h0X".toCharArray());
+                String ruta = formato + extencion;
+                File file = new File(ConstantesUtil.FILE_SYSTEM + ruta);
+                try (InputStream input = fil.getInputStream()) {
+                    Files.copy(input, file.toPath());
+                } catch (IOException ex) {
+                    log.error(ex.getCause());
+                }
+                return ruta;
             }
-            return ruta;
+        } catch (Exception e) {
+            log.error("ERROR - uploadArchive()" + e);
         }
+
         return null;
     }
 
@@ -5388,6 +5751,22 @@ public class RegistroController extends AbstractManagedBean implements Serializa
 
     public void setVerModalConclusion(Boolean verModalConclusion) {
         this.verModalConclusion = verModalConclusion;
+    }
+
+    public ExpedienteHistorial getHistorial() {
+        return historial;
+    }
+
+    public void setHistorial(ExpedienteHistorial historial) {
+        this.historial = historial;
+    }
+
+    public List<ExpedienteHistorial> getListaHistorialExpediente() {
+        return listaHistorialExpediente;
+    }
+
+    public void setListaHistorialExpediente(List<ExpedienteHistorial> listaHistorialExpediente) {
+        this.listaHistorialExpediente = listaHistorialExpediente;
     }
 
 }

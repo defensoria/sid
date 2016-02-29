@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD iBatis Mapper 3.0 //EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="gob.dp.sid.registro.dao.ExpedienteHistorialDAO">
+    
+    <resultMap id="expedienteHistorialMap" type="expedienteHistorial">
+        <id property="id" column="N_ID_HIST" />
+        <result property="idExpediente" column="N_ID_EXPEDIENTE"/>
+        <result property="numero" column="C_NUMERO"/>
+        <result property="tipo" column="C_TIPO"/>
+        <result property="fecha" column="D_FECHA"/>
+        <result property="usuario" column="C_USUARIO"/>
+        <result property="descripcion" column="C_DESCRIPCION"/>
+    </resultMap> 
+    
+    
+    <insert id="expedienteHistorialInsertar" parameterType="expedienteHistorial">
+        INSERT INTO SID_HIST_EXPEDIENTE
+        (
+        <if test="idExpediente != null">
+            N_ID_EXPEDIENTE,
+        </if>
+        <if test="numero != null">
+            C_NUMERO,
+        </if>
+        <if test="tipo != null">
+            C_TIPO,
+        </if>
+        <if test="fecha != null">
+            D_FECHA,
+        </if>
+        <if test="usuario != null">
+            C_USUARIO,
+        </if>
+        <if test="descripcion != null">
+            C_DESCRIPCION,
+        </if>
+        N_ID_HIST
+        )
+        VALUES 
+        (
+        <if test="idExpediente != null">
+            #{idExpediente},
+        </if>
+        <if test="numero != null">
+            #{numero},
+        </if>
+        <if test="tipo != null">
+            #{tipo},
+        </if>
+        <if test="fecha != null">
+            #{fecha},
+        </if>
+        <if test="usuario != null">
+            #{usuario},
+        </if>
+        <if test="descripcion != null">
+            #{descripcion},
+        </if>
+        SEQ_SID_HISTORIAL.NextVal
+        )
+        <selectKey keyProperty="id" resultType="Long">
+            SELECT SEQ_SID_HISTORIAL.CURRVAL FROM DUAL
+        </selectKey>
+    </insert>
+    
+    <select id="expedienteHistorialBuscar" resultMap="expedienteHistorialMap"  parameterType="String">
+        SELECT * FROM SID_HIST_EXPEDIENTE WHERE C_NUMERO = #{value}
+        ORDER BY N_ID_HIST
+    </select>
+    
+</mapper>

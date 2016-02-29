@@ -22,6 +22,11 @@
                         <span style="font-size: large; color: #007ACC; font-weight: bold" class="glyphicon glyphicon-list-alt" > Gestiones internas</span>
                     </a>
                 </li>
+                <li role="presentation">
+                        <a style="cursor: pointer" jsf:rendered="#{registroController.etapaEstado.idEtapa > 0}" jsf:action="#{registroController.cargarHistorial()}">
+                            <span style="font-size: medium; color: purple" class="glyphicon glyphicon-list-alt" > Historial</span>
+                        </a>
+                    </li>
             </ul>
 
             <div class="panel panel-default">
