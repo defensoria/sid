@@ -534,9 +534,14 @@
                                                                 </a>
                                                             </h:panelGroup>
                                                             &#160;&#160;
-                                                            <h:panelGroup id="idPanel2" rendered="#{registroController.expediente.id != null and registroController.expediente.version > 0 and registroController.expediente.general != 'C' and registroController.verBotonRegistrarExpediente and registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo}">
+                                                            <h:panelGroup id="idPanel2" rendered="#{registroController.expediente.id != null and registroController.expediente.version > 0 and registroController.expediente.general != 'C' and registroController.verBotonRegistrarExpediente and registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo and registroController.expediente.tipoClasificion != '02'}">
                                                                 <a class="btn btn-warning" onclick="confirmar3()">
                                                                     <span class="glyphicon glyphicon-floppy-save" />Concluir Etapa
+                                                                </a>
+                                                            </h:panelGroup>
+                                                            <h:panelGroup rendered="#{registroController.expediente.id != null and registroController.expediente.version > 0 and registroController.expediente.general != 'C' and registroController.verBotonRegistrarExpediente and registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo and registroController.expediente.tipoClasificion == '02'}">
+                                                                <a class="btn btn-warning" onclick="confirmar3()">
+                                                                    <span class="glyphicon glyphicon-floppy-save" />Concluir Consulta
                                                                 </a>
                                                             </h:panelGroup>
                                                             &#160;&#160;
@@ -574,7 +579,10 @@
                         </a>
                     </li>
                     <li role="presentation">
-                        <a style="cursor: pointer" jsf:rendered="#{registroController.etapaEstado.idEtapa > 0}" jsf:action="#{registroController.cargarHistorial()}">
+                        <a style="cursor: pointer" jsf:rendered="#{registroController.etapaEstado.idEtapa > 0 and registroController.expediente.tipoClasificion != '02'}" jsf:action="#{registroController.cargarHistorial()}">
+                            <span style="font-size: medium; color: purple" class="glyphicon glyphicon-list-alt" > Historial</span>
+                        </a>
+                        <a style="cursor: pointer" jsf:rendered="#{registroController.expediente.tipoClasificion == '02'}" jsf:action="#{registroController.cargarHistorial()}">
                             <span style="font-size: medium; color: purple" class="glyphicon glyphicon-list-alt" > Historial</span>
                         </a>
                     </li>

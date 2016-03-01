@@ -47,4 +47,10 @@ public class SeguridadUtilController {
         return map.get(codigoRol) != null;
 
     }
+    
+    public boolean tieneRolUsuario(String codigoRol, Usuario usuario) {
+        Map map = rolService.buscarMapRolSegunUsuario(usuario);
+        return map.get(codigoRol) != null;
+
+    }
 }

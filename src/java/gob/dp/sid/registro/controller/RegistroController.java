@@ -1112,7 +1112,8 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 msg.messageAlert("Debe ingresar el usuario asignado", null);
             } else {
                 //si es practicante o sesigrista
-                if (seguridadUtilController.tieneRol("ROL0000005") || seguridadUtilController.tieneRol("ROL0000006")) {
+                
+                if (seguridadUtilController.tieneRolUsuario("ROL0000005", new Usuario(expediente.getUsuarioAsignado())) || seguridadUtilController.tieneRolUsuario("ROL0000006",new Usuario(expediente.getUsuarioAsignado()))) {
                     expediente.setUsuarioResponsable(usuarioSession.getCodigo());
                 } else {
                     expediente.setUsuarioResponsable(expediente.getUsuarioAsignado());
@@ -1121,8 +1122,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 expedienteService.expedienteAsignar(expediente);
                 msg.messageInfo("Se asigno el expediente correctamente", null);
             }
-            historial = new ExpedienteHistorial();
-            historial.setTipo(HistorialType.HISTORIAL_ASIGNAR_EXPEDIENTE.getKey());
+            historial = new ExpedienteHistorial(HistorialType.HISTORIAL_ASIGNAR_EXPEDIENTE.getKey(), HistorialType.HISTORIAL_ASIGNAR_EXPEDIENTE.getValue());
             historial.setDescripcion(HistorialType.HISTORIAL_ASIGNAR_EXPEDIENTE.getValue()+expediente.getUsuarioAsignado());
             guardarHistorial(historial);
         } catch (Exception e) {
@@ -1370,6 +1370,8 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             expediente.setGeneral("C");
             expedienteService.expedienteDesistir(expediente);
             msg.messageInfo("Se ha concluido el expediente, pasa al estado desistido", null);
+            historial = new ExpedienteHistorial(HistorialType.HISTORIAL_DESISTIR.getKey(), HistorialType.HISTORIAL_DESISTIR.getValue());
+            guardarHistorial(historial);
         } catch (Exception e) {
             log.error("ERROR - desistirExpediente()" + e);
         }
@@ -1640,6 +1642,8 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             expedienteDerivacionService.expedienteDerivacionInsertar(expedienteDerivacionEnvia);
             enviarMensajeDerivacion();
             msg.messageInfo("Se envio la Derivación", null);
+            historial = new ExpedienteHistorial(HistorialType.HISTORIAL_DERIVAR_ENVIAR.getKey(), HistorialType.HISTORIAL_DERIVAR_ENVIAR.getValue());
+            guardarHistorial(historial);
             return true;
         } catch (Exception e) {
             log.error("ERROR - enviarDerivacion()" + e);
@@ -1676,10 +1680,14 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             if (StringUtils.equals(expedienteDerivacionAprueba.getAprueba(), "SI")) {
                 enviarMensajeAprobacion();
                 msg.messageInfo("Se aprobó la Derivación", null);
+                historial = new ExpedienteHistorial(HistorialType.HISTORIAL_DERIVAR_APROBAR.getKey(), HistorialType.HISTORIAL_DERIVAR_APROBAR.getValue());
+                guardarHistorial(historial);
             } else {
                 guardarVersion2();
                 enviarMensajeDesaprobacion();
                 msg.messageInfo("No se aprobo la derivación", null);
+                historial = new ExpedienteHistorial(HistorialType.HISTORIAL_DERIVAR_DESAPROBAR.getKey(), HistorialType.HISTORIAL_DERIVAR_DESAPROBAR.getValue());
+                guardarHistorial(historial);
             }
             return true;
         } catch (Exception e) {
@@ -1718,10 +1726,14 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 guardarVersion3(expedienteDerivacionReasigna.getCodigoUsuarioDerivado());
                 enviarMensajeReasignacion();
                 msg.messageInfo("Se reasigno por derivación el expediente", null);
+                historial = new ExpedienteHistorial(HistorialType.HISTORIAL_DERIVAR_ACEPTAR.getKey(), HistorialType.HISTORIAL_DERIVAR_ACEPTAR.getValue()+expedienteDerivacionReasigna.getCodigoUsuarioDerivado());
+                guardarHistorial(historial);
             } else {
                 guardarVersion2();
                 enviarMensajeReasignacionDesaprobada();
                 msg.messageInfo("Se rechaza la derivación", null);
+                msg.messageInfo("Se reasigno por derivación el expediente", null);
+                historial = new ExpedienteHistorial(HistorialType.HISTORIAL_DERIVAR_RECHAZAR.getKey(), HistorialType.HISTORIAL_DERIVAR_RECHAZAR.getValue());
             }
             return true;
         } catch (Exception e) {
@@ -2545,6 +2557,8 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 expedienteGestionService.expedienteGestionInsertar(expedienteGestion);
                 guardarGestionEtapa();
                 msg.messageInfo("Se registro una nueva gestión", null);
+                historial = new ExpedienteHistorial(HistorialType.HISTORIAL_GESTION_GUARDAR.getKey(), HistorialType.HISTORIAL_GESTION_GUARDAR.getValue());
+                guardarHistorial(historial);
             } else {
                 if (expedienteGestion.getFechaRecepcion() != null) {
                     if (sumarRestarDiasFecha(expedienteGestion.getFechaRecepcion(), 1).compareTo(expedienteGestion.getFecha()) < 0) {
@@ -2560,6 +2574,8 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 }
                 expedienteGestionService.expedienteGestionUpdate(expedienteGestion);
                 msg.messageInfo("Se actualizo la gestión", null);
+                historial = new ExpedienteHistorial(HistorialType.HISTORIAL_GESTION_MODIFICAR.getKey(), HistorialType.HISTORIAL_GESTION_MODIFICAR.getValue());
+                guardarHistorial(historial);
             }
             return cargarExpedienteGestionLista();
         } catch (Exception e) {
@@ -3748,9 +3764,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                     }
                 }
             }
-            historial = new ExpedienteHistorial();
-            historial.setTipo(HistorialType.HISTORIAL_GUARDAR_VERSION.getKey());
-            historial.setDescripcion(HistorialType.HISTORIAL_GUARDAR_VERSION.getValue());
+            historial = new ExpedienteHistorial(HistorialType.HISTORIAL_GUARDAR_VERSION.getKey(), HistorialType.HISTORIAL_GUARDAR_VERSION.getValue());
             guardarHistorial(historial);
             msg.messageInfo("Se genero una nueva version del Expediente", null);
         } catch (Exception e) {
@@ -3783,14 +3797,11 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             if (tipo == 1) {
                 expediente.setGeneral("A");
             }
-            historial = new ExpedienteHistorial();
             if (tipo == 1) {
-                historial.setTipo(HistorialType.HISTORIAL_LEVANTAR_CONCLUSION.getKey());
-                historial.setDescripcion(HistorialType.HISTORIAL_LEVANTAR_CONCLUSION.getValue());
+                historial = new ExpedienteHistorial(HistorialType.HISTORIAL_LEVANTAR_CONCLUSION.getKey(), HistorialType.HISTORIAL_LEVANTAR_CONCLUSION.getValue());
                 msg.messageInfo("Se levanto la conclusión", null);
             }else{
-                historial.setTipo(HistorialType.HISTORIAL_CAMBIAR_TIPO.getKey());
-                historial.setDescripcion(HistorialType.HISTORIAL_CAMBIAR_TIPO.getValue());
+                historial = new ExpedienteHistorial(HistorialType.HISTORIAL_CAMBIAR_TIPO.getKey(), HistorialType.HISTORIAL_CAMBIAR_TIPO.getValue());
                 msg.messageInfo("Se modifico el tipo de clasificación", null);
             }
             guardarHistorial(historial);
@@ -4019,9 +4030,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             /**
              * GENERAR NUEVO ESTADO
              */
-            historial = new ExpedienteHistorial();
-            historial.setTipo(HistorialType.HISTORIAL_CONCLUIR_ETAPA.getKey());
-            historial.setDescripcion(HistorialType.HISTORIAL_CONCLUIR_ETAPA.getValue());
+            historial = new ExpedienteHistorial(HistorialType.HISTORIAL_CONCLUIR_ETAPA.getKey(), HistorialType.HISTORIAL_CONCLUIR_ETAPA.getValue());
             guardarHistorial(historial);
             msg.messageInfo("Se concluyó la etapa", null);
             if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_PETITORIO.getKey()) || Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_QUEJA.getKey())) {
@@ -4061,9 +4070,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 return "expedienteEdit";
             }
             verModalConclusion = false;
-            historial = new ExpedienteHistorial();
-            historial.setTipo(HistorialType.HISTORIAL_CONCLUIR_EXPEDIENTE.getKey());
-            historial.setDescripcion(HistorialType.HISTORIAL_CONCLUIR_EXPEDIENTE.getValue());
+            historial = new ExpedienteHistorial(HistorialType.HISTORIAL_CONCLUIR_EXPEDIENTE.getKey(), HistorialType.HISTORIAL_CONCLUIR_EXPEDIENTE.getValue());
             guardarHistorial(historial);
             return "expedienteGestionLista";
         } catch (Exception e) {
@@ -4859,7 +4866,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     }
 
     private String uploadArchive(Part fil) {
-        try {
+        
             String nameArchive = getFilename(fil);
             String extencion = getFileExtension(getFilename(fil));
             if (StringUtils.isNoneBlank(nameArchive)) {
@@ -4873,9 +4880,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 }
                 return ruta;
             }
-        } catch (Exception e) {
-            log.error("ERROR - uploadArchive()" + e);
-        }
+        
 
         return null;
     }

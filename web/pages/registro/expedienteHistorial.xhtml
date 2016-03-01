@@ -6,9 +6,34 @@
       xmlns:c="http://java.sun.com/jsp/jstl/core"
       xmlns:gc="http://xmlns.jcp.org/jsf/composite/gc">
 
-    <ui:composition template="../template/template.xhtml">
+    <ui:composition template="../template/templateCabeceraExpediente.xhtml">
 
-        <ui:define name="content">
+        <ui:define name="content2">
+            <ul class="nav nav-tabs">
+                    <li role="presentation" >
+                        <a style="cursor: pointer" jsf:action="#{registroController.datosGeneralesExpediente()}">
+                            <span style="font-size: medium; color: purple" class="glyphicon glyphicon-list-alt" > Datos generales</span>
+                        </a>
+                    </li>
+                    <li role="presentation">
+                        <a style="cursor: pointer" jsf:rendered="#{registroController.etapaEstado.idEtapa > 0}" jsf:action="#{registroController.cargarExpedienteGestionLista()}">
+                            <span style="font-size: medium; color: purple" class="glyphicon glyphicon-list-alt" > Gestiones externas</span>
+                        </a>
+                    </li>
+                    <li role="presentation">
+                        <a style="cursor: pointer" jsf:rendered="#{registroController.etapaEstado.idEtapa > 0}" jsf:action="#{registroController.inicioAcciones()}">
+                            <span style="font-size: medium; color: purple" class="glyphicon glyphicon-list-alt" > Gestiones internas</span>
+                        </a>
+                    </li>
+                    <li role="presentation" class="active">
+                        <a style="cursor: pointer" jsf:rendered="#{registroController.etapaEstado.idEtapa > 0 and registroController.expediente.tipoClasificion != '02'}" jsf:action="#{registroController.cargarHistorial()}">
+                            <span style="font-size: large; color: #007ACC; font-weight: bold" class="glyphicon glyphicon-list-alt"> Historial</span>
+                        </a>
+                        <a style="cursor: pointer" jsf:rendered="#{registroController.expediente.tipoClasificion == '02'}" jsf:action="#{registroController.cargarHistorial()}">
+                            <span style="font-size: large; color: #007ACC; font-weight: bold" class="glyphicon glyphicon-list-alt"> Historial</span>
+                        </a>
+                    </li>
+                </ul>
             <h:form id="idForm" class="form-horizontal">
                 <div class="panel panel-featured-top-primary">
                     <div class="panel-body">

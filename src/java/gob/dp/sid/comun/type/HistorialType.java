@@ -24,7 +24,23 @@ public enum HistorialType {
         
         HISTORIAL_CAMBIAR_TIPO("Registro", "Se cambio el tipo de expediente"),
         
-        HISTORIAL_ASIGNAR_EXPEDIENTE("Asignar", "Se asigno el expedediente al usuario ");
+        HISTORIAL_DESISTIR("Registro", "Se desiste el expediente"),
+        
+        HISTORIAL_ASIGNAR_EXPEDIENTE("Asignar", "Se asigno el expedediente al usuario "),
+        
+        HISTORIAL_GESTION_GUARDAR("Gestión", "Se creo la gestión "),
+        
+        HISTORIAL_GESTION_MODIFICAR("Gestión", "Se modifico la gestión "),
+        
+        HISTORIAL_DERIVAR_ENVIAR("Derivar", "Se creo la solicitud de derivación "),
+        
+        HISTORIAL_DERIVAR_APROBAR("Derivar", "Se aprobo la solicitud de derivación "),
+        
+        HISTORIAL_DERIVAR_DESAPROBAR("Derivar", "Se desaprobo la solicitud de derivación "),
+        
+        HISTORIAL_DERIVAR_ACEPTAR("Derivar", "Se acepta y reasigna la solicitud de derivación "),
+        
+        HISTORIAL_DERIVAR_RECHAZAR("Derivar", "Se rechaza la solicitud de derivación ");
 	
 	/** La Constante list. */
 	private static final List<HistorialType> list = new ArrayList<>();

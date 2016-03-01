@@ -8,8 +8,6 @@
     <ui:composition template="../template/templateCabeceraExpediente.xhtml">
 
         <ui:define name="content2">
-
-
             <gc:confirmSubmit bean="#{registroController.enviarDerivacion()}" classGC="confirmacion7" mensaje="Esta seguro de derivar el expediente?" />
             <gc:confirmSubmit bean="#{registroController.aprobarDerivacion()}" classGC="confirmacion5" mensaje="Esta seguro de derivar el expediente?" />
             <gc:confirmSubmit bean="#{registroController.reasignarDerivacion()}" classGC="confirmacion6" mensaje="Esta seguro de derivar el expediente?" />

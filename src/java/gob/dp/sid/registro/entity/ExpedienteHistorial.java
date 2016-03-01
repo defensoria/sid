@@ -27,6 +27,14 @@ public class ExpedienteHistorial {
     
     private String descripcion;
 
+    public ExpedienteHistorial() {
+    }
+
+    public ExpedienteHistorial(String tipo, String descripcion) {
+        this.tipo = tipo;
+        this.descripcion = descripcion;
+    }
+
     public Long getId() {
         return id;
     }
