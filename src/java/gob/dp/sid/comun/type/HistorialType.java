@@ -22,7 +22,9 @@ public enum HistorialType {
         
         HISTORIAL_LEVANTAR_CONCLUSION("Registro", "Se levanta la conclusion"),
         
-        HISTORIAL_CAMBIAR_TIPO("Registro", "Se cambio el tipo de expediente");
+        HISTORIAL_CAMBIAR_TIPO("Registro", "Se cambio el tipo de expediente"),
+        
+        HISTORIAL_ASIGNAR_EXPEDIENTE("Asignar", "Se asigno el expedediente al usuario ");
 	
 	/** La Constante list. */
 	private static final List<HistorialType> list = new ArrayList<>();

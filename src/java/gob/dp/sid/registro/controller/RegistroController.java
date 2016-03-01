@@ -1121,6 +1121,10 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 expedienteService.expedienteAsignar(expediente);
                 msg.messageInfo("Se asigno el expediente correctamente", null);
             }
+            historial = new ExpedienteHistorial();
+            historial.setTipo(HistorialType.HISTORIAL_ASIGNAR_EXPEDIENTE.getKey());
+            historial.setDescripcion(HistorialType.HISTORIAL_ASIGNAR_EXPEDIENTE.getValue()+expediente.getUsuarioAsignado());
+            guardarHistorial(historial);
         } catch (Exception e) {
             log.error("ERROR - guardarAsignado()" + e);
         }
