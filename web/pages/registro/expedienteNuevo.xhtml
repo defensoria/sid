@@ -84,7 +84,7 @@
                                                 <h:outputText value="- (DESISTIDO)" rendered="#{registroController.expediente.indicadorDesestimiento == 1}"  style="color: red; font-weight: bold; font-size: 1.5em" />
                                             </td>
                                             <td style="text-align: right">
-                                                <a jsf:action="#{registroController.pdf()}">
+                                                <a jsf:rendered="false" jsf:action="#{registroController.pdf()}">
                                                     <img src="../../bootstrap/img/pdf.png" height="30" width="30"/>
                                                 </a>
                                             </td>
@@ -1141,8 +1141,9 @@
                                             <textarea jsf:rendered="#{registroController.expediente.tipoClasificion == '02'}" rows="5" jsf:value="#{registroController.expediente.sumilla}" style="width: 100%;" placeholder="Motivo de la consulta" maxlength="1950"/>
                                             <textarea jsf:rendered="#{registroController.expediente.tipoClasificion != '02'}" rows="5" jsf:value="#{registroController.expediente.sumilla}" style="width: 100%;" placeholder="Sumilla" maxlength="1950"/>
                                             <br/>
-                                            <span class="text-bold">Observaciones</span>
-                                            <textarea rows="5" jsf:value="#{registroController.expediente.observacion}" style="width: 100%" placeholder="Observacion"  maxlength="1950"/>
+                                            <h:outputText class="text-bold" value="Observaciones" rendered="#{registroController.expediente.tipoClasificion != '02'}" />
+                                            <h:outputText class="text-bold" value="Orientación" rendered="#{registroController.expediente.tipoClasificion == '02'}" />
+                                            <textarea rows="5" jsf:value="#{registroController.expediente.observacion}" style="width: 100%"  maxlength="1950"/>
                                             <br/><br/>
 
                                             <table style="width: 100%">
@@ -2304,10 +2305,10 @@
                         <td colspan="2">
                             <div class="panel panel-featured-top-warning" style="height: 100px">
                                 <div class="panel-body">
-                                    <span class="text-resalt-primary">Responsables del expediente, ususario : </span>
+                                    <span class="text-resalt-primary">Responsables del expediente, usuario : </span>
                                     <span class="text-resalt-primary"><b>#{registroController.expediente.usuarioResponsable} </b></span>
                                     <br/>
-                                    <span class="text-resalt-primary">Ususario asignado: </span>
+                                    <span class="text-resalt-primary">Usuario asignado: </span>
                                     <span class="text-resalt-primary"><b>#{registroController.expediente.usuarioRegistro} </b></span>
                                 </div>
                             </div>

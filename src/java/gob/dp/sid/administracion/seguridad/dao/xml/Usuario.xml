@@ -291,9 +291,9 @@
         INNER JOIN SID_SEG_USUARIO_ROL B ON B.CODIGO_USUARIO = u.CODIGO_USUARIO
         WHERE u.N_ID_OD = #{codigoOD} 
         <if test="rol!=null">
-                AND B.CODIGO_ROL = #{rol}
-            </if>
-            
+            AND B.CODIGO_ROL = #{rol}
+        </if>
+        ORDER BY u.nom_usuario
         
     </select>
 

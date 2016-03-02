@@ -12,10 +12,12 @@
                     <tr>
                         <td></td>
                         <td style="text-align: right">
-                            <a class="btn btn-primary" jsf:action="#{registroController.cargarNuevaBusqueda()}">
-                                <span class="glyphicon glyphicon-user"/>
-                                Atención al Usuario
-                            </a>
+                            <h:panelGroup rendered="#{!seguridadUtilController.tieneRol('ROL0000005') and !seguridadUtilController.tieneRol('ROL0000006')}" >
+                                <a class="btn btn-primary" jsf:action="#{registroController.cargarNuevaBusqueda()}">
+                                    <span class="glyphicon glyphicon-user"/>
+                                    Atención al Usuario
+                                </a>
+                            </h:panelGroup>
                         </td>
                     </tr>
                 </table>
@@ -58,10 +60,7 @@
                                                     <f:facet name="header">Etapa</f:facet>
                                                     <h:outputText value="#{exped.etapaDetalle}" />
                                                 </h:column>
-                                                <h:column>
-                                                    <f:facet name="header">Estado expediente</f:facet>
-                                                    <h:outputText value="#{exped.estadoDetalle}" />
-                                                </h:column>
+                                                
                                                 <h:column>
                                                     <f:facet name="header"><a jsf:action="#{registroController.listarExpedienteUsuarioPaginadoOrder(1,5)}">Estado general</a></f:facet>
                                                     <h:outputText rendered="#{exped.general == 'A'}" value="Trámite" />

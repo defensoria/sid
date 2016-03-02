@@ -84,7 +84,7 @@
                                                 <h:outputText value="- (DESISTIDO)" rendered="#{registroController.expediente.indicadorDesestimiento == 1}"  style="color: red; font-weight: bold; font-size: 1.5em" />
                                             </td>
                                             <td style="text-align: right">
-                                                <a jsf:action="#{registroController.pdf()}">
+                                                <a jsf:rendered="false" jsf:action="#{registroController.pdf()}">
                                                     <img src="../../bootstrap/img/pdf.png" height="30" width="30"/>
                                                 </a>
                                             </td>

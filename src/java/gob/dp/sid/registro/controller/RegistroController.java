@@ -585,14 +585,16 @@ public class RegistroController extends AbstractManagedBean implements Serializa
 
     public void consultarReniec() throws ParseException {
         try {
-            /* String proxyHost = "172.30.1.250";
+             String proxyHost = "172.30.1.250";
              String proxyPort = "8080";
              System.out.println("Setting up with proxy: " + proxyHost + ":" + proxyPort);
              System.setProperty("http.proxyHost", proxyHost);
              System.setProperty("http.proxyPort", proxyPort);
-             System.setProperty("http.nonProxyHosts", "localhost|127.0.0.1");*/
+             System.setProperty("http.nonProxyHosts", "localhost|127.0.0.1");
             ServiceReniec reniec = new ServiceReniec();
-            List<String> list = reniec.getConsultarServicio("DEPUWS", "DEPUWS!=", null, "08715701", persona.getNumeroDocumento());
+            DateFormat format = new SimpleDateFormat("yyMMddHHmmss");
+                String cadenaReniec = usuarioSession.getCodigo()+format.format(new Date());
+            List<String> list = reniec.getConsultarServicio("DEPUWS", "MzY5MjQ5MjM=", cadenaReniec, usuarioSession.getDni(), persona.getNumeroDocumento());
             if (list != null) {
                 persona.setApellidoPat(list.get(1));
                 persona.setApellidoMat(list.get(2));
@@ -1074,6 +1076,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         try {
             Usuario u = new Usuario();
             u.setCodigoOD(usuarioSession.getCodigoOD());
+            listaUsuarioOD = null;
             listaUsuarioOD = usuarioService.listaUsuariosPorOD(u);
         } catch (Exception e) {
             log.error("ERROR - limpiarModalAsignar()" + e);
@@ -4215,14 +4218,14 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                     }
                 }
 
-                if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.INVESTIGACION_QUEJA.getKey())) {
+                /*if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.INVESTIGACION_QUEJA.getKey())) {
                     if (listaExpedientesInvestigacionQueja != null) {
                         if (listaExpedientesInvestigacionQueja.size() == 0) {
                             msg.messageAlert("Debe ingresar por lo menos una gestion para culminar la etapa", null);
                             return false;
                         }
                     }
-                }
+                }*/
                 if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.PERSUACION_QUEJA.getKey())) {
                     if (listaExpedientesPersuacionQueja != null) {
                         if (listaExpedientesPersuacionQueja.size() == 0) {
