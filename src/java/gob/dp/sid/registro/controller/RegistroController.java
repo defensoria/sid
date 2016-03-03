@@ -1125,8 +1125,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 expedienteService.expedienteAsignar(expediente);
                 msg.messageInfo("Se asigno el expediente correctamente", null);
             }
-            historial = new ExpedienteHistorial(HistorialType.HISTORIAL_ASIGNAR_EXPEDIENTE.getKey(), HistorialType.HISTORIAL_ASIGNAR_EXPEDIENTE.getValue());
-            historial.setDescripcion(HistorialType.HISTORIAL_ASIGNAR_EXPEDIENTE.getValue()+expediente.getUsuarioAsignado());
+            historial = new ExpedienteHistorial(HistorialType.HISTORIAL_ASIGNAR_EXPEDIENTE.getKey(), HistorialType.HISTORIAL_ASIGNAR_EXPEDIENTE.getValue()+expediente.getUsuarioAsignado());
             guardarHistorial(historial);
         } catch (Exception e) {
             log.error("ERROR - guardarAsignado()" + e);
@@ -1769,7 +1768,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             expedienteConsultaEnvia.setTipo(tipo);
             if (tipo == 1) {
                 String formato = RandomStringUtils.random(11, 0, 21, true, true, "WERTYUIO123456789KPBV".toCharArray());
-                expedienteConsultaEnvia.setCodigo("C" + formato);
+                expedienteConsultaEnvia.setCodigo("C"+usuarioSession.getCodigo() + formato);
             }
             expedienteConsultaEnvia.setFecha(new Date());
             /**
@@ -1788,6 +1787,8 @@ public class RegistroController extends AbstractManagedBean implements Serializa
              */
             enviarMensajeConsulta();
             inicioAccionesConsulta();
+            historial = new ExpedienteHistorial(HistorialType.HISTORIAL_CONSULTA_ENVIA.getKey(), HistorialType.HISTORIAL_CONSULTA_ENVIA.getValue());
+            guardarHistorial(historial);
             msg.messageInfo("Se envio la Consulta", null);
             return true;
         } catch (Exception e) {
@@ -1854,10 +1855,14 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             if (StringUtils.equals(expedienteConsultaAprueba.getAprueba(), "NO")) {
                 enviarMensajeDesaprobacionConsulta();
                 inicioAccionesConsulta();
+                historial = new ExpedienteHistorial(HistorialType.HISTORIAL_CONSULTA_DESAPRUEBA.getKey(), HistorialType.HISTORIAL_CONSULTA_DESAPRUEBA.getValue());
+                guardarHistorial(historial);
                 msg.messageInfo("No se aprobo la Consulta", null);
             } else {
                 enviarMensajeAprobacionConsulta();
                 inicioAccionesConsulta();
+                historial = new ExpedienteHistorial(HistorialType.HISTORIAL_CONSULTA_APRUEBA.getKey(), HistorialType.HISTORIAL_CONSULTA_APRUEBA.getValue());
+                guardarHistorial(historial);
                 msg.messageInfo("Se aprobo la Consulta", null);
             }
 
@@ -1923,9 +1928,13 @@ public class RegistroController extends AbstractManagedBean implements Serializa
              */
             if (StringUtils.equals(expedienteConsultaReasigna.getAprueba(), "NO")) {
                 enviarMensajeDesaprobacionReasignacionConsulta();
+                historial = new ExpedienteHistorial(HistorialType.HISTORIAL_CONSULTA_RECHAZA.getKey(), HistorialType.HISTORIAL_CONSULTA_ENVIA.getValue());
+                guardarHistorial(historial);
                 msg.messageInfo("Se rechaza la consulta", null);
             } else {
                 enviarMensajeReasignacionConsulta();
+                historial = new ExpedienteHistorial(HistorialType.HISTORIAL_CONSULTA_ACEPTA.getKey(), HistorialType.HISTORIAL_CONSULTA_ENVIA.getValue());
+                guardarHistorial(historial);
                 msg.messageInfo("Se reasigno la consulta", null);
             }
             inicioAccionesConsulta();
@@ -1966,6 +1975,8 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             expedienteConsultaService.expedienteConsultaInsertar(expedienteConsultaResponde);
             enviarMensajeRespondeConsulta();
             inicioAccionesConsulta();
+            historial = new ExpedienteHistorial(HistorialType.HISTORIAL_CONSULTA_RESPONDE.getKey(), HistorialType.HISTORIAL_CONSULTA_RESPONDE.getValue());
+            guardarHistorial(historial);
             msg.messageInfo("Se respondío la consulta", null);
             return true;
         } catch (Exception e) {
@@ -2019,9 +2030,13 @@ public class RegistroController extends AbstractManagedBean implements Serializa
              */
             if (StringUtils.equals(expedienteRespuestaAprueba.getAprueba(), "NO")) {
                 enviarMensajeDesaprobarRespuesta();
+                historial = new ExpedienteHistorial(HistorialType.HISTORIAL_CONSULTA_DESAPRUEBA_RESPUESTA.getKey(), HistorialType.HISTORIAL_CONSULTA_DESAPRUEBA_RESPUESTA.getValue());
+                guardarHistorial(historial);
                 msg.messageInfo("Se rechaza la consulta", null);
             } else {
                 enviarMensajeAprobarRespuesta();
+                historial = new ExpedienteHistorial(HistorialType.HISTORIAL_CONSULTA_APRUEBA_RESPUESTA.getKey(), HistorialType.HISTORIAL_CONSULTA_APRUEBA_RESPUESTA.getValue());
+                guardarHistorial(historial);
                 msg.messageInfo("Se aprobo la respuesta", null);
             }
             inicioAccionesConsulta();
@@ -2077,9 +2092,13 @@ public class RegistroController extends AbstractManagedBean implements Serializa
              */
             if (StringUtils.equals(expedienteRespuestaAcepta.getAprueba(), "NO")) {
                 enviarMensajeRechazaRespuesta();
+                historial = new ExpedienteHistorial(HistorialType.HISTORIAL_CONSULTA_RECHAZA_RESPUESTA.getKey(), HistorialType.HISTORIAL_CONSULTA_RECHAZA_RESPUESTA.getValue());
+                guardarHistorial(historial);
                 msg.messageInfo("Se rechaza la respuesta", null);
             } else {
                 enviarMensajeAceptarRespuesta();
+                historial = new ExpedienteHistorial(HistorialType.HISTORIAL_CONSULTA_ACEPTA_RESPUESTA.getKey(), HistorialType.HISTORIAL_CONSULTA_ACEPTA_RESPUESTA.getValue());
+                guardarHistorial(historial);
                 msg.messageInfo("Se acepta la respuesta", null);
             }
 
@@ -4879,7 +4898,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 try (InputStream input = fil.getInputStream()) {
                     Files.copy(input, file.toPath());
                 } catch (IOException ex) {
-                    log.error(ex.getCause());
+                    log.error(ex);
                 }
                 return ruta;
             }
