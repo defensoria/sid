@@ -60,7 +60,27 @@ public enum HistorialType {
         
         HISTORIAL_CONSULTA_ACEPTA_RESPUESTA("Consulta", "Acepta la respuesta y se finaliza la consulta"),
         
-        HISTORIAL_CONSULTA_RECHAZA_RESPUESTA("Consulta", "Rechaza la consulta ");
+        HISTORIAL_CONSULTA_RECHAZA_RESPUESTA("Consulta", "Rechaza la consulta "),
+        
+        HISTORIAL_SUSPENCION_ENVIA("Suspención", "Envia la solicitud de suspención "),
+        
+        HISTORIAL_SUSPENCION_APRUEBA("Suspención", "Aprueba la solicitud de suspención "),
+        
+        HISTORIAL_SUSPENCION_DESAPRUEBA("Suspención", "Desaprueba la solicitud de suspención "),
+        
+        HISTORIAL_SUSPENCION_ACEPTA("Suspención", "Acepta la solicitud de suspención "),
+        
+        HISTORIAL_SUSPENCION_RECHAZA("Suspención", "Rechaza la solicitud de suspención "),
+        
+        HISTORIAL_AMPLIACION_ENVIA("Ampliación", "Envia la solictud de ampliación "),
+        
+        HISTORIAL_AMPLIACION_APRUEBA("Ampliación", "Aprueba la solictud de ampliación "),
+        
+        HISTORIAL_AMPLIACION_DESAPRUEBA("Ampliación", "Desaprueba la solictud de ampliación "),
+        
+        HISTORIAL_AMPLIACION_ACEPTA("Ampliación", "Acepta la solictud de ampliación "),
+        
+        HISTORIAL_AMPLIACION_RECHAZA("Consulta", "Rechaza la solictud de ampliación ");
 	
 	/** La Constante list. */
 	private static final List<HistorialType> list = new ArrayList<>();

@@ -482,7 +482,19 @@ public class RegistroController extends AbstractManagedBean implements Serializa
 
     private void cargarFichaONP() {
         try {
-            listaGestionesONP = new ArrayList<>();
+            int i = 0;
+            for(ExpedienteEntidad e : entidadSeleccionadas){
+                if(e.getEntidad().getId() == 4455){
+                    i++;
+                }
+            }
+            if(i > 0){
+                expedienteONP = expedienteONPService.expedienteONPBuscarExpediente(expediente.getNumero());
+                if(expedienteONP == null)
+                    expedienteONP = new ExpedienteONP();
+            }
+           // 4455
+            /*listaGestionesONP = new ArrayList<>();
             List<ExpedienteGestion> list = expedienteGestionService.expedienteGestionListaXexpediente(expediente.getNumero());
             for (ExpedienteGestion eg : list) {
                 if (StringUtils.isNotBlank(eg.getCodigoONP())) {
@@ -496,7 +508,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 }
             } else {
                 expedienteONP = null;
-            }
+            }*/
         } catch (Exception e) {
             log.error("ERROR - cargarFichaONP()" + e);
         }
@@ -2131,6 +2143,8 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             expedienteSuspencionEnvia.setRuta(ruta);
             expedienteSuspencionService.expedienteSuspencionInsertar(expedienteSuspencionEnvia);
             enviarMensajeSupensionEnvio();
+            historial = new ExpedienteHistorial(HistorialType.HISTORIAL_SUSPENCION_ENVIA.getKey(), HistorialType.HISTORIAL_SUSPENCION_ENVIA.getValue());
+            guardarHistorial(historial);
             msg.messageInfo("Se envio la Suspensión", null);
             return true;
         } catch (Exception e) {
@@ -2159,10 +2173,14 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             expedienteSuspencionService.expedienteSuspencionInsertar(expedienteSuspencionAprueba);
             if (StringUtils.equals(expedienteSuspencionAprueba.getAprueba(), "SI")) {
                 enviarMensajeSuspencionAprobacion();
+                historial = new ExpedienteHistorial(HistorialType.HISTORIAL_SUSPENCION_APRUEBA.getKey(), HistorialType.HISTORIAL_SUSPENCION_APRUEBA.getValue());
+                guardarHistorial(historial);
                 msg.messageInfo("Se aprobó la Derivación", null);
             } else {
                 guardarVersion2();
                 enviarMensajeSuspencionDesaprobacion();
+                historial = new ExpedienteHistorial(HistorialType.HISTORIAL_SUSPENCION_DESAPRUEBA.getKey(), HistorialType.HISTORIAL_SUSPENCION_DESAPRUEBA.getValue());
+                guardarHistorial(historial);
                 msg.messageInfo("No se aprobo la derivación", null);
             }
             return true;
@@ -2196,10 +2214,14 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 guardarVersion2();
                 enviarMensajeSuspencionAcepta();
                 aumentarDisminuirTiempoEtapa(1, 20);
+                historial = new ExpedienteHistorial(HistorialType.HISTORIAL_SUSPENCION_ACEPTA.getKey(), HistorialType.HISTORIAL_SUSPENCION_ACEPTA.getValue());
+                guardarHistorial(historial);
                 msg.messageInfo("Se acepta la solicitud de Suspensión se agregan 20 dias habiles en la etapa actual", null);
             } else {
                 guardarVersion2();
                 enviarMensajeSuspencionRechaza();
+                historial = new ExpedienteHistorial(HistorialType.HISTORIAL_SUSPENCION_RECHAZA.getKey(), HistorialType.HISTORIAL_SUSPENCION_RECHAZA.getValue());
+                guardarHistorial(historial);
                 msg.messageInfo("Se rechaza la solicitud de Suspensión", null);
             }
             return true;
@@ -2229,6 +2251,8 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             expedienteAmpliacionEnvia.setRuta(ruta);
             expedienteAmpliacionService.expedienteAmpliacionInsertar(expedienteAmpliacionEnvia);
             enviarMensajeAmpliacionEnvio();
+            historial = new ExpedienteHistorial(HistorialType.HISTORIAL_AMPLIACION_ENVIA.getKey(), HistorialType.HISTORIAL_AMPLIACION_ENVIA.getValue());
+            guardarHistorial(historial);
             msg.messageInfo("Se envio la solicitud de ampliación", null);
             return true;
         } catch (Exception e) {
@@ -2257,10 +2281,14 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             expedienteAmpliacionService.expedienteAmpliacionInsertar(expedienteAmpliacionAprueba);
             if (StringUtils.equals(expedienteAmpliacionAprueba.getAprueba(), "SI")) {
                 enviarMensajeAmpliacionAprobacion();
+                historial = new ExpedienteHistorial(HistorialType.HISTORIAL_AMPLIACION_APRUEBA.getKey(), HistorialType.HISTORIAL_AMPLIACION_APRUEBA.getValue());
+                guardarHistorial(historial);
                 msg.messageInfo("Se aprobó la ampliación", null);
             } else {
                 guardarVersion2();
                 enviarMensajeAmpliacionDesaprobacion();
+                historial = new ExpedienteHistorial(HistorialType.HISTORIAL_AMPLIACION_DESAPRUEBA.getKey(), HistorialType.HISTORIAL_AMPLIACION_DESAPRUEBA.getValue());
+                guardarHistorial(historial);
                 msg.messageInfo("Se desaprobo la ampliación", null);
             }
             return true;
@@ -2292,10 +2320,14 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 guardarVersion2();
                 enviarMensajeAmpliacionAcepta();
                 aumentarDisminuirTiempoEtapa(1, 30);
+                historial = new ExpedienteHistorial(HistorialType.HISTORIAL_AMPLIACION_ACEPTA.getKey(), HistorialType.HISTORIAL_AMPLIACION_ACEPTA.getValue());
+                guardarHistorial(historial);
                 msg.messageInfo("Se acepta la solicitud de ampliación se agregan 30 dias habiles en la etapa actual", null);
             } else {
                 guardarVersion2();
                 enviarMensajeAmpliacionRechaza();
+                historial = new ExpedienteHistorial(HistorialType.HISTORIAL_AMPLIACION_RECHAZA.getKey(), HistorialType.HISTORIAL_AMPLIACION_RECHAZA.getValue());
+                guardarHistorial(historial);
                 msg.messageInfo("Se rechaza la solicitud de ampliación", null);
             }
             return true;
