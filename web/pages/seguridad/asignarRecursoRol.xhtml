@@ -37,9 +37,7 @@
                                     <span style="color: #0074cc; font-size: x-large;">Lista de privilegios</span>
                                 </td>
                                 <td style="text-align: right">
-                                    <a class="btn btn-primary" onclick="confirmar()">
-                                        <span class="glyphicon glyphicon-floppy-disk"/>Guardar
-                                    </a>
+                                    
                                     <h:outputText value="&#160;&#160;"/>
                                     <button class="btn btn-danger" jsf:action="#{rolController.cargarPagina()}" jsf:onclick="loadingModal()">
                                         <span class="glyphicon glyphicon-share"/>Regresar
@@ -56,7 +54,7 @@
                             <f:facet name="header">
                                 <h:outputText value="Sel" />
                             </f:facet>
-                            <h:selectBooleanCheckbox value="#{item.seleccionado}" />
+                            <h:selectBooleanCheckbox disabled="true" value="#{item.seleccionado}" />
                         </h:column>
 
                         <h:column id="colCodigo">

@@ -48,11 +48,13 @@ public class UsuarioDetalleController extends AbstractManagedBean implements Ser
 
     private List<SelectItem> lstRoles;
     
-    private List<String> lstRolesSeleccionados;
+    private String rolSeleccionado;
     
     private boolean verGuardar=true;
     
     private boolean habilitado=true;
+    
+    private List<String> lstRolesSeleccionados;
     
     private Part file1;
     
@@ -91,7 +93,7 @@ public class UsuarioDetalleController extends AbstractManagedBean implements Ser
         List<Rol> lstRolUsuario=rolService.buscarRolSegunUsuario(filter2);
         this.lstRolesSeleccionados=new ArrayList<>();
          for(Rol obj:lstRolUsuario){
-            this.getLstRolesSeleccionados().add(obj.getCodigo());
+             rolSeleccionado = obj.getCodigo();
         }         
         return "usuarioDetalle";
     }
@@ -109,20 +111,14 @@ public class UsuarioDetalleController extends AbstractManagedBean implements Ser
         this.llenarFiltro(filter);
         try{
             List<Rol> lstRolSel=new ArrayList<>();
-            Rol rol=null;
-            for(String codigo:this.getLstRolesSeleccionados()){
-                log.debug("Rol seleccionado:"+codigo);
-                rol=new Rol();
-                rol.setCodigo(codigo);
-                lstRolSel.add(rol);
-            }
+            Rol rol= new Rol(rolSeleccionado);
+            lstRolSel.add(rol);
             usuarioService.modificarUsuario(filter,lstRolSel);
             msg.messageInfo("Se realizaron los cambios correctamente", null);
         }catch(Exception ex){
             mensaje="Ocurrió un error:"+ex.getMessage();
             log.error("Ocurrió un error", ex);
         }
-
     }
 
     public String regresar(){
@@ -228,17 +224,6 @@ public class UsuarioDetalleController extends AbstractManagedBean implements Ser
         this.lstRoles = lstRoles;
     }
 
-    public List<String> getLstRolesSeleccionados() {
-       if(this.lstRolesSeleccionados==null){
-            this.lstRolesSeleccionados=new ArrayList<>();
-        }
-        return lstRolesSeleccionados;
-    }
-
-    public void setLstRolesSeleccionados(List<String> lstRolesSeleccionados) {
-        this.lstRolesSeleccionados = lstRolesSeleccionados;
-    }
-
     public String getMensaje() {
         return mensaje;
     }
@@ -272,6 +257,22 @@ public class UsuarioDetalleController extends AbstractManagedBean implements Ser
 
     public void setFile1(Part file1) {
         this.file1 = file1;
+    }
+
+    public String getRolSeleccionado() {
+        return rolSeleccionado;
+    }
+
+    public void setRolSeleccionado(String rolSeleccionado) {
+        this.rolSeleccionado = rolSeleccionado;
+    }
+
+    public List<String> getLstRolesSeleccionados() {
+        return lstRolesSeleccionados;
+    }
+
+    public void setLstRolesSeleccionados(List<String> lstRolesSeleccionados) {
+        this.lstRolesSeleccionados = lstRolesSeleccionados;
     }
 
 }

@@ -32,7 +32,6 @@
         <if test="dni!=null">
             and  num_dni=#{dni}
         </if>
-       
         <if test="nombre!=null">
             and UPPER(nom_usuario)  LIKE '%'||UPPER(#{nombre})||'%'
         </if>
@@ -41,10 +40,6 @@
         </if>
         <if test="apellidoMaterno!=null">
             and UPPER(ape_materno)  LIKE '%'||UPPER(#{apellidoMaterno})||'%'
-        </if>
-
-        <if test="tieneInforme">
-            and UPPER(codigo_usuario) in (select distinct COD_USUARIO from sid_reg_informe)
         </if>
         order by codigo
     </sql>
@@ -111,9 +106,7 @@
         order by codigo_usuario
         ) B
         ) A WHERE 1=1
-        <if test="ini!=null">
-           and a.numfila BETWEEN #{ini} AND #{fin}
-        </if>
+        
         <if test="codigo!=null">
            and upper(codigo_usuario)=upper(#{codigo}) 
         </if>
@@ -187,7 +180,18 @@
         (codigo_usuario,
         nom_usuario,
         ape_paterno,
-       
+        <if test="codigoOD !=null">
+            n_id_od,
+        </if>
+        <if test="sexo !=null">
+            c_sexo,
+        </if>
+        <if test="idDepartamento !=null">
+            C_IDDEPARTAMENTO,
+        </if>
+        <if test="cargo !=null">
+            C_CARGO,
+        </if>        
         num_dni,
         est_usuario,
         <if test="email!=null">
@@ -202,15 +206,26 @@
         <if test="flagClaveInicial!=null">
             flag_clave_inicial,
         </if>
-        <!--clave_usuario-->
+        clave_usuario,
         ape_materno
         )
         values
         (
-        #{codigo},
+        UPPER(#{codigo}),
         UPPER(#{nombre}),
         UPPER(#{apellidoPaterno}),
-       
+        <if test="codigoOD !=null">
+            #{codigoOD},
+        </if>
+        <if test="sexo !=null">
+            #{sexo},
+        </if>
+        <if test="idDepartamento !=null">
+            #{idDepartamento},
+        </if>
+        <if test="cargo != null">
+            #{cargo},
+        </if>
         #{dni},
         #{estado},
         <if test="email!=null">
@@ -225,7 +240,7 @@
         <if test="flagClaveInicial!=null">
             #{flagClaveInicial},
         </if>
-        <!--#{clave}-->
+        #{clave},
         UPPER(#{apellidoMaterno})
         )
     </insert>

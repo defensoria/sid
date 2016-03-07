@@ -7,7 +7,7 @@
     <ui:composition template="../template/template.xhtml">
         <ui:define name="content">
             <h:form id="frm" class="form-horizontal">
-                <gc:confirmAjax bean="#{usuarioNuevoController.insertarUsuario()}"/>
+                <gc:confirmSubmit bean="#{usuarioNuevoController.insertarUsuario()}"/>
                 <div class="panel panel-default" style="background: #F5F5F5">
                     <div class="panel-body">
                         <span style="color: #0074cc; font-size: x-large;">Detalle del usuario</span>
@@ -49,6 +49,16 @@
                         </div>
 
                         <div class="form-group">
+                            <label class="col-sm-2 control-label">Sexo:</label>
+                            <div class="col-sm-3">
+                                <h:selectOneRadio value="#{usuarioNuevoController.usuario.sexo}">
+                                    <f:selectItem itemLabel="Masculino" itemValue="M"/>
+                                    <f:selectItem itemLabel="Femenino" itemValue="F"/>
+                                </h:selectOneRadio>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
                             <label class="col-sm-2 control-label">Email</label>
                             <div class="col-sm-3">
                                 <input class="form-control" type="text" placeholder="Email" jsf:value="#{usuarioNuevoController.usuario.email}" style="width: 100%;" autocomplete="off" />
@@ -56,16 +66,12 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">Clave</label>
+                            <label class="col-sm-2 control-label">Oficina / Adjuntía Defensorial</label>
                             <div class="col-sm-3">
-                                <input class="form-control" type="password" id="idTextClave" placeholder="Clave" jsf:value="#{usuarioNuevoController.usuario.clave}" style="width: 100%;" autocomplete="off" />
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">Confirmacion</label>
-                            <div class="col-sm-3">
-                                <input class="form-control" type="password" id="idTextRepiteClave" placeholder="Confirmacion" jsf:value="#{usuarioNuevoController.usuario.confirmacionClave}" style="width: 100%;" autocomplete="off" />
+                                <h:selectOneMenu value="#{usuarioNuevoController.usuario.codigoOD}">
+                                    <f:selectItem itemValue="0" itemLabel="Seleccione" />
+                                    <f:selectItems value="#{usuarioNuevoController.listaDefensorials}" var="y" itemLabel="#{y.nombre}" itemValue="#{y.id}" />
+                                </h:selectOneMenu>
                             </div>
                         </div>
 
@@ -79,9 +85,9 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">Roles</label>
                             <div class="col-sm-3">
-                                <h:selectManyCheckbox id="selManyRoles" value="#{usuarioNuevoController.lstRolesSeleccionados}" layout="pageDirection">
+                                <h:selectOneRadio id="selManyRoles" value="#{usuarioNuevoController.rolSeleccionado}" layout="pageDirection">
                                     <f:selectItems id="selItemRolSel" value="#{usuarioNuevoController.lstRoles}" />
-                                </h:selectManyCheckbox>
+                                </h:selectOneRadio>
                             </div>
                         </div>
                     </div>  
@@ -143,30 +149,30 @@
                                     $('#idTextApellidoMat').removeClass('error');
                                 }
 
-                                if ($('#idTextClave').val() === "") {
-                                    $('#idTextClave').addClass('error');
-                                    alertar("Debe de ingresar la clave del usuario");
-                                    return false;
-                                }
-                                else {
-                                    $('#idTextClave').removeClass('error');
-                                }
+                                /*if ($('#idTextClave').val() === "") {
+                                 $('#idTextClave').addClass('error');
+                                 alertar("Debe de ingresar la clave del usuario");
+                                 return false;
+                                 }
+                                 else {
+                                 $('#idTextClave').removeClass('error');
+                                 }
+                                 
+                                 if ($('#idTextRepiteClave').val() === "") {
+                                 $('#idTextRepiteClave').addClass('error');
+                                 alertar("Debe de confirmar la clave del usuario");
+                                 return false;
+                                 }
+                                 else {
+                                 $('#idTextRepiteClave').removeClass('error');
+                                 }*/
 
-                                if ($('#idTextRepiteClave').val() === "") {
-                                    $('#idTextRepiteClave').addClass('error');
-                                    alertar("Debe de confirmar la clave del usuario");
-                                    return false;
-                                }
-                                else {
-                                    $('#idTextRepiteClave').removeClass('error');
-                                }
-
-                                if ($('#idTextClave').val() === $('#idTextRepiteClave').val()) {
-                                    confirmar();
-                                } else {
-                                    alertar("Ambas claves deben ser iguales");
-                                    return false;
-                                }
+                                // if ($('#idTextClave').val() === $('#idTextRepiteClave').val()) {
+                                confirmar();
+                                /*} else {
+                                 alertar("Ambas claves deben ser iguales");
+                                 return false;
+                                 }*/
                             });
 
                         </script>

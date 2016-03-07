@@ -52,10 +52,15 @@ public class UsuarioServiceImpl implements UsuarioService {
     public void insertarUsuario(Usuario usuario, List<Rol> listaRol) throws Exception {
         // 2013-08-19- Comentado para cambiar el algoritmo de encriptacion
         //String encPass = CryptoAES.getInstance().encriptar(usuario.getClave().trim());
-        String encPass = MEncript.getStringMessageDigest(usuario.getClave().trim());
+        
         // 2013-08-19- Comentado para permitir generar el codigo de usuario
         //usuario.setCodigo(usuarioDao.generarCodigoUsuario());
-        usuario.setClave(encPass);
+        /**agregado temporal por etapa de pruebas*/
+        //String encPass = MEncript.getStringMessageDigest(usuario.getClave().trim());
+        //usuario.setClave(encPass);
+        usuario.setClave(usuario.getDni());
+        /**agregado temporal por etapa de pruebas*/
+        
         usuarioDao.insertarUsuario(usuario);
         /**
          * Auditoria

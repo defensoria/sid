@@ -122,26 +122,10 @@
                         <a jsf:action="#{usuarioDetalleController.verDetalleUsuario(item.codigo)}" data-toggle="tooltip" data-placement="bottom" title="Modificar usuario" jsf:onclick="loadingModal()">
                             <span class="glyphicon glyphicon-edit" style="font-size: medium"/>
                         </a>
-                        <h:outputText value="&#160;&#160;&#160;"/>
-                        <a jsf:action="#{usuarioClaveController.verCambioClave(item.codigo)}" data-toggle="tooltip" data-placement="bottom" title="Cambiar clave" jsf:onclick="loadingModal()">
-                            <span class="glyphicon glyphicon-lock" style="font-size: medium"/>
-                        </a>
+                        
                     </h:column>
                 </h:dataTable>
-                <ul class="pager" >
-                    <li><a jsf:action="#{busquedaUsuarioController.buscarUsuario(busquedaUsuarioController.nroPagina -1)}"
-                           jsf:rendered="#{busquedaUsuarioController.listaUsuario.size() > 0}" jsf:onclick="loadingModal()">Anterior
-                            <f:ajax render="idDatatableActor" onevent="closeModal"/>
-                        </a>
-                    </li>
-                    <li>
-                        <a jsf:action="#{busquedaUsuarioController.buscarUsuario(busquedaUsuarioController.nroPagina +1)}"
-                           jsf:rendered="#{busquedaUsuarioController.listaUsuario.size() > 0}" jsf:onclick="loadingModal()">Siguiente
-                            <f:ajax render="idDatatableActor" onevent="closeModal"/>
-                        </a>
-                    </li>
-                </ul> 
-
+                
             </h:form>
         </ui:define>
     </ui:composition>

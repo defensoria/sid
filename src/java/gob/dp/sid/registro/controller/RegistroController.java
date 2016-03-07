@@ -448,6 +448,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
 
     public String iniciarExpedienteNuevo() {
         try {
+            expediente = new Expediente();
             if (StringUtils.equals(personaSeleccionada.getTipoExpediente(), "0")) {
                 msg.messageAlert("Debe selecionar un tipo de expediente", null);
                 return null;
@@ -492,6 +493,9 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 expedienteONP = expedienteONPService.expedienteONPBuscarExpediente(expediente.getNumero());
                 if(expedienteONP == null)
                     expedienteONP = new ExpedienteONP();
+                    verSeccionONP = true;
+            }else{
+                verSeccionONP = false;
             }
            // 4455
             /*listaGestionesONP = new ArrayList<>();
@@ -3155,7 +3159,6 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             defineBotonRegistro();
             expedienteClasificacionBusqueda = new ExpedienteClasificacion();
             cargarFichaONP();
-            verONP();
             if (StringUtils.isBlank(expediente.getNumero())) {
                 return "expedienteEdit";
             }
@@ -3169,7 +3172,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 }
                 cargarExpedienteGestionLista();
                 setearExpedienteTiempo();
-                verONP();
+                cargarFichaONP();
                 return "expedienteGestionLista";
             }
         } catch (Exception ex) {
@@ -3185,16 +3188,6 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         } catch (Exception e) {
             log.error("ERROR - actualizarArchivo()" + e);
         }
-    }
-
-    private void verONP() {
-        int i = 0;
-        for (ExpedienteEntidad ee : entidadSeleccionadas) {
-            if (ee.getEntidad().getId() == 4455) {
-                i++;
-            }
-        }
-        verSeccionONP = i > 0;
     }
 
     private void listarNiveles() {
@@ -3784,6 +3777,29 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         historial.setFecha(new Date());
         expedienteHistorialService.expedienteHistorialInsertar(historial);
     }
+    
+    private boolean validaGestionesInternas(){
+        if(expediente.getId() != null){
+            listaExpedienteDerivacion = expedienteDerivacionService.expedienteDerivacionSelectList(expediente.getId());
+        if(listaExpedienteDerivacion.size() > 0){
+            msg.messageAlert("El expediente no puede ser modificado hasta que termine el flujo de derivación", null);
+            return false;
+        }
+        
+        listaExpedienteSuspencion = expedienteSuspencionService.expedienteSuspencionSelectList(expediente.getId());
+        if(listaExpedienteSuspencion.size() > 0){
+            msg.messageAlert("El expediente no puede ser modificado hasta que termine el flujo de suspención", null);
+            return false;
+        }
+        
+        listaExpedienteAmpliacion = expedienteAmpliacionService.expedienteAmpliacionSelectList(expediente.getId());
+        if(listaExpedienteAmpliacion.size() > 0){
+            msg.messageAlert("El expediente no puede ser modificado hasta que termine el flujo de ampliación", null);
+            return false;
+        }
+        }
+        return true;
+    }
 
     public boolean guardarVersion() {
         if (StringUtils.isBlank(expediente.getTipoClasificion())) {
@@ -3798,7 +3814,11 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 }
             }
         }
-        try {
+        if(!validaGestionesInternas()){
+            return false;
+        }
+        
+            try {
             Long idExpedienteOld = null;
             if (expediente.getId() != null) {
                 idExpedienteOld = expediente.getId();
@@ -3807,7 +3827,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             guardarEtapaEstado(idExpedienteOld);
             inicializarEtapaEstado(1);
             insertarActualizarTiempos();
-            verONP();
+            cargarFichaONP();
             if (expediente.getIndiceMayorInformacion() != null) {
                 if (expediente.getIndiceMayorInformacion()) {
                     if (etapaEstado.getVerEtapa() == 1 || etapaEstado.getVerEtapa() == 5) {
@@ -3847,7 +3867,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             guardarEtapaEstado(idExpedienteOld);
             inicializarEtapaEstado(1);
             insertarActualizarTiempos();
-            verONP();
+            cargarFichaONP();
             if (tipo == 1) {
                 expediente.setGeneral("A");
             }
@@ -3875,7 +3895,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             guardarEtapaEstado(idExpedienteOld);
             inicializarEtapaEstado(1);
             insertarActualizarTiempos();
-            verONP();
+            cargarFichaONP();
         } catch (Exception e) {
             log.error("ERROR - guardarVersion2()" + e);
         }
@@ -4075,11 +4095,15 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             if (validaConclusionFinal()) {
                 return null;
             }
+            if(!validaGestionesInternas()){
+                return null;
+            }
+            
             guardar();
             guardarEtapaEstadoConcluir(idExpedienteOld);
             inicializarEtapaEstado(1);
             insertarActualizarTiempos();
-            verONP();
+            cargarFichaONP();
             verModalConclusion = false;
             /**
              * GENERAR NUEVO ESTADO
@@ -4113,7 +4137,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             guardarEtapaEstadoConcluir(idExpedienteOld);
             inicializarEtapaEstado(1);
             insertarActualizarTiempos();
-            verONP();
+            cargarFichaONP();
             /**
              * GENERAR NUEVO ESTADO
              */

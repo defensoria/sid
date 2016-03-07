@@ -22,4 +22,6 @@ public interface OficinaDefensorialService {
     
     public List<OficinaDefensorial> listaAdjuntiasDefensorialesConsulta();
     
+    public List<OficinaDefensorial> listaAdjuntiasDefensorialesTodos();
+    
 }

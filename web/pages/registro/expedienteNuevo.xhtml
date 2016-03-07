@@ -527,7 +527,7 @@
                                                                     <span class="glyphicon glyphicon-floppy-disk" />Borrador
                                                                 </a>
                                                             </h:panelGroup>
-                                                            &#160;&#160;
+                                                            &#160;&#160;        
                                                             <h:panelGroup rendered="#{(registroController.expediente.general != 'C' and registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo) or (registroController.expediente.usuarioRegistro == null) }">
                                                                 <a class="btn btn-primary" jsf:action="#{registroController.guardarVersion()}"  jsf:onclick="loadingModal()">
                                                                     <span class="glyphicon glyphicon-floppy-disk" />Guardar

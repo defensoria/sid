@@ -51,7 +51,9 @@ public class Usuario implements Serializable
     private String idDepartamento;
     
     private String nombreDepartamento;
-
+    
+    private Integer oficinaDefensorial;
+   
     private List<Rol> listaRol;
     private Map<String,Rol> mapRol;
     private Map<String,Recurso> mapRecurso;
@@ -308,6 +310,14 @@ public class Usuario implements Serializable
 
     public void setNombreOD(String nombreOD) {
         this.nombreOD = nombreOD;
+    }
+
+    public Integer getOficinaDefensorial() {
+        return oficinaDefensorial;
+    }
+
+    public void setOficinaDefensorial(Integer oficinaDefensorial) {
+        this.oficinaDefensorial = oficinaDefensorial;
     }
 
 }

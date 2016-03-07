@@ -64,9 +64,9 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">Roles</label>
                             <div class="col-sm-3">
-                                <h:selectManyCheckbox id="selManyRoles" value="#{usuarioDetalleController.lstRolesSeleccionados}" layout="pageDirection">
+                                <h:selectOneRadio id="selManyRoles" value="#{usuarioDetalleController.rolSeleccionado}" layout="pageDirection">
                                     <f:selectItems id="selItemRolSel" value="#{usuarioDetalleController.lstRoles}" />
-                                </h:selectManyCheckbox>
+                                </h:selectOneRadio>
                             </div>
                         </div>
                     </div>  

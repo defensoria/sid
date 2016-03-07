@@ -5,7 +5,6 @@
  */
 package gob.dp.sid.comun.controller;
 
-import gob.dp.sid.administracion.seguridad.entity.Usuario;
 import gob.dp.sid.comun.MessagesUtil;
 import gob.dp.sid.comun.StringUtil;
 import java.io.Serializable;
@@ -24,8 +23,6 @@ public abstract class AbstractManagedBean implements Serializable{
     protected StringUtil stringUtil;
 
     public AbstractManagedBean() {
-        //LoginController loginController = (LoginController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "loginController");
-        //usuarioSession = loginController.getUsuarioSesion();
         msg = new MessagesUtil();
         stringUtil = new StringUtil();
     }

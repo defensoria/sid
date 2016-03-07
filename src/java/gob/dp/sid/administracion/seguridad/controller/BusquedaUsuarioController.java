@@ -44,14 +44,17 @@ public class BusquedaUsuarioController implements Serializable {
 
     public String cargarPagina() {
         listaUsuario = new ArrayList<>();
-        log.debug("METODO : BusquedaUsuarioController.cargarPagina");
         this.usuario = new Usuario();
+        return "usuarioLista";
+    }
+    
+    public String addUsuarioLista(Usuario u){
+        listaUsuario = new ArrayList<>();
+        listaUsuario.add(u);
         return "usuarioLista";
     }
 
     public void buscarUsuario(Long page) {
-
-        log.debug("Entrando a buscarUsuario:" + "dni:" + this.usuario.getDni());
         FiltroUsuario filter = new FiltroUsuario();
         if (usuario.getCodigo() != null && !usuario.getCodigo().trim().equals("")) {
             filter.setCodigo(usuario.getCodigo().trim());
@@ -102,12 +105,12 @@ public class BusquedaUsuarioController implements Serializable {
     
     public void listarPaginado2(FiltroUsuario filtroUsuario, Long pagina) {
         if(pagina > 0){
-            int paginado = ConstantesUtil.PAGINADO_5;
+            int paginado = ConstantesUtil.PAGINADO_10;
             Long ini = paginado * (pagina - 1) + 1;
             Long fin = paginado * pagina;
             if (pagina == 0) {
                 ini = 1L;
-                fin = 5L;
+                fin = 10L;
             }
             filtroUsuario.setIni(ini);
             filtroUsuario.setFin(fin);

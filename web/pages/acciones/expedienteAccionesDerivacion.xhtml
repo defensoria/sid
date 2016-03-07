@@ -81,7 +81,7 @@
                         </div>
                     </h:panelGroup>
                     
-                    <h:panelGroup rendered="#{seguridadUtilController.tieneRecurso('REC_EXP001') and registroController.listaExpedienteDerivacion.size() == 0 and registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo and registroController.etapaEstado.idEstado == null}">
+                    <h:panelGroup rendered="#{seguridadUtilController.tieneRecurso('REC_EXP001') and registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo and registroController.etapaEstado.idEstado == null}">
                         <table style="width: 100%">
                             <tr>
                                 <td colspan="2" ><br/>
