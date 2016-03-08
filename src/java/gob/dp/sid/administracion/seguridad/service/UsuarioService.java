@@ -37,4 +37,6 @@ public interface UsuarioService {
     public void modificarUsuarioSimple(Usuario usuario);
     
     public List<Usuario> listaUsuariosPorOD(Usuario usuario);
+    
+    public Integer listaUsuarioCount(String codigoUsuario);
 }

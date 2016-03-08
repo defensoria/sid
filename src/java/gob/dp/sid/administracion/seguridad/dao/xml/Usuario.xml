@@ -108,10 +108,10 @@
         ) A WHERE 1=1
         
         <if test="codigo!=null">
-           and upper(codigo_usuario)=upper(#{codigo}) 
+            and upper(codigo_usuario)=upper(#{codigo}) 
         </if>
         <if test="dni != null">
-           and num_dni LIKE '%'||#{dni}||'%'
+            and num_dni LIKE '%'||#{dni}||'%'
         </if>
         <if test="nombre!=null">
             and UPPER(nom_usuario)  LIKE '%'||UPPER(#{nombre})||'%'
@@ -310,6 +310,10 @@
         </if>
         ORDER BY u.nom_usuario
         
+    </select>
+    
+    <select id="listaUsuarioCount" resultType="java.lang.Integer" parameterType="String">
+        SELECT COUNT(*) FROM SID_SEG_USUARIO WHERE CODIGO_USUARIO = #{value}
     </select>
 
 

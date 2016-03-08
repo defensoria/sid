@@ -25,5 +25,7 @@ public interface UsuarioDao {
     public Integer getTotalBuscarUsuario(FiltroUsuario filtro);
     
     public List<Usuario> listaUsuariosPorOD(Usuario usuario);
+    
+    public Integer listaUsuarioCount(String codigoUsuario);
 
 }

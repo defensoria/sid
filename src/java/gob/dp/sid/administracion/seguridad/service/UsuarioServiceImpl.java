@@ -52,15 +52,19 @@ public class UsuarioServiceImpl implements UsuarioService {
     public void insertarUsuario(Usuario usuario, List<Rol> listaRol) throws Exception {
         // 2013-08-19- Comentado para cambiar el algoritmo de encriptacion
         //String encPass = CryptoAES.getInstance().encriptar(usuario.getClave().trim());
-        
+
         // 2013-08-19- Comentado para permitir generar el codigo de usuario
         //usuario.setCodigo(usuarioDao.generarCodigoUsuario());
-        /**agregado temporal por etapa de pruebas*/
+        /**
+         * agregado temporal por etapa de pruebas
+         */
         //String encPass = MEncript.getStringMessageDigest(usuario.getClave().trim());
         //usuario.setClave(encPass);
         usuario.setClave(usuario.getDni());
-        /**agregado temporal por etapa de pruebas*/
-        
+        /**
+         * agregado temporal por etapa de pruebas
+         */
+
         usuarioDao.insertarUsuario(usuario);
         /**
          * Auditoria
@@ -94,7 +98,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public Integer loginUsuario(Usuario usuario) throws Exception {
-          //String encPass = CryptoAES.getInstance().encriptar(usuario.getClave().trim());
+        //String encPass = CryptoAES.getInstance().encriptar(usuario.getClave().trim());
         String encPass = MEncript.getStringMessageDigest(usuario.getClave().trim());
         usuario.setClave(encPass);
         return usuarioDao.loginUsuario(usuario);
@@ -120,7 +124,6 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     public void setAuditoriaService(AuditoriaService auditoriaService) {
-        log.debug("METODO XXXXXXXX : UsuarioServiceImpl.setAuditoriaService");
         this.auditoriaService = auditoriaService;
     }
 
@@ -140,14 +143,15 @@ public class UsuarioServiceImpl implements UsuarioService {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("var projects = [");
         int i = 0;
-        for(Usuario a:lst){
-            if(i > 0)
-            stringBuilder.append(",");    
+        for (Usuario a : lst) {
+            if (i > 0) {
+                stringBuilder.append(",");
+            }
             stringBuilder.append("{value: '").append(a.getCodigo()).append("' ,");
-            stringBuilder.append("label: '").append(a.getNombre()+" "+a.getApellidoPaterno()+" "+a.getApellidoMaterno()+" - "+a.getCargo()).append("' ,");
+            stringBuilder.append("label: '").append(a.getNombre() + " " + a.getApellidoPaterno() + " " + a.getApellidoMaterno() + " - " + a.getCargo()).append("' ,");
             stringBuilder.append("desc: ").append("''").append(",");
             stringBuilder.append("icon: ").append("'' },");
-            
+
         }
         stringBuilder.append("];");
         return stringBuilder.toString();
@@ -165,6 +169,11 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public List<Usuario> listaUsuariosPorOD(Usuario usuario) {
         return usuarioDao.listaUsuariosPorOD(usuario);
+    }
+
+    @Override
+    public Integer listaUsuarioCount(String codigoUsuario) {
+        return usuarioDao.listaUsuarioCount(codigoUsuario);
     }
 
 }

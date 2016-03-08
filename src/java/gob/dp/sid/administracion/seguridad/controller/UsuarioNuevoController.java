@@ -146,10 +146,13 @@ public class UsuarioNuevoController extends AbstractManagedBean implements Seria
     }
 
     public String insertarUsuario() {
-        log.debug("Entrando a insertarUsuario");
+        Integer contador = usuarioService.listaUsuarioCount(usuario.getCodigo().toUpperCase());
+        if(contador > 0){
+            msg.messageAlert("El código de usuario ya existe en el sistema", null);
+            return null;
+        }
         Usuario filter = new Usuario();
         this.llenarFiltro(filter);
-
         try {
             List<Rol> lstRolSel = new ArrayList<>();
             Rol rol;
