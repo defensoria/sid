@@ -8,16 +8,16 @@ package gob.dp.sid.comun.controller;
 import gob.dp.sid.administracion.seguridad.controller.LoginController;
 import gob.dp.sid.administracion.seguridad.entity.Usuario;
 import java.io.Serializable;
-import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
+import org.springframework.context.annotation.Scope;
 
 /**
  *
  * @author carlos
  */
-@SessionScoped
-@Named("sessionStorageController")
+@Named
+@Scope("session")
 public class SessionStorageController implements Serializable {
     
     private Usuario usuarioSession;

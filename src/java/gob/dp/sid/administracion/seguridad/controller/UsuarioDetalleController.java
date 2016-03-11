@@ -179,7 +179,7 @@ public class UsuarioDetalleController extends AbstractManagedBean implements Ser
             try (InputStream input = file1.getInputStream()) {
                 Files.copy(input, file.toPath());
             } catch (IOException ex) {
-                log.error(ex.getCause());
+                log.error("agregarImagen()"+ex);
             }
             usuario.setRuta("/filesystem/"+ruta);
             usuarioService.modificarUsuarioSimple(usuario);

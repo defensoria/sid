@@ -13,17 +13,17 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Named;
-import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 
 
 /**
  *
  * @author Administrador
  */
-@SessionScoped
-@Named("menuController")
+@Named
+@Scope("session")
 public class MenuController implements Serializable{
     
     private List<Menu> menuPadre;
