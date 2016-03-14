@@ -23,7 +23,9 @@ public enum MensajeType {
     
     MENSAJE_SUSPENCION(3, "Mensaje por Suspensión", "Suspensión", "red"),
     
-    MENSAJE_AMPLIACION(4, "Mensaje por Ampliación", "Ampliación", "orange");
+    MENSAJE_AMPLIACION(4, "Mensaje por Ampliación", "Ampliación", "orange"),
+    
+    MENSAJE_ASIGNACION(5, "Mensaje por Asignación", "Asignación", "silver");
 
     private MensajeType() {
         this.key = null;

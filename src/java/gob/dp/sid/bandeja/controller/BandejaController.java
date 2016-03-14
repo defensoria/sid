@@ -155,6 +155,13 @@ public class BandejaController extends AbstractManagedBean implements Serializab
         guardarMensajeDerivacion(ed, listaDestinatarios, 0L);
     }
     
+    public void mensajeEnviaAsignacion(Expediente ex){
+        usuarioSession();
+        mensajeBandeja = new Bandeja();
+        mensajeBandeja.setTituloMensaje(MensajeType.MENSAJE_ASIGNACION.getDetalle()+" exp: "+ex.getNumero());
+        guardarMensajeAsignacion(ex);
+    }
+    
     public void mensajeEnviaConsulta(ExpedienteConsulta ec){
         usuarioSession();
         mensajeBandeja = new Bandeja();
@@ -467,6 +474,24 @@ public class BandejaController extends AbstractManagedBean implements Serializab
             mensajeBandeja.setIdAccion(ed.getId());
             bandejaService.bandejaInsertar(mensajeBandeja);
         }
+    }
+    
+    private void guardarMensajeAsignacion(Expediente ex) {
+        mensajeBandeja.setDestinatario(ex.getUsuarioAsignado());
+        mensajeBandeja.setEstado("PEN");
+        mensajeBandeja.setFechaEnvio(new Date());
+        mensajeBandeja.setRemitente(usuarioSession.getCodigo());
+        mensajeBandeja.setTipo(MensajeType.MENSAJE_ASIGNACION.getKey());
+        mensajeBandeja.setTitulo(MensajeType.MENSAJE_ASIGNACION.getValue());
+        mensajeBandeja.setNombreRemitente(usuarioSession.getNombre() + " " + usuarioSession.getApellidoPaterno() + " " + usuarioSession.getApellidoMaterno());
+        mensajeBandeja.setDetalleTipo(MensajeType.MENSAJE_ASIGNACION.getDetalle());
+        mensajeBandeja.setColorTipo(MensajeType.MENSAJE_ASIGNACION.getColor());
+        mensajeBandeja.setMotivo("Se asigna el expediente: "+ex.getNumero());
+        mensajeBandeja.setNumeroExpediente(ex.getNumero());
+        mensajeBandeja.setTipoMensaje("INT");
+        mensajeBandeja.setActivo("A");
+        mensajeBandeja.setIdExpediente(ex.getId());
+        bandejaService.bandejaInsertar(mensajeBandeja);
     }
     
     private void guardarMensajeSuspencion(ExpedienteSuspencion es, List<Usuario> usuarios, Long idExp) {

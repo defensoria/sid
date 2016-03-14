@@ -1141,6 +1141,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 expedienteService.expedienteAsignar(expediente);
                 msg.messageInfo("Se asigno el expediente correctamente", null);
             }
+            enviarAsignacion();
             historial = new ExpedienteHistorial(HistorialType.HISTORIAL_ASIGNAR_EXPEDIENTE.getKey(), HistorialType.HISTORIAL_ASIGNAR_EXPEDIENTE.getValue()+expediente.getUsuarioAsignado());
             guardarHistorial(historial);
         } catch (Exception e) {
@@ -1663,6 +1664,15 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             historial = new ExpedienteHistorial(HistorialType.HISTORIAL_DERIVAR_ENVIAR.getKey(), HistorialType.HISTORIAL_DERIVAR_ENVIAR.getValue());
             guardarHistorial(historial);
             return true;
+        } catch (Exception e) {
+            log.error("ERROR - enviarDerivacion()" + e);
+        }
+        return false;
+    }
+    
+    public boolean enviarAsignacion() {
+        try {
+            enviarMensajeAsignacion();
         } catch (Exception e) {
             log.error("ERROR - enviarDerivacion()" + e);
         }
@@ -2446,6 +2456,16 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             FacesContext context = FacesContext.getCurrentInstance();
             BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
             bandejaController.mensajeEnviaDerivacion(expedienteDerivacionEnvia);
+        } catch (Exception e) {
+            log.error("ERROR - enviarMensajeDerivacion()" + e);
+        }
+    }
+    
+    private void enviarMensajeAsignacion() {
+        try {
+            FacesContext context = FacesContext.getCurrentInstance();
+            BandejaController bandejaController = (BandejaController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "bandejaController");
+            bandejaController.mensajeEnviaAsignacion(expediente);
         } catch (Exception e) {
             log.error("ERROR - enviarMensajeDerivacion()" + e);
         }

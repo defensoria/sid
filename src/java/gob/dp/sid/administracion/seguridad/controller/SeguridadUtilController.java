@@ -15,15 +15,12 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 
-/**
- *
- * @author WIN7
- */
 @Named
 @Scope("session")
 public class SeguridadUtilController {
 
     private static final Logger log = Logger.getLogger(SeguridadUtilController.class);
+    
     @Autowired
     private RolService rolService;
 
@@ -45,7 +42,6 @@ public class SeguridadUtilController {
         Usuario usuario = SessionUtil.getUsuario();
         Map map = rolService.buscarMapRolSegunUsuario(usuario);
         return map.get(codigoRol) != null;
-
     }
     
     public boolean tieneRolUsuario(String codigoRol, Usuario usuario) {

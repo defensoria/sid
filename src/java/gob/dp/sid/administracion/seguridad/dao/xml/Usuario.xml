@@ -69,7 +69,9 @@
         flag_clave_inicial as flagClaveInicial,
         c_cargo            as cargo,
         c_ruta             as ruta,
-        c_iddepartamento   as idDepartamento 
+        c_iddepartamento   as idDepartamento,
+        c_sexo             as sexo,
+        n_id_od            as codigoOD 
         FROM (
         SELECT codigo_usuario,
         nom_usuario,
@@ -85,6 +87,8 @@
         c_cargo,
         c_ruta,
         c_iddepartamento,
+        c_sexo,
+        n_id_od,
         ROWNUM numfila
         FROM (
         select codigo_usuario,
@@ -100,7 +104,9 @@
         flag_clave_inicial,
         c_cargo,
         c_ruta,
-        C_IDDEPARTAMENTO
+        C_IDDEPARTAMENTO,
+        c_sexo,
+        n_id_od
         from sid_seg_usuario
         where 1=1
         order by codigo_usuario
@@ -164,6 +170,12 @@
         </if>
         <if test="ruta!=null">
             ,c_ruta = #{ruta}
+        </if>
+        <if test="cargo!=null">
+            ,c_cargo = #{cargo}
+        </if>
+        <if test="codigoOD!=null">
+            ,N_ID_OD = #{codigoOD}
         </if>
         where codigo_usuario = #{codigo}
     </update>
@@ -251,7 +263,6 @@
         u.ape_paterno        as apellidoPaterno,
         u.ape_materno        as apellidoMaterno,
         u.num_dni            as dni,
-        u.est_usuario        as estado,
         u.num_dni            as clave,
         u.des_email          as email,
         u.tel_movil          as telefonoMovil,
@@ -266,8 +277,7 @@
         sid_seg_usuario u
         inner join SID_SEG_OFICINA_DEFENSORIAL a on a.N_ID_OD = u.N_ID_OD
         <where>
-            est_usuario='A'
-               
+            1=1
             <if test="codigo!=null">
                 and  upper(codigo_usuario)=UPPER(#{codigo})
             </if>

@@ -35,7 +35,7 @@
         <script type="text/javascript" src="/sid/faces/bootstrap/js/bootstrap-multiselect.js"></script>
         <script type="text/javascript" src="/sid/faces/bootstrap/js/bootstrap-multiselect-collapsible-groups.js"></script>
 
-        <script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.2/raphael-min.js"></script>
+        <script src="/sid/faces/bootstrap/js/raphael-min.js"></script>
         <script src="/sid/faces/bootstrap/js/morris.min.js"></script>
         <link rel="stylesheet" href="/sid/faces/bootstrap/css/morris.css"/>
     </h:head>
@@ -240,9 +240,7 @@
                                     <td>
                                         <div class="content">
                                             <div id="idDivRegistro" class="form-group has-feedback" style="width: 100%">
-
                                                 <input type="text" jsf:value="#{busquedaController.expediente.observacion}" class="form-control input-sm"  placeholder="Buscar"/>
-
                                                 <a style="margin: auto" jsf:action="#{busquedaController.listarExpedientesPaginado(1)}" >
                                                     <span style="font-size: medium; top: 0px" class="glyphicon glyphicon-search form-control-feedback"/>
                                                 </a>

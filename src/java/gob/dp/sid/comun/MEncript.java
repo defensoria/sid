@@ -27,27 +27,20 @@ public class MEncript {
         return hash;
     }
 
-    //public static String getStringMessageDigest(String message, String algorithm)
     public static String getStringMessageDigest(String message)
     {
         byte[] digest = null;
         byte[] buffer = message.getBytes();
-        log.debug("Entrando a getStringMessageDigest 1 ");
         try {
-            log.debug("Entrando a getStringMessageDigest 2 ");
             // MessageDigest messageDigest = MessageDigest.getInstance("SHA512");
             MessageDigest messageDigest = MessageDigest.getInstance("SHA-512");
-            log.debug("Entrando a getStringMessageDigest 3 ");
             messageDigest.reset();
-            log.debug("Entrando a getStringMessageDigest 4 ");
             messageDigest.update(buffer);
-            log.debug("Entrando a getStringMessageDigest 5 ");
             digest = messageDigest.digest();
-            log.debug("Entrando a getStringMessageDigest 6 ");
         } catch (NoSuchAlgorithmException ex) {
-            log.debug("Error creando Digest : "+ex);
+            log.error("Error creando Digest : "+ex);
         } catch (Exception e) {
-            log.debug("Error creando Digest : "+e);
+            log.error("Error creando Digest : "+e);
         }
         return toHexadecimal(digest);
     }

@@ -20,13 +20,11 @@
                                     <span style="color: #0074cc; font-size: x-large;">Criterios de Busqueda</span>
                                 </td>
                                 <td style="text-align: right">
-                                    <a jsf:action="#{busquedaUsuarioController.buscarUsuario(1)}" class="btn btn-primary" jsf:onclick="loadingModal()">
+                                    <a jsf:action="#{busquedaUsuarioController.buscarUsuarios()}" class="btn btn-primary" jsf:onclick="loadingModal()">
                                         <span class="glyphicon glyphicon-search"/>Buscar
                                     </a>
                                     <h:outputText value="&#160;&#160;"/>
-                                    <button type="submit" jsf:action="#{usuarioNuevoController.verUsuarioNuevo()}" class="btn btn-info" jsf:onclick="loadingModal()">
-                                        <span class="glyphicon glyphicon-user"/>Crear
-                                    </button>          
+                                        
                                 </td>
                             </tr>
                         </table>
@@ -39,7 +37,7 @@
                                     <label class="text-bold">Codigo</label>
                                 </td>
                                 <td  style="padding-bottom: 10px">
-                                    <input type="text" placeholder="Codigo" jsf:value="#{busquedaUsuarioController.usuario.codigo}" style="width: 100%;" autocomplete="off" maxlength="40"/>
+                                    <input type="text" placeholder="Codigo" jsf:value="#{busquedaUsuarioController.usuarioBusqueda.codigo}" style="width: 100%;" autocomplete="off" maxlength="40"/>
                                 </td>
                             </tr>
                             
@@ -48,7 +46,7 @@
                                     <label class="text-bold">DNI</label>
                                 </td>
                                 <td style="padding-bottom: 10px">
-                                    <input type="text" placeholder="DNI" jsf:value="#{busquedaUsuarioController.usuario.dni}" style="width: 100%;" autocomplete="off" maxlength="8"  onkeypress="return soloNumbero(event);"/>
+                                    <input type="text" placeholder="Documento" jsf:value="#{busquedaUsuarioController.usuarioBusqueda.documento}" style="width: 100%;" autocomplete="off" maxlength="8"  onkeypress="return soloNumbero(event);"/>
                                 </td>
                             </tr>
                             
@@ -57,7 +55,7 @@
                                     <label class="text-bold">Nombre</label>
                                 </td>
                                 <td style="padding-bottom: 10px">
-                                    <input type="text" placeholder="Nombre" jsf:value="#{busquedaUsuarioController.usuario.nombre}" style="width: 100%;" autocomplete="off"/>
+                                    <input type="text" placeholder="Nombre" jsf:value="#{busquedaUsuarioController.usuarioBusqueda.nombre}" style="width: 100%;" autocomplete="off"/>
                                 </td>
                             </tr>
                             
@@ -66,7 +64,7 @@
                                     <label class="text-bold">Apellido Paterno</label>
                                 </td>
                                 <td style="padding-bottom: 10px">
-                                    <input type="text" placeholder="Apellido Paterno" jsf:value="#{busquedaUsuarioController.usuario.apellidoPaterno}" style="width: 100%;" autocomplete="off"/>
+                                    <input type="text" placeholder="Apellido Paterno" jsf:value="#{busquedaUsuarioController.usuarioBusqueda.apellidoPaterno}" style="width: 100%;" autocomplete="off"/>
                                 </td>
                             </tr>
                             
@@ -75,7 +73,7 @@
                                     <label class="text-bold">Apellido Materno</label>
                                 </td>
                                 <td style="padding-bottom: 10px">
-                                    <input type="text" placeholder="Apellido Materno" jsf:value="#{busquedaUsuarioController.usuario.apellidoMaterno}" style="width: 100%;" autocomplete="off"/>
+                                    <input type="text" placeholder="Apellido Materno" jsf:value="#{busquedaUsuarioController.usuarioBusqueda.apellidoMaterno}" style="width: 100%;" autocomplete="off"/>
                                 </td>
                             </tr>
                         </table>
@@ -83,14 +81,18 @@
                 </div>    
                 
 
-                <h:dataTable value="#{busquedaUsuarioController.listaUsuario}" var="item" id="idDatatableActor"
-                             class="table table-striped" binding="#{usu}" rendered="#{busquedaUsuarioController.listaUsuario.size() > 0}">
-
+                <h:dataTable value="#{busquedaUsuarioController.listaUsuarioBusqueda}" var="item" id="idDatatableActor"
+                             class="table table-striped" binding="#{usu}" rendered="#{busquedaUsuarioController.listaUsuarioBusqueda.size() > 0}">
                     <h:column>
                         <f:facet name="header">#</f:facet>
                         <h:outputText value="#{usu.rowIndex+1}" />
                     </h:column>
-
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="Código"/>
+                        </f:facet>
+                        <h:outputText value="#{item.codigo}"/>
+                    </h:column>
                     <h:column id="colNombre">
                         <f:facet name="header">
                             <h:outputText value="Nombre"/>
@@ -114,12 +116,12 @@
                         <f:facet name="header">
                             <h:outputText value="DNI"/>
                         </f:facet>
-                        <h:outputText value="#{item.dni}"/>
+                        <h:outputText value="#{item.documento}"/>
                     </h:column>
                     <h:column id="colCambioClave">
                         <f:facet name="header">
                         </f:facet>
-                        <a jsf:action="#{usuarioDetalleController.verDetalleUsuario(item.codigo)}" data-toggle="tooltip" data-placement="bottom" title="Modificar usuario" jsf:onclick="loadingModal()">
+                        <a jsf:action="#{usuarioDetalleController.verDetalleUsuario(item)}" data-toggle="tooltip" data-placement="bottom" title="Modificar usuario" jsf:onclick="loadingModal()">
                             <span class="glyphicon glyphicon-edit" style="font-size: medium"/>
                         </a>
                         

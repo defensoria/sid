@@ -429,48 +429,48 @@
                 C_ETIQUETA = #{etiqueta},
             </if>
             <if test="usuarioResponsable != null">
-            C_USUARIORESPONSABLE = #{usuarioResponsable},
-        </if>
+                C_USUARIORESPONSABLE = #{usuarioResponsable},
+            </if>
             <if test="tipoArchivo != null">
-            C_TIPOARCHIVO = #{tipoArchivo},
-        </if>
-        <if test="indicadorRecepcionArchivo != null">
-            N_RECEPCIONARCHIVO = #{indicadorRecepcionArchivo},
-        </if>
-        <if test="fechaArchivo != null">
-            D_FECHAARCHIVO = #{fechaArchivo},
-        </if>
-        <if test="expedienteAcumulado != null">
-            C_EXPEDIENTESACUMULADOS = #{expedienteAcumulado},
-        </if>
-        <if test="ubicacionTipologica != null">
-            C_UBICACIONTIPOLOGICA = #{ubicacionTipologica},
-        </if>
-        <if test="observacionArchivo != null">
-            C_OBSERVACIONARCHIVO = #{observacionArchivo},
-        </if>
-        <if test="tipoDocumentoArchivo != null">
-            C_TIPODOCUMENTOARCHIVO = #{tipoDocumentoArchivo},
-        </if>
-        <if test="numeroFolios != null">
-            N_NROFOLIOS = #{numeroFolios},
-        </if>
-        <if test="tipoSoporteArchivo != null">
-            C_TIPOSOPORTEARCHIVO = #{tipoSoporteArchivo},
-        </if>
-        <if test="indicadorAtr != null">
-            N_INDEJERCIATR = #{indicadorAtr},
-        </if>
-        <if test="tipoAtr != null">
-            C_TIPOEJERCICIOATR = #{tipoAtr},
-        </if>
-        <if test="fechaAtr != null">
-            D_FECHAEJERCICIOATR = #{fechaAtr},
-        </if>
-        <if test="detalleAtr != null">
-            C_DETALLEEJERCICIOATR = #{detalleAtr},
-        </if>
-        <if test="numero != null">
+                C_TIPOARCHIVO = #{tipoArchivo},
+            </if>
+            <if test="indicadorRecepcionArchivo != null">
+                N_RECEPCIONARCHIVO = #{indicadorRecepcionArchivo},
+            </if>
+            <if test="fechaArchivo != null">
+                D_FECHAARCHIVO = #{fechaArchivo},
+            </if>
+            <if test="expedienteAcumulado != null">
+                C_EXPEDIENTESACUMULADOS = #{expedienteAcumulado},
+            </if>
+            <if test="ubicacionTipologica != null">
+                C_UBICACIONTIPOLOGICA = #{ubicacionTipologica},
+            </if>
+            <if test="observacionArchivo != null">
+                C_OBSERVACIONARCHIVO = #{observacionArchivo},
+            </if>
+            <if test="tipoDocumentoArchivo != null">
+                C_TIPODOCUMENTOARCHIVO = #{tipoDocumentoArchivo},
+            </if>
+            <if test="numeroFolios != null">
+                N_NROFOLIOS = #{numeroFolios},
+            </if>
+            <if test="tipoSoporteArchivo != null">
+                C_TIPOSOPORTEARCHIVO = #{tipoSoporteArchivo},
+            </if>
+            <if test="indicadorAtr != null">
+                N_INDEJERCIATR = #{indicadorAtr},
+            </if>
+            <if test="tipoAtr != null">
+                C_TIPOEJERCICIOATR = #{tipoAtr},
+            </if>
+            <if test="fechaAtr != null">
+                D_FECHAEJERCICIOATR = #{fechaAtr},
+            </if>
+            <if test="detalleAtr != null">
+                C_DETALLEEJERCICIOATR = #{detalleAtr},
+            </if>
+            <if test="numero != null">
                 C_NUMEROEXPEDIENTE = #{numero}
             </if>
         </set>
@@ -482,34 +482,34 @@
     <update id="expedienteUpdateArchivo" parameterType="expediente">
         UPDATE SID_REG_EXPEDIENTE
         <set>
-        <if test="tipoArchivo != null">
-            C_TIPOARCHIVO = #{tipoArchivo},
-        </if>
-        <if test="indicadorRecepcionArchivo != null">
-            N_RECEPCIONARCHIVO = #{indicadorRecepcionArchivo},
-        </if>
-        <if test="fechaArchivo != null">
-            D_FECHAARCHIVO = #{fechaArchivo},
-        </if>
-        <if test="expedienteAcumulado != null">
-            C_EXPEDIENTESACUMULADOS = #{expedienteAcumulado},
-        </if>
-        <if test="ubicacionTipologica != null">
-            C_UBICACIONTIPOLOGICA = #{ubicacionTipologica},
-        </if>
-        <if test="observacionArchivo != null">
-            C_OBSERVACIONARCHIVO = #{observacionArchivo},
-        </if>
-        <if test="tipoDocumentoArchivo != null">
-            C_TIPODOCUMENTOARCHIVO = #{tipoDocumentoArchivo},
-        </if>
-        <if test="numeroFolios != null">
-            N_NROFOLIOS = #{numeroFolios},
-        </if>
-        <if test="tipoSoporteArchivo != null">
-            C_TIPOSOPORTEARCHIVO = #{tipoSoporteArchivo},
-        </if>
-        <if test="numero != null">
+            <if test="tipoArchivo != null">
+                C_TIPOARCHIVO = #{tipoArchivo},
+            </if>
+            <if test="indicadorRecepcionArchivo != null">
+                N_RECEPCIONARCHIVO = #{indicadorRecepcionArchivo},
+            </if>
+            <if test="fechaArchivo != null">
+                D_FECHAARCHIVO = #{fechaArchivo},
+            </if>
+            <if test="expedienteAcumulado != null">
+                C_EXPEDIENTESACUMULADOS = #{expedienteAcumulado},
+            </if>
+            <if test="ubicacionTipologica != null">
+                C_UBICACIONTIPOLOGICA = #{ubicacionTipologica},
+            </if>
+            <if test="observacionArchivo != null">
+                C_OBSERVACIONARCHIVO = #{observacionArchivo},
+            </if>
+            <if test="tipoDocumentoArchivo != null">
+                C_TIPODOCUMENTOARCHIVO = #{tipoDocumentoArchivo},
+            </if>
+            <if test="numeroFolios != null">
+                N_NROFOLIOS = #{numeroFolios},
+            </if>
+            <if test="tipoSoporteArchivo != null">
+                C_TIPOSOPORTEARCHIVO = #{tipoSoporteArchivo},
+            </if>
+            <if test="numero != null">
                 C_NUMEROEXPEDIENTE = #{numero}
             </if>
         </set>
@@ -573,7 +573,7 @@
                 C_USUARIORESPONSABLE = #{usuarioResponsable},
             </if>
             
-        <if test="numero != null">
+            <if test="numero != null">
                 C_NUMEROEXPEDIENTE = #{numero}
             </if>
         </set>
@@ -724,7 +724,7 @@
     </select>
        
     <select id="expedienteBuscarUsuarioPaginado" resultMap="expedienteMap" parameterType="expediente">
-         SELECT A.*
+        SELECT A.*
         FROM (
         SELECT
         B.*,
@@ -743,13 +743,13 @@
         LEFT JOIN SID_REG_PERSONA H ON G.N_IDPERSONA = H.N_IDPERSONA
         WHERE A.C_ESTADO = 'A' 
         <if test="observacion != null">
-        AND UPPER(A.C_SUMILLA||''||F.C_NOMENTIDAD||''||H.C_NOMBRE||''||H.C_APELLIDOPAT||''||H.C_APELLIDOMAT||''||A.C_NUMEROEXPEDIENTE) LIKE '%'||UPPER(#{observacion})||'%' 
+            AND UPPER(A.C_SUMILLA||''||F.C_NOMENTIDAD||''||H.C_NOMBRE||''||H.C_APELLIDOPAT||''||H.C_APELLIDOMAT||''||A.N_CONSECUTIVO) LIKE '%'||UPPER(#{observacion})||'%' 
         </if>
         <if test="usuarioRegistro != null">
-        AND A.C_USUREGISTRO  = #{usuarioRegistro}     
+            AND A.C_USUREGISTRO  = #{usuarioRegistro}     
         </if>
         <if test="cadenaBusqueda != null">
-        AND A.C_NUMEROEXPEDIENTE  LIKE '%'||#{cadenaBusqueda}||'%'      
+            AND A.C_NUMEROEXPEDIENTE  LIKE '%'||#{cadenaBusqueda}||'%'      
         </if>
         <if test="tipoBusqueda == 1">
             ORDER BY A.N_IDEXPEDIENTE DESC
@@ -792,7 +792,7 @@
     </select>
     
     <select id="expedienteBuscarUsuarioODPaginado" resultMap="expedienteMap" parameterType="expediente">
-         SELECT A.*
+        SELECT A.*
         FROM (
         SELECT
         B.*,
@@ -867,10 +867,10 @@
         AND A.C_ESTADOGENERAL = 'A'
         AND A.C_TIPOCLASIFICACION IN ('01','03')
         <if test="usuarioRegistro != null">
-        AND A.C_USUREGISTRO  = #{usuarioRegistro}     
+            AND A.C_USUREGISTRO  = #{usuarioRegistro}     
         </if>
         <if test="numero != null">
-        AND A.C_NUMEROEXPEDIENTE  LIKE '%'||#{numero}||'%'      
+            AND A.C_NUMEROEXPEDIENTE  LIKE '%'||#{numero}||'%'      
         </if>
         ORDER BY A.N_IDEXPEDIENTE DESC
     </select>
@@ -905,7 +905,5 @@
         SELECT COUNT(*) FROM SID_REG_EXPEDIENTE WHERE C_NUMEROEXPEDIENTE = #{value} and N_INDMAYORINFORMA = 1
     </select>
     
-    
- 
 </mapper>
 

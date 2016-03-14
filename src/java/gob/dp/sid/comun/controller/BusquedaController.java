@@ -106,10 +106,10 @@ public class BusquedaController implements Serializable{
             }
             StringBuilder sb = new StringBuilder();
             if(StringUtils.isNotBlank(expediente.getODBusqueda())){
-                sb.append(expediente.getODBusqueda()+"-");
+                sb.append(expediente.getODBusqueda()).append("-");
             }
             if(StringUtils.isNotBlank(expediente.getAnhoBusqueda())){
-                sb.append(expediente.getAnhoBusqueda()+"-");
+                sb.append(expediente.getAnhoBusqueda()).append("-");
             }
             if(StringUtils.isNotBlank(expediente.getNumero())){
                 sb.append(expediente.getNumero());

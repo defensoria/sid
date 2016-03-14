@@ -6,6 +6,8 @@ package gob.dp.sid.administracion.seguridad.controller;
 
 import gob.dp.sid.administracion.seguridad.bean.FiltroUsuario;
 import gob.dp.sid.administracion.seguridad.entity.Usuario;
+import gob.dp.sid.administracion.seguridad.entity.UsuarioLogin;
+import gob.dp.sid.administracion.seguridad.service.UsuarioLoginService;
 import gob.dp.sid.administracion.seguridad.service.UsuarioService;
 import gob.dp.sid.comun.ConstantesUtil;
 import gob.dp.sid.comun.MessagesUtil;
@@ -13,6 +15,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Named;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -30,21 +33,48 @@ public class BusquedaUsuarioController implements Serializable {
     private Long nroPagina = 1L;
 
     private Usuario usuario;
+    
+    private UsuarioLogin usuarioBusqueda;
 
     private List<Usuario> listaUsuario;
+    
+    private List<UsuarioLogin> listaUsuarioBusqueda;
     
     MessagesUtil msg;
 
     @Autowired
     private UsuarioService usuarioService;
+    
+    @Autowired
+    private UsuarioLoginService usuarioLoginService;
 
     public BusquedaUsuarioController() {
         msg = new MessagesUtil();
     }
+    
+    public void buscarUsuarios(){
+        UsuarioLogin ul = new UsuarioLogin();
+        if(StringUtils.isNotBlank(usuarioBusqueda.getCodigo())){
+            ul.setCodigo(usuarioBusqueda.getCodigo());
+        }
+        if(StringUtils.isNotBlank(usuarioBusqueda.getNombre())){
+            ul.setNombre(usuarioBusqueda.getNombre());
+        }
+        if(StringUtils.isNotBlank(usuarioBusqueda.getApellidoPaterno())){
+            ul.setApellidoPaterno(usuarioBusqueda.getApellidoPaterno());
+        }
+        if(StringUtils.isNotBlank(usuarioBusqueda.getApellidoMaterno())){
+            ul.setApellidoMaterno(usuarioBusqueda.getApellidoMaterno());
+        }
+        if(StringUtils.isNotBlank(usuarioBusqueda.getDocumento())){
+            ul.setDocumento(usuarioBusqueda.getDocumento());
+        }
+        listaUsuarioBusqueda = usuarioLoginService.buscarUsuarios(ul);
+    }
 
     public String cargarPagina() {
-        listaUsuario = new ArrayList<>();
-        this.usuario = new Usuario();
+        listaUsuarioBusqueda = new ArrayList<>();
+        usuarioBusqueda = new UsuarioLogin();
         return "usuarioLista";
     }
     
@@ -101,6 +131,10 @@ public class BusquedaUsuarioController implements Serializable {
                 log.error("ERROR : BusquedaUsuarioController.listarPaginado: " + e.getMessage());
             }
         }
+    }
+    
+    public void limpiarBusqueda(){
+        listaUsuarioBusqueda = new ArrayList<>();
     }
     
     public void listarPaginado2(FiltroUsuario filtroUsuario, Long pagina) {
@@ -163,5 +197,23 @@ public class BusquedaUsuarioController implements Serializable {
     public void setNroPagina(Long nroPagina) {
         this.nroPagina = nroPagina;
     }
+
+    public UsuarioLogin getUsuarioBusqueda() {
+        return usuarioBusqueda;
+    }
+
+    public void setUsuarioBusqueda(UsuarioLogin usuarioBusqueda) {
+        this.usuarioBusqueda = usuarioBusqueda;
+    }
+
+    public List<UsuarioLogin> getListaUsuarioBusqueda() {
+        return listaUsuarioBusqueda;
+    }
+
+    public void setListaUsuarioBusqueda(List<UsuarioLogin> listaUsuarioBusqueda) {
+        this.listaUsuarioBusqueda = listaUsuarioBusqueda;
+    }
+
+    
 
 }

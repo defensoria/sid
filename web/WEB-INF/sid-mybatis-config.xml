@@ -20,6 +20,7 @@
         <typeAlias type="gob.dp.sid.administracion.seguridad.entity.Recurso" alias="recurso"/>
         <typeAlias type="gob.dp.sid.administracion.seguridad.entity.RolRecurso" alias="rolRecurso"/>
         <typeAlias type="gob.dp.sid.administracion.seguridad.bean.FiltroUsuario" alias="filtroUsuario"/>
+        <typeAlias type="gob.dp.sid.administracion.seguridad.entity.UsuarioLogin" alias="usuarioLogin"/>
         
         <typeAlias type="gob.dp.sid.administracion.parametro.entity.Catalogo" alias="catalogo"/>
         <typeAlias type="gob.dp.sid.administracion.parametro.bean.FiltroCatalogo" alias="filtroCatalogo"/>
@@ -64,6 +65,8 @@
         <mapper resource="gob/dp/sid/administracion/seguridad/dao/xml/Rol.xml" />
         <mapper resource="gob/dp/sid/administracion/seguridad/dao/xml/Recurso.xml" />
         <mapper resource="gob/dp/sid/administracion/seguridad/dao/xml/Auditoria.xml" />
+        <mapper resource="gob/dp/sid/administracion/seguridad/dao/xml/UsuarioLogin.xml" />
+        
         <mapper resource="gob/dp/sid/administracion/parametro/dao/xml/Catalogo.xml" />
         
         <mapper resource="gob/dp/sid/comun/dao/xml/Departamento.xml" />
