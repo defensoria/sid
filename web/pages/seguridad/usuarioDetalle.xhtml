@@ -77,12 +77,14 @@
                                     <f:selectItem itemValue="ROL0000002" itemLabel="SUPERVISOR OD" />
                                     <f:selectItem itemValue="ROL0000005" itemLabel="PRACTICANTE OD" />
                                     <f:selectItem itemValue="ROL0000008" itemLabel="COMISIONADO OD - ONP" />
+                                    <f:selectItem itemValue="ROL0000010" itemLabel="OBSERVADOR" />
                                 </h:selectOneRadio>
                                 <h:selectOneRadio rendered="#{usuarioDetalleController.usuario.codigoOD ge 10000}" value="#{usuarioDetalleController.rolSeleccionado}" layout="pageDirection">
                                     <f:selectItem itemValue="ROL0000003" itemLabel="COMISIONADO AD" />
                                     <f:selectItem itemValue="ROL0000004" itemLabel="SUPERVISOR AD" />
                                     <f:selectItem itemValue="ROL0000006" itemLabel="PRACTICANTE AD" />
                                     <f:selectItem itemValue="ROL0000007" itemLabel="COMISIONADO PAD" />
+                                    <f:selectItem itemValue="ROL0000010" itemLabel="OBSERVADOR" />
                                 </h:selectOneRadio>
                             </div>
                         </div>

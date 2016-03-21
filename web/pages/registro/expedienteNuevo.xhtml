@@ -102,12 +102,12 @@
                                                         $("#idModalReconsideracion").modal('show');
                                                     }
                                                 </script>
-                                                <h:panelGroup rendered="#{!registroController.expediente.indiceReconsideracion and registroController.expediente.version >= 1 and registroController.expediente.general != 'C'}">
+                                                <h:panelGroup rendered="#{!registroController.expediente.indiceReconsideracion and registroController.expediente.version >= 1 and registroController.expediente.general != 'C' and registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo}">
                                                     <a onclick="modalReconsideracion()">
                                                         <span class="glyphicon glyphicon-pencil" /> registrar reconsideración
                                                     </a>
                                                 </h:panelGroup>
-                                                <h:panelGroup rendered="#{registroController.expediente.indiceReconsideracion and registroController.expediente.version >= 1}">
+                                                <h:panelGroup rendered="#{registroController.expediente.indiceReconsideracion and registroController.expediente.version >= 1 and registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo}">
                                                     <a onclick="modalReconsideracion()">
                                                         <span class="glyphicon glyphicon-eye-open" /> ver / modificar reconsideración
                                                     </a>

@@ -60,7 +60,7 @@ public class UsuarioServiceImpl implements UsuarioService {
          */
         //String encPass = MEncript.getStringMessageDigest(usuario.getClave().trim());
         //usuario.setClave(encPass);
-        usuario.setClave(usuario.getDni());
+        //usuario.setClave(usuario.getDni());
         /**
          * agregado temporal por etapa de pruebas
          */
