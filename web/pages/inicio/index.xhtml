@@ -23,7 +23,24 @@
                 </table>
                 <br/>
                 <div class="panel panel-primary">
-                    <script>function openModal(b){if(b.status==="success"){$("#myModal").modal("show")}}$(document).ready(function(){$(".tooltip-right").tooltip({placement:"right",viewport:{selector:"body",padding:2}})});</script>
+                    <script>
+                        
+                    function openModal(b){
+                        if(b.status==="success"){
+                            $("#myModal").modal("show");
+                        }
+                    }
+                    
+                    $(document).ready(function(){
+                        $(".tooltip-right").tooltip(
+                                {placement:"right",viewport:
+                                    {selector:"body",padding:2
+                            }
+                        }
+                                );
+                    }
+                            );
+                    </script>
                     <div class="panel-body">
                         <table style="width: 100%" class="table">
                             <tr>

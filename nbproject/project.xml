@@ -7,6 +7,10 @@
             <minimum-ant-version>1.6.5</minimum-ant-version>
             <web-module-libraries>
                 <library dirs="200">
+                    <file>${file.reference.ReniecPRO.jar}</file>
+                    <path-in-war>WEB-INF/lib</path-in-war>
+                </library>
+                <library dirs="200">
                     <file>${file.reference.bean-validator.jar}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
@@ -23,13 +27,8 @@
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
-                    <file>${file.reference.javax.faces-2.2.10.jar}</file>
-                </library>
-                <library dirs="200">
-                    <file>${file.reference.javax.faces-2.2.8-11.jar}</file>
-                </library>
-                <library dirs="200">
-                    <file>${file.reference.javax.faces-2.2.12.jar}</file>
+                    <file>${file.reference.javax.faces-2.2.11.jar}</file>
+                    <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
                     <file>${file.reference.javax.inject-1.jar}</file>
@@ -108,23 +107,15 @@
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
-                    <file>${file.reference.libreria-spring-security-3.1.0}</file>
+                    <file>${file.reference.lib-spring-security-3.1.0}</file>
                     <path-in-war>WEB-INF/classes</path-in-war>
-                </library>
-                <library dirs="200">
-                    <file>${libs.jasper.classpath}</file>
-                    <path-in-war>WEB-INF/lib</path-in-war>
-                </library>
-                <library dirs="200">
-                    <file>${file.reference.javax.faces-2.2.11.jar}</file>
-                    <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
                     <file>${libs.poi.classpath}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
-                    <file>${file.reference.ReniecPRO.jar}</file>
+                    <file>${libs.jasper.classpath}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
             </web-module-libraries>
