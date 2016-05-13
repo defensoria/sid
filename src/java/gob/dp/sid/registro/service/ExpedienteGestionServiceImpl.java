@@ -60,5 +60,15 @@ public class ExpedienteGestionServiceImpl implements ExpedienteGestionService{
     public ExpedienteGestion expedienteGestionPorONPUltimo(String numeroExpediente) {
         return expedienteGestionDAO.expedienteGestionPorONPUltimo(numeroExpediente);
     }
+
+    @Override
+    public void expedienteGestionEliminarArchivo1(long idGestion) {
+        expedienteGestionDAO.expedienteGestionEliminarArchivo1(idGestion);
+    }
+
+    @Override
+    public void expedienteGestionEliminarArchivo2(long idGestion) {
+        expedienteGestionDAO.expedienteGestionEliminarArchivo2(idGestion);
+    }
     
 }

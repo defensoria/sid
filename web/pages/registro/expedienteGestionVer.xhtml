@@ -37,6 +37,11 @@
                             <span style="font-size: medium; color: purple" class="glyphicon glyphicon-list-alt" > Historial</span>
                         </a>
                     </li>
+                <li role="presentation">
+                        <a style="cursor: pointer" jsf:rendered="#{registroController.etapaEstado.idEtapa > 0}" jsf:action="#{registroController.cargarCompartir()}">
+                            <span style="font-size: medium; color: purple" class="glyphicon glyphicon-list-alt" > Compartir</span>
+                        </a>
+                    </li>
             </ul>
 
             <div class="panel panel-default">
@@ -408,7 +413,7 @@
                                                                     <input type="text" disabled="true" style="color: silver" jsf:value="#{registroController.expedienteGestion.nombreEntidad}" placeholder="Institución" readonly="true"/>
                                                                 </td>
                                                                 <td style="vertical-align: bottom;padding-bottom: 10px">
-                                                                    Entidad quejada
+                                                                    Entidad
                                                                     <h:selectBooleanCheckbox disabled="true" style="color: silver" value="#{registroController.expedienteGestion.indEntidadQuejada}" >
                                                                         <f:ajax render="idPanerl" listener="#{registroController.entidadQuejada()}" />
                                                                     </h:selectBooleanCheckbox>

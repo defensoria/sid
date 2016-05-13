@@ -26,11 +26,13 @@
                         </a>
                     </li>
                     <li role="presentation" class="active">
-                        <a style="cursor: pointer" jsf:rendered="#{registroController.etapaEstado.idEtapa > 0 and registroController.expediente.tipoClasificion != '02'}" jsf:action="#{registroController.cargarHistorial()}">
+                        <a style="cursor: pointer" jsf:action="#{registroController.cargarHistorial()}">
                             <span style="font-size: large; color: #007ACC; font-weight: bold" class="glyphicon glyphicon-list-alt"> Historial</span>
                         </a>
-                        <a style="cursor: pointer" jsf:rendered="#{registroController.expediente.tipoClasificion == '02'}" jsf:action="#{registroController.cargarHistorial()}">
-                            <span style="font-size: large; color: #007ACC; font-weight: bold" class="glyphicon glyphicon-list-alt"> Historial</span>
+                    </li>
+                <li role="presentation">
+                        <a style="cursor: pointer" jsf:rendered="#{registroController.etapaEstado.idEtapa > 0}" jsf:action="#{registroController.cargarCompartir()}">
+                            <span style="font-size: medium; color: purple" class="glyphicon glyphicon-list-alt" > Compartir</span>
                         </a>
                     </li>
                 </ul>

@@ -30,4 +30,8 @@ public interface ExpedienteGestionService {
     
     public ExpedienteGestion expedienteGestionPorONPUltimo(String numeroExpediente);
     
+    public void expedienteGestionEliminarArchivo1(long idGestion);
+            
+    public void expedienteGestionEliminarArchivo2(long idGestion);
+    
 }

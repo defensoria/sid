@@ -179,6 +179,13 @@
   
   <navigation-rule>
         <navigation-case>
+                <from-outcome>expedienteCompartir</from-outcome>
+                <to-view-id>/pages/registro/expedienteCompartir.xhtml</to-view-id>
+        </navigation-case>
+  </navigation-rule>
+  
+  <navigation-rule>
+        <navigation-case>
                 <from-outcome>expedienteUsuario</from-outcome>
                 <to-view-id>/pages/registro/expedienteUsuario.xhtml</to-view-id>
         </navigation-case>

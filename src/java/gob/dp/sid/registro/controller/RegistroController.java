@@ -11,6 +11,8 @@ import gob.dp.sid.administracion.seguridad.controller.SeguridadUtilController;
 import gob.dp.sid.administracion.seguridad.entity.Usuario;
 import gob.dp.sid.administracion.seguridad.service.UsuarioService;
 import gob.dp.sid.bandeja.controller.BandejaController;
+import gob.dp.sid.bandeja.entity.Bandeja;
+import gob.dp.sid.bandeja.service.BandejaService;
 import gob.dp.sid.comun.ConstantesUtil;
 import gob.dp.sid.comun.ListadoClasificacion;
 import gob.dp.sid.comun.controller.AbstractManagedBean;
@@ -28,6 +30,7 @@ import gob.dp.sid.comun.type.EtapaSuspencionType;
 import gob.dp.sid.comun.type.EtapaType;
 import gob.dp.sid.comun.type.ExpedienteType;
 import gob.dp.sid.comun.type.HistorialType;
+import gob.dp.sid.comun.type.MensajeType;
 import gob.dp.sid.comun.type.RolType;
 import gob.dp.sid.registro.entity.Entidad;
 import gob.dp.sid.registro.entity.EtapaEstado;
@@ -337,6 +340,8 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     private ExpedienteHistorial historial;
     
     private List<ExpedienteHistorial> listaHistorialExpediente;
+    
+    private String usuarioCompartir;
 
     @Autowired
     private ExpedienteService expedienteService;
@@ -409,6 +414,9 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     
     @Autowired
     private ExpedienteHistorialService expedienteHistorialService;
+    
+    @Autowired
+    private BandejaService bandejaService;
 
     public String cargarNuevoExpediente() {
         try {
@@ -444,6 +452,53 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     public String cargarHistorial(){
         listaHistorialExpediente = expedienteHistorialService.expedienteHistorialBuscar(expediente.getNumero());
         return "expedienteHistorial";
+    }
+    
+    public String cargarCompartir(){
+        usuarioCompartir = "";
+        return "expedienteCompartir";
+    }
+    
+    public void enviarCompartir(){
+        Bandeja b = new Bandeja();
+        b.setNumeroExpediente(expediente.getNumero());
+        b.setActivo("A");
+        b.setTitulo("Compartir expediente: "+expediente.getNumero());
+        b.setEstado("PEN");
+        b.setFechaEnvio(new Date());
+        b.setNombreRemitente(usuarioSession.getNombre()+" "+usuarioSession.getApellidoPaterno()+" "+usuarioSession.getApellidoMaterno());
+        b.setRemitente(usuarioSession.getCodigo());
+        b.setDestinatario(usuarioCompartir);
+        b.setDetalleTipo(MensajeType.MENSAJE_COMPARTIR.getDetalle());
+        b.setColorTipo(MensajeType.MENSAJE_COMPARTIR.getColor());
+        b.setMotivo("El expediente : "+expediente.getNumero()+" ha sido compartido");
+        b.setTituloMensaje(MensajeType.MENSAJE_COMPARTIR.getValue());
+        b.setTipo(MensajeType.MENSAJE_COMPARTIR.getKey());
+        b.setTipoMensaje("INT");
+        bandejaService.bandejaInsertar(b);
+        msg.messageInfo("Se compartio el expediente", null);
+        historial = new ExpedienteHistorial(HistorialType.HISTORIAL_COMPARTIR_EXPEDIENTE.getKey(), HistorialType.HISTORIAL_COMPARTIR_EXPEDIENTE.getValue());
+        guardarHistorial(historial);
+    }
+    
+    
+    
+    public void eliminarArchivo(){
+        expediente.setRuta(null);
+        expedienteService.expedienteEliminarArchivo(expediente.getId());
+        msg.messageInfo("Se elimino el archivo correctamente", null);
+    }
+    
+    public void eliminarArchivoGestion1(){
+        expedienteGestion.setRuta1(null);
+        expedienteGestionService.expedienteGestionEliminarArchivo1(expedienteGestion.getId());
+        msg.messageInfo("Se elimino el archivo correctamente", null);
+    }
+    
+    public void eliminarArchivoGestion2(){
+        expedienteGestion.setRuta2(null);
+        expedienteGestionService.expedienteGestionEliminarArchivo2(expedienteGestion.getId());
+        msg.messageInfo("Se elimino el archivo correctamente", null);
     }
 
     public String iniciarExpedienteNuevo() {
@@ -593,6 +648,15 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     public void setearTiempoEtapa(int nroDias) {
         try {
             expedienteTiempo.setDiasRestante(nroDias);
+            expedienteTiempoService.expedienteTiempoUpdate(expedienteTiempo);
+        } catch (Exception e) {
+            log.error("ERROR - setearTiempoEtapa()" + e);
+        }
+    }
+    
+    public void extenderTiempoEtapa(int nroDias) {
+        try {
+            expedienteTiempo.setDiasRestante(expedienteTiempo.getDiasRestante()+nroDias);
             expedienteTiempoService.expedienteTiempoUpdate(expedienteTiempo);
         } catch (Exception e) {
             log.error("ERROR - setearTiempoEtapa()" + e);
@@ -1249,6 +1313,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     }
 
     public void cargarNivelesClasificacion(Integer idPadre, Integer grupo) {
+        if(idPadre != null)
         try {
             List<ExpedienteClasificacion> listaClasi = expedienteClasificacionService.listaExpedienteClasificacion(new ExpedienteClasificacion(idPadre, grupo, "ACT"));
             if (grupo == 2) {
@@ -1390,6 +1455,18 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             expedienteService.expedienteDesistir(expediente);
             msg.messageInfo("Se ha concluido el expediente, pasa al estado desistido", null);
             historial = new ExpedienteHistorial(HistorialType.HISTORIAL_DESISTIR.getKey(), HistorialType.HISTORIAL_DESISTIR.getValue());
+            guardarHistorial(historial);
+        } catch (Exception e) {
+            log.error("ERROR - desistirExpediente()" + e);
+        }
+    }
+    
+    public void conclusionManualExpediente() {
+        try {
+            expediente.setGeneral("C");
+            expedienteService.expedienteConcluir(expediente.getId());
+            msg.messageInfo("Se ha concluido manualmente el expediente", null);
+            historial = new ExpedienteHistorial(HistorialType.HISTORIAL_CONCLUSION_MANUAL.getKey(), HistorialType.HISTORIAL_CONCLUSION_MANUAL.getValue());
             guardarHistorial(historial);
         } catch (Exception e) {
             log.error("ERROR - desistirExpediente()" + e);
@@ -2680,6 +2757,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     }
 
     public String setearExpedienteGestion(ExpedienteGestion eg) {
+        listaExpedienteXUsuarioPaginadoReplica = null;
         setExpedienteGestion(eg);
         expedienteBusquedaReplica = new Expediente();
         return "expedienteGestion";
@@ -3493,7 +3571,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             expedientepersonaModalEdit.setIdProvincia(expedientepersonaModalEdit.getPersona().getIdProvincia());
             expedientepersonaModalEdit.setIdDistrito(expedientepersonaModalEdit.getPersona().getIdDistrito());
             expedientepersonaModalEdit.setTelefono1(expedientepersonaModalEdit.getPersona().getTelefono1());
-            expedientepersonaModalEdit.setTelefono2(expedientepersonaModalEdit.getPersona().getTelefono2());
+            expedientepersonaModalEdit.setDireccionNotifica(expedientepersonaModalEdit.getPersona().getDireccionNotifica());
             expedientepersonaModalEdit.setEmail(expedientepersonaModalEdit.getPersona().getEmail());
             expedientepersonaModalEdit.setTipoLengua(expedientepersonaModalEdit.getPersona().getTipoLengua());
             expedientepersonaModalEdit.setIndicadorDiscapacitado(expedientepersonaModalEdit.getPersona().getIndicadorDiscapacitado());
@@ -3865,6 +3943,10 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             log.error("ERROR - guardarVersion()" + e);
         }
         return true;
+    }
+    
+    public void extenderPlazo(){
+        extenderTiempoEtapa(20);
     }
 
     public boolean guardarVersionSupervisor(int tipo) {
@@ -4632,7 +4714,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 p.setIndicadorDiscapacitado(p.getPersona().getIndicadorDiscapacitado());
                 p.setNombreCompleto(p.getPersona().getNombre());
                 p.setTelefono1(p.getPersona().getTelefono1());
-                p.setTelefono2(p.getPersona().getTelefono2());
+                p.setDireccionNotifica(p.getPersona().getDireccionNotifica());
                 p.setTipoLengua(p.getPersona().getTipoLengua());
                 p.setTipoPueblo(p.getPersona().getTipoPueblo());
                 expedientePersonaService.expedientePersonaInsertar(p);
@@ -5874,6 +5956,14 @@ public class RegistroController extends AbstractManagedBean implements Serializa
 
     public void setListaHistorialExpediente(List<ExpedienteHistorial> listaHistorialExpediente) {
         this.listaHistorialExpediente = listaHistorialExpediente;
+    }
+
+    public String getUsuarioCompartir() {
+        return usuarioCompartir;
+    }
+
+    public void setUsuarioCompartir(String usuarioCompartir) {
+        this.usuarioCompartir = usuarioCompartir;
     }
 
 }

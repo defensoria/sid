@@ -36,7 +36,7 @@ public class Persona implements Serializable{
     
     private String telefono1;
     
-    private String telefono2;
+    private String direccionNotifica;
     
     private String idDepartamento;
     
@@ -159,12 +159,12 @@ public class Persona implements Serializable{
         this.telefono1 = telefono1;
     }
 
-    public String getTelefono2() {
-        return telefono2;
+    public String getDireccionNotifica() {
+        return direccionNotifica;
     }
 
-    public void setTelefono2(String telefono2) {
-        this.telefono2 = telefono2;
+    public void setDireccionNotifica(String direccionNotifica) {
+        this.direccionNotifica = direccionNotifica;
     }
 
     public String getIdDepartamento() {

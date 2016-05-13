@@ -19,7 +19,7 @@
         <result property="idDepartamento" column="C_IDDEPA"/>
         <result property="idProvincia" column="C_IDPROV"/>
         <result property="idDistrito" column="C_IDDISTR"/>
-        <result property="telefono2" column="C_TELEFONO2"/>
+        <result property="direccionNotifica" column="C_DIRECCIONNOTIFICA"/>
         <result property="contacto" column="C_CONTACTO"/>
         <result property="tipoLengua" column="C_TIPOLENGUA"/>
         <result property="indicadorDiscapacitado" column="C_INDDISCAPACITADO"/>
@@ -54,8 +54,8 @@
         <if test="idDistrito != null">
             C_IDDISTR,
         </if>
-        <if test="telefono2 != null">
-            C_TELEFONO2,
+        <if test="direccionNotifica != null">
+            C_DIRECCIONNOTIFICA,
         </if>
         <if test="contacto != null">
             C_CONTACTO,
@@ -99,8 +99,8 @@
         <if test="idDistrito != null">
             #{idDistrito},   
         </if>
-        <if test="telefono2 != null">
-            #{telefono2},
+        <if test="direccionNotifica != null">
+            #{direccionNotifica},
         </if>
         <if test="contacto != null">
             #{contacto},
@@ -153,8 +153,8 @@
         <if test="idDistrito != null">
             C_IDDISTR = #{idDistrito},
         </if>
-        <if test="telefono2 != null">
-            C_TELEFONO2 = #{telefono2},
+        <if test="direccionNotifica != null">
+            C_DIRECCIONNOTIFICA = #{direccionNotifica},
         </if>
         <if test="contacto != null">
             C_CONTACTO = #{contacto},

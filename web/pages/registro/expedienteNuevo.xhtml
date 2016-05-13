@@ -7,12 +7,10 @@
       xmlns:gc="http://xmlns.jcp.org/jsf/composite/gc">
 
     <ui:composition template="../template/template.xhtml">
-
         <ui:define name="content">
             <h:form id="idForm" class="form-horizontal" enctype="multipart/form-data">
                 <h:messages />
                 <script>
-
                     function confirmar3() {
                         if ($("#idTipoClasificacion").val() === "0") {
                             alertar("Debe de ingresar el tipo de expediente!");
@@ -30,7 +28,9 @@
                     function confirmar0() {
                         $(".confirmacion0").modal('show');
                     }
-
+                    function confirmar6() {
+                        $(".confirmacion6").modal('show');
+                    }
                     $(document).ready(function () {
                         $("#idModalCulminar").modal('show');
                     });
@@ -39,7 +39,7 @@
                 <gc:confirmSubmit rendered="#{registroController.etapaEstado.verEtapa != 2}" classGC="confirmacion3" bean="#{registroController.concluir()}" mensaje="Está seguro que desea concluir la etapa?"/>
                 <gc:confirmSubmit rendered="#{registroController.etapaEstado.verEtapa == 2}" classGC="confirmacion3" bean="#{registroController.concluir()}" mensaje="Está seguro de haber completado la clasificación temática?      Está seguro que desea concluir la etapa?"/>
                 <gc:confirmSubmitRemove classGC="confirmacion0" bean="#{registroController.desistirExpediente()}"  mensaje="Está seguro que desea desistir expediente?"/>
-
+                <gc:confirmSubmit classGC="confirmacion6" bean="#{registroController.conclusionManualExpediente()}"  mensaje="Está seguro que desea concluir el expediente?"/>
                 <h:panelGroup rendered="#{registroController.verModalConclusion}">
                     <div class="modal fade" data-backdrop="static" data-keyboard="false" id="idModalCulminar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                         <div class="modal-dialog" style="text-align: left">
@@ -69,8 +69,6 @@
                         </div>
                     </div>
                 </h:panelGroup>
-
-
                 <table style="width: 100%">
                     <tr>
                         <td colspan="2">
@@ -356,8 +354,15 @@
                                                                         $("#idModalAsignar").modal('show');
                                                                     }
                                                                 }
-                                                            </script>
-                                                            <h:panelGroup rendered="#{(registroController.etapaEstado.verEtapa == 1 or registroController.etapaEstado.verEtapa == 5) and seguridadUtilController.tieneRecurso('REC_EXP015') and registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo and registroController.expediente.general != 'C'}">
+                                                            </script>   
+                                                            
+                                                            <h:panelGroup rendered="#{(registroController.usuarioSession.codigoOD == '20000') or (registroController.expediente.general != 'C' and seguridadUtilController.tieneRol('ROL0000002') and registroController.etapaEstado.verEtapa > 0)}">
+                                                                <a class="btn btn-info" jsf:action="#{registroController.extenderPlazo()}" jsf:onclick="loadingModal()">
+                                                                    <span class="glyphicon glyphicon-user" />Extender plazo
+                                                                </a>
+                                                            </h:panelGroup>
+                                                            <h:panelGroup rendered="#{((registroController.etapaEstado.verEtapa == 1 or registroController.etapaEstado.verEtapa == 5) and seguridadUtilController.tieneRecurso('REC_EXP015') and registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo and registroController.expediente.general != 'C') or 
+                                                                                      (registroController.expediente.tipoClasificion == '02' and registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo and registroController.expediente.general != 'C')}">
                                                                 <a class="btn btn-warning" jsf:action="#{registroController.limpiarModalAsignar()}" jsf:onclick="loadingModal()">
                                                                     <span class="glyphicon glyphicon-user" />Asignar Expediente
                                                                     <f:ajax render="idPanelAsignar" onevent="modalAsignar" />
@@ -550,6 +555,12 @@
                                                                     <span class="glyphicon glyphicon-remove" />Desistir
                                                                 </a>
                                                             </h:panelGroup>
+                                                            &#160;&#160;
+                                                            <h:panelGroup rendered="#{registroController.expediente.id != null and registroController.expediente.version > 0 and registroController.expediente.general != 'C' and registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo}">
+                                                                <a class="btn btn-default" onclick="confirmar6()" >
+                                                                    <span class="glyphicon glyphicon-floppy-save" />Conclusión manual
+                                                                </a>
+                                                            </h:panelGroup>
                                                         </td>
                                                     </tr>
                                                 </table>
@@ -579,11 +590,13 @@
                         </a>
                     </li>
                     <li role="presentation">
-                        <a style="cursor: pointer" jsf:rendered="#{registroController.etapaEstado.idEtapa > 0 and registroController.expediente.tipoClasificion != '02'}" jsf:action="#{registroController.cargarHistorial()}">
+                        <a style="cursor: pointer" jsf:action="#{registroController.cargarHistorial()}">
                             <span style="font-size: medium; color: purple" class="glyphicon glyphicon-list-alt" > Historial</span>
                         </a>
-                        <a style="cursor: pointer" jsf:rendered="#{registroController.expediente.tipoClasificion == '02'}" jsf:action="#{registroController.cargarHistorial()}">
-                            <span style="font-size: medium; color: purple" class="glyphicon glyphicon-list-alt" > Historial</span>
+                    </li>
+                    <li role="presentation">
+                        <a style="cursor: pointer" jsf:rendered="#{registroController.etapaEstado.idEtapa > 0}" jsf:action="#{registroController.cargarCompartir()}">
+                            <span style="font-size: medium; color: purple" class="glyphicon glyphicon-list-alt" > Compartir</span>
                         </a>
                     </li>
                 </ul>
@@ -784,8 +797,11 @@
                                                             </table>
                                                         </td>
                                                     </tr>
+                                                </table>
+                                                <h:panelGroup id="idClasificador">
+                                                <table style="width: 100%">
                                                     <tr>
-                                                        <td style="padding-bottom: 10px">
+                                                        <td style="padding-bottom: 10px; width: 40%;">
                                                             <span class="text-bold">Tema:</span>
                                                         </td>
                                                         <td style="padding-bottom: 10px">
@@ -793,20 +809,23 @@
                                                                 <f:selectItem itemLabel="Seleccione" itemValue="0" />
                                                                 <f:selectItems value="#{listasComunesController.listaPrimerNivel(false, false, false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
                                                                 <f:ajax listener="#{registroController.cargarNivelesClasificacion(registroController.expedienteNivel.idPrimerNivel, 2)}" 
-                                                                        render="idSelectSegundoNivel idSelectTercerNivel idSelectCuartoNivel idSelectQuintoNivel idSelectSextoNivel" onevent="closeModal"/>
+                                                                        render="idClasificador" onevent="closeModal"/>
                                                             </h:selectOneMenu>
                                                         </td>
                                                     </tr>
-                                                    <tr jsf:rendered="#{registroController.expediente.tipoClasificion == '01'}">
+                                                    <tr id="care" jsf:rendered="#{registroController.expediente.tipoClasificion == '01' or registroController.expedienteNivel.idPrimerNivel == 807}">
                                                         <td style="padding-bottom: 10px">
-                                                            <span class="text-bold">Sub tema:</span>
+                                                                <h:panelGroup id="ides">
+                                                        <span class="text-bold">Sub tema:</span>
+                                                            </h:panelGroup>
+                                                            
                                                         </td>
                                                         <td style="padding-bottom: 10px">
                                                             <h:selectOneMenu id="idSelectSegundoNivel" value="#{registroController.expedienteNivel.idSegundoNivel}" onchange="loadingModal()">
                                                                 <f:selectItem itemLabel="Seleccione" itemValue="0" />
                                                                 <f:selectItems value="#{registroController.listaClasificacionSegundoLevel}" />
                                                                 <f:ajax listener="#{registroController.cargarNivelesClasificacion(registroController.expedienteNivel.idSegundoNivel, 3)}"  
-                                                                        render="idSelectTercerNivel idSelectCuartoNivel idSelectQuintoNivel idSelectSextoNivel" onevent="closeModal"/>
+                                                                        render="idClasificador" onevent="closeModal"/>
                                                             </h:selectOneMenu>
                                                         </td>
                                                     </tr>
@@ -819,7 +838,7 @@
                                                                 <f:selectItem itemLabel="Seleccione" itemValue="0" />
                                                                 <f:selectItems value="#{registroController.listaClasificacionTercerLevel}" />
                                                                 <f:ajax listener="#{registroController.cargarNivelesClasificacion(registroController.expedienteNivel.idTercerNivel, 4)}" 
-                                                                        render="idSelectCuartoNivel idSelectQuintoNivel idSelectSextoNivel" onevent="closeModal"/>
+                                                                        render="idClasificador" onevent="closeModal"/>
                                                             </h:selectOneMenu>
                                                         </td>
                                                     </tr>
@@ -833,7 +852,7 @@
                                                                 <f:selectItem itemLabel="Seleccione" itemValue="0" />
                                                                 <f:selectItems value="#{registroController.listaClasificacionCuartoLevel}" />
                                                                 <f:ajax listener="#{registroController.cargarNivelesClasificacion(registroController.expedienteNivel.idCuartoNivel, 5)}" 
-                                                                        render="idSelectQuintoNivel idSelectSextoNivel" onevent="closeModal"/>
+                                                                        render="idClasificador" onevent="closeModal"/>
                                                             </h:selectOneMenu>
                                                         </td>
                                                     </tr>
@@ -846,7 +865,7 @@
                                                                 <f:selectItem itemLabel="Seleccione" itemValue="0" />
                                                                 <f:selectItems value="#{registroController.listaClasificacionQuintoLevel}" />
                                                                 <f:ajax listener="#{registroController.cargarNivelesClasificacion(registroController.expedienteNivel.idQuintoNivel, 6)}" 
-                                                                        render="idSelectSextoNivel" onevent="closeModal"/>
+                                                                        render="idClasificador" onevent="closeModal"/>
                                                             </h:selectOneMenu>
                                                         </td>
                                                     </tr>
@@ -861,7 +880,9 @@
                                                             </h:selectOneMenu>
                                                         </td>
                                                     </tr>
-
+                                                </table>
+                                                    </h:panelGroup>
+                                                <table style="width: 100%">
                                                     <tr>
                                                         <td style="padding-bottom: 20px; vertical-align: top">
                                                             <span class="text-bold">Clasificación:</span>
@@ -907,7 +928,7 @@
                                                                                                                             <td style="padding-left: 5px">
                                                                                                                                 <a jsf:action="#{registroController.editarNivel(nivel)}" style="font-size: 1.2em" jsf:onclick="loadingModal()">
                                                                                                                                     <span class="glyphicon glyphicon-pencil"/>
-                                                                                                                                    <f:ajax render="idSelectPrimerNivel idSelectSegundoNivel idSelectTercerNivel idSelectCuartoNivel idSelectQuintoNivel idSelectSextoNivel" onevent="closeModal" />
+                                                                                                                                    <f:ajax render="idClasificador" onevent="closeModal" />
                                                                                                                                 </a>
                                                                                                                             </td>
                                                                                                                         </tr>
@@ -1157,6 +1178,10 @@
                                                         <h:panelGroup rendered="#{registroController.expediente.ruta != null}">
                                                             <a target="_blank" href="/filesystem/#{registroController.expediente.ruta}">
                                                                 <span style="font-size: large" class="glyphicon glyphicon-link" />
+                                                            </a>
+                                                            &#160;&#160;&#160;
+                                                            <a jsf:action="#{registroController.eliminarArchivo()}">
+                                                                <span style="font-size: large; color: red" class="glyphicon glyphicon-remove" />
                                                             </a>
                                                         </h:panelGroup>
 
@@ -1525,20 +1550,15 @@
                                                                                                     </td>
                                                                                                 </tr>
                                                                                                 <tr>
-                                                                                                    <td><b>Teléfonos:</b></td>
+                                                                                                    <td><b>Teléfono:</b></td>
                                                                                                     <td style="padding-bottom: 5px">
-                                                                                                        <table style="width: 90%">
-                                                                                                            <tr>
-                                                                                                                <td  style="width: 50%">
-                                                                                                                    <input type="text" placeholder="Telefono 1" jsf:value="#{registroController.persona.telefono1}" maxlength="50"/>
-                                                                                                                </td>
-                                                                                                                <td>
-                                                                                                                    <input type="text" placeholder="Telefono 2" jsf:value="#{registroController.persona.telefono2}" maxlength="50"/>
-                                                                                                                </td>
-                                                                                                            </tr>
-                                                                                                        </table>
-
-
+                                                                                                        <input type="text" placeholder="Telefono 1" jsf:value="#{registroController.persona.telefono1}" maxlength="50"/>
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                                <tr>
+                                                                                                    <td><b>Lugar de notificación:</b></td>
+                                                                                                    <td style="padding-bottom: 5px">
+                                                                                                        <input type="text" placeholder="Lugar de notificación" jsf:value="#{registroController.persona.direccionNotifica}" maxlength="500"/>
                                                                                                     </td>
                                                                                                 </tr>
                                                                                             </table>
@@ -1717,9 +1737,9 @@
                                                                                             </td>
                                                                                         </tr>
                                                                                         <tr>
-                                                                                            <td><b>Telefono 2:</b></td>
+                                                                                            <td><b>Lugar de notificación:</b></td>
                                                                                             <td style="padding-bottom: 5px">
-                                                                                                <input type="text" placeholder="Telefono 2" jsf:value="#{registroController.expedientepersonaModalEdit.telefono2}" style="width: 50%" maxlength="50"/>
+                                                                                                <input type="text" placeholder="Lugar de notificación" jsf:value="#{registroController.expedientepersonaModalEdit.direccionNotifica}" style="width: 50%" maxlength="500"/>
                                                                                             </td>
                                                                                         </tr>
                                                                                         <tr jsf:rendered="#{registroController.expedientepersonaModalEdit.persona.tipo == 'ORG'}">

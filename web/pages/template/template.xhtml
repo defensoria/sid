@@ -61,15 +61,11 @@
                 var stateMenu;
                 var i = 0;
                 stateMenu = sessionStorage.getItem('stateMenu');
-                //alert("stateMenu"+stateMenu);
-
                 if (stateMenu === '0') {
-                    //      alert("entro 1");
                     $('#idHtml').removeClass("sidebar-left-collapsed");
                 }
 
                 if (stateMenu === '1') {
-                    //    alert("entro 2");
                     $('#idHtml').addClass("sidebar-left-collapsed");
                 }
 
@@ -81,9 +77,7 @@
                         i = 1;
                     }
                 }
-                //alert("i::"+i);
                 $('#idDivOcultarMenu').click(function () {
-                    // alert("i::"+i);
                     if (i === 0) {
                         $('#idHtml').addClass("sidebar-left-collapsed");
                         i = 1;
@@ -94,9 +88,7 @@
                     }
                     sessionStorage.setItem('stateMenu', i);
                 });
-
             });
-
         </script>
     </h:form>
     <body>
@@ -105,7 +97,6 @@
                 font-size: 0.9em;
             }
         </style>
-        <!--Alerta-->
         <div class="modal fade" id="idAlerta">
             <div class="modal-dialog modal-sm" >
                 <div class="modal-content" style=" background: #FCF8E3">

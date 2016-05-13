@@ -255,6 +255,25 @@
         </selectKey>
     </insert>
     
+    <update id="expedienteGestionEliminarArchivo1" parameterType="long">
+        UPDATE SID_REG_GESTION
+        <set>
+            C_RUTA1 = null
+        </set>
+        <where>
+            N_ID_GESTION = #{id}
+        </where>
+    </update>
+    
+    <update id="expedienteGestionEliminarArchivo2" parameterType="long">
+        UPDATE SID_REG_GESTION
+        <set>
+            C_RUTA2 = null
+        </set>
+        <where>
+            N_ID_GESTION = #{id}
+        </where>
+    </update>
     
     <update id="expedienteGestionUpdate" parameterType="expedienteGestion">
         UPDATE SID_REG_GESTION

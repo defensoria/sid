@@ -35,7 +35,7 @@
             and upper(APE_PAT_PER) LIKE '%'||UPPER(#{apellidoPaterno})||'%'  
         </if>
         <if test="apellidoMaterno != null">
-            and upper(APE_MAT_PER) LIKE '%'||UPPER(#{apellidomaterno})||'%' 
+            and upper(APE_MAT_PER) LIKE '%'||UPPER(#{apellidoMaterno})||'%' 
         </if>
         <if test="documento != null">
             and LIBR_ELEC_PER = #{documento}

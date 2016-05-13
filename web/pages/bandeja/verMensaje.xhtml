@@ -56,6 +56,10 @@
                             <span style="font-weight: bold; font-size: 1em; color: #007ACC"></span>
                             <a title="ir al expediente" jsf:action="#{bandejaController.cargarExpedientePorAmpliacion()}">Ir al expediente</a>
                             </h:panelGroup>
+                            <h:panelGroup rendered="#{bandejaController.mensajeBandeja.tipo == 6}">
+                            <span style="font-weight: bold; font-size: 1em; color: #007ACC"></span>
+                            <a title="ir al expediente" jsf:action="#{registroController.cargarExpedientePorNumero(bandejaController.mensajeBandeja.numeroExpediente)}">Ir al expediente</a>
+                            </h:panelGroup>
                         </div>
                     </td>
                 </table>

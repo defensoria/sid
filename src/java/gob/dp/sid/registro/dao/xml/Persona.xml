@@ -12,7 +12,7 @@
         <result property="direccion" column="C_DIRECCION"/>
         <result property="email" column="C_EMAIL"/>
         <result property="telefono1" column="C_TELEFONO1"/>
-        <result property="telefono2" column="C_TELEFONO2"/>
+        <result property="direccionNotifica" column="C_DIRECCIONNOTIFICA"/>
         <result property="idDepartamento" column="C_IDDEPA"/>
         <result property="idProvincia" column="C_IDPROV"/>
         <result property="idDistrito" column="C_IDDISTR"/>
@@ -60,8 +60,8 @@
         <if test="telefono1 != null">
             C_TELEFONO1,
         </if>
-        <if test="telefono2 != null">
-            C_TELEFONO2,
+        <if test="direccionNotifica != null">
+            C_DIRECCIONNOTIFICA,
         </if>
         <if test="idDepartamento != null">
             C_IDDEPA,
@@ -137,8 +137,8 @@
         <if test="telefono1 != null">
             #{telefono1},
         </if>
-        <if test="telefono2 != null">
-            #{telefono2},
+        <if test="direccionNotifica != null">
+            #{direccionNotifica},
         </if>
         <if test="idDepartamento != null">
             #{idDepartamento},
@@ -217,8 +217,8 @@
             <if test="telefono1 != null">
                 C_TELEFONO1 = #{telefono1},
             </if>
-            <if test="telefono2 != null">
-                C_TELEFONO2 = #{telefono2},
+            <if test="direccionNotifica != null">
+                C_DIRECCIONNOTIFICA = #{direccionNotifica},
             </if>
             <if test="idDepartamento != null">
                 C_IDDEPA = #{idDepartamento},

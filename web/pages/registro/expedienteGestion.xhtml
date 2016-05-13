@@ -37,6 +37,11 @@
                             <span style="font-size: medium; color: purple" class="glyphicon glyphicon-list-alt" > Historial</span>
                         </a>
                     </li>
+                <li role="presentation">
+                        <a style="cursor: pointer" jsf:rendered="#{registroController.etapaEstado.idEtapa > 0}" jsf:action="#{registroController.cargarCompartir()}">
+                            <span style="font-size: medium; color: purple" class="glyphicon glyphicon-list-alt" > Compartir</span>
+                        </a>
+                    </li>
             </ul>
 
             <div class="panel panel-default">
@@ -73,7 +78,6 @@
                                                         <f:ajax render="idPanelModalReplicar" execute="idPanelModalReplicar" onevent="modalReplicar" />
                                                     </a>
                                                     <script>
-
                                                         function modalReplicar(data) {
                                                             if (data.status === 'success') {
                                                                 $("#loadModal").modal('hide');
@@ -152,9 +156,6 @@
                                                                             </ul>
                                                                         </h:panelGroup>
                                                                         <div class="modal-footer">
-                                                                            <a  class="btn btn-default" data-dismiss="modal">
-                                                                                <span class="glyphicon glyphicon-remove"/>Cerrar
-                                                                            </a>
                                                                             <a class="btn btn-primary" jsf:action="#{registroController.insertarReplicaGestion1()}" jsf:onclick="loadingModal()">
                                                                                 <span class="glyphicon glyphicon-floppy-disk"/>Guardar
                                                                                 <f:ajax render="idPanelBusquedaReplic" execute="idPanelBusquedaReplic" onevent="closeModal"/>
@@ -411,7 +412,7 @@
                                                                     <input type="text" jsf:value="#{registroController.expedienteGestion.nombreEntidad}" placeholder="Institución" readonly="true"/>
                                                                 </td>
                                                                 <td style="vertical-align: bottom;padding-bottom: 10px">
-                                                                    Entidad quejada
+                                                                    Entidad
                                                                     <h:selectBooleanCheckbox value="#{registroController.expedienteGestion.indEntidadQuejada}" >
                                                                         <f:ajax render="idPanerl" listener="#{registroController.entidadQuejada()}" />
                                                                     </h:selectBooleanCheckbox>
@@ -455,6 +456,10 @@
                                                                     <a target="_blank" href="/filesystem/#{registroController.expedienteGestion.ruta1}">
                                                                         <span style="font-size: large" class="glyphicon glyphicon-link" />
                                                                     </a>
+                                                                    &#160;&#160;&#160;
+                                                                    <a jsf:action="#{registroController.eliminarArchivoGestion1()}">
+                                                                <span style="font-size: large; color: red" class="glyphicon glyphicon-remove" />
+                                                            </a>
                                                                 </h:panelGroup>
                                                             </td>
                                                         </tr>
@@ -515,6 +520,7 @@
                                                                                 </tr>
                                                                             </table>
                                                                             <br/>
+                                                                            
                                                                             <h:dataTable id="idDatatableReplica2" value="#{registroController.listaExpedienteXUsuarioPaginadoReplica.subList(registroController.inicioPaginado, registroController.finPaginado)}" rendered="#{registroController.listaExpedienteXUsuarioPaginadoReplica.size() > 0}"  var="exped" class="table table-hover" binding="#{ro6}">
                                                                                 <h:column>
                                                                                     <f:facet name="header">Nro</f:facet>
@@ -536,7 +542,6 @@
                                                                                     <f:facet name="header">Estado expediente</f:facet>
                                                                                     <h:outputText value="#{exped.estadoDetalle}" />
                                                                                 </h:column>
-
                                                                                 <h:column>
                                                                                     <a class="btn btn-primary" jsf:action="#{registroController.gestionesPorExpediente(exped.numero)}">
                                                                                         <span class="glyphicon glyphicon-circle-arrow-right" />
@@ -565,9 +570,6 @@
                                                                                 <h:selectOneMenu value="#{registroController.idGestionReplica}">
                                                                                     <f:selectItems value="#{registroController.listaGestionesParaReplica}" var="x" itemValue="#{x.id}" itemLabel="#{x.codigoGestion}" />
                                                                                 </h:selectOneMenu>
-
-
-
                                                                             </h:panelGroup>
                                                                             <div class="modal-footer">
 
@@ -577,11 +579,8 @@
                                                                                 <a class="btn btn-primary" data-dismiss="modal" jsf:action="#{registroController.actualizarReplicaGestion()}">
                                                                                     <span class="glyphicon glyphicon-floppy-disk"/>Guardar
                                                                                 </a>
-
-
                                                                             </div>
                                                                         </h:panelGroup>
-
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -590,7 +589,6 @@
                                                 </td>
                                             </tr>
                                         </table>
-
                                         <br/><br/>
                                         <table style="width: 100%">
                                             <tr>
@@ -621,13 +619,7 @@
                                                                 </td>
 
                                                                 <td>
-                                                                    <!--<h:panelGroup rendered="#{registroController.expedienteGestion.indicadorRecomendacion}">
-                                                                        <label>Acogimiento de recomendaciones</label>
-                                                                        <h:selectOneMenu value="#{registroController.expedienteGestion.tipoAcogimiento}">
-                                                                            <f:selectItem itemValue="0" itemLabel="Selecione" />
-                                                                            <f:selectItems value="#{listasComunesController.buscarAcogimientoRecomendaciones(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
-                                                                        </h:selectOneMenu>
-                                                                    </h:panelGroup>-->
+                                                                    
                                                                 </td>
                                                             </tr>
                                                         </table>
@@ -636,8 +628,6 @@
                                             </tr>
                                             <tr>
                                                 <td style="padding-bottom: 10px">
-                                                    <!--<label>Documento de respuesta:</label>
-                                                    <input type="text" placeholder="Documento de respuesta" jsf:value="#{registroController.expedienteGestion.documentoRespuesta}" style="width: 50%"/>-->
                                                 </td>
                                                 <td></td>
                                             </tr>
@@ -675,6 +665,10 @@
                                                         <a target="_blank" href="/filesystem/#{registroController.expedienteGestion.ruta2}">
                                                             <span style="font-size: large" class="glyphicon glyphicon-link" />
                                                         </a>
+                                                        &#160;&#160;&#160;
+                                                                    <a jsf:action="#{registroController.eliminarArchivoGestion2()}">
+                                                                <span style="font-size: large; color: red" class="glyphicon glyphicon-remove" />
+                                                            </a>
                                                     </h:panelGroup>
                                                 </td>
                                             </tr>
@@ -710,7 +704,6 @@
                                                                         </tr>
                                                                         <tr>
                                                                             <td style="width:5%">
-                                                                                
                                                                             </td>
                                                                             <td style="width:25%">
                                                                                 <div class="input-group datepicker" id="idDivTxtInicioDefinitivo">
@@ -770,7 +763,6 @@
                                                 </td>
                                             </tr>
                                             <tr>
-
                                             </tr>
                                         </table>
                                     </div>

@@ -164,5 +164,10 @@ public class ExpedienteServiceImpl implements ExpedienteService{
     public void expedienteUpdateArchivo(Expediente expediente) {
         expedienteDAO.expedienteUpdateArchivo(expediente);
     }
+
+    @Override
+    public void expedienteEliminarArchivo(long idExpediente) {
+        expedienteDAO.expedienteEliminarArchivo(idExpediente);
+    }
     
 }

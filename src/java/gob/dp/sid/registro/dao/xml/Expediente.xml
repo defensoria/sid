@@ -479,6 +479,16 @@
         </where>
     </update>
     
+    <update id="expedienteEliminarArchivo" parameterType="long">
+        UPDATE SID_REG_EXPEDIENTE
+        <set>
+            C_RUTA = null
+        </set>
+        <where>
+            N_IDEXPEDIENTE = #{id}
+        </where>
+    </update>
+    
     <update id="expedienteUpdateArchivo" parameterType="expediente">
         UPDATE SID_REG_EXPEDIENTE
         <set>
@@ -745,6 +755,7 @@
         <if test="observacion != null">
             AND UPPER(A.C_SUMILLA||''||F.C_NOMENTIDAD||''||H.C_NOMBRE||''||H.C_APELLIDOPAT||''||H.C_APELLIDOMAT||''||A.N_CONSECUTIVO) LIKE '%'||UPPER(#{observacion})||'%' 
         </if>
+        
         <if test="usuarioRegistro != null">
             AND A.C_USUREGISTRO  = #{usuarioRegistro}     
         </if>

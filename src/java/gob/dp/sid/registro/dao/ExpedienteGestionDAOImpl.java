@@ -56,5 +56,15 @@ public class ExpedienteGestionDAOImpl extends SqlSessionDaoSupport implements  E
     public ExpedienteGestion expedienteGestionPorONPUltimo(String numeroExpediente) {
         return getSqlSession().selectOne("gob.dp.sid.registro.dao.ExpedienteGestionDAO.expedienteGestionPorONPUltimo", numeroExpediente);
     }
+
+    @Override
+    public void expedienteGestionEliminarArchivo1(long idGestion) {
+        getSqlSession().update("gob.dp.sid.registro.dao.ExpedienteGestionDAO.expedienteGestionEliminarArchivo1", idGestion);
+    }
+
+    @Override
+    public void expedienteGestionEliminarArchivo2(long idGestion) {
+        getSqlSession().update("gob.dp.sid.registro.dao.ExpedienteGestionDAO.expedienteGestionEliminarArchivo2", idGestion);
+    }
     
 }

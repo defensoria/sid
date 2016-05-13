@@ -13,18 +13,12 @@ import org.springframework.stereotype.Repository;
  * @author Administrador
  */
 @Repository
-public class AuditoriaDaoImpl   extends SqlSessionDaoSupport implements AuditoriaDao
+public class AuditoriaDaoImpl  extends SqlSessionDaoSupport implements AuditoriaDao
 {
     private static Logger log = Logger.getLogger(AuditoriaDaoImpl.class);
 
     @Override
-    public void insertarAuditoria(Auditoria filter)throws Exception{
-        /*
-        log.debug("codigo:"+filter.getCodigoAccion());
-        log.debug("Detalle:"+filter.getDetalle());
-        log.debug("ip:"+filter.getIp());
-        log.debug("codigoUsuario:"+filter.getUsuario().getCodigo());
-        */    	
+    public void insertarAuditoria(Auditoria filter)throws Exception{  	
         getSqlSession().insert("auditoriaDao.insertarAuditoria", filter);
     }
 

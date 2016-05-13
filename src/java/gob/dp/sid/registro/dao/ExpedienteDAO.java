@@ -59,4 +59,6 @@ public interface ExpedienteDAO {
     public void expedienteReconsideracion(Expediente expediente);
     
     public void expedienteUpdateArchivo(Expediente expediente);
+    
+    public void expedienteEliminarArchivo(long idExpediente);
 }

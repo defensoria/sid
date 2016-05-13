@@ -80,7 +80,11 @@ public enum HistorialType {
         
         HISTORIAL_AMPLIACION_ACEPTA("Ampliación", "Acepta la solictud de ampliación "),
         
-        HISTORIAL_AMPLIACION_RECHAZA("Consulta", "Rechaza la solictud de ampliación ");
+        HISTORIAL_AMPLIACION_RECHAZA("Consulta", "Rechaza la solictud de ampliación "),
+        
+        HISTORIAL_COMPARTIR_EXPEDIENTE("Compartir", "Se ha compartido el expediente "),
+        
+        HISTORIAL_CONCLUSION_MANUAL("Conclusión manual", "Se concluye el expediente manualmente ");
 	
 	/** La Constante list. */
 	private static final List<HistorialType> list = new ArrayList<>();

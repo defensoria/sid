@@ -545,6 +545,12 @@
                                                                     <span class="glyphicon glyphicon-remove" />Desistir
                                                                 </a>
                                                             </h:panelGroup>
+                                                            &#160;&#160;
+                                                            <h:panelGroup rendered="#{registroController.expediente.id != null and registroController.expediente.version > 0 and registroController.expediente.general != 'C' and registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo}">
+                                                                <a class="btn btn-default" onclick="confirmar6()" >
+                                                                    <span class="glyphicon glyphicon-floppy-save" />Conclusión manual
+                                                                </a>
+                                                            </h:panelGroup>
                                                         </td>
                                                     </tr>
                                                 </table>
