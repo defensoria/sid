@@ -1001,6 +1001,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         try {
             expedienteGestion = new ExpedienteGestion();
             expedienteBusquedaReplica = new Expediente();
+            listaExpedienteXUsuarioPaginadoReplica = null;
             return "expedienteGestion";
         } catch (Exception e) {
             log.error("ERROR - cargarExpedienteGestion()" + e);
@@ -2089,16 +2090,15 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     }
     
     public Boolean esSupervisor(){
-        Usuario u = usuarioService.buscarUsuarioOne(expediente.getUsuarioRegistro());
-        if(Objects.equals(u.getCodigoOD(), usuarioSession.getCodigoOD())){
-            FacesContext context = FacesContext.getCurrentInstance();
-            SeguridadUtilController seguridadUtilController = (SeguridadUtilController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "seguridadUtilController");
-            if(seguridadUtilController.tieneRol("ROL0000002") || seguridadUtilController.tieneRol("ROL0000004")){
-                return true;
-            }
-        }
         try {
-            
+            Usuario u = usuarioService.buscarUsuarioOne(expediente.getUsuarioRegistro());
+            if(Objects.equals(u.getCodigoOD(), usuarioSession.getCodigoOD())){
+                FacesContext context = FacesContext.getCurrentInstance();
+                SeguridadUtilController seguridadUtilController = (SeguridadUtilController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "seguridadUtilController");
+                if(seguridadUtilController.tieneRol("ROL0000002") || seguridadUtilController.tieneRol("ROL0000004")){
+                    return true;
+                }
+            }   
         } catch (Exception e) {
             log.error("ERROR - esSupervisor()" + e);
         }
@@ -2283,13 +2283,13 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 enviarMensajeSuspencionAprobacion();
                 historial = new ExpedienteHistorial(HistorialType.HISTORIAL_SUSPENCION_APRUEBA.getKey(), HistorialType.HISTORIAL_SUSPENCION_APRUEBA.getValue());
                 guardarHistorial(historial);
-                msg.messageInfo("Se aprobó la Derivación", null);
+                msg.messageInfo("Se aprobó la solicitud de Suspensión", null);
             } else {
                 guardarVersion2();
                 enviarMensajeSuspencionDesaprobacion();
                 historial = new ExpedienteHistorial(HistorialType.HISTORIAL_SUSPENCION_DESAPRUEBA.getKey(), HistorialType.HISTORIAL_SUSPENCION_DESAPRUEBA.getValue());
                 guardarHistorial(historial);
-                msg.messageInfo("No se aprobo la derivación", null);
+                msg.messageInfo("No se aprobo la solicitud de Suspensión", null);
             }
             return true;
         } catch (Exception e) {
@@ -2947,8 +2947,21 @@ public class RegistroController extends AbstractManagedBean implements Serializa
 
     }
 
-    public void insertarReplicaGestion1() {
+    public boolean insertarReplicaGestion1() {
         int i = 0;
+        int j = 0;
+        for (Expediente e : listaExpedienteXUsuarioPaginadoReplica) {
+            if (e.getIndReplica() != null){
+                if (e.getIndReplica()) {
+                    j++;
+                }
+            }
+        }
+        if(j == 0){
+            msg.messageAlert("No ha seleccionado ninguna gestión", null);
+            return false;
+        }
+        
         for (Expediente e : listaExpedienteXUsuarioPaginadoReplica) {
             try {
                 if (e.getIndReplica() != null) {
@@ -2987,6 +3000,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         }
         listarExpedienteUsuarioPaginadoCompleto(1, expedienteBusquedaReplica);
         msg.messageInfo("Se realizaron las replicas", null);
+        return true;
     }
 
     public void actualizarReplicaGestion() {

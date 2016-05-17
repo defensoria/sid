@@ -881,7 +881,7 @@
             AND A.C_USUREGISTRO  = #{usuarioRegistro}     
         </if>
         <if test="numero != null">
-            AND A.C_NUMEROEXPEDIENTE  LIKE '%'||#{numero}||'%'      
+            AND A.N_CONSECUTIVO  = #{numero}      
         </if>
         ORDER BY A.N_IDEXPEDIENTE DESC
     </select>

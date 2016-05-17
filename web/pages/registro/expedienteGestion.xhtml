@@ -8,11 +8,11 @@
     <ui:composition template="../template/templateCabeceraExpediente.xhtml">
         <ui:define name="content2">
             <script>
-                function confirmar6() {
-                    $(".confirmacion6").modal('show');
+                function confirmar7() {
+                    $(".confirmacion7").modal('show');
                 }
             </script>
-            <gc:confirmSubmit bean="#{registroController.registarExpedienteGestion()}" classGC="confirmacion6" mensaje="Esta seguro de registrar la gestión?" />
+            <gc:confirmSubmit bean="#{registroController.registarExpedienteGestion()}" classGC="confirmacion7" mensaje="Esta seguro de registrar la gestión?" />
             <ul class="nav nav-tabs">
                 <li role="presentation">
                     <a style="cursor: pointer" jsf:action="#{registroController.datosGeneralesExpediente()}">
@@ -53,7 +53,7 @@
                             </td>
                             <td style="width: 50%; text-align: right">
                                 <h:panelGroup rendered="#{registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo and registroController.expediente.general != 'C'}">
-                                    <a class="btn btn-primary" onclick="confirmar6()">
+                                    <a class="btn btn-primary" onclick="confirmar7()">
                                         <span class="glyphicon glyphicon-floppy-disk" />Guardar gestión
                                     </a>
                                 </h:panelGroup>
@@ -494,6 +494,7 @@
                                                             }
                                                         }
                                                     </script>
+                                                    
                                                     <h:panelGroup id="idPanelModalReplicar2">
                                                         <div class="modal fade" data-backdrop="static" data-keyboard="false" id="idModalReoplicar2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                                             <div class="modal-dialog" style="text-align: left">
@@ -509,7 +510,7 @@
                                                                             <table style="width: 100%">
                                                                                 <tr>
                                                                                     <td style="width: 60%">
-                                                                                        <input type="text" id="idExpedienteNumero" jsf:value="#{registroController.expedienteBusquedaReplica.numero}" placeholder="Ingrese número de expediente" maxlength="50"/>
+                                                                                        <input type="text" jsf:value="#{registroController.expedienteBusquedaReplica.numero}" placeholder="Ingrese número de expediente" maxlength="50"/>
                                                                                     </td>
                                                                                     <td>
                                                                                         <a class="btn btn-primary" jsf:action="#{registroController.buscarModalReplica()}" jsf:onclick="loadingModal()">
@@ -545,7 +546,7 @@
                                                                                 <h:column>
                                                                                     <a class="btn btn-primary" jsf:action="#{registroController.gestionesPorExpediente(exped.numero)}">
                                                                                         <span class="glyphicon glyphicon-circle-arrow-right" />
-                                                                                        <f:ajax render=":idFormTemplate:idPanelBusquedaReplic2" />
+                                                                                        <f:ajax render=":idForm:idPanelBusquedaReplic2" />
                                                                                     </a>
                                                                                 </h:column>
                                                                             </h:dataTable>
@@ -571,11 +572,8 @@
                                                                                     <f:selectItems value="#{registroController.listaGestionesParaReplica}" var="x" itemValue="#{x.id}" itemLabel="#{x.codigoGestion}" />
                                                                                 </h:selectOneMenu>
                                                                             </h:panelGroup>
+                                                                            <br/><br/>
                                                                             <div class="modal-footer">
-
-                                                                                <a  class="btn btn-default" data-dismiss="modal">
-                                                                                    <span class="glyphicon glyphicon-remove"/>Cerrar
-                                                                                </a>
                                                                                 <a class="btn btn-primary" data-dismiss="modal" jsf:action="#{registroController.actualizarReplicaGestion()}">
                                                                                     <span class="glyphicon glyphicon-floppy-disk"/>Guardar
                                                                                 </a>
