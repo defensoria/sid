@@ -1,7 +1,6 @@
 package gob.dp.sid.administracion.seguridad.controller;
 
 import gob.dp.sid.administracion.parametro.controller.CatalogoController;
-import gob.dp.sid.administracion.seguridad.entity.Usuario;
 import gob.dp.sid.bandeja.controller.BandejaController;
 import gob.dp.sid.comun.controller.BusquedaController;
 import gob.dp.sid.comun.entity.Menu;

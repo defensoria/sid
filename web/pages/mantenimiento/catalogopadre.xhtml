@@ -6,10 +6,10 @@
     <ui:composition template="../template/template.xhtml">
 
         <ui:define name="content">
-            <script>
-                sessionStorage.setItem('menuHijoSession', 'Parametros');
-            </script>
             <h:form id="frmFiltroCatalogo" class="form-horizontal">
+                <script>
+                    sessionStorage.setItem('menuHijoSession', 'Parametros');
+                </script>
                 <div class="panel panel-default" style="background: #F5F5F5">
                     <div class="panel-body">
                         <span style="color: #0074cc; font-size: x-large;">Criterios de Busqueda</span>
@@ -33,7 +33,6 @@
                             <div class="col-sm-offset-2 col-sm-10">
                                 <a jsf:action="#{catalogoController.buscarCatalogoPadre(1)}" class="btn btn-primary" jsf:onclick="loadingModal()">
                                     <span class="glyphicon glyphicon-search">
-                                        <f:ajax render="@form" execute="@form" onevent="closeModal"/>
                                     </span> Buscar
                                 </a>
                                 <h:outputText value="&#160;" />
@@ -49,13 +48,7 @@
                 </h:panelGrid>
 
                 <h:dataTable value="#{catalogoController.listaCatalogo}" rendered="#{!empty catalogoController.listaCatalogo}" var="x" id="idDatatableCatalogoPadre"
-                             class="table table-striped" binding="#{cat}">
-
-                    <h:column>
-                        <f:facet name="header">#</f:facet>
-                        <h:outputText value="#{cat.rowIndex+1}" />
-                    </h:column>
-
+                             class="table table-striped">
                     <h:column id="txtNumero">
                         <f:facet name="header">
                             <h:outputText value="Número " />
@@ -88,7 +81,7 @@
                 <ul class="pager" >
                     <li>
                         <a  jsf:action="#{catalogoController.buscarCatalogoPadre(catalogoController.nroPagina -1)}"
-                           jsf:rendered="#{!empty catalogoController.listaCatalogo}"  jsf:onclick="loadingModal()">Anterior
+                            jsf:rendered="#{!empty catalogoController.listaCatalogo}"  jsf:onclick="loadingModal()">Anterior
                             <f:ajax render="@form" onevent="closeModal"/>
                         </a>
                     </li>
@@ -99,7 +92,6 @@
                         </a>
                     </li>
                 </ul>
-                
             </h:form>
         </ui:define>
     </ui:composition>

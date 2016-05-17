@@ -115,7 +115,6 @@ public class CatalogoController extends AbstractManagedBean implements Serializa
     }
 
     public String cargarPagina() {
-        log.debug("METODO : CatalogoController.cargarPagina");
         busquedaCatalogoTemp = new BusquedaCatalogoTemp();
         listaCatalogo = null;
         return "catalogoPadreList";
@@ -128,14 +127,12 @@ public class CatalogoController extends AbstractManagedBean implements Serializa
     }
 
     public String buscarCatalogoPadre(long page) {
-        log.debug("METODO : CatalogoController.buscarCatalogoPadre");
         try {
             FiltroCatalogo filtroCatalogo = new FiltroCatalogo();
             if (!stringUtil.isBlank(busquedaCatalogoTemp.getNombreParametro())) {
                 filtroCatalogo.setNombreParametro(busquedaCatalogoTemp.getNombreParametro().toUpperCase());
             }
-
-            filtroCatalogo.setNumParametro((busquedaCatalogoTemp.getNumParametro() == null || busquedaCatalogoTemp.getNumParametro().equals(new Integer(0))) ? null : busquedaCatalogoTemp.getNumParametro());
+            filtroCatalogo.setNumParametro((busquedaCatalogoTemp.getNumParametro() == null || busquedaCatalogoTemp.getNumParametro().equals(0)) ? null : busquedaCatalogoTemp.getNumParametro());
             listarPaginado(filtroCatalogo, page);
         } catch (Exception e) {
             log.error(e);
@@ -145,12 +142,12 @@ public class CatalogoController extends AbstractManagedBean implements Serializa
 
     public void listarPaginado(FiltroCatalogo filtroCatalogo, Long pagina) {
         if (pagina > 0) {
-            int paginado = ConstantesUtil.PAGINADO_10;
+            int paginado = ConstantesUtil.PAGINADO_20;
             Long ini = paginado * (pagina - 1) + 1;
             Long fin = paginado * pagina;
             if (pagina == 0) {
                 ini = 1L;
-                fin = 10L;
+                fin = 20L;
             }
             filtroCatalogo.setIni(ini);
             filtroCatalogo.setFin(fin);
@@ -167,16 +164,11 @@ public class CatalogoController extends AbstractManagedBean implements Serializa
     }
 
     public String viewCatalogoPadre(Integer numParametro) {
-        log.debug("METODO : CatalogoController.viewCatalogoPadre");
         this.verGuardar = true;
         try {
             getCatalogoPadre().setNumParametro(numParametro);
             setCatalogoPadre(catalogoService.viewCatalogoPadre(getCatalogoPadre()));
-            if (getCatalogoPadre().getCodEstado().equals(Constantes.ESTADO_ACTIVO)) {
-                this.habilitado = true;
-            } else {
-                this.habilitado = false;
-            }
+            this.habilitado = getCatalogoPadre().getCodEstado().equals(Constantes.ESTADO_ACTIVO);
         } catch (Exception e) {
             log.error(e);
         }
@@ -184,7 +176,6 @@ public class CatalogoController extends AbstractManagedBean implements Serializa
     }
 
     public String updateCatalogoPadre(Integer numParametro) {
-        log.debug("METODO : CatalogoController.updateCatalogoPadre");
         this.verGuardar = true;
         try {
             getCatalogoPadre().setNumParametro(numParametro);
@@ -210,7 +201,6 @@ public class CatalogoController extends AbstractManagedBean implements Serializa
     }
 
     public String nuevoCatalogoPadre() {
-        log.debug("METODO : CatalogoController.nuevoCatalogoPadre");
         this.verGuardar = true;
         busquedaCatalogoTemp = new BusquedaCatalogoTemp();
         this.catalogoPadre = new Catalogo();
@@ -218,7 +208,6 @@ public class CatalogoController extends AbstractManagedBean implements Serializa
     }
 
     public String insertarCatalogoPadre() {
-        log.debug("METODO : CatalogoController.insertarCatalogoPadre");
         if (catalogoPadre.getNumParametro() == null) {
             if (isHabilitado() == true) {
                 getCatalogoPadre().setCodEstado(Constantes.ESTADO_ACTIVO);
@@ -240,15 +229,14 @@ public class CatalogoController extends AbstractManagedBean implements Serializa
     }
 
     public String buscarCatalogoHijo(Integer padreParam, long page) {
-        log.debug("METODO : CatalogoController.buscarCatalogoHijo");
         try {
             FiltroCatalogo filtroCatalogo = new FiltroCatalogo();
             getCatalogoHijo().setPadreParametro(padreParam);
             if (!stringUtil.isBlank(busquedaCatalogoTemp.getNombreParametro())) {
                 filtroCatalogo.setNombreParametro(busquedaCatalogoTemp.getNombreParametro().toUpperCase());
             }
-            filtroCatalogo.setNumParametro((busquedaCatalogoTemp.getNumParametro() == null || busquedaCatalogoTemp.getNumParametro().equals(new Integer(0))) ? null : busquedaCatalogoTemp.getNumParametro());
-            if (padreParam == null || padreParam.equals(new Integer(0))) {
+            filtroCatalogo.setNumParametro((busquedaCatalogoTemp.getNumParametro() == null || busquedaCatalogoTemp.getNumParametro().equals(0)) ? null : busquedaCatalogoTemp.getNumParametro());
+            if (padreParam == null || padreParam.equals(0)) {
                 filtroCatalogo.setPadreParametro(null);
             } else {
                 filtroCatalogo.setPadreParametro(padreParam);
@@ -262,13 +250,12 @@ public class CatalogoController extends AbstractManagedBean implements Serializa
     }
 
     public String buscarCatalogoHijoLista(long page) {
-        log.debug("METODO : CatalogoController.buscarCatalogoHijo");
         try {
             FiltroCatalogo filtroCatalogo = new FiltroCatalogo();
             if (!stringUtil.isBlank(busquedaCatalogoTemp.getNombreParametro())) {
                 filtroCatalogo.setNombreParametro(busquedaCatalogoTemp.getNombreParametro().toUpperCase());
             }
-            filtroCatalogo.setNumParametro((busquedaCatalogoTemp.getNumParametro() == null || busquedaCatalogoTemp.getNumParametro().equals(new Integer(0))) ? null : busquedaCatalogoTemp.getNumParametro());
+            filtroCatalogo.setNumParametro((busquedaCatalogoTemp.getNumParametro() == null || busquedaCatalogoTemp.getNumParametro().equals(0)) ? null : busquedaCatalogoTemp.getNumParametro());
             listarPaginadoHijo(filtroCatalogo, page);
         } catch (Exception e) {
             log.error(e);
@@ -278,12 +265,12 @@ public class CatalogoController extends AbstractManagedBean implements Serializa
 
     public void listarPaginadoHijo(FiltroCatalogo filtroCatalogo, Long pagina) {
         if (pagina > 0) {
-            int paginado = ConstantesUtil.PAGINADO_10;
+            int paginado = ConstantesUtil.PAGINADO_20;
             Long ini = paginado * (pagina - 1) + 1;
             Long fin = paginado * pagina;
             if (pagina == 0) {
                 ini = 1L;
-                fin = 10L;
+                fin = 20L;
             }
             filtroCatalogo.setIni(ini);
             filtroCatalogo.setFin(fin);
@@ -300,16 +287,11 @@ public class CatalogoController extends AbstractManagedBean implements Serializa
     }
 
     public String viewCatalogoHijo(Integer hijoParametro) {
-        log.debug("viewCatalogoHijo");
         this.verGuardar = true;
         try {
             getCatalogoHijo().setNumParametro(hijoParametro);
             setCatalogoHijo(catalogoService.viewCatalogoHijo(getCatalogoHijo()));
-            if (getCatalogoHijo().getCodEstado().equals(Constantes.ESTADO_ACTIVO)) {
-                this.habilitado = true;
-            } else {
-                this.habilitado = false;
-            }
+            this.habilitado = getCatalogoHijo().getCodEstado().equals(Constantes.ESTADO_ACTIVO);
         } catch (Exception e) {
             log.error(e);
         }
@@ -317,7 +299,6 @@ public class CatalogoController extends AbstractManagedBean implements Serializa
     }
 
     public String updateCatalogoHijo(Integer numParametro) {
-        log.debug("updateCatalogoHijo");
         this.verGuardar = true;
         try {
             getCatalogoHijo().setNumParametro(numParametro);
@@ -339,7 +320,6 @@ public class CatalogoController extends AbstractManagedBean implements Serializa
     }
 
     public String nuevoCatalogoHijo(Integer padreParametro) {
-        log.debug("METODO : CatalogoController.nuevoCatalogoHijo");
         this.verGuardar = true;
         busquedaCatalogoTemp = new BusquedaCatalogoTemp();
         this.catalogoHijo = new Catalogo();
@@ -348,7 +328,6 @@ public class CatalogoController extends AbstractManagedBean implements Serializa
     }
 
     public String insertarCatalogoHijo(Integer padreParametro) {
-        log.debug("METODO : CatalogoController.insertarCatalogoHijo");
         if (isHabilitado() == true) {
             getCatalogoHijo().setCodEstado(Constantes.ESTADO_ACTIVO);
         } else {

@@ -47,6 +47,13 @@ public class UsuarioServiceImpl implements UsuarioService {
     public List<Usuario> buscarUsuario(FiltroUsuario filtro) {
         return usuarioDao.buscarUsuario(filtro);
     }
+    
+    @Override
+    public Usuario buscarUsuarioOne(String codigoUsuario) {
+        FiltroUsuario filtroUsuario = new FiltroUsuario();
+        filtroUsuario.setCodigo(codigoUsuario);
+        return usuarioDao.buscarUsuario(filtroUsuario).get(0);
+    }
 
     @Override
     public void insertarUsuario(Usuario usuario, List<Rol> listaRol) throws Exception {

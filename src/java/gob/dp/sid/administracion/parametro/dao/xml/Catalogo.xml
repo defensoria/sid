@@ -186,6 +186,7 @@
         <if test="nombreParametro!=null">
             AND UPPER(A.NOMBRE_PARAMETRO)  LIKE '%'||UPPER(#{nombreParametro})||'%'
         </if>
+        ORDER BY A.NUM_PARAMETRO
     </select>
 
     <select id="buscarCatalogoHijo" resultMap="catalogoMap" parameterType="filtroCatalogo">
@@ -230,7 +231,7 @@
         ORDER BY P.NUM_PARAMETRO
         ) B
         ) A WHERE a.numfila BETWEEN #{ini} AND #{fin}
-        
+        ORDER BY A.VALOR_PARAMETRO
     </select>
 
     <select id="getTotalBuscarCatalogoHijo" parameterType="filtroCatalogo" resultType="java.lang.Integer" >

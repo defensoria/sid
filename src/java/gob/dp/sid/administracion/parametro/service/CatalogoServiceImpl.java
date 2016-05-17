@@ -21,32 +21,28 @@ import org.springframework.stereotype.Service;
 @Service("catalogoService")
 public class CatalogoServiceImpl implements CatalogoService
 {
-    private static Logger log = Logger.getLogger(CatalogoServiceImpl.class);
+    private static final Logger log = Logger.getLogger(CatalogoServiceImpl.class);
 
     @Autowired
     private CatalogoDao catalogoDao;
 
     @Override
     public List<Catalogo> buscarCatalogoPadre(FiltroCatalogo filtroCatalogo){
-        log.debug("METODO : CatalogoServiceImpl.buscarCatalogoPadre");
         return catalogoDao.buscarCatalogoPadre(filtroCatalogo);
     }
 
     @Override
     public Integer getTotalBuscarCatalogoPadre(FiltroCatalogo filtroCatalogo){
-        log.debug("METODO : CatalogoServiceImpl.getTotalBuscarCatalogoPadre");
         return catalogoDao.getTotalBuscarCatalogoPadre(filtroCatalogo);
     }
 
     @Override
     public List<Catalogo> buscarCatalogoHijo(FiltroCatalogo filtroCatalogo){
-        log.debug("METODO : CatalogoServiceImpl.buscarCatalogoHijo");
         return catalogoDao.buscarCatalogoHijo(filtroCatalogo);
     }
 
     @Override
     public Integer getTotalBuscarCatalogoHijo(FiltroCatalogo filtroCatalogo){
-        log.debug("METODO : CatalogoServiceImpl.getTotalBuscarCatalogoHijo");
         return catalogoDao.getTotalBuscarCatalogoHijo(filtroCatalogo);
     }
 
@@ -62,14 +58,12 @@ public class CatalogoServiceImpl implements CatalogoService
 
     @Override
     public void nuevoCatalogoPadre(Catalogo catalogo){
-        log.debug("METODO : CatalogoServiceImpl.nuevoCatalogoPadre");
         catalogo.setNumParametro(catalogoDao.generarCodigoCatalogoPadre());
         catalogoDao.nuevoCatalogoPadre(catalogo);
     }
 
     @Override
     public void nuevoCatalogoHijo(Catalogo catalogo){
-        log.debug("METODO : CatalogoServiceImpl.nuevoCatalogoHijo");
         catalogo.setNumParametro(catalogoDao.generarCodigoCatalogoHijo());
         catalogoDao.nuevoCatalogoHijo(catalogo);
     }
@@ -96,9 +90,6 @@ public class CatalogoServiceImpl implements CatalogoService
         return catalogoDao;
     }
 
-    /**
-     * @param parametroDao the parametroDao to set
-     */
     public void setCatalogoDao(CatalogoDao catalogoDao) {
         this.catalogoDao = catalogoDao;
     }

@@ -51,26 +51,16 @@
                         <br/>
                         <hr/>
 
-                        <h:dataTable value="#{catalogoController.listaCatalogoHijo}"  var="x" id="table" 
-                                     class="table table-striped" style="font-size: small" binding="#{hijo}">
-
+                        <h:dataTable value="#{catalogoController.listaCatalogoHijo}"  var="x" id="table" class="table table-striped" style="font-size: small" binding="#{hijo}">
                             <h:column>
                                 <f:facet name="header">#</f:facet>
                                 <h:outputText value="#{hijo.rowIndex+1}" />
                             </h:column>
-
-                            <h:column id="Numero">
-                                <f:facet name="header">
-                                    <h:outputText value="Número " />
-                                </f:facet>
-                                <h:commandLink value="#{x.numParametro}" immediate="true"  action="#{catalogoController.viewCatalogoHijo(x.numParametro)}" />
-                            </h:column>
-
                             <h:column>
                                 <f:facet name="header">
                                     <h:outputText value="Parámetro" />
                                 </f:facet>
-                                <h:outputText value="#{x.nombreParametro}" />
+                                <h:commandLink value="#{x.nombreParametro}" immediate="true"  action="#{catalogoController.viewCatalogoHijo(x.numParametro)}" />
                             </h:column>
 
                             <h:column>

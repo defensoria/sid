@@ -8,6 +8,15 @@
         
         <ui:define name="content">
             <h:form class="form-horizontal">
+                <script>
+                    function soloNumbero(a) {
+                        var b = window.event ? window.event.keyCode : a.which;
+                        if ((b === 8) || (b === 46)) {
+                            return true;
+                        }
+                        return/\d/.test(String.fromCharCode(b));
+                    }
+                </script>
                 <h:messages/>
                 <gc:confirmAjax bean="#{catalogoController.insertarCatalogoHijo(catalogoController.catalogoHijo.padreParametro)}" />
                 <div class="panel panel-default" style="background: #F5F5F5">
@@ -40,9 +49,9 @@
                         </div>
                         
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">Valor parametro</label>
+                            <label class="col-sm-3 control-label">Valor parametro:</label>
                             <div class="col-sm-3">
-                                <input type="text" id="idTextValor" placeholder="Valor parametro" jsf:value="#{catalogoController.catalogoHijo.valorParametro}" maxlength="2" style="width: 100%;" autocomplete="off" />
+                                <input type="text" id="idTextValor" placeholder="Valor parametro" jsf:value="#{catalogoController.catalogoHijo.valorParametro}" onkeypress="return soloNumbero(event)" maxlength="2" style="width: 100%;" autocomplete="off" />
                             </div>
                         </div>
                         

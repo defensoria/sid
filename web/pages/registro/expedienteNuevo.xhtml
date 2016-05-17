@@ -515,12 +515,12 @@
                                                                         }
                                                                     });</script>
                                                             </div>
-                                                            <h:panelGroup  rendered="#{(registroController.etapaEstado.verEtapa == 1 or registroController.etapaEstado.verEtapa == 5) and seguridadUtilController.tieneRecurso('REC_EXP017') and registroController.expediente.general != 'C'}">
+                                                            <h:panelGroup rendered="#{(registroController.etapaEstado.verEtapa == 1 or registroController.etapaEstado.verEtapa == 5) and seguridadUtilController.tieneRecurso('REC_EXP017') and registroController.expediente.general != 'C'}">
                                                                 <a class="btn btn-warning" jsf:action="#{registroController.guardarVersionSupervisor(0)}" jsf:onclick="loadingModal()">
                                                                     <span class="glyphicon glyphicon-floppy-disk"/>Cambiar tipo
                                                                 </a>
                                                             </h:panelGroup>
-                                                            <h:panelGroup  rendered="#{seguridadUtilController.tieneRecurso('REC_EXP018') and registroController.expediente.general == 'C'}">
+                                                            <h:panelGroup rendered="#{seguridadUtilController.tieneRecurso('REC_EXP018') and registroController.expediente.general == 'C'}">
                                                                 <a class="btn btn-danger" jsf:action="#{registroController.guardarVersionSupervisor(1)}" jsf:onclick="loadingModal()">
                                                                     <span class="glyphicon glyphicon-floppy-disk"/>Levantar conclusión
                                                                 </a>

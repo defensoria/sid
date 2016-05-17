@@ -8,7 +8,7 @@
         <ui:define name="content">
             <h:form id="frm" class="form-horizontal">
                 <h:messages/>
-                <gc:confirmAjax bean="#{usuarioDetalleController.guardarUsuario()}" />
+                <gc:confirmSubmit bean="#{usuarioDetalleController.guardarUsuario()}" />
                 <div class="panel panel-default" style="background: #F5F5F5">
                     <div class="panel-body">
                         <span style="color: #0074cc; font-size: x-large;">Detalle del usuario</span>
@@ -85,6 +85,7 @@
                                     <f:selectItem itemValue="ROL0000006" itemLabel="PRACTICANTE AD" />
                                     <f:selectItem itemValue="ROL0000007" itemLabel="COMISIONADO PAD" />
                                     <f:selectItem itemValue="ROL0000010" itemLabel="OBSERVADOR" />
+                                    <f:selectItem itemValue="ROL0000009" itemLabel="OPERADOR - MANTENIMIENTO" />
                                 </h:selectOneRadio>
                             </div>
                         </div>

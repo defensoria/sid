@@ -2087,6 +2087,23 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         }
         return false;
     }
+    
+    public Boolean esSupervisor(){
+        Usuario u = usuarioService.buscarUsuarioOne(expediente.getUsuarioRegistro());
+        if(Objects.equals(u.getCodigoOD(), usuarioSession.getCodigoOD())){
+            FacesContext context = FacesContext.getCurrentInstance();
+            SeguridadUtilController seguridadUtilController = (SeguridadUtilController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "seguridadUtilController");
+            if(seguridadUtilController.tieneRol("ROL0000002") || seguridadUtilController.tieneRol("ROL0000004")){
+                return true;
+            }
+        }
+        try {
+            
+        } catch (Exception e) {
+            log.error("ERROR - esSupervisor()" + e);
+        }
+        return false;
+    }
 
     public boolean respuestaAprobar() {
         try {

@@ -39,4 +39,6 @@ public interface UsuarioService {
     public List<Usuario> listaUsuariosPorOD(Usuario usuario);
     
     public Integer listaUsuarioCount(String codigoUsuario);
+    
+    public Usuario buscarUsuarioOne(String codigoUsuario);
 }
