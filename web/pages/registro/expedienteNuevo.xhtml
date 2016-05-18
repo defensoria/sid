@@ -368,7 +368,7 @@
                                                                     <f:ajax render="idPanelAsignar" onevent="modalAsignar" />
                                                                 </a>
                                                             </h:panelGroup>
-                                                            <h:panelGroup rendered="#{seguridadUtilController.tieneRecurso('REC_EXP016') and registroController.esSupervisor() and registroController.expediente.general != 'C'}">
+                                                            <h:panelGroup rendered="#{seguridadUtilController.tieneRecurso('REC_EXP016') and registroController.esSupervisor() and registroController.expediente.general != 'C' and (registroController.etapaEstado.verEtapa == 1 or registroController.etapaEstado.verEtapa == 5)}">
                                                                 <a class="btn btn-warning" jsf:action="#{registroController.limpiarModalAsignar()}" jsf:onclick="loadingModal()">
                                                                     <span class="glyphicon glyphicon-user" />Asignar Expediente
                                                                     <f:ajax render="idPanelAsignar" onevent="modalAsignar" />
@@ -416,17 +416,17 @@
                                                                         <span style="color:#3183b9;font-size:large;vertical-align: top" class="glyphicon glyphicon-chevron-down trigger2"></span>
                                                                     </a>
                                                                 </h:panelGroup>
-                                                                <h:panelGroup  rendered="#{registroController.etapaEstado.verEtapa != 0 and registroController.etapaEstado.verEtapa != null and !seguridadUtilController.tieneRecurso('REC_EXP017')}">
-                                                                    <a class="trigger2">
-                                                                        <span style="color:#3183b9;font-size:large;vertical-align: top" class="glyphicon glyphicon-chevron-down trigger2"></span>
-                                                                    </a>
-                                                                </h:panelGroup>
-                                                                <h:panelGroup  rendered="#{(registroController.etapaEstado.verEtapa == 1 or registroController.etapaEstado.verEtapa == 5) and seguridadUtilController.tieneRecurso('REC_EXP017')}">
+                                                                <h:panelGroup rendered="#{(registroController.etapaEstado.verEtapa == 1 or registroController.etapaEstado.verEtapa == 5) and seguridadUtilController.tieneRecurso('REC_EXP017')}">
                                                                     <a href="#" class="trigger2">
                                                                         <span style="color:#3183b9;font-size:large;vertical-align: top" class="glyphicon glyphicon-chevron-down trigger2"></span>
                                                                     </a>
                                                                 </h:panelGroup>
-                                                                <h:panelGroup  rendered="#{(registroController.etapaEstado.verEtapa != 1 and registroController.etapaEstado.verEtapa != 5) and seguridadUtilController.tieneRecurso('REC_EXP017')}">
+                                                                <h:panelGroup rendered="#{registroController.etapaEstado.verEtapa != 0 and registroController.etapaEstado.verEtapa != null and !seguridadUtilController.tieneRecurso('REC_EXP017')}">
+                                                                    <a class="trigger2">
+                                                                        <span style="color:#3183b9;font-size:large;vertical-align: top" class="glyphicon glyphicon-chevron-down trigger2"></span>
+                                                                    </a>
+                                                                </h:panelGroup>
+                                                                <h:panelGroup rendered="#{(registroController.etapaEstado.verEtapa != 1 and registroController.etapaEstado.verEtapa != 5 and registroController.expediente.version != 0 and registroController.expediente.version != null) and seguridadUtilController.tieneRecurso('REC_EXP017')}">
                                                                     <a class="trigger2">
                                                                         <span style="color:#3183b9;font-size:large;vertical-align: top" class="glyphicon glyphicon-chevron-down trigger2"></span>
                                                                     </a>
@@ -1157,14 +1157,16 @@
                                         <div class="panel-body">
                                             <span class="text-resalt-primary">Información de adicional</span>
                                             <br/><br/>
-                                            <h:outputText rendered="#{registroController.expediente.tipoClasificion == '02'}" value="Motivo de la consulta" class="text-bold"/>
-                                            <h:outputText rendered="#{registroController.expediente.tipoClasificion != '02'}" value="Sumilla" class="text-bold"/>
-                                            <textarea jsf:rendered="#{registroController.expediente.tipoClasificion == '02'}" rows="5" jsf:value="#{registroController.expediente.sumilla}" style="width: 100%;" placeholder="Motivo de la consulta" maxlength="1950"/>
-                                            <textarea jsf:rendered="#{registroController.expediente.tipoClasificion != '02'}" rows="5" jsf:value="#{registroController.expediente.sumilla}" style="width: 100%;" placeholder="Sumilla" maxlength="1950"/>
+                                            <h:outputText rendered="#{registroController.expediente.tipoClasificion == '02'}" value="Motivo de la consulta:" class="text-bold"/>
+                                            <h:outputText rendered="#{registroController.expediente.tipoClasificion != '02'}" value="Sumilla:" class="text-bold"/>
+                                            <span style="color: red">(max: 4000 carateres)</span> 
+                                            <textarea jsf:rendered="#{registroController.expediente.tipoClasificion == '02'}" rows="5" jsf:value="#{registroController.expediente.sumilla}" style="width: 100%;" maxlength="4000"/>
+                                            <textarea jsf:rendered="#{registroController.expediente.tipoClasificion != '02'}" rows="5" jsf:value="#{registroController.expediente.sumilla}" style="width: 100%;" maxlength="4000"/>
                                             <br/>
-                                            <h:outputText class="text-bold" value="Observaciones" rendered="#{registroController.expediente.tipoClasificion != '02'}" />
-                                            <h:outputText class="text-bold" value="Orientación" rendered="#{registroController.expediente.tipoClasificion == '02'}" />
-                                            <textarea rows="5" jsf:value="#{registroController.expediente.observacion}" style="width: 100%"  maxlength="1950"/>
+                                            <h:outputText class="text-bold" value="Observaciones:" rendered="#{registroController.expediente.tipoClasificion != '02'}" />
+                                            <h:outputText class="text-bold" value="Orientación:" rendered="#{registroController.expediente.tipoClasificion == '02'}" />
+                                            <span style="color: red">(max: 4000 carateres)</span> 
+                                            <textarea rows="5" jsf:value="#{registroController.expediente.observacion}" style="width: 100%"  maxlength="4000"/>
                                             <br/><br/>
 
                                             <table style="width: 100%">

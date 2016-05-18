@@ -85,8 +85,8 @@
                             </ul>
                         </div>
                     </h:panelGroup>
-                    
-                    <h:panelGroup rendered="#{seguridadUtilController.tieneRecurso('REC_EXP001') and registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo and registroController.etapaEstado.idEstado == null}">
+                    <!--ETAPA 1 -->
+                    <h:panelGroup rendered="#{seguridadUtilController.tieneRecurso('REC_EXP001') and registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo and registroController.etapaEstado.idEstado == null and registroController.expedienteDerivacionEnvia.etapa == null}">
                         <table style="width: 100%">
                             <tr>
                                 <td colspan="2" ><br/>
@@ -148,7 +148,9 @@
                             </tr>
                         </table>
                     </h:panelGroup>
-                    <h:panelGroup rendered="#{seguridadUtilController.tieneRecurso('REC_EXP002') and registroController.usuarioSession.codigo == registroController.expedienteDerivacionAprueba.codigoUsuario and registroController.listaExpedienteDerivacion.size() > 0}">
+                    <!--ETAPA 2 -->
+                    
+                    <h:panelGroup rendered="#{seguridadUtilController.tieneRecurso('REC_EXP002') and registroController.usuarioSession.codigo == registroController.expedienteDerivacionAprueba.codigoUsuario and registroController.listaExpedienteDerivacion.size() > 0 and registroController.expedienteDerivacionEnvia.etapa == 1}">
                         <br/>
                         <table style="width: 100%">
                             <tr>

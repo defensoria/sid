@@ -821,7 +821,7 @@
         LEFT JOIN SID_REG_EXPEDE_PERSONA G ON G.N_IDEXPEDIENTE = A.N_IDEXPEDIENTE
         LEFT JOIN SID_REG_PERSONA H ON G.N_IDPERSONA = H.N_IDPERSONA
         WHERE A.C_ESTADO = 'A' 
-        AND L.N_ID_OD  = #{idOficinaDefensorial}
+        AND A.N_CODIGOOD  = #{idOficinaDefensorial}
         <if test="tipoBusqueda == 1">
             ORDER BY A.N_IDEXPEDIENTE DESC
         </if>

@@ -419,17 +419,17 @@
                                                                         <span style="color:#3183b9;font-size:large;vertical-align: top" class="glyphicon glyphicon-chevron-down trigger2"></span>
                                                                     </a>
                                                                 </h:panelGroup>
-                                                                <h:panelGroup  rendered="#{registroController.etapaEstado.verEtapa != 0 and registroController.etapaEstado.verEtapa != null and !seguridadUtilController.tieneRecurso('REC_EXP017')}">
-                                                                    <a class="trigger2">
-                                                                        <span style="color:#3183b9;font-size:large;vertical-align: top" class="glyphicon glyphicon-chevron-down trigger2"></span>
-                                                                    </a>
-                                                                </h:panelGroup>
-                                                                <h:panelGroup  rendered="#{(registroController.etapaEstado.verEtapa == 1 or registroController.etapaEstado.verEtapa == 5) and seguridadUtilController.tieneRecurso('REC_EXP017')}">
+                                                                <h:panelGroup rendered="#{(registroController.etapaEstado.verEtapa == 1 or registroController.etapaEstado.verEtapa == 5) and seguridadUtilController.tieneRecurso('REC_EXP017')}">
                                                                     <a href="#" class="trigger2">
                                                                         <span style="color:#3183b9;font-size:large;vertical-align: top" class="glyphicon glyphicon-chevron-down trigger2"></span>
                                                                     </a>
                                                                 </h:panelGroup>
-                                                                <h:panelGroup  rendered="#{(registroController.etapaEstado.verEtapa != 1 and registroController.etapaEstado.verEtapa != 5) and seguridadUtilController.tieneRecurso('REC_EXP017')}">
+                                                                <h:panelGroup rendered="#{registroController.etapaEstado.verEtapa != 0 and registroController.etapaEstado.verEtapa != null and !seguridadUtilController.tieneRecurso('REC_EXP017')}">
+                                                                    <a class="trigger2">
+                                                                        <span style="color:#3183b9;font-size:large;vertical-align: top" class="glyphicon glyphicon-chevron-down trigger2"></span>
+                                                                    </a>
+                                                                </h:panelGroup>
+                                                                <h:panelGroup rendered="#{(registroController.etapaEstado.verEtapa != 1 and registroController.etapaEstado.verEtapa != 5 and registroController.expediente.version != 0 and registroController.expediente.version != null) and seguridadUtilController.tieneRecurso('REC_EXP017')}">
                                                                     <a class="trigger2">
                                                                         <span style="color:#3183b9;font-size:large;vertical-align: top" class="glyphicon glyphicon-chevron-down trigger2"></span>
                                                                     </a>
