@@ -356,7 +356,7 @@
                                                                 }
                                                             </script>   
                                                             
-                                                            <h:panelGroup rendered="#{(registroController.usuarioSession.codigoOD == '20000' and registroController.expediente.general != 'C') or (registroController.expediente.general != 'C' and registroController.esSupervisor() and registroController.etapaEstado.verEtapa > 0)}">
+                                                            <h:panelGroup rendered="#{registroController.usuarioSession.codigoOD == '20000' and registroController.expediente.general != 'C' and registroController.etapaEstado.verEtapa > 0}">
                                                                 <a class="btn btn-info" jsf:action="#{registroController.extenderPlazo()}" jsf:onclick="loadingModal()">
                                                                     <span class="glyphicon glyphicon-user" />Extender plazo
                                                                 </a>
@@ -368,7 +368,7 @@
                                                                     <f:ajax render="idPanelAsignar" onevent="modalAsignar" />
                                                                 </a>
                                                             </h:panelGroup>
-                                                            <h:panelGroup rendered="#{seguridadUtilController.tieneRecurso('REC_EXP016') and registroController.esSupervisor() and registroController.expediente.general != 'C' and (registroController.etapaEstado.verEtapa == 1 or registroController.etapaEstado.verEtapa == 5)}">
+                                                            <h:panelGroup rendered="#{seguridadUtilController.tieneRecurso('REC_EXP016') and registroController.esSupervisor and registroController.expediente.general != 'C' and (registroController.etapaEstado.verEtapa == 1 or registroController.etapaEstado.verEtapa == 5)}">
                                                                 <a class="btn btn-warning" jsf:action="#{registroController.limpiarModalAsignar()}" jsf:onclick="loadingModal()">
                                                                     <span class="glyphicon glyphicon-user" />Asignar Expediente
                                                                     <f:ajax render="idPanelAsignar" onevent="modalAsignar" />
@@ -448,8 +448,16 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <style>.alink:hover{text-decoration:none}.alink:link{text-decoration:none}.alink:active{text-decoration:none}</style>
-                                                                <script>$('.trigger2').popover({html: true, placement: 'bottom', tabindex: '0', trigger: 'focus', title: function () {
+                                                                <style>
+                                                                    .alink:hover{text-decoration:none
+                                                                                }
+                                                                    .alink:link{text-decoration:none
+                                                                                }
+                                                                    .alink:active{text-decoration:none
+                                                                                }
+                                                                </style>
+                                                                <script>
+                                                                    $('.trigger2').popover({html: true, placement: 'bottom', tabindex: '0', trigger: 'focus', title: function () {
                                                                             return $(this).parent().find('.head').html();
                                                                         }, content: function () {
                                                                             return $(this).parent().find('.content').html();
@@ -513,9 +521,10 @@
                                                                             }
                                                                             $("#idTextTipoClasificacion").css("color", "#3071A9");
                                                                         }
-                                                                    });</script>
+                                                                    });            
+                                                                </script>
                                                             </div>
-                                                            <h:panelGroup rendered="#{(registroController.etapaEstado.verEtapa == 1 or registroController.etapaEstado.verEtapa == 5) and seguridadUtilController.tieneRecurso('REC_EXP017') and registroController.esSupervisor() and registroController.expediente.general != 'C'}">
+                                                            <h:panelGroup rendered="#{(registroController.etapaEstado.verEtapa == 1 or registroController.etapaEstado.verEtapa == 5) and seguridadUtilController.tieneRecurso('REC_EXP017') and registroController.esSupervisor and registroController.expediente.general != 'C'}">
                                                                 <a class="btn btn-warning" jsf:action="#{registroController.guardarVersionSupervisor(0)}" jsf:onclick="loadingModal()">
                                                                     <span class="glyphicon glyphicon-floppy-disk"/>Cambiar tipo
                                                                 </a>
@@ -1816,7 +1825,7 @@
                                                                                 <tr>
                                                                                     <td style="padding-bottom: 10px" colspan="2">
                                                                                         <br/>
-                                                                                        <h:outputText rendered="#{registroController.expediente.tipoClasificion == '01'}" value="Atuación o responsabilidad de entidad" class="text-bold" style="font-size: 1.2em; color: red"/>
+                                                                                        <h:outputText rendered="#{registroController.expediente.tipoClasificion == '01'}" value="Actuación o responsabilidad de entidad" class="text-bold" style="font-size: 1.2em; color: red"/>
 
                                                                                     </td>
                                                                                 </tr>

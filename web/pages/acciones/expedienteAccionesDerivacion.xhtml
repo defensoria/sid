@@ -6,18 +6,17 @@
       xmlns:gc="http://xmlns.jcp.org/jsf/composite/gc">
 
     <ui:composition template="../template/templateCabeceraExpediente.xhtml">
-
         <ui:define name="content2">
-            <gc:confirmSubmit bean="#{registroController.enviarDerivacion()}" classGC="confirmacion7" mensaje="Esta seguro de derivar el expediente?" />
-            <gc:confirmSubmit bean="#{registroController.aprobarDerivacion()}" classGC="confirmacion5" mensaje="Esta seguro de derivar el expediente?" />
-            <gc:confirmSubmit bean="#{registroController.reasignarDerivacion()}" classGC="confirmacion6" mensaje="Esta seguro de derivar el expediente?" />
+            <gc:confirmSubmit bean="#{registroController.enviarDerivacion()}" classGC="confirmacion7" mensaje="Esta seguro de crear la derivación de el expediente?" />
+            <gc:confirmSubmit bean="#{registroController.aprobarDerivacion()}" classGC="confirmacion5" mensaje="Esta seguro de aprobar / desaprobar la derivación del expediente?" />
+            <gc:confirmSubmit bean="#{registroController.reasignarDerivacion()}" classGC="confirmacion16" mensaje="Esta seguro de aceptar / rechazar la derivación del expediente?" />
             <script>
                 function confirmar5() {
                     $(".confirmacion5").modal('show');
                 }
 
-                function confirmar6() {
-                    $(".confirmacion6").modal('show');
+                function confirmar16() {
+                    $(".confirmacion16").modal('show');
                 }
 
                 function confirmar7() {
@@ -86,7 +85,7 @@
                         </div>
                     </h:panelGroup>
                     <!--ETAPA 1 -->
-                    <h:panelGroup rendered="#{seguridadUtilController.tieneRecurso('REC_EXP001') and registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo and registroController.etapaEstado.idEstado == null and registroController.expedienteDerivacionEnvia.etapa == null}">
+                    <h:panelGroup rendered="#{(seguridadUtilController.tieneRecurso('REC_EXP001') and registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo and registroController.etapaEstado.idEstado == null and !registroController.esSupervisor) or (registroController.esSupervisor and seguridadUtilController.tieneRecurso('REC_EXP002') and registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo and registroController.expedienteDerivacionEnvia.etapa == null)}">
                         <table style="width: 100%">
                             <tr>
                                 <td colspan="2" ><br/>
@@ -117,9 +116,10 @@
                                             <table style="width: 100%">
                                                 <tr>
                                                     <td style="padding-right: 30px; width: 60%" rowspan="2">
-                                                        <label>Descripción:</label>
-                                                        <textarea jsf:value="#{registroController.expedienteDerivacionEnvia.detalle}" jsf:rendered="#{registroController.expedienteDerivacionEnvia.id == null}" rows="6" style="width: 100%" maxlength="1300" placeholder="Descripción"/>
-                                                        <br/><h:outputText value="#{registroController.expedienteDerivacionEnvia.detalle}" rendered="#{registroController.expedienteDerivacionEnvia.id != null}"/>
+                                                        <label>Descripción de la derivación:</label>
+                                                        <h:outputText value="(max: 4000 carateres)" rendered="#{registroController.expedienteDerivacionEnvia.id == null}" style="color: red" />
+                                                        <textarea jsf:value="#{registroController.expedienteDerivacionEnvia.detalle}" jsf:rendered="#{registroController.expedienteDerivacionEnvia.id == null}" rows="6" style="width: 100%" maxlength="4000" placeholder="Descripción"/>
+                                                        <br/><h:outputText style="font-size: 1.3em;" value="#{registroController.expedienteDerivacionEnvia.detalle}" rendered="#{registroController.expedienteDerivacionEnvia.id != null}"/>
                                                     </td>
                                                     <td style="vertical-align: top">
                                                         <label>Oficina Defensorial:</label>
@@ -149,8 +149,7 @@
                         </table>
                     </h:panelGroup>
                     <!--ETAPA 2 -->
-                    
-                    <h:panelGroup rendered="#{seguridadUtilController.tieneRecurso('REC_EXP002') and registroController.usuarioSession.codigo == registroController.expedienteDerivacionAprueba.codigoUsuario and registroController.listaExpedienteDerivacion.size() > 0 and registroController.expedienteDerivacionEnvia.etapa == 1}">
+                    <h:panelGroup rendered="#{seguridadUtilController.tieneRecurso('REC_EXP002') and registroController.usuarioSession.codigo == registroController.expedienteDerivacionAprueba.codigoUsuario and registroController.listaExpedienteDerivacion.size() > 0 and registroController.expedienteDerivacionEnvia.etapa == 1 and registroController.esSupervisor}">
                         <br/>
                         <table style="width: 100%">
                             <tr>
@@ -174,8 +173,8 @@
                                             <table style="width: 100%">
                                                 <tr>
                                                     <td style="padding-right: 30px; width: 60%" rowspan="2">
-                                                        <label>Descripción:</label>
-                                                        <br/><h:outputText rendered="#{registroController.expedienteDerivacionEnvia.id != null}" value="#{registroController.expedienteDerivacionEnvia.detalle}" />
+                                                        <label>Descripción de la derivación:</label>
+                                                        <br/><h:outputText style="font-size: 1.3em" rendered="#{registroController.expedienteDerivacionEnvia.id != null}" value="#{registroController.expedienteDerivacionEnvia.detalle}" />
                                                     </td>
                                                     <td style="vertical-align: top">
                                                         <label>Oficina Defensorial:</label>
@@ -225,9 +224,10 @@
                                                 <table style="width: 100%">
                                                     <tr>
                                                         <td style="padding-right: 30px; width: 60%">
-                                                            <label>Motivo de la aprobación / desaprobación:</label>
-                                                            <textarea jsf:rendered="#{registroController.expedienteDerivacionAprueba.id == null}" jsf:value="#{registroController.expedienteDerivacionAprueba.detalle}" rows="6" style="width: 100%" maxlength="1300" placeholder="Motivo"/>
-                                                            <br/><h:outputText rendered="#{registroController.expedienteDerivacionAprueba.id != null}" value="#{registroController.expedienteDerivacionAprueba.detalle}" />
+                                                            <label>Descripción de la derivación:</label>
+                                                            <h:outputText rendered="#{registroController.expedienteDerivacionAprueba.id == null}" style="color: red;" value="(max: 4000 carateres)" />
+                                                            <textarea jsf:rendered="#{registroController.expedienteDerivacionAprueba.id == null}" jsf:value="#{registroController.expedienteDerivacionAprueba.detalle}" rows="6" style="width: 100%" maxlength="4000" placeholder="Motivo"/>
+                                                            <br/><h:outputText rendered="#{registroController.expedienteDerivacionAprueba.id != null}" value="#{registroController.expedienteDerivacionAprueba.detalle}" style="font-size: 1.3em"/>
                                                         </td>
                                                         <td style="vertical-align: top">
                                                             <h:panelGroup id="idPanelapob">
@@ -253,6 +253,7 @@
                             </tr>
                         </table>
                     </h:panelGroup>
+                    
                     <h:panelGroup rendered="#{seguridadUtilController.tieneRecurso('REC_EXP003') and registroController.usuarioSession.codigo == registroController.expedienteDerivacionReasigna.codigoUsuario}">
                         <br/>
                         <table style="width: 100%">
@@ -280,13 +281,13 @@
                                             <table style="width: 100%">
                                                 <tr>
                                                     <td style="padding-right: 30px; width: 50%">
-                                                        <label>Motivo de la aprobación / desaprobación</label>
+                                                        <label>Descripción de la derivación:</label>
                                                         <h:selectOneRadio value="#{registroController.expedienteDerivacionAprueba.aprueba}" disabled="true">
                                                             <f:selectItem itemLabel="Aprobar" itemValue="SI" />
                                                             <f:selectItem itemLabel="Desaprobar" itemValue="NO" />
                                                         </h:selectOneRadio>
                                                         <br/>
-                                                        <h:outputText value="#{registroController.expedienteDerivacionAprueba.detalle}" />
+                                                        <h:outputText style="font-size: 1.3em" value="#{registroController.expedienteDerivacionAprueba.detalle}" />
                                                     </td>
                                                     <td style="vertical-align: top">
                                                         <label>Oficina Defensorial:</label>
@@ -325,7 +326,7 @@
                                             <div style="text-align: right">
                                                 <br/>
                                                 <h:panelGroup rendered="#{registroController.expedienteDerivacionReasigna.id == null}">
-                                                    <a class="btn btn-primary" onclick="confirmar6()">
+                                                    <a class="btn btn-primary" onclick="confirmar16()">
                                                         <span class="glyphicon glyphicon-share-alt"/>Enviar
                                                     </a>
                                                 </h:panelGroup>    
@@ -336,7 +337,8 @@
                                                     <tr>
                                                         <td style="padding-right: 30px; width: 50%">
                                                             <label>Motivo de aceptar / rechazar</label>
-                                                            <textarea jsf:rendered="#{registroController.expedienteDerivacionReasigna.id == null}" jsf:value="#{registroController.expedienteDerivacionReasigna.detalle}" rows="6" style="width: 100%" maxlength="1300" placeholder="Motivo"/>
+                                                            <h:outputText rendered="#{registroController.expedienteDerivacionReasigna.id == null}" style="color: red" value="(max: 4000 carateres)" />
+                                                            <textarea jsf:rendered="#{registroController.expedienteDerivacionReasigna.id == null}" jsf:value="#{registroController.expedienteDerivacionReasigna.detalle}" rows="6" style="width: 100%" maxlength="4000" placeholder="Motivo"/>
                                                             <h:outputText rendered="#{registroController.expedienteDerivacionReasigna.id != null}" value="#{registroController.expedienteDerivacionAprueba.detalle}" />
                                                         </td>
                                                         <td style="vertical-align: top">

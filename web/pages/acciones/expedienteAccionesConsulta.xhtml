@@ -67,8 +67,7 @@
                         </ul>
                     </div>
 
-                    <h:panelGroup rendered="#{registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo}">
-
+                    <h:panelGroup rendered="#{registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo and seguridadUtilController.tieneRecurso('REC_EXP004')}">
                         <table style="width: 100%">
                             <tr>
                                 <td colspan="2" >
@@ -112,8 +111,9 @@
                                                         <table style="width: 100%">
                                                             <tr>
                                                                 <td style="padding-right: 30px; width: 60%; padding-left: 10px">
-                                                                    <label style="font-size: 1.5em">Consulta</label>
-                                                                    <textarea jsf:value="#{registroController.expedienteConsultaEnvia.detalle}" rows="6" style="width: 100%" maxlength="1300" placeholder="Detalle de la consulta"/>
+                                                                    <label style="font-size: 1.5em">Detalle de la consulta:</label>
+                                                                    <span style="color: red">(max: 4000 carateres)</span>
+                                                                    <textarea jsf:value="#{registroController.expedienteConsultaEnvia.detalle}" rows="6" style="width: 100%" maxlength="4000" placeholder="Detalle de la consulta"/>
                                                                 </td>
                                                                 <td style="vertical-align: top; padding-right: 10px">
                                                                     <label style="font-size: 1.5em">Adjuntía Defensorial</label>
@@ -123,7 +123,7 @@
                                                                     </h:selectOneMenu>
                                                                     <br/>
                                                                     <label><span style="font-size: large" class="glyphicon glyphicon-paperclip" />Adjuntar archivo:</label>
-                                                                    <h:inputFile value="#{registroController.file3}"/>
+                                                                    <h:inputFile id="file0" value="#{registroController.file3}"/>
                                                                     <br/>
                                                                     <h:panelGroup rendered="#{registroController.expedienteConsultaEnvia.ruta != null}">
                                                                         <a target="_blank" href="/filesystem/#{registroController.expedienteConsultaEnvia.ruta}">
@@ -148,6 +148,7 @@
                                 </td>
                             </tr>
                         </table>
+                        
                         <h:dataTable value="#{registroController.listaExpedienteTotalesEnvia}" var="envia" class="table table-hover" binding="#{it}" rendered="#{registroController.listaExpedienteTotalesEnvia.size() > 0}">
                             <h:column>
                                 <f:facet name="header">N°</f:facet>
@@ -232,11 +233,14 @@
                                                 <table style="width: 100%">
                                                     <tr>
                                                         <td style="padding-right: 30px; width: 75%">
-                                                            <label style="font-size: 1.5em">Consulta</label>
+                                                            <label style="font-size: 1.5em">Detalle de la consulta</label>
                                                             <br/>
-                                                            <h:outputText value="#{registroController.expedienteRespuestaRecibe.detalle}" />
+                                                            <h:outputText style="font-size: 1.3em" value="#{registroController.expedienteRespuestaRecibe.detalle}" />
                                                         </td>
+                                                    </tr>
+                                                    <tr>
                                                         <td style="vertical-align: top">
+                                                            <br/><br/>
                                                             <label>Archivo consulta</label>
                                                             <h:panelGroup rendered="#{registroController.expedienteRespuestaRecibe.ruta != null}">
                                                                 <a target="_blank" href="/filesystem/#{registroController.expedienteRespuestaRecibe.ruta}">
@@ -250,11 +254,14 @@
                                                 <table style="width: 100%">
                                                     <tr>
                                                         <td style="padding-right: 30px; width: 75%">
-                                                            <label style="font-size: 1.5em">Respuesta</label>
+                                                            <label style="font-size: 1.5em">Detalle de la respuesta</label>
                                                             <br/>
-                                                            <h:outputText value="#{registroController.expedienteRespuestaRecibe.respuesta}" />
+                                                            <h:outputText style="font-size: 1.3em" value="#{registroController.expedienteRespuestaRecibe.respuesta}" />
                                                         </td>
+                                                    </tr>
+                                                    <tr>
                                                         <td style="vertical-align: top">
+                                                            <br/><br/>
                                                             <label>Archivo respuesta</label>
                                                             <h:panelGroup rendered="#{registroController.expedienteRespuestaRecibe.rutaRespuesta != null}">
                                                                 <a target="_blank" href="/filesystem/#{registroController.expedienteRespuestaRecibe.rutaRespuesta}">
@@ -380,8 +387,9 @@
                                                                     <table style="width: 100%">
                                                                         <tr>
                                                                             <td style="padding-right: 30px; width: 60%">
-                                                                                <label>Motivo de la aprobación / desaprobación</label>
-                                                                                <textarea jsf:value="#{registroController.expedienteConsultaAprueba.detalle}" rows="6" style="width: 100%" maxlength="1300" placeholder="Motivo"/>
+                                                                                <label>Detalle de la consulta:</label>
+                                                                                <span style="color: red">(max: 4000 carateres)</span>
+                                                                                <textarea jsf:value="#{registroController.expedienteConsultaAprueba.detalle}" rows="6" style="width: 100%" maxlength="4000" placeholder="Detalle de la consulta"/>
                                                                             </td>
                                                                             <td style="vertical-align: top">
                                                                                 <h:panelGroup id="idpanconsul">
@@ -399,10 +407,10 @@
                                                                                 </h:panelGroup>
                                                                                 <br/>
                                                                                 <label><span style="font-size: large" class="glyphicon glyphicon-paperclip" />Cambiar archivo:</label>
-                                                                                <h:inputFile value="#{registroController.file3}"/>
+                                                                                <h:inputFile id="file1" value="#{registroController.file7}"/>
                                                                                 <br/>
-                                                                                <h:panelGroup rendered="#{registroController.expedienteConsultaEnvia.ruta != null}">
-                                                                                    <a target="_blank" href="/filesystem/#{registroController.expedienteConsultaEnvia.ruta}">
+                                                                                <h:panelGroup rendered="#{registroController.expedienteConsultaAprueba.ruta != null}">
+                                                                                    <a target="_blank" href="/filesystem/#{registroController.expedienteConsultaAprueba.ruta}">
                                                                                         <span style="font-size: large" class="glyphicon glyphicon-link" />
                                                                                     </a>
                                                                                 </h:panelGroup>
@@ -447,12 +455,15 @@
                                                 <div class="body">
                                                     <table style="width: 100%">
                                                         <tr>
-                                                            <td style="padding-right: 30px; width: 75%">
+                                                            <td>
                                                                 <label style="font-size: 1.5em">Consulta</label>
                                                                 <br/>
-                                                                <h:outputText value="#{registroController.expedienteRespuestaAcepta.detalle}" />
+                                                                <h:outputText style="font-size: 1.3em" value="#{registroController.expedienteRespuestaAcepta.detalle}" />
                                                             </td>
+                                                        </tr>
+                                                        <tr>
                                                             <td style="vertical-align: top">
+                                                                <br/><br/>
                                                                 <label>Descargar archivo</label>
                                                                 <br/>
                                                                 <h:panelGroup rendered="#{registroController.expedienteRespuestaAcepta.ruta != null}">
@@ -467,8 +478,9 @@
                                                     <table style="width: 100%">
                                                         <tr>
                                                             <td style="padding-right: 30px; width: 75%">
-                                                                <label style="font-size: 1.5em">Respuesta</label>
-                                                                <textarea jsf:value="#{registroController.expedienteRespuestaAcepta.respuesta}" rows="6" style="width: 100%" maxlength="2600" placeholder="Motivo"/>
+                                                                <label style="font-size: 1.5em">Detalle de la respuesta:</label>
+                                                                <span style="color: red">(max: 4000 carateres)</span>
+                                                                <textarea jsf:value="#{registroController.expedienteRespuestaAcepta.respuesta}" rows="6" style="width: 100%" maxlength="4000" placeholder="Detalle de la respuesta"/>
                                                             </td>
                                                             <td style="vertical-align: top">
                                                                 <label style="font-size: 1.5em">Acepta / rechaza</label>
@@ -602,8 +614,9 @@
                                                         <table style="width: 100%">
                                                             <tr>
                                                                 <td style="padding-right: 30px; width: 60%">
-                                                                    <label>Motivo de aceptar / rechazar</label>
-                                                                    <textarea jsf:value="#{registroController.expedienteConsultaReasigna.detalle}" rows="6" style="width: 100%" maxlength="1300" placeholder="Motivo"/>
+                                                                    <label>Detalle de la consulta:</label>
+                                                                    <span style="color: red">(max: 4000 carateres)</span>
+                                                                    <textarea jsf:value="#{registroController.expedienteConsultaReasigna.detalle}" rows="6" style="width: 100%" maxlength="4000" placeholder="Detalle de la consulta"/>
                                                                 </td>
                                                                 <td style="vertical-align: top">
                                                                     <h:panelGroup id="idPanelreasignarConsul">
@@ -665,12 +678,15 @@
                                                     <br/>
                                                     <table style="width: 100%">
                                                         <tr>
-                                                            <td style="padding-right: 30px; width: 75%">
+                                                            <td>
                                                                 <label style="font-size: 1.5em">Consulta</label>
                                                                 <br/>
-                                                                <h:outputText value="#{registroController.expedienteRespuestaAprueba.detalle}" />
+                                                                <h:outputText style="font-size: 1.3em; text-align: justify" value="#{registroController.expedienteRespuestaAprueba.detalle}" />
                                                             </td>
+                                                        </tr>
+                                                        <tr>
                                                             <td style="vertical-align: top">
+                                                                <br/><br/>
                                                                 <label>Descargar archivo</label>
                                                                 <br/>
                                                                 <h:panelGroup rendered="#{registroController.expedienteRespuestaAprueba.ruta != null}">
@@ -685,8 +701,9 @@
                                                     <table style="width: 100%">
                                                         <tr>
                                                             <td style="padding-right: 30px; width: 75%">
-                                                                <label style="font-size: 1.5em">Respuesta</label>
-                                                                <textarea jsf:value="#{registroController.expedienteRespuestaAprueba.respuesta}" rows="6" style="width: 100%" maxlength="1300" placeholder="Motivo"/>
+                                                                <label style="font-size: 1.5em">Detalle de la respuesta</label>
+                                                                <span style="color: red">(max: 4000 carateres)</span>
+                                                                <textarea jsf:value="#{registroController.expedienteRespuestaAprueba.respuesta}" rows="6" style="width: 100%" maxlength="4000" placeholder="Detalle de la respuesta"/>
                                                             </td>
                                                             <td style="vertical-align: top">
                                                                 <label style="font-size: 1.5em">Aprobar / desaprobar</label>
@@ -811,12 +828,15 @@
                                                         <br/>
                                                         <table style="width: 100%">
                                                             <tr>
-                                                                <td style="padding-right: 30px; width: 75%">
-                                                                    <label style="font-size: 1.5em">Consulta</label>
+                                                                <td>
+                                                                    <label style="font-size: 1.5em">Detalle de la consulta</label>
                                                                     <br/>
                                                                     <h:outputText style="font-size: 1.3em; text-align: justify" value="#{registroController.expedienteConsultaResponde.detalle}" />
                                                                 </td>
+                                                            </tr>
+                                                            <tr>
                                                                 <td style="vertical-align: top">
+                                                                    <br/><br/>
                                                                     <label>Descargar archivo</label>
                                                                     <br/>
                                                                     <h:panelGroup rendered="#{registroController.expedienteConsultaResponde.ruta != null}">
@@ -831,8 +851,9 @@
                                                         <table style="width: 100%">
                                                             <tr>
                                                                 <td style="padding-right: 30px; width: 60%">
-                                                                    <label style="font-size: 1.5em">Respuesta</label>
-                                                                    <textarea jsf:value="#{registroController.expedienteConsultaResponde.respuesta}" rows="6" style="width: 100%" maxlength="2800" placeholder="Respuesta"/>
+                                                                    <label style="font-size: 1.5em">Detalle de la respuesta</label>
+                                                                    <span style="color: red">(max: 4000 carateres)</span>
+                                                                    <textarea jsf:value="#{registroController.expedienteConsultaResponde.respuesta}" rows="6" style="width: 100%" maxlength="4000" placeholder="Detalle de la respuesta"/>
                                                                 </td>
                                                                 <td style="vertical-align: top">
                                                                     <label><span style="font-size: large" class="glyphicon glyphicon-paperclip" />Archivo de respuesta</label>

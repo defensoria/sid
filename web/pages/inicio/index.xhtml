@@ -24,22 +24,21 @@
                 <br/>
                 <div class="panel panel-primary">
                     <script>
-                        
-                    function openModal(b){
-                        if(b.status==="success"){
-                            $("#myModal").modal("show");
-                        }
-                    }
-                    
-                    $(document).ready(function(){
-                        $(".tooltip-right").tooltip(
-                                {placement:"right",viewport:
-                                    {selector:"body",padding:2
+
+                        function openModal(b) {
+                            if (b.status === "success") {
+                                $("#myModal").modal("show");
                             }
                         }
-                                );
-                    }
+
+                        $(document).ready(function () {
+                            $(".tooltip-right").tooltip(
+                                    {placement: "right", viewport:
+                                                {selector: "body", padding: 2}
+                                    }
                             );
+                        }
+                        );
                     </script>
                     <div class="panel-body">
                         <table style="width: 100%" class="table">
@@ -77,7 +76,7 @@
                                                     <f:facet name="header">Etapa</f:facet>
                                                     <h:outputText value="#{exped.etapaDetalle}" />
                                                 </h:column>
-                                                
+
                                                 <h:column>
                                                     <f:facet name="header"><a jsf:action="#{registroController.listarExpedienteUsuarioPaginadoOrder(1,5)}">Estado general</a></f:facet>
                                                     <h:outputText rendered="#{exped.general == 'A'}" value="Trámite" />
@@ -98,11 +97,11 @@
                                                         <span class="glyphicon glyphicon-remove" style="color: red"/>
                                                     </a>
                                                     <script>
-                                                                            function confirmar4#{row3.rowIndex+1}() {
-                                                                                $(".confirmacion4#{row3.rowIndex+1}").modal('show');
-                                                                            }
-                                                                        </script>
-                                                                        <gc:confirmSubmit bean="#{registroController.inactivarExpediente(exped)}" classGC="confirmacion4#{row3.rowIndex+1}" mensaje="Esta seguro de inactivar el expediente, esta acción no se puede revertir?" />
+                                                        function confirmar4#{row3.rowIndex+1}() {
+                                                            $(".confirmacion4#{row3.rowIndex+1}").modal('show');
+                                                        }
+                                                    </script>
+                                                    <gc:confirmSubmit bean="#{registroController.inactivarExpediente(exped)}" classGC="confirmacion4#{row3.rowIndex+1}" mensaje="Esta seguro de inactivar el expediente, esta acción no se puede revertir?" />
                                                 </h:column>
                                             </h:dataTable>
                                             <ul class="pager">

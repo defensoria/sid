@@ -11,14 +11,14 @@
         <ui:define name="content2">
             <gc:confirmSubmit bean="#{registroController.enviarSuspencion()}" classGC="confirmacion7" mensaje="Esta seguro de crear la solicitud de suspensión?" />
             <gc:confirmSubmit bean="#{registroController.aprobarSuspencion()}" classGC="confirmacion5" mensaje="Esta seguro de aprobar / desaprobar la solicitud de suspensión?" />
-            <gc:confirmSubmit bean="#{registroController.aceptarSuspencion()}" classGC="confirmacion6" mensaje="Esta seguro de aceptar / rechazar la solicitud de suspensión?" />
+            <gc:confirmSubmit bean="#{registroController.aceptarSuspencion()}" classGC="confirmacion17" mensaje="Esta seguro de aceptar / rechazar la solicitud de suspensión?" />
             <script>
                 function confirmar5() {
                     $(".confirmacion5").modal('show');
                 }
 
                 function confirmar6() {
-                    $(".confirmacion6").modal('show');
+                    $(".confirmacion17").modal('show');
                 }
 
                 function confirmar7() {
@@ -42,15 +42,15 @@
                     </a>
                 </li>
                 <li role="presentation">
-                        <a style="cursor: pointer" jsf:rendered="#{registroController.etapaEstado.idEtapa > 0}" jsf:action="#{registroController.cargarHistorial()}">
-                            <span style="font-size: medium; color: purple" class="glyphicon glyphicon-list-alt" > Historial</span>
-                        </a>
-                    </li>
+                    <a style="cursor: pointer" jsf:rendered="#{registroController.etapaEstado.idEtapa > 0}" jsf:action="#{registroController.cargarHistorial()}">
+                        <span style="font-size: medium; color: purple" class="glyphicon glyphicon-list-alt" > Historial</span>
+                    </a>
+                </li>
                 <li role="presentation">
-                        <a style="cursor: pointer" jsf:rendered="#{registroController.etapaEstado.idEtapa > 0}" jsf:action="#{registroController.cargarCompartir()}">
-                            <span style="font-size: medium; color: purple" class="glyphicon glyphicon-list-alt" > Compartir</span>
-                        </a>
-                    </li>
+                    <a style="cursor: pointer" jsf:rendered="#{registroController.etapaEstado.idEtapa > 0}" jsf:action="#{registroController.cargarCompartir()}">
+                        <span style="font-size: medium; color: purple" class="glyphicon glyphicon-list-alt" > Compartir</span>
+                    </a>
+                </li>
             </ul>
 
             <div class="panel panel-default">
@@ -86,7 +86,8 @@
                             </ul>
                         </div>
                     </h:panelGroup>
-                    <h:panelGroup rendered="#{(seguridadUtilController.tieneRecurso('REC_EXP009') or registroController.listaExpedienteSuspencion.size() == 0) and registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo}">
+                    
+                    <h:panelGroup rendered="#{(seguridadUtilController.tieneRecurso('REC_EXP009') and registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo and !registroController.esSupervisor) or (seguridadUtilController.tieneRecurso('REC_EXP009') and registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo and registroController.esSupervisor and registroController.expedienteSuspencionEnvia.etapa == null)}">
                         <table style="width: 100%">
                             <tr>
                                 <td colspan="2" ><br/>
@@ -118,8 +119,9 @@
                                                 <tr>
                                                     <td style="padding-right: 30px; width: 60%" rowspan="2">
                                                         <label>Descripción:</label>
-                                                        <textarea jsf:value="#{registroController.expedienteSuspencionEnvia.detalle}" jsf:rendered="#{registroController.expedienteSuspencionEnvia.id == null}" rows="6" style="width: 100%" maxlength="1300" placeholder="Motivo"/>
-                                                        <br/><h:outputText value="#{registroController.expedienteSuspencionEnvia.detalle}" rendered="#{registroController.expedienteSuspencionEnvia.id != null}"/>
+                                                        <h:outputText value="(max: 4000 carateres)" style="color: red" rendered="#{registroController.expedienteSuspencionEnvia.id == null}"/>
+                                                        <textarea jsf:value="#{registroController.expedienteSuspencionEnvia.detalle}" jsf:rendered="#{registroController.expedienteSuspencionEnvia.id == null}" rows="6" style="width: 100%" maxlength="4000" placeholder="Motivo"/>
+                                                        <br/><h:outputText value="#{registroController.expedienteSuspencionEnvia.detalle}" style="font-size: 1.3em" rendered="#{registroController.expedienteSuspencionEnvia.id != null}"/>
                                                     </td>
                                                     <td style="vertical-align: top">
                                                         <label>Adjuntía Defensorial:</label>
@@ -134,7 +136,7 @@
                                                         <h:inputFile rendered="#{registroController.expedienteSuspencionEnvia.id == null}" class="cMedio" value="#{registroController.file4}"/>
                                                         <br/>
                                                         <h:panelGroup rendered="#{registroController.expedienteSuspencionEnvia.ruta != null}">
-                                                            <a target="_blank" href="/filesystem/#{registroController.expedienteSuspencionEnvia.ruta}">
+                                                            Descargar archivo: <a target="_blank" href="/filesystem/#{registroController.expedienteSuspencionEnvia.ruta}">
                                                                 <span style="font-size: large" class="glyphicon glyphicon-link" />
                                                             </a>
                                                         </h:panelGroup>
@@ -147,8 +149,8 @@
                             </tr>
                         </table>
                     </h:panelGroup>
-                    
-                    <h:panelGroup rendered="#{seguridadUtilController.tieneRecurso('REC_EXP010') and registroController.listaExpedienteSuspencion.size() > 0 and registroController.usuarioSession.codigo == registroController.expedienteSuspencionAprueba.codigoUsuario}">
+
+                    <h:panelGroup rendered="#{seguridadUtilController.tieneRecurso('REC_EXP010') and registroController.listaExpedienteSuspencion.size() > 0 and registroController.usuarioSession.codigo == registroController.expedienteSuspencionAprueba.codigoUsuario and registroController.esSupervisor}">
                         <br/>
                         <table style="width: 100%">
                             <tr>
@@ -172,9 +174,9 @@
                                             <table style="width: 100%">
                                                 <tr>
                                                     <td style="padding-right: 30px; width: 60%" rowspan="2">
-                                                        <label>Descripción:</label>
+                                                        <label>Descripción de la suspención:</label>
                                                         <br/>
-                                                        <h:outputText value="#{registroController.expedienteSuspencionEnvia.detalle}" />
+                                                        <h:outputText style="font-size: 1.3em" value="#{registroController.expedienteSuspencionEnvia.detalle}" />
                                                     </td>
                                                     <td style="vertical-align: top">
                                                         <label>Adjuntía Defensorial:</label>
@@ -223,9 +225,10 @@
                                                 <table style="width: 100%">
                                                     <tr>
                                                         <td style="padding-right: 30px; width: 60%">
-                                                            <label>Motivo de la aprobación / desaprobación</label>
-                                                            <textarea jsf:rendered="#{registroController.expedienteSuspencionAprueba.id == null}" jsf:value="#{registroController.expedienteSuspencionAprueba.detalle}" rows="6" style="width: 100%" maxlength="1300" placeholder="Motivo"/>
-                                                            <br/><h:outputText rendered="#{registroController.expedienteSuspencionAprueba.id != null}" value="#{registroController.expedienteSuspencionAprueba.detalle}" />
+                                                            <label>Descripción de la suspención: </label>
+                                                            <h:outputText value="(max: 4000 carateres)" style="color: red" rendered="#{registroController.expedienteSuspencionAprueba.id == null}"/>
+                                                            <textarea jsf:rendered="#{registroController.expedienteSuspencionAprueba.id == null}" jsf:value="#{registroController.expedienteSuspencionAprueba.detalle}" rows="6" style="width: 100%" maxlength="4000" placeholder="Motivo"/>
+                                                            <br/><h:outputText style="font-size: 1.3em" rendered="#{registroController.expedienteSuspencionAprueba.id != null}" value="#{registroController.expedienteSuspencionAprueba.detalle}" />
                                                         </td>
                                                         <td style="vertical-align: top">
                                                             <h:panelGroup id="idPanelapob">
@@ -242,13 +245,13 @@
                                                             </h:panelGroup>
                                                             <br/>
                                                             <label jsf:rendered="#{registroController.expedienteSuspencionAprueba.ruta == null}"><span style="font-size: large" class="glyphicon glyphicon-paperclip" />Adjuntar archivo:</label>
-                                                        <h:inputFile rendered="#{registroController.expedienteSuspencionAprueba.id == null}" class="cMedio" value="#{registroController.file4}"/>
-                                                        <br/>
-                                                        <h:panelGroup rendered="#{registroController.expedienteSuspencionAprueba.ruta != null}">
-                                                            <a target="_blank" href="/filesystem/#{registroController.expedienteSuspencionAprueba.ruta}">
-                                                                <span style="font-size: large" class="glyphicon glyphicon-link" />
-                                                            </a>
-                                                        </h:panelGroup>
+                                                            <h:inputFile rendered="#{registroController.expedienteSuspencionAprueba.id == null}" class="cMedio" value="#{registroController.file4}"/>
+                                                            <br/>
+                                                            <h:panelGroup rendered="#{registroController.expedienteSuspencionAprueba.ruta != null}">
+                                                                Descargar archivo :<a target="_blank" href="/filesystem/#{registroController.expedienteSuspencionAprueba.ruta}">
+                                                                    <span style="font-size: large" class="glyphicon glyphicon-link" />
+                                                                </a>
+                                                            </h:panelGroup>
                                                         </td>
                                                     </tr>
                                                 </table>
@@ -286,7 +289,7 @@
                                             <table style="width: 100%">
                                                 <tr>
                                                     <td style="padding-right: 30px; width: 50%">
-                                                        <label>Motivo de la aprobación / desaprobación</label>
+                                                        <label>Descripción de la suspención:</label>
                                                         <h:selectOneRadio value="#{registroController.expedienteSuspencionAprueba.aprueba}" disabled="true">
                                                             <f:selectItem itemLabel="Aprobar" itemValue="SI" />
                                                             <f:selectItem itemLabel="Desaprobar" itemValue="NO" />
@@ -302,8 +305,8 @@
                                                         <br/>
                                                         <br/>
                                                         <br/>
-                                                        Descargar archivo: <h:panelGroup rendered="#{registroController.expedienteSuspencionEnvia.ruta != null}">
-                                                            <a target="_blank" href="/filesystem/#{registroController.expedienteSuspencionEnvia.ruta}">
+                                                        Descargar archivo: <h:panelGroup rendered="#{registroController.expedienteSuspencionAprueba.ruta != null}">
+                                                            <a target="_blank" href="/filesystem/#{registroController.expedienteSuspencionAprueba.ruta}">
                                                                 <span style="font-size: large" class="glyphicon glyphicon-link" />
                                                             </a>
                                                         </h:panelGroup>
@@ -341,7 +344,8 @@
                                                     <tr>
                                                         <td style="padding-right: 30px; width: 50%">
                                                             <label>Motivo de aceptar / rechazar</label>
-                                                            <textarea jsf:rendered="#{registroController.expedienteSuspencionAcepta.id == null}" jsf:value="#{registroController.expedienteSuspencionAcepta.detalle}" rows="6" style="width: 100%" maxlength="1300" placeholder="Motivo"/>
+                                                            <h:outputText value="(max: 4000 carateres)" style="color: red" rendered="#{registroController.expedienteSuspencionAcepta.id == null}"/>
+                                                            <textarea jsf:rendered="#{registroController.expedienteSuspencionAcepta.id == null}" jsf:value="#{registroController.expedienteSuspencionAcepta.detalle}" rows="6" style="width: 100%" maxlength="4000" placeholder="Motivo"/>
                                                             <br/><h:outputText rendered="#{registroController.expedienteSuspencionAcepta.id != null}" value="#{registroController.expedienteSuspencionAcepta.detalle}" />
                                                         </td>
                                                         <td style="vertical-align: top">
@@ -352,7 +356,7 @@
                                                                     <f:ajax render="idPanelrech" />
                                                                 </h:selectOneRadio>
                                                                 <br/>
-                                                                
+
                                                             </h:panelGroup>
                                                         </td>
                                                     </tr>

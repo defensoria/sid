@@ -280,6 +280,8 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     private Part file5;
 
     private Part file6;
+    
+    private Part file7;
 
     private boolean verBotonRegistrarExpediente = true;
 
@@ -342,6 +344,8 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     private List<ExpedienteHistorial> listaHistorialExpediente;
     
     private String usuarioCompartir;
+    
+    private Boolean esSupervisor;
 
     @Autowired
     private ExpedienteService expedienteService;
@@ -1518,6 +1522,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             for (ExpedienteConsulta ec : lista) {
                 if (ec.getEtapa() == 1) {
                     listaExpedienteTotalesEnvia.add(ec);
+                    listaExpedienteTotalesEnvia = new ArrayList<>();
                     listaExpedienteTotalesAprueba.add(ec);
                 }
                 if (ec.getEtapa() == 2) {
@@ -1927,7 +1932,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 return false;
             }
             setExpedienteConsultaPadre(expedienteConsultaAprueba);
-            String ruta1 = uploadArchive(file3);
+            String ruta1 = uploadArchive(file7);
             if (ruta1 != null) {
                 expedienteConsultaPadre.setRuta(ruta1);
             }
@@ -2089,20 +2094,20 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         return false;
     }
     
-    public Boolean esSupervisor(){
+    public boolean esSupervisor(){
         try {
             Usuario u = usuarioService.buscarUsuarioOne(expediente.getUsuarioRegistro());
             if(Objects.equals(u.getCodigoOD(), usuarioSession.getCodigoOD())){
                 FacesContext context = FacesContext.getCurrentInstance();
                 SeguridadUtilController seguridadUtilController = (SeguridadUtilController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "seguridadUtilController");
                 if(seguridadUtilController.tieneRol("ROL0000002") || seguridadUtilController.tieneRol("ROL0000004")){
-                    return true;
+                    return esSupervisor = true;
                 }
             }   
         } catch (Exception e) {
             log.error("ERROR - esSupervisor()" + e);
         }
-        return false;
+        return esSupervisor = false;
     }
 
     public boolean respuestaAprobar() {
@@ -2278,6 +2283,8 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             expedienteSuspencionAprueba.setCodigoUsuario(usuarioSession.getCodigo());
             expedienteSuspencionAprueba.setNombreUsuario(usuarioSession.getNombre() + " " + usuarioSession.getApellidoPaterno() + " " + usuarioSession.getApellidoMaterno());
             expedienteSuspencionAprueba.setFecha(new Date());
+            String ruta = uploadArchive(file4);
+            expedienteSuspencionAprueba.setRuta(ruta);
             expedienteSuspencionService.expedienteSuspencionInsertar(expedienteSuspencionAprueba);
             if (StringUtils.equals(expedienteSuspencionAprueba.getAprueba(), "SI")) {
                 enviarMensajeSuspencionAprobacion();
@@ -2386,6 +2393,8 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             expedienteAmpliacionAprueba.setCodigoUsuario(usuarioSession.getCodigo());
             expedienteAmpliacionAprueba.setNombreUsuario(usuarioSession.getNombre() + " " + usuarioSession.getApellidoPaterno() + " " + usuarioSession.getApellidoMaterno());
             expedienteAmpliacionAprueba.setFecha(new Date());
+            String ruta = uploadArchive(file4);
+            expedienteAmpliacionAprueba.setRuta(ruta);
             expedienteAmpliacionService.expedienteAmpliacionInsertar(expedienteAmpliacionAprueba);
             if (StringUtils.equals(expedienteAmpliacionAprueba.getAprueba(), "SI")) {
                 enviarMensajeAmpliacionAprobacion();
@@ -3279,6 +3288,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             setExpediente(e);
             cargarEtiquetas();
             cargarPersonasEntidades();
+            esSupervisor();
             if (expediente.getVersion() == 0) {
                 inicializarEtapaEstado(0);
             } else {
@@ -4036,11 +4046,12 @@ public class RegistroController extends AbstractManagedBean implements Serializa
 
     public void guardarVersion3(String codigoUsuario) {
         try {
+            Usuario u = usuarioService.buscarUsuarioOne(codigoUsuario);
             Long idExpedienteOld = null;
             if (expediente.getId() != null) {
                 idExpedienteOld = expediente.getId();
             }
-            guardar1(codigoUsuario);
+            guardarExpedienteDerivado(u);
             guardarEtapaEstado(idExpedienteOld);
             inicializarEtapaEstado(1);
         } catch (Exception e) {
@@ -4135,7 +4146,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
 
     }
 
-    private void guardar1(String codigoUsuario) {
+    private void guardarExpedienteDerivado(Usuario usu) {
         try {
             expediente.setEtiqueta(encadenarEtiquetas());
             if (expediente.getId() == null || expediente.getVersion() == 0) {
@@ -4143,7 +4154,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                     expediente.setEstado("I");
                     expedienteService.expedienteUpdate(expediente);
                 }
-                expediente.setUsuarioRegistro(codigoUsuario);
+                expediente.setUsuarioRegistro(usu.getCodigo());
                 expediente.setVersion(1);
                 generarCodigoExpediente();
                 expediente.setFechaRegistro(new Date());
@@ -4152,9 +4163,10 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 expediente.setEstado("I");
                 expedienteService.expedienteUpdate(expediente);
             }
-            expediente.setUsuarioRegistro(codigoUsuario);
+            expediente.setUsuarioRegistro(usu.getCodigo());
             expediente.setIndDerivado(1);
             expediente.setEstado("A");
+            expediente.setCodigoOD(usu.getCodigoOD());
             expedienteService.expedienteInsertar(expediente);
             insertListasPersonaEntidad();
         } catch (Exception e) {
@@ -5091,8 +5103,6 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 }
                 return ruta;
             }
-        
-
         return null;
     }
 
@@ -5995,6 +6005,22 @@ public class RegistroController extends AbstractManagedBean implements Serializa
 
     public void setUsuarioCompartir(String usuarioCompartir) {
         this.usuarioCompartir = usuarioCompartir;
+    }
+
+    public Part getFile7() {
+        return file7;
+    }
+
+    public void setFile7(Part file7) {
+        this.file7 = file7;
+    }
+
+    public Boolean getEsSupervisor() {
+        return esSupervisor;
+    }
+
+    public void setEsSupervisor(Boolean esSupervisor) {
+        this.esSupervisor = esSupervisor;
     }
 
 }

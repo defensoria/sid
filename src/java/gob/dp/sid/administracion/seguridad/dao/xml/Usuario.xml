@@ -176,6 +176,9 @@
         <if test="codigoOD!=null">
             ,N_ID_OD = #{codigoOD}
         </if>
+        <if test="codigoOD!=null">
+            ,c_iddepartamento = #{idDepartamento}
+        </if>
         where codigo_usuario = #{codigo}
     </update>
 

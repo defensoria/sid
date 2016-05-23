@@ -360,7 +360,7 @@
                                                                     }
                                                                 }
                                                             </script>
-                                                            <h:panelGroup rendered="#{(registroController.usuarioSession.codigoOD == '20000' and registroController.expediente.general != 'C') or (registroController.expediente.general != 'C' and registroController.esSupervisor() and registroController.etapaEstado.verEtapa > 0)}">
+                                                            <h:panelGroup rendered="#{registroController.usuarioSession.codigoOD == '20000' and registroController.expediente.general != 'C' and registroController.etapaEstado.verEtapa > 0}">
                                                                 <a class="btn btn-info" jsf:action="#{registroController.extenderPlazo()}" jsf:onclick="loadingModal()">
                                                                     <span class="glyphicon glyphicon-user" />Extender plazo
                                                                 </a>
@@ -371,7 +371,7 @@
                                                                     <f:ajax render="idPanelAsignar" onevent="modalAsignar" />
                                                                 </a>
                                                             </h:panelGroup>
-                                                            <h:panelGroup rendered="#{seguridadUtilController.tieneRecurso('REC_EXP016') and registroController.esSupervisor() and registroController.expediente.general != 'C'}">
+                                                            <h:panelGroup rendered="#{seguridadUtilController.tieneRecurso('REC_EXP016') and registroController.esSupervisor and registroController.expediente.general != 'C'}">
                                                                 <a class="btn btn-warning" jsf:action="#{registroController.limpiarModalAsignar()}" jsf:onclick="loadingModal()">
                                                                     <span class="glyphicon glyphicon-user" />Asignar Expediente
                                                                     <f:ajax render="idPanelAsignar" onevent="modalAsignar" />
@@ -518,7 +518,7 @@
                                                                         }
                                                                     });</script>
                                                             </div>
-                                                            <h:panelGroup  rendered="#{(registroController.etapaEstado.verEtapa == 1 or registroController.etapaEstado.verEtapa == 5) and seguridadUtilController.tieneRecurso('REC_EXP017') and registroController.esSupervisor() and registroController.expediente.general != 'C'}">
+                                                            <h:panelGroup  rendered="#{(registroController.etapaEstado.verEtapa == 1 or registroController.etapaEstado.verEtapa == 5) and seguridadUtilController.tieneRecurso('REC_EXP017') and registroController.esSupervisor and registroController.expediente.general != 'C'}">
                                                                 <a class="btn btn-warning" jsf:action="#{registroController.guardarVersionSupervisor(0)}" jsf:onclick="loadingModal()">
                                                                     <span class="glyphicon glyphicon-floppy-disk"/>Cambiar tipo
                                                                 </a>

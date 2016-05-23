@@ -11,14 +11,14 @@
         <ui:define name="content2">
             <gc:confirmSubmit bean="#{registroController.enviarAmpliacion()}" classGC="confirmacion7" mensaje="Esta seguro de crear la solicitud de ampliación?" />
             <gc:confirmSubmit bean="#{registroController.aprobarAmpliacion()}" classGC="confirmacion5" mensaje="Esta seguro de aprobar / desaprobar la solicitud de ampliación?" />
-            <gc:confirmSubmit bean="#{registroController.aceptarAmpliacion()}" classGC="confirmacion6" mensaje="Esta seguro de aceptar / rechazar la solicitud de ampliación?" />
+            <gc:confirmSubmit bean="#{registroController.aceptarAmpliacion()}" classGC="confirmacion18" mensaje="Esta seguro de aceptar / rechazar la solicitud de ampliación?" />
             <script>
                 function confirmar5() {
                     $(".confirmacion5").modal('show');
                 }
 
                 function confirmar6() {
-                    $(".confirmacion6").modal('show');
+                    $(".confirmacion18").modal('show');
                 }
 
                 function confirmar7() {
@@ -86,7 +86,7 @@
                             </ul>
                         </div>
                     </h:panelGroup>
-                    <h:panelGroup rendered="#{(seguridadUtilController.tieneRecurso('REC_EXP012') or registroController.listaExpedienteAmpliacion.size() == 0) and registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo}">
+                    <h:panelGroup rendered="#{(seguridadUtilController.tieneRecurso('REC_EXP012') and registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo and !registroController.esSupervisor) or (seguridadUtilController.tieneRecurso('REC_EXP012') and registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo and registroController.esSupervisor and registroController.expedienteAmpliacionEnvia.etapa == null)}">
                         <table style="width: 100%">
                             <tr>
                                 <td colspan="2" ><br/>
@@ -117,9 +117,10 @@
                                             <table style="width: 100%">
                                                 <tr>
                                                     <td style="padding-right: 30px; width: 60%" rowspan="2">
-                                                        <label>Descripción:</label>
-                                                        <textarea jsf:value="#{registroController.expedienteAmpliacionEnvia.detalle}" jsf:rendered="#{registroController.expedienteAmpliacionEnvia.id == null}" rows="6" style="width: 100%" maxlength="1300" placeholder="Motivo"/>
-                                                        <br/><h:outputText value="#{registroController.expedienteAmpliacionEnvia.detalle}" rendered="#{registroController.expedienteAmpliacionEnvia.id != null}"/>
+                                                        <label>Descripción de la ampliación:</label>
+                                                        <h:outputText value="(max: 4000 carateres)" style="color: red" rendered="#{registroController.expedienteAmpliacionEnvia.id == null}"/>
+                                                        <textarea jsf:value="#{registroController.expedienteAmpliacionEnvia.detalle}" jsf:rendered="#{registroController.expedienteAmpliacionEnvia.id == null}" rows="6" style="width: 100%" maxlength="4000" placeholder="Motivo"/>
+                                                        <br/><h:outputText value="#{registroController.expedienteAmpliacionEnvia.detalle}" style="font-size: 1.3em" rendered="#{registroController.expedienteAmpliacionEnvia.id != null}"/>
                                                     </td>
                                                     <td style="vertical-align: top">
                                                         <label>Adjuntía Defensorial:</label>
@@ -134,7 +135,7 @@
                                                         <h:inputFile rendered="#{registroController.expedienteAmpliacionEnvia.id == null}" class="cMedio" value="#{registroController.file4}"/>
                                                         <br/>
                                                         <h:panelGroup rendered="#{registroController.expedienteAmpliacionEnvia.ruta != null}">
-                                                            <a target="_blank" href="/filesystem/#{registroController.expedienteAmpliacionEnvia.ruta}">
+                                                            Descargar archivo: <a target="_blank" href="/filesystem/#{registroController.expedienteAmpliacionEnvia.ruta}">
                                                                 <span style="font-size: large" class="glyphicon glyphicon-link" />
                                                             </a>
                                                         </h:panelGroup>
@@ -148,7 +149,7 @@
                         </table>
                     </h:panelGroup>
                     
-                    <h:panelGroup rendered="#{seguridadUtilController.tieneRecurso('REC_EXP013') and registroController.listaExpedienteAmpliacion.size() > 0 and registroController.usuarioSession.codigo == registroController.expedienteAmpliacionAprueba.codigoUsuario}">
+                    <h:panelGroup rendered="#{seguridadUtilController.tieneRecurso('REC_EXP013') and registroController.listaExpedienteAmpliacion.size() > 0 and registroController.usuarioSession.codigo == registroController.expedienteAmpliacionAprueba.codigoUsuario and registroController.esSupervisor}">
                         <br/>
                         <table style="width: 100%">
                             <tr>
@@ -172,9 +173,9 @@
                                             <table style="width: 100%">
                                                 <tr>
                                                     <td style="padding-right: 30px; width: 60%" rowspan="2">
-                                                        <label>Descripción:</label>
+                                                        <label>Descripción de la ampliación:</label>
                                                         <br/>
-                                                        <h:outputText value="#{registroController.expedienteAmpliacionEnvia.detalle}" />
+                                                        <h:outputText style="font-size: 1.3em" value="#{registroController.expedienteAmpliacionEnvia.detalle}" />
                                                     </td>
                                                     <td style="vertical-align: top">
                                                         <label>Adjuntía Defensorial:</label>
@@ -223,9 +224,10 @@
                                                 <table style="width: 100%">
                                                     <tr>
                                                         <td style="padding-right: 30px; width: 60%">
-                                                            <label>Motivo de la aprobación / desaprobación</label>
-                                                            <textarea jsf:rendered="#{registroController.expedienteAmpliacionAprueba.id == null}" jsf:value="#{registroController.expedienteAmpliacionAprueba.detalle}" rows="6" style="width: 100%" maxlength="1300" placeholder="Motivo"/>
-                                                            <br/><h:outputText rendered="#{registroController.expedienteAmpliacionAprueba.id != null}" value="#{registroController.expedienteAmpliacionAprueba.detalle}" />
+                                                            <label>Descripción de la ampliación</label>
+                                                            <h:outputText value="(max: 4000 carateres)" style="color: red" rendered="#{registroController.expedienteAmpliacionAprueba.id == null}"/>
+                                                            <textarea jsf:rendered="#{registroController.expedienteAmpliacionAprueba.id == null}" jsf:value="#{registroController.expedienteAmpliacionAprueba.detalle}" rows="6" style="width: 100%" maxlength="4000" placeholder="Motivo"/>
+                                                            <br/><h:outputText rendered="#{registroController.expedienteAmpliacionAprueba.id != null}" style="font-size: 1.3em" value="#{registroController.expedienteAmpliacionAprueba.detalle}" />
                                                         </td>
                                                         <td style="vertical-align: top">
                                                             <h:panelGroup id="idPanelapob">
@@ -245,7 +247,7 @@
                                                         <h:inputFile rendered="#{registroController.expedienteAmpliacionAprueba.id == null}" class="cMedio" value="#{registroController.file4}"/>
                                                         <br/>
                                                         <h:panelGroup rendered="#{registroController.expedienteAmpliacionAprueba.ruta != null}">
-                                                            <a target="_blank" href="/filesystem/#{registroController.expedienteAmpliacionAprueba.ruta}">
+                                                            Descargar archivo: <a target="_blank" href="/filesystem/#{registroController.expedienteAmpliacionAprueba.ruta}">
                                                                 <span style="font-size: large" class="glyphicon glyphicon-link" />
                                                             </a>
                                                         </h:panelGroup>
@@ -302,8 +304,8 @@
                                                         <br/>
                                                         <br/>
                                                         <br/>
-                                                        Descargar archivo: <h:panelGroup rendered="#{registroController.expedienteAmpliacionEnvia.ruta != null}">
-                                                            <a target="_blank" href="/filesystem/#{registroController.expedienteAmpliacionEnvia.ruta}">
+                                                        Descargar archivo: <h:panelGroup rendered="#{registroController.expedienteAmpliacionAprueba.ruta != null}">
+                                                            <a target="_blank" href="/filesystem/#{registroController.expedienteAmpliacionAprueba.ruta}">
                                                                 <span style="font-size: large" class="glyphicon glyphicon-link" />
                                                             </a>
                                                         </h:panelGroup>
@@ -341,8 +343,9 @@
                                                     <tr>
                                                         <td style="padding-right: 30px; width: 50%">
                                                             <label>Motivo de aceptar / rechazar</label>
-                                                            <textarea jsf:rendered="#{registroController.expedienteAmpliacionAcepta.id == null}" jsf:value="#{registroController.expedienteAmpliacionAcepta.detalle}" rows="6" style="width: 100%" maxlength="1300" placeholder="Motivo"/>
-                                                            <br/><h:outputText rendered="#{registroController.expedienteAmpliacionAcepta.id != null}" value="#{registroController.expedienteAmpliacionAcepta.detalle}" />
+                                                            <h:outputText value="(max: 4000 carateres)" style="color: red" rendered="#{registroController.expedienteAmpliacionAcepta.id == null}"/>
+                                                            <textarea jsf:rendered="#{registroController.expedienteAmpliacionAcepta.id == null}" jsf:value="#{registroController.expedienteAmpliacionAcepta.detalle}" rows="6" style="width: 100%" maxlength="4000" placeholder="Motivo"/>
+                                                            <br/><h:outputText rendered="#{registroController.expedienteAmpliacionAcepta.id != null}" style="font-size: 1.3em" value="#{registroController.expedienteAmpliacionAcepta.detalle}" />
                                                         </td>
                                                         <td style="vertical-align: top">
                                                             <h:panelGroup id="idPanelrech">
@@ -352,7 +355,6 @@
                                                                     <f:ajax render="idPanelrech" />
                                                                 </h:selectOneRadio>
                                                                 <br/>
-                                                                
                                                             </h:panelGroup>
                                                         </td>
                                                     </tr>
