@@ -1522,11 +1522,16 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             for (ExpedienteConsulta ec : lista) {
                 if (ec.getEtapa() == 1) {
                     listaExpedienteTotalesEnvia.add(ec);
-                    listaExpedienteTotalesEnvia = new ArrayList<>();
+                    if(esSupervisor){
+                        listaExpedienteTotalesEnvia = new ArrayList<>();
+                    }
                     listaExpedienteTotalesAprueba.add(ec);
                 }
                 if (ec.getEtapa() == 2) {
                     listaExpedienteTotalesEnvia.add(ec);
+                    if(esSupervisor){
+                        listaExpedienteTotalesEnvia = new ArrayList<>();
+                    }
                     listaExpedienteTotalesAprueba.add(ec);
                     if (Objects.equals(ec.getIdAdjuntiaDefensorial(), usuarioSession.getCodigoOD())) {
                         listaExpedienteTotalesReasigna.add(ec);
@@ -1534,6 +1539,9 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 }
                 if (ec.getEtapa() >= 3) {
                     listaExpedienteTotalesEnvia.add(ec);
+                    if(esSupervisor){
+                        listaExpedienteTotalesEnvia = new ArrayList<>();
+                    }
                     listaExpedienteTotalesAprueba.add(ec);
                     if (Objects.equals(ec.getIdAdjuntiaDefensorial(), usuarioSession.getCodigoOD())) {
                         listaExpedienteTotalesReasigna.add(ec);
@@ -3312,6 +3320,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 cargarExpedienteGestionLista();
                 setearExpedienteTiempo();
                 cargarFichaONP();
+                esSupervisor();
                 return "expedienteGestionLista";
             }
         } catch (Exception ex) {
@@ -3967,6 +3976,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             inicializarEtapaEstado(1);
             insertarActualizarTiempos();
             cargarFichaONP();
+            esSupervisor();
             if (expediente.getIndiceMayorInformacion() != null) {
                 if (expediente.getIndiceMayorInformacion()) {
                     if (etapaEstado.getVerEtapa() == 1 || etapaEstado.getVerEtapa() == 5) {

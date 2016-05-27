@@ -66,8 +66,9 @@
                             </li>
                         </ul>
                     </div>
-
+<!--crear consulta-->
                     <h:panelGroup rendered="#{registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo and seguridadUtilController.tieneRecurso('REC_EXP004')}">
+                        XXXXXXXXXXXXXXXXXXXXXXXXXX
                         <table style="width: 100%">
                             <tr>
                                 <td colspan="2" >
@@ -280,8 +281,9 @@
                                 </div>
                         </h:panelGroup>
                     </h:panelGroup>
-
-                    <h:panelGroup rendered="#{seguridadUtilController.tieneRecurso('REC_EXP005')}">
+<!--aprobar consulta-->
+<h:panelGroup rendered="#{seguridadUtilController.tieneRecurso('REC_EXP005') and registroController.esSupervisor}">
+    YYYYYYYYYYYYYYYYYY
                         <h:dataTable value="#{registroController.listaExpedienteTotalesAprueba}" var="aprueba" class="table table-hover" binding="#{it1}" rendered="#{registroController.listaExpedienteTotalesAprueba.size() > 0}">
                             <h:column>
                                 <f:facet name="header">N°</f:facet>
@@ -514,8 +516,9 @@
 
                         </h:panelGroup> 
                     </h:panelGroup>
-
+<!--aceptar consulta-->
                     <h:panelGroup rendered="#{seguridadUtilController.tieneRecurso('REC_EXP006') and registroController.listaExpedienteTotalesReasigna.size() > 0}">
+                        ZZZZZZZZZZZZZZZZZZZZZ
                         <h:dataTable value="#{registroController.listaExpedienteTotalesReasigna}" var="reasigna" class="table table-hover" binding="#{it2}" rendered="#{registroController.listaExpedienteTotalesReasigna.size() > 0}">
                             <h:column>
                                 <f:facet name="header">N°</f:facet>
@@ -739,8 +742,9 @@
 
                         </h:panelGroup> 
                     </h:panelGroup> 
-
+<!--responde-->
                     <h:panelGroup rendered="#{seguridadUtilController.tieneRecurso('REC_EXP007') and registroController.listaExpedienteTotalesResponde.size() > 0}">
+                        ZZZZZZZZZZZZZZSSSSSSSSSSSSSSSSSSSS
                         <h:dataTable value="#{registroController.listaExpedienteTotalesResponde}" var="responde" class="table table-hover" binding="#{it3}" rendered="#{registroController.listaExpedienteTotalesResponde.size() > 0}">
                             <h:column>
                                 <f:facet name="header">N°</f:facet>
