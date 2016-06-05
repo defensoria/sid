@@ -66,6 +66,8 @@ public class Usuario implements Serializable
     private String codigoRemitente;
     
     private String rol;
+    
+    private String recurso;
 
     public Usuario() {
     }
@@ -318,6 +320,14 @@ public class Usuario implements Serializable
 
     public void setOficinaDefensorial(Integer oficinaDefensorial) {
         this.oficinaDefensorial = oficinaDefensorial;
+    }
+
+    public String getRecurso() {
+        return recurso;
+    }
+
+    public void setRecurso(String recurso) {
+        this.recurso = recurso;
     }
 
 }

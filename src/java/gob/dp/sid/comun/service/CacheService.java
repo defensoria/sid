@@ -66,4 +66,8 @@ public interface CacheService {
     public List<Parametro> listaTipoSoporteArchivo();
     
     public List<Parametro> listaTipoAtr();
+    
+    public List<Parametro> buscarListaAdjuntia();
+    
+    public List<Parametro> buscarListaNacionalidades();
 }

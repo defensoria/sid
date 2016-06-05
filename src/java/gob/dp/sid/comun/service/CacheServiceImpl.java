@@ -73,6 +73,10 @@ public class CacheServiceImpl implements CacheService{
     
     private static final Integer CACHE_PARAMETRO_TIPO_ATR = 260;
     
+    private static final Integer CACHE_PARAMETRO_LISTA_ADJ = 270;
+    
+    private static final Integer CACHE_PARAMETRO_LISTA_NACIONALIDADES = 280;
+    
 
     private volatile HashMap<Integer, Object> contenedor = null;
 
@@ -230,6 +234,16 @@ public class CacheServiceImpl implements CacheService{
     @Override
     public List<Parametro> listaTipoAtr() {
         return buscarParametro(CACHE_PARAMETRO_TIPO_ATR, CACHE_PARAMETRO_TIPO_ATR);
+    }
+    
+    @Override
+    public List<Parametro> buscarListaAdjuntia() {
+        return buscarParametro(CACHE_PARAMETRO_LISTA_ADJ, CACHE_PARAMETRO_LISTA_ADJ);
+    }
+    
+    @Override
+    public List<Parametro> buscarListaNacionalidades() {
+        return buscarParametro(CACHE_PARAMETRO_LISTA_NACIONALIDADES, CACHE_PARAMETRO_LISTA_NACIONALIDADES);
     }
     
     private Object getElemento(Integer key) {

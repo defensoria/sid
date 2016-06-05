@@ -4,7 +4,6 @@
  */
 package gob.dp.sid.administracion.seguridad.controller;
 
-import gob.dp.sid.administracion.parametro.constantes.Constantes;
 import gob.dp.sid.administracion.seguridad.bean.FiltroUsuario;
 import gob.dp.sid.administracion.seguridad.entity.Rol;
 import gob.dp.sid.administracion.seguridad.entity.Usuario;

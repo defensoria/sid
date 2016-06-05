@@ -27,6 +27,7 @@
         <result property="tipoLengua" column="C_TIPOLENGUA"/>
         <result property="indicadorDiscapacitado" column="C_INDDISCAPACITADO"/>
         <result property="tipoPueblo" column="C_TIPOPUEBLO"/>   
+        <result property="nacionalidad" column="C_NACIONALIDAD"/>
     </resultMap> 
     
     
@@ -105,7 +106,9 @@
         <if test="tipoPueblo != null">
             C_TIPOPUEBLO,
         </if>
-        
+        <if test="nacionalidad != null">
+            C_NACIONALIDAD,
+        </if>
         N_IDPERSONA
         )
         VALUES 
@@ -182,6 +185,9 @@
         <if test="tipoPueblo != null">
             #{tipoPueblo},
         </if>
+        <if test="nacionalidad != null">
+            #{nacionalidad},
+        </if>
         SEQ_SID_REG_PERSONA.NextVal
         )
         <selectKey keyProperty="id" resultType="Long">
@@ -256,6 +262,9 @@
             <if test="tipoPueblo != null">
                 C_TIPOPUEBLO = #{tipoPueblo},
             </if>
+            <if test="nacionalidad != null">
+                C_NACIONALIDAD  = #{nacionalidad},
+            </if>   
             C_NOMBRE = #{nombre}
         </set>
         <where>

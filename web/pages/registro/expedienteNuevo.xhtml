@@ -355,7 +355,7 @@
                                                                     }
                                                                 }
                                                             </script>   
-                                                            
+
                                                             <h:panelGroup rendered="#{registroController.usuarioSession.codigoOD == '20000' and registroController.expediente.general != 'C' and registroController.etapaEstado.verEtapa > 0}">
                                                                 <a class="btn btn-info" jsf:action="#{registroController.extenderPlazo()}" jsf:onclick="loadingModal()">
                                                                     <span class="glyphicon glyphicon-user" />Extender plazo
@@ -450,11 +450,11 @@
                                                                 </div>
                                                                 <style>
                                                                     .alink:hover{text-decoration:none
-                                                                                }
+                                                                    }
                                                                     .alink:link{text-decoration:none
-                                                                                }
+                                                                    }
                                                                     .alink:active{text-decoration:none
-                                                                                }
+                                                                    }
                                                                 </style>
                                                                 <script>
                                                                     $('.trigger2').popover({html: true, placement: 'bottom', tabindex: '0', trigger: 'focus', title: function () {
@@ -521,7 +521,7 @@
                                                                             }
                                                                             $("#idTextTipoClasificacion").css("color", "#3071A9");
                                                                         }
-                                                                    });            
+                                                                    });
                                                                 </script>
                                                             </div>
                                                             <h:panelGroup rendered="#{(registroController.etapaEstado.verEtapa == 1 or registroController.etapaEstado.verEtapa == 5) and seguridadUtilController.tieneRecurso('REC_EXP017') and registroController.esSupervisor and registroController.expediente.general != 'C'}">
@@ -808,89 +808,89 @@
                                                     </tr>
                                                 </table>
                                                 <h:panelGroup id="idClasificador">
-                                                <table style="width: 100%">
-                                                    <tr>
-                                                        <td style="padding-bottom: 10px; width: 40%;">
-                                                            <span class="text-bold">Tema:</span>
-                                                        </td>
-                                                        <td style="padding-bottom: 10px">
-                                                            <h:selectOneMenu value="#{registroController.expedienteNivel.idPrimerNivel}" id="idSelectPrimerNivel" onchange="loadingModal()">
-                                                                <f:selectItem itemLabel="Seleccione" itemValue="0" />
-                                                                <f:selectItems value="#{listasComunesController.listaPrimerNivel(false, false, false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
-                                                                <f:ajax listener="#{registroController.cargarNivelesClasificacion(registroController.expedienteNivel.idPrimerNivel, 2)}" 
-                                                                        render="idClasificador" onevent="closeModal"/>
-                                                            </h:selectOneMenu>
-                                                        </td>
-                                                    </tr>
-                                                    <tr id="care" jsf:rendered="#{registroController.expediente.tipoClasificion == '01' or registroController.expedienteNivel.idPrimerNivel == 807}">
-                                                        <td style="padding-bottom: 10px">
+                                                    <table style="width: 100%">
+                                                        <tr>
+                                                            <td style="padding-bottom: 10px; width: 40%;">
+                                                                <span class="text-bold">Tema:</span>
+                                                            </td>
+                                                            <td style="padding-bottom: 10px">
+                                                                <h:selectOneMenu value="#{registroController.expedienteNivel.idPrimerNivel}" id="idSelectPrimerNivel" onchange="loadingModal()">
+                                                                    <f:selectItem itemLabel="Seleccione" itemValue="0" />
+                                                                    <f:selectItems value="#{listasComunesController.listaPrimerNivel(false, false, false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
+                                                                    <f:ajax listener="#{registroController.cargarNivelesClasificacion(registroController.expedienteNivel.idPrimerNivel, 2)}" 
+                                                                            render="idClasificador" onevent="closeModal"/>
+                                                                </h:selectOneMenu>
+                                                            </td>
+                                                        </tr>
+                                                        <tr id="care" jsf:rendered="#{registroController.expediente.tipoClasificion == '01' or registroController.expedienteNivel.idPrimerNivel == 807}">
+                                                            <td style="padding-bottom: 10px">
                                                                 <h:panelGroup id="ides">
-                                                        <span class="text-bold">Sub tema:</span>
-                                                            </h:panelGroup>
-                                                            
-                                                        </td>
-                                                        <td style="padding-bottom: 10px">
-                                                            <h:selectOneMenu id="idSelectSegundoNivel" value="#{registroController.expedienteNivel.idSegundoNivel}" onchange="loadingModal()">
-                                                                <f:selectItem itemLabel="Seleccione" itemValue="0" />
-                                                                <f:selectItems value="#{registroController.listaClasificacionSegundoLevel}" />
-                                                                <f:ajax listener="#{registroController.cargarNivelesClasificacion(registroController.expedienteNivel.idSegundoNivel, 3)}"  
-                                                                        render="idClasificador" onevent="closeModal"/>
-                                                            </h:selectOneMenu>
-                                                        </td>
-                                                    </tr>
-                                                    <tr jsf:rendered="#{registroController.expediente.tipoClasificion == '01'}">
-                                                        <td style="padding-bottom: 10px">
-                                                            <span class="text-bold">Tercer nivel:</span>
-                                                        </td>
-                                                        <td style="padding-bottom: 10px">
-                                                            <h:selectOneMenu id="idSelectTercerNivel" value="#{registroController.expedienteNivel.idTercerNivel}" onchange="loadingModal()">
-                                                                <f:selectItem itemLabel="Seleccione" itemValue="0" />
-                                                                <f:selectItems value="#{registroController.listaClasificacionTercerLevel}" />
-                                                                <f:ajax listener="#{registroController.cargarNivelesClasificacion(registroController.expedienteNivel.idTercerNivel, 4)}" 
-                                                                        render="idClasificador" onevent="closeModal"/>
-                                                            </h:selectOneMenu>
-                                                        </td>
-                                                    </tr>
+                                                                    <span class="text-bold">Sub tema:</span>
+                                                                </h:panelGroup>
 
-                                                    <tr jsf:rendered="#{registroController.expediente.tipoClasificion == '01'}">
-                                                        <td style="padding-bottom: 10px">
-                                                            <span class="text-bold">Cuarto nivel:</span>
-                                                        </td>
-                                                        <td style="padding-bottom: 10px">
-                                                            <h:selectOneMenu id="idSelectCuartoNivel" value="#{registroController.expedienteNivel.idCuartoNivel}" onchange="loadingModal()">
-                                                                <f:selectItem itemLabel="Seleccione" itemValue="0" />
-                                                                <f:selectItems value="#{registroController.listaClasificacionCuartoLevel}" />
-                                                                <f:ajax listener="#{registroController.cargarNivelesClasificacion(registroController.expedienteNivel.idCuartoNivel, 5)}" 
-                                                                        render="idClasificador" onevent="closeModal"/>
-                                                            </h:selectOneMenu>
-                                                        </td>
-                                                    </tr>
-                                                    <tr jsf:rendered="#{registroController.expediente.tipoClasificion == '01'}">
-                                                        <td style="padding-bottom: 20px">
-                                                            <span class="text-bold">Quinto nivel:</span>
-                                                        </td>
-                                                        <td style="padding-bottom: 20px">
-                                                            <h:selectOneMenu id="idSelectQuintoNivel" value="#{registroController.expedienteNivel.idQuintoNivel}" onchange="loadingModal()">
-                                                                <f:selectItem itemLabel="Seleccione" itemValue="0" />
-                                                                <f:selectItems value="#{registroController.listaClasificacionQuintoLevel}" />
-                                                                <f:ajax listener="#{registroController.cargarNivelesClasificacion(registroController.expedienteNivel.idQuintoNivel, 6)}" 
-                                                                        render="idClasificador" onevent="closeModal"/>
-                                                            </h:selectOneMenu>
-                                                        </td>
-                                                    </tr>
-                                                    <tr jsf:rendered="#{registroController.expediente.tipoClasificion == '01'}">
-                                                        <td style="padding-bottom: 20px">
-                                                            <span class="text-bold">Sexto nivel:</span>
-                                                        </td>
-                                                        <td style="padding-bottom: 20px">
-                                                            <h:selectOneMenu id="idSelectSextoNivel" value="#{registroController.expedienteNivel.idSextoNivel}">
-                                                                <f:selectItem itemLabel="Seleccione" itemValue="0" />
-                                                                <f:selectItems value="#{registroController.listaClasificacionSextoLevel}" />
-                                                            </h:selectOneMenu>
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                                    </h:panelGroup>
+                                                            </td>
+                                                            <td style="padding-bottom: 10px">
+                                                                <h:selectOneMenu id="idSelectSegundoNivel" value="#{registroController.expedienteNivel.idSegundoNivel}" onchange="loadingModal()">
+                                                                    <f:selectItem itemLabel="Seleccione" itemValue="0" />
+                                                                    <f:selectItems value="#{registroController.listaClasificacionSegundoLevel}" />
+                                                                    <f:ajax listener="#{registroController.cargarNivelesClasificacion(registroController.expedienteNivel.idSegundoNivel, 3)}"  
+                                                                            render="idClasificador" onevent="closeModal"/>
+                                                                </h:selectOneMenu>
+                                                            </td>
+                                                        </tr>
+                                                        <tr jsf:rendered="#{registroController.expediente.tipoClasificion == '01'}">
+                                                            <td style="padding-bottom: 10px">
+                                                                <span class="text-bold">Tercer nivel:</span>
+                                                            </td>
+                                                            <td style="padding-bottom: 10px">
+                                                                <h:selectOneMenu id="idSelectTercerNivel" value="#{registroController.expedienteNivel.idTercerNivel}" onchange="loadingModal()">
+                                                                    <f:selectItem itemLabel="Seleccione" itemValue="0" />
+                                                                    <f:selectItems value="#{registroController.listaClasificacionTercerLevel}" />
+                                                                    <f:ajax listener="#{registroController.cargarNivelesClasificacion(registroController.expedienteNivel.idTercerNivel, 4)}" 
+                                                                            render="idClasificador" onevent="closeModal"/>
+                                                                </h:selectOneMenu>
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr jsf:rendered="#{registroController.expediente.tipoClasificion == '01'}">
+                                                            <td style="padding-bottom: 10px">
+                                                                <span class="text-bold">Cuarto nivel:</span>
+                                                            </td>
+                                                            <td style="padding-bottom: 10px">
+                                                                <h:selectOneMenu id="idSelectCuartoNivel" value="#{registroController.expedienteNivel.idCuartoNivel}" onchange="loadingModal()">
+                                                                    <f:selectItem itemLabel="Seleccione" itemValue="0" />
+                                                                    <f:selectItems value="#{registroController.listaClasificacionCuartoLevel}" />
+                                                                    <f:ajax listener="#{registroController.cargarNivelesClasificacion(registroController.expedienteNivel.idCuartoNivel, 5)}" 
+                                                                            render="idClasificador" onevent="closeModal"/>
+                                                                </h:selectOneMenu>
+                                                            </td>
+                                                        </tr>
+                                                        <tr jsf:rendered="#{registroController.expediente.tipoClasificion == '01'}">
+                                                            <td style="padding-bottom: 20px">
+                                                                <span class="text-bold">Quinto nivel:</span>
+                                                            </td>
+                                                            <td style="padding-bottom: 20px">
+                                                                <h:selectOneMenu id="idSelectQuintoNivel" value="#{registroController.expedienteNivel.idQuintoNivel}" onchange="loadingModal()">
+                                                                    <f:selectItem itemLabel="Seleccione" itemValue="0" />
+                                                                    <f:selectItems value="#{registroController.listaClasificacionQuintoLevel}" />
+                                                                    <f:ajax listener="#{registroController.cargarNivelesClasificacion(registroController.expedienteNivel.idQuintoNivel, 6)}" 
+                                                                            render="idClasificador" onevent="closeModal"/>
+                                                                </h:selectOneMenu>
+                                                            </td>
+                                                        </tr>
+                                                        <tr jsf:rendered="#{registroController.expediente.tipoClasificion == '01'}">
+                                                            <td style="padding-bottom: 20px">
+                                                                <span class="text-bold">Sexto nivel:</span>
+                                                            </td>
+                                                            <td style="padding-bottom: 20px">
+                                                                <h:selectOneMenu id="idSelectSextoNivel" value="#{registroController.expedienteNivel.idSextoNivel}">
+                                                                    <f:selectItem itemLabel="Seleccione" itemValue="0" />
+                                                                    <f:selectItems value="#{registroController.listaClasificacionSextoLevel}" />
+                                                                </h:selectOneMenu>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </h:panelGroup>
                                                 <table style="width: 100%">
                                                     <tr>
                                                         <td style="padding-bottom: 20px; vertical-align: top">
@@ -1424,8 +1424,18 @@
                                                                                                 <tr jsf:rendered="#{registroController.persona.tipo == 'PER'}">
                                                                                                     <td style="width: 20%"><b>Tipo de documento:</b></td>
                                                                                                     <td style="padding-bottom: 5px;">
-                                                                                                        <h:selectOneMenu value="#{registroController.persona.tipoDocumento}" style="width: 50%">
+                                                                                                        <h:selectOneMenu value="#{registroController.persona.tipoDocumento}" style="width: 50%" onchange="loadingModal()">
                                                                                                             <f:selectItems value="#{listasComunesController.buscarTipoDocumento(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
+                                                                                                        </h:selectOneMenu>
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                                <tr jsf:rendered="#{registroController.persona.tipo == 'PER'}">
+                                                                                                    <td>
+                                                                                                        <h:outputText value="Nacionalidad" style="font-weight: bold" />
+                                                                                                    </td>
+                                                                                                    <td style="padding-bottom: 5px">
+                                                                                                        <h:selectOneMenu value="#{registroController.persona.nacionalidad}" style="width: 90%">
+                                                                                                            <f:selectItems value="#{listasComunesController.listaListaNacionalidades(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
                                                                                                         </h:selectOneMenu>
                                                                                                     </td>
                                                                                                 </tr>
@@ -1483,11 +1493,9 @@
                                                                                                                     $(this).datetimepicker("hide");
                                                                                                                 });
                                                                                                             });
-
                                                                                                         </script>
                                                                                                         <gc:calendar value="#{registroController.persona.fechaNacimiento}"/>
                                                                                                     </td>
-
                                                                                                 </tr>
                                                                                                 <tr jsf:rendered="#{registroController.persona.tipo == 'PER'}">
                                                                                                     <td ><b>Sexo:</b></td>
@@ -1784,25 +1792,23 @@
                                                         <tr>
                                                             <td style="padding-bottom: 10px" colspan="2">
                                                                 <br/>
-                                                                <h:outputText value="Grupo Vulnerables y Especiales" rendered="#{registroController.expediente.tipoClasificion != '02'}" class="text-bold" style="font-size: 1.2em; color: red"/>
+                                                                <h:outputText value="Grupo Vulnerables y Especiales" class="text-bold" style="font-size: 1.2em; color: red"/>
                                                             </td>
                                                         </tr>
                                                         <tr>
                                                             <td style="padding-bottom: 20px">
-                                                                <h:outputText value="Grupos vulnerables:" rendered="#{registroController.expediente.tipoClasificion != '02'}" class="text-bold"/>
+                                                                <h:outputText value="Grupos vulnerables:" class="text-bold"/>
                                                             </td>
                                                             <td style="padding-bottom: 20px">
-                                                                <gc:selectMultiBootstrap idSelect="idSelectGrupoViolencia" idHidden="idSelect1" rendered="#{registroController.expediente.tipoClasificion != '02'}"
-                                                                                         lista="#{listasComunesController.buscarGrupoVulnerable(false,false,false)}" value="#{registroController.expediente.tipoGrupoVulnerable}"/>
+                                                                <gc:selectMultiBootstrap idSelect="idSelectGrupoViolencia" idHidden="idSelect1" lista="#{listasComunesController.buscarGrupoVulnerable(false,false,false)}" value="#{registroController.expediente.tipoGrupoVulnerable}"/>
                                                             </td>
                                                         </tr>
                                                         <tr>
                                                             <td style="padding-bottom: 20px">
-                                                                <h:outputText value="Grupos especiales:" rendered="#{registroController.expediente.tipoClasificion != '02'}" class="text-bold"/>
+                                                                <h:outputText value="Grupos especiales:" class="text-bold"/>
                                                             </td>
                                                             <td style="padding-bottom: 20px">
-                                                                <gc:selectMultiBootstrap idSelect="idSelectGrupoEspecial" idHidden="idSelect32" rendered="#{registroController.expediente.tipoClasificion != '02'}" 
-                                                                                         lista="#{listasComunesController.buscarGrupoEspecial(false,false,false)}" value="#{registroController.expediente.tipoGrupoEspecial}"/>
+                                                                <gc:selectMultiBootstrap idSelect="idSelectGrupoEspecial" idHidden="idSelect32"  lista="#{listasComunesController.buscarGrupoEspecial(false,false,false)}" value="#{registroController.expediente.tipoGrupoEspecial}"/>
                                                             </td>
                                                         </tr>
                                                     </table>
@@ -2031,7 +2037,7 @@
                                                     <span class="text-resalt-primary">Datos O.N.P</span>
                                                 </td>
                                                 <td style="text-align: right">
-                                                        <a class="btn btn-primary" jsf:action="#{registroController.guardarExpedienteONP()}">
+                                                    <a class="btn btn-primary" jsf:action="#{registroController.guardarExpedienteONP()}">
                                                         <span class="glyphicon glyphicon-floppy-disk"/>Guardar 
                                                     </a>
                                                 </td>
@@ -2347,11 +2353,9 @@
                     </tr>
                     <tr>
                         <td colspan="2" style="text-align: center">
-
                         </td>
                     </tr>
                 </table>
-
             </h:form>
         </ui:define>
     </ui:composition>

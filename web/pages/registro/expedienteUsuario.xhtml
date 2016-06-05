@@ -124,6 +124,15 @@
                                                                                                     </td>
                                                                                                 </tr>
                                                                                                 <tr jsf:rendered="#{registroController.persona.tipo == 'PER'}">
+                                                                                                    <td ><b>Nacionalidad:</b></td>
+                                                                                                    <td style="padding-bottom: 5px">
+                                                                                                        <h:selectOneMenu value="#{registroController.persona.nacionalidad}" style="width: 90%">
+                                                                                                                            <f:selectItem itemLabel="Seleccione" itemValue="0"/>
+                                                                                                                            <f:selectItems value="#{listasComunesController.listaListaNacionalidades(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
+                                                                                                                        </h:selectOneMenu>
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                                <tr jsf:rendered="#{registroController.persona.tipo == 'PER'}">
                                                                                                     <td style="width: 20%"><b>Número documento:</b></td>
                                                                                                     <td style="padding-bottom: 5px;">
                                                                                                         <table>
@@ -177,11 +186,9 @@
                                                                                                                     $(this).datetimepicker("hide");
                                                                                                                 });
                                                                                                             });
-
                                                                                                         </script>
                                                                                                         <gc:calendar value="#{registroController.persona.fechaNacimiento}"/>
                                                                                                     </td>
-
                                                                                                 </tr>
                                                                                                 <tr jsf:rendered="#{registroController.persona.tipo == 'PER'}">
                                                                                                     <td ><b>Sexo:</b></td>

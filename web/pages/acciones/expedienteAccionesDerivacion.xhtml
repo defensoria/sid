@@ -126,6 +126,7 @@
                                                         <h:selectOneMenu value="#{registroController.expedienteDerivacionEnvia.idOficinaDefensorial}" disabled="#{registroController.expedienteDerivacionEnvia.id == null? 'false' : 'true'}" >
                                                             <f:selectItem itemLabel="Seleccione" itemValue="0" />
                                                             <f:selectItems value="#{listasComunesController.buscarListaADOD(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
+                                                            <f:selectItems value="#{listasComunesController.buscarListaAdjuntia(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
                                                         </h:selectOneMenu>
                                                     </td>
                                                 </tr>
@@ -181,6 +182,7 @@
                                                         <h:selectOneMenu value="#{registroController.expedienteDerivacionEnvia.idOficinaDefensorial}" disabled="#{registroController.expedienteDerivacionEnvia.id == null? 'false':'true'}">
                                                             <f:selectItem itemLabel="Seleccione" itemValue="0" />
                                                             <f:selectItems value="#{listasComunesController.buscarListaADOD(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
+                                                            <f:selectItems value="#{listasComunesController.buscarListaAdjuntia(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
                                                         </h:selectOneMenu>
                                                     </td>
                                                 </tr>
@@ -241,6 +243,7 @@
                                                                 <h:selectOneMenu value="#{registroController.expedienteDerivacionAprueba.idOficinaDefensorial}" rendered="#{registroController.expedienteDerivacionAprueba.aprueba == 'SI'}" disabled="#{registroController.expedienteDerivacionAprueba.id == null? 'false':'true'}" >
                                                                     <f:selectItem itemLabel="Seleccione" itemValue="0" />
                                                                     <f:selectItems value="#{listasComunesController.buscarListaADOD(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
+                                                                    <f:selectItems value="#{listasComunesController.buscarListaAdjuntia(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
                                                                 </h:selectOneMenu>
                                                             </h:panelGroup>
                                                         </td>
@@ -294,6 +297,7 @@
                                                         <h:selectOneMenu value="#{registroController.expedienteDerivacionAprueba.idOficinaDefensorial}" disabled="true">
                                                             <f:selectItem itemLabel="Seleccione" itemValue="0" />
                                                             <f:selectItems value="#{listasComunesController.buscarListaADOD(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
+                                                            <f:selectItems value="#{listasComunesController.buscarListaAdjuntia(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
                                                         </h:selectOneMenu>
                                                         <br/>
                                                         <br/>

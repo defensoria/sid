@@ -5495,7 +5495,10 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         try {
             Usuario u = new Usuario();
             u.setCodigoOD(expedienteDerivacionAprueba.getIdOficinaDefensorial());
-            u.setRol(RolType.COMISIONADO_OD.getKey());
+            if(expedienteDerivacionAprueba.getIdOficinaDefensorial() < 1000)
+                u.setRol(RolType.COMISIONADO_OD.getKey());
+            else
+                u.setRol(RolType.COMISIONADO_AD.getKey());
             List<Usuario> list = usuarioService.listaUsuariosPorOD(u);
             for (Usuario u1 : list) {
                 listaUsuario.add(new SelectItem(u1.getCodigo(), u1.getNombre() + " " + u1.getApellidoPaterno() + " " + u1.getApellidoMaterno()));

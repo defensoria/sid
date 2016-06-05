@@ -37,6 +37,8 @@ import javax.servlet.http.Part;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.apache.poi.EncryptedDocumentException;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -82,11 +84,10 @@ public class ImportarController extends AbstractManagedBean implements Serializa
     }
 
     public void cargarExcel() {
-        String ruta1 = uploadArchive(file1);
+        uploadArchive(file1);
     }
 
     private void importar(File archivo) {
-        Integer i = 0;
         List<Object[]> listaObjetos = new ArrayList<>();
         try {
             wb = WorkbookFactory.create(new FileInputStream(archivo));
@@ -106,7 +107,7 @@ public class ImportarController extends AbstractManagedBean implements Serializa
                     if (indiceFila == 0) {
                         
                     } else {
-                        if (celda != null) {
+                        if (celda != null && indiceColumna < 7) {
                             switch (celda.getCellType()) {
                                 case Cell.CELL_TYPE_NUMERIC:
                                     //listaColumna[indiceColumna]= (int)Math.round(celda.getNumericCellValue());
@@ -131,8 +132,8 @@ public class ImportarController extends AbstractManagedBean implements Serializa
 
             }
             cargarGestiones(listaObjetos);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException | InvalidFormatException | EncryptedDocumentException e) {
+            log.error("importar"+e);
         }
     }
 
@@ -140,15 +141,21 @@ public class ImportarController extends AbstractManagedBean implements Serializa
         listaGestionesONP = new ArrayList<>();
         for (Object[] os : lista) {
             ExpedienteGestion eg = new ExpedienteGestion();
-            eg.setNumeroExpediente(os[0] == null ? null : os[0].toString().trim().substring(0, 4)+"-"+os[0].toString().trim().substring(4, 8)+"-"+os[0].toString().trim().substring(8, 14));
-            eg.setCodigoONP(os[1] == null ? null : os[1].toString().trim());
-            eg.setDestinoONP(os[2] == null ? null : os[2].toString());
-            eg.setIdEntidad(4455);
-            eg.setFechaONP((Date) os[3]);
-            eg.setFechaModificacion((Date) os[4]);
-            eg.setDocumentoRespuesta(os[5] == null ? null : os[5].toString());
-            eg.setFechaRespuesta((Date) os[6]);
-            listaGestionesONP.add(eg);
+            if(os[0] != null){
+                try {
+                    eg.setNumeroExpediente(os[0] == null ? null : os[0].toString().trim().substring(0, 4)+"-"+os[0].toString().trim().substring(4, 8)+"-"+os[0].toString().trim().substring(8, 14));
+                    eg.setCodigoONP(os[1] == null ? null : os[1].toString().trim());
+                    eg.setDestinoONP(os[2] == null ? null : os[2].toString());
+                    eg.setIdEntidad(4455);
+                    eg.setFechaONP(os[3] == null ? null :(Date) os[3]);
+                    eg.setFechaModificacion(os[4] == null ? null :(Date) os[4]);
+                    eg.setDocumentoRespuesta(os[5] == null ? null : os[5].toString());
+                    eg.setFechaRespuesta(os[6] == null ? null :(Date) os[6]);
+                    listaGestionesONP.add(eg);
+                } catch (Exception e) {
+                    log.error("cargarGestiones"+e.getMessage());
+                }
+            }
         }
 
         for (ExpedienteGestion gestion : listaGestionesONP) {

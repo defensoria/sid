@@ -173,6 +173,14 @@ public class ListasComunesController {
         return insertarValoresDefectoParametro(cacheService.listaTipoAtr(), insertarTODOS, insertarNINGUNO, insertarSELECCIONE);
     }
     
+    public List<Parametro> buscarListaAdjuntia(boolean insertarTODOS, boolean insertarNINGUNO, boolean insertarSELECCIONE) {
+        return insertarValoresDefectoParametro(cacheService.buscarListaAdjuntia(), insertarTODOS, insertarNINGUNO, insertarSELECCIONE);
+    }
+    
+    public List<Parametro> listaListaNacionalidades(boolean insertarTODOS, boolean insertarNINGUNO, boolean insertarSELECCIONE) {
+        return insertarValoresDefectoParametro(cacheService.buscarListaNacionalidades(), insertarTODOS, insertarNINGUNO, insertarSELECCIONE);
+    }
+    
 
     private List insertarValoresDefectoParametro(List lst, boolean insertarTODOS, boolean insertarNINGUNO, boolean insertarSELECCIONE) {
         if (insertarTODOS) {

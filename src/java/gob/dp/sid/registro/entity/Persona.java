@@ -63,6 +63,8 @@ public class Persona implements Serializable{
     private Boolean indicadorDiscapacitado;
     
     private String tipoPueblo;
+    
+    private String nacionalidad;
     /*temporales*/
     private String numeroExpediente;
     
@@ -349,6 +351,14 @@ public class Persona implements Serializable{
 
     public void setTipoPueblo(String tipoPueblo) {
         this.tipoPueblo = tipoPueblo;
+    }
+
+    public String getNacionalidad() {
+        return nacionalidad;
+    }
+
+    public void setNacionalidad(String nacionalidad) {
+        this.nacionalidad = nacionalidad;
     }
     
 }
