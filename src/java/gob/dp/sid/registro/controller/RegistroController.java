@@ -2798,7 +2798,9 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     }
 
     public String verExpedienteGestion(ExpedienteGestion eg) {
+        listaExpedienteXUsuarioPaginadoReplica = null;
         setExpedienteGestion(eg);
+        expedienteBusquedaReplica = new Expediente();
         return "expedienteGestionVer";
     }
 
@@ -5099,7 +5101,6 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     }
 
     private String uploadArchive(Part fil) {
-        
             String nameArchive = getFilename(fil);
             String extencion = getFileExtension(getFilename(fil));
             if (StringUtils.isNoneBlank(nameArchive)) {

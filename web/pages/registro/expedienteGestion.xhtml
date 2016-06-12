@@ -33,15 +33,15 @@
                     </a>
                 </li>
                 <li role="presentation">
-                        <a style="cursor: pointer" jsf:rendered="#{registroController.etapaEstado.idEtapa > 0}" jsf:action="#{registroController.cargarHistorial()}">
-                            <span style="font-size: medium; color: purple" class="glyphicon glyphicon-list-alt" > Historial</span>
-                        </a>
-                    </li>
+                    <a style="cursor: pointer" jsf:rendered="#{registroController.etapaEstado.idEtapa > 0}" jsf:action="#{registroController.cargarHistorial()}">
+                        <span style="font-size: medium; color: purple" class="glyphicon glyphicon-list-alt" > Historial</span>
+                    </a>
+                </li>
                 <li role="presentation">
-                        <a style="cursor: pointer" jsf:rendered="#{registroController.etapaEstado.idEtapa > 0}" jsf:action="#{registroController.cargarCompartir()}">
-                            <span style="font-size: medium; color: purple" class="glyphicon glyphicon-list-alt" > Compartir</span>
-                        </a>
-                    </li>
+                    <a style="cursor: pointer" jsf:rendered="#{registroController.etapaEstado.idEtapa > 0}" jsf:action="#{registroController.cargarCompartir()}">
+                        <span style="font-size: medium; color: purple" class="glyphicon glyphicon-list-alt" > Compartir</span>
+                    </a>
+                </li>
             </ul>
 
             <div class="panel panel-default">
@@ -184,8 +184,8 @@
                                                     <label>Fecha de gestión:</label>
                                                     <br/>
                                                     <h:outputText value="#{registroController.expedienteGestion.fecha}" style="font-weight: bold; font-size: 1.5em">
-                                                            <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
-                                                        </h:outputText>
+                                                        <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
+                                                    </h:outputText>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -209,17 +209,16 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                            <td style="padding-right: 5px;padding-bottom: 10px" >
-                                                                
-                                                                
-                                                            </td>
-                                                <td>
-                                                   <h:selectBooleanCheckbox id="idCheckbox2" value="#{registroController.expedienteGestion.indicadorRecomendacion}" rendered="#{registroController.etapaEstado.verEtapa == 3 or registroController.etapaEstado.verEtapa == 7}">
-                                                                        Contiene recomendación
-                                                                    </h:selectBooleanCheckbox>
-                                                 
+                                                <td style="padding-right: 5px;padding-bottom: 10px" >
+
+
                                                 </td>
-                                                        </tr>
+                                                <td>
+                                                    <h:selectBooleanCheckbox id="idCheckbox2" value="#{registroController.expedienteGestion.indicadorRecomendacion}" rendered="#{registroController.etapaEstado.verEtapa == 3 or registroController.etapaEstado.verEtapa == 7}">
+                                                        Contiene recomendación
+                                                    </h:selectBooleanCheckbox>
+                                                </td>
+                                            </tr>
                                         </table>
                                         <style>
                                             .classHide{
@@ -229,7 +228,6 @@
                                                 display: inherit;
                                                 width: 100%;
                                             }
-
                                         </style>
                                         <script>
                                             $(".idFechaRecepcion").addClass("classHide");
@@ -246,7 +244,7 @@
                                                 $(".idFechaRecepcion").addClass("classHide");
                                             }
                                             $(".idTipoDocumento").change(function () {
-                                                if ($(this).val() === '01' || $(this).val() === '02' ) {
+                                                if ($(this).val() === '01' || $(this).val() === '02') {
                                                     $(".classdocumentoGestion").addClass("classHide");
                                                 } else {
                                                     $(".classdocumentoGestion").removeClass("classHide");
@@ -264,6 +262,7 @@
                                             <tr>
                                                 <td colspan="2">
                                                     <h:panelGroup id="idPanerl">
+                                                        <br/>
                                                         <table style="width: 100%">
                                                             <tr>
                                                                 <td style="width: 70%;padding-bottom: 10px;padding-right: 10px">
@@ -288,14 +287,12 @@
                                                                                                 <f:selectItems value="#{listasComunesController.buscarTipoEntidad(false, false, false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
                                                                                             </h:selectOneMenu>
                                                                                         </td>
-
                                                                                         <td>
                                                                                             <span class="text-resalt-primary">Entidad</span>
                                                                                             <input type="text" id="idBusquedaEntidad" style="width: 100%" placeholder="Ingrese nombre de la Entidad" jsf:value="#{registroController.entidad.nombre}"/>
                                                                                         </td>
                                                                                     </tr>
                                                                                 </table>
-
                                                                             </td>
                                                                             <td style="vertical-align: bottom">
                                                                                 <a style="vertical-align: bottom" href="#" class="trigger1" jsf:action="#{registroController.cargarPopoverEntidad(1)}" jsf:onclick="loadingModal()">
@@ -317,10 +314,8 @@
                                                                                             </tr>
                                                                                         </table>
                                                                                     </div>
-
                                                                                     <h:panelGroup id="idPanel1">
                                                                                         <div class="content hide">
-
                                                                                             <h:dataTable value="#{registroController.entidadPopover}" id="idDatableBusquedaEntida" var="entidades" class="table table-hover">
                                                                                                 <h:column>
                                                                                                     <f:facet name="header">Nombre</f:facet>
@@ -432,12 +427,8 @@
                                                                 <input type="text" jsf:value="#{registroController.expedienteGestion.nombre}" placeholder="Nombre"/>
                                                             </td>
                                                             <td style="width: 34%;padding-right: 10px">
-                                                                <!--<label>Apellido paterno:</label>
-                                                                <input type="text" jsf:value="#{registroController.expedienteGestion.apellidoPaterno}" placeholder="Apellido paterno"/>-->
                                                             </td>
                                                             <td>
-                                                                <!--<label>Apellido materno:</label>
-                                                                <input type="text" jsf:value="#{registroController.expedienteGestion.apellidoMaterno}" placeholder="Apellido Materno"/>-->
                                                             </td>
                                                         </tr>
                                                         <tr>
@@ -446,7 +437,7 @@
                                                                 <input type="text" style="width: 50%" jsf:value="#{registroController.expedienteGestion.cargo}" placeholder="Cargo del funcionario" maxlength="190"/>
                                                             </td>
                                                         </tr>
-                                                        
+
                                                         <tr>
                                                             <td style="padding-top: 20px">
                                                                 <label><span style="font-size: large" class="glyphicon glyphicon-paperclip" />Adjuntar archivo:</label>
@@ -459,8 +450,8 @@
                                                                     </a>
                                                                     &#160;&#160;&#160;
                                                                     <a jsf:action="#{registroController.eliminarArchivoGestion1()}">
-                                                                <span style="font-size: large; color: red" class="glyphicon glyphicon-remove" />
-                                                            </a>
+                                                                        <span style="font-size: large; color: red" class="glyphicon glyphicon-remove" />
+                                                                    </a>
                                                                 </h:panelGroup>
                                                             </td>
                                                         </tr>
@@ -495,7 +486,6 @@
                                                             }
                                                         }
                                                     </script>
-                                                    
                                                     <h:panelGroup id="idPanelModalReplicar2">
                                                         <div class="modal fade" data-backdrop="static" data-keyboard="false" id="idModalReoplicar2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                                             <div class="modal-dialog" style="text-align: left">
@@ -522,7 +512,6 @@
                                                                                 </tr>
                                                                             </table>
                                                                             <br/>
-                                                                            
                                                                             <h:dataTable id="idDatatableReplica2" value="#{registroController.listaExpedienteXUsuarioPaginadoReplica.subList(registroController.inicioPaginado, registroController.finPaginado)}" rendered="#{registroController.listaExpedienteXUsuarioPaginadoReplica.size() > 0}"  var="exped" class="table table-hover" binding="#{ro6}">
                                                                                 <h:column>
                                                                                     <f:facet name="header">Nro</f:facet>
@@ -614,11 +603,10 @@
                                                         <table style="width: 100%">
                                                             <tr>
                                                                 <td>
-                                                                    
+
                                                                 </td>
 
                                                                 <td>
-                                                                    
                                                                 </td>
                                                             </tr>
                                                         </table>
@@ -667,9 +655,9 @@
                                                             <span style="font-size: large" class="glyphicon glyphicon-link" />
                                                         </a>
                                                         &#160;&#160;&#160;
-                                                                    <a jsf:action="#{registroController.eliminarArchivoGestion2()}">
-                                                                <span style="font-size: large; color: red" class="glyphicon glyphicon-remove" />
-                                                            </a>
+                                                        <a jsf:action="#{registroController.eliminarArchivoGestion2()}">
+                                                            <span style="font-size: large; color: red" class="glyphicon glyphicon-remove" />
+                                                        </a>
                                                     </h:panelGroup>
                                                 </td>
                                             </tr>
@@ -737,7 +725,7 @@
                                                                         </tr>
                                                                         <tr>
                                                                             <td style="width:5%">
-                                                                                
+
                                                                             </td>
                                                                             <td style="width:25%">
                                                                                 <div class="input-group datepicker" id="idDivTxtFinDefinitivo">

@@ -8,11 +8,11 @@
     <ui:composition template="../template/templateCabeceraExpediente.xhtml">
         <ui:define name="content2">
             <script>
-                function confirmar6() {
-                    $(".confirmacion6").modal('show');
+                function confirmar7() {
+                    $(".confirmacion7").modal('show');
                 }
             </script>
-            <gc:confirmSubmit bean="#{registroController.registarExpedienteGestion()}" classGC="confirmacion6" mensaje="Esta seguro de registrar la gestión?" />
+            <gc:confirmSubmit bean="#{registroController.registarExpedienteGestion()}" classGC="confirmacion7" mensaje="Esta seguro de registrar la gestión?" />
             <ul class="nav nav-tabs">
                 <li role="presentation">
                     <a style="cursor: pointer" jsf:action="#{registroController.datosGeneralesExpediente()}">
@@ -33,15 +33,15 @@
                     </a>
                 </li>
                 <li role="presentation">
-                        <a style="cursor: pointer" jsf:rendered="#{registroController.etapaEstado.idEtapa > 0}" jsf:action="#{registroController.cargarHistorial()}">
-                            <span style="font-size: medium; color: purple" class="glyphicon glyphicon-list-alt" > Historial</span>
-                        </a>
-                    </li>
+                    <a style="cursor: pointer" jsf:rendered="#{registroController.etapaEstado.idEtapa > 0}" jsf:action="#{registroController.cargarHistorial()}">
+                        <span style="font-size: medium; color: purple" class="glyphicon glyphicon-list-alt" > Historial</span>
+                    </a>
+                </li>
                 <li role="presentation">
-                        <a style="cursor: pointer" jsf:rendered="#{registroController.etapaEstado.idEtapa > 0}" jsf:action="#{registroController.cargarCompartir()}">
-                            <span style="font-size: medium; color: purple" class="glyphicon glyphicon-list-alt" > Compartir</span>
-                        </a>
-                    </li>
+                    <a style="cursor: pointer" jsf:rendered="#{registroController.etapaEstado.idEtapa > 0}" jsf:action="#{registroController.cargarCompartir()}">
+                        <span style="font-size: medium; color: purple" class="glyphicon glyphicon-list-alt" > Compartir</span>
+                    </a>
+                </li>
             </ul>
 
             <div class="panel panel-default">
@@ -53,7 +53,7 @@
                             </td>
                             <td style="width: 50%; text-align: right">
                                 <h:panelGroup rendered="#{registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo and registroController.expediente.general != 'C'}">
-                                    <a class="btn btn-primary" onclick="confirmar6()">
+                                    <a class="btn btn-primary" onclick="confirmar7()">
                                         <span class="glyphicon glyphicon-floppy-disk" />Guardar gestión
                                     </a>
                                 </h:panelGroup>
@@ -78,7 +78,6 @@
                                                         <f:ajax render="idPanelModalReplicar" execute="idPanelModalReplicar" onevent="modalReplicar" />
                                                     </a>
                                                     <script>
-
                                                         function modalReplicar(data) {
                                                             if (data.status === 'success') {
                                                                 $("#loadModal").modal('hide');
@@ -157,9 +156,6 @@
                                                                             </ul>
                                                                         </h:panelGroup>
                                                                         <div class="modal-footer">
-                                                                            <a  class="btn btn-default" data-dismiss="modal">
-                                                                                <span class="glyphicon glyphicon-remove"/>Cerrar
-                                                                            </a>
                                                                             <a class="btn btn-primary" jsf:action="#{registroController.insertarReplicaGestion1()}" jsf:onclick="loadingModal()">
                                                                                 <span class="glyphicon glyphicon-floppy-disk"/>Guardar
                                                                                 <f:ajax render="idPanelBusquedaReplic" execute="idPanelBusquedaReplic" onevent="closeModal"/>
@@ -179,7 +175,7 @@
                                             <tr>
                                                 <td style="width: 50%; padding-right: 5px;padding-bottom: 10px">
                                                     <label>Tipo de acción:</label>
-                                                    <h:selectOneMenu disabled="true" style="color: silver" class="idTipoDocumento disabled-form" value="#{registroController.expedienteGestion.tipo}" >
+                                                    <h:selectOneMenu style="color: silver" class="idTipoDocumento disabled-form" value="#{registroController.expedienteGestion.tipo}" >
                                                         <f:selectItem itemValue="" itemLabel="Selecione" />
                                                         <f:selectItems value="#{listasComunesController.buscarGestionTipoAccion(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
                                                     </h:selectOneMenu>
@@ -188,8 +184,8 @@
                                                     <label>Fecha de gestión:</label>
                                                     <br/>
                                                     <h:outputText value="#{registroController.expedienteGestion.fecha}" style="font-weight: bold; font-size: 1.5em">
-                                                            <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
-                                                        </h:outputText>
+                                                        <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
+                                                    </h:outputText>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -200,7 +196,7 @@
                                             <tr>
                                                 <td style="width: 50%; padding-right: 5px;padding-bottom: 10px">
                                                     <label class="classdocumentoGestion" jsf:rendered="#{registroController.expedienteGestion.tipo != '01' and registroController.expedienteGestion.tipo != '02'}">Documento de gestión:</label>
-                                                    <h:selectOneMenu  disabled="true" style="color: silver" class="classdocumentoGestion" value="#{registroController.expedienteGestion.documentoGestion}" rendered="#{registroController.expedienteGestion.tipo != '01' and registroController.expedienteGestion.tipo != '02'}" >
+                                                    <h:selectOneMenu style="color: silver" class="classdocumentoGestion disabled-form" value="#{registroController.expedienteGestion.documentoGestion}" rendered="#{registroController.expedienteGestion.tipo != '01' and registroController.expedienteGestion.tipo != '02'}" >
                                                         <f:selectItem itemValue="0" itemLabel="Selecione" />
                                                         <f:selectItems value="#{listasComunesController.buscarDocumentoGestion(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
                                                     </h:selectOneMenu>
@@ -208,22 +204,23 @@
                                                 <td style="padding-left: 5px; padding-bottom: 10px" >
                                                     <div class="idFechaRecepcion">
                                                         <label jsf:rendered="#{registroController.expedienteGestion.tipo == '04'}">Fecha de recepción:</label>
-                                                        <gc:calendar value="#{registroController.expedienteGestion.fechaRecepcion}" rendered="#{registroController.expedienteGestion.tipo == '04'}"/>
+                                                        <h:outputText value="#{registroController.expedienteGestion.fechaRecepcion}" rendered="#{registroController.expedienteGestion.tipo == '04'}" style="font-weight: bold; font-size: 1.5em">
+                                                            <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
+                                                        </h:outputText>
                                                     </div>
                                                 </td>
                                             </tr>
                                             <tr>
-                                                            <td style="padding-right: 5px;padding-bottom: 10px" >
-                                                                
-                                                                
-                                                            </td>
-                                                <td>
-                                                   <h:selectBooleanCheckbox id="idCheckbox2" disabled="true" style="color: silver" value="#{registroController.expedienteGestion.indicadorRecomendacion}" rendered="#{registroController.etapaEstado.verEtapa == 3 or registroController.etapaEstado.verEtapa == 7}">
-                                                                        Contiene recomendación
-                                                                    </h:selectBooleanCheckbox>
-                                                 
+                                                <td style="padding-right: 5px;padding-bottom: 10px" >
+
+
                                                 </td>
-                                                        </tr>
+                                                <td>
+                                                    <h:selectBooleanCheckbox id="idCheckbox2" class="disabled-form" style="color: silver" value="#{registroController.expedienteGestion.indicadorRecomendacion}" rendered="#{registroController.etapaEstado.verEtapa == 3 or registroController.etapaEstado.verEtapa == 7}">
+                                                        Contiene recomendación
+                                                    </h:selectBooleanCheckbox>
+                                                </td>
+                                            </tr>
                                         </table>
                                         <style>
                                             .classHide{
@@ -233,7 +230,6 @@
                                                 display: inherit;
                                                 width: 100%;
                                             }
-
                                         </style>
                                         <script>
                                             $(".idFechaRecepcion").addClass("classHide");
@@ -250,7 +246,7 @@
                                                 $(".idFechaRecepcion").addClass("classHide");
                                             }
                                             $(".idTipoDocumento").change(function () {
-                                                if ($(this).val() === '01' || $(this).val() === '02' ) {
+                                                if ($(this).val() === '01' || $(this).val() === '02') {
                                                     $(".classdocumentoGestion").addClass("classHide");
                                                 } else {
                                                     $(".classdocumentoGestion").removeClass("classHide");
@@ -261,12 +257,14 @@
                                             <tr>
                                                 <td colspan="2" style="padding-bottom: 10px">
                                                     <label>Descripción:</label>
-                                                    <textarea rows="6" class="disabled-form" disabled="true" style="color: silver;width: 100%;" jsf:value="#{registroController.expedienteGestion.descripcion}" placeholder="Descripción"/>
+                                                    <span style="color: red">(max: 4000 carateres)</span> 
+                                                    <textarea rows="6" class="disabled-form" style="color: silver;width: 100%;" jsf:value="#{registroController.expedienteGestion.descripcion}" placeholder="Descripción"/>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td colspan="2">
                                                     <h:panelGroup id="idPanerl">
+                                                        <br/>
                                                         <table style="width: 100%">
                                                             <tr>
                                                                 <td style="width: 70%;padding-bottom: 10px;padding-right: 10px">
@@ -279,29 +277,27 @@
 
                                                                                         <td>
                                                                                             <span class="text-resalt-primary">Región</span>
-                                                                                            <h:selectOneMenu value="#{registroController.entidad.idDepartamento}">
+                                                                                            <h:selectOneMenu value="#{registroController.entidad.idDepartamento}" class="disabled-form" style="color: silver">
                                                                                                 <f:selectItem itemValue="#{registroController.usuarioSession.idDepartamento}" itemLabel="#{registroController.usuarioSession.nombreDepartamento}" />
                                                                                                 <f:selectItem itemValue="0" itemLabel="Todas las regiones" />
                                                                                             </h:selectOneMenu>
                                                                                         </td>
                                                                                         <td>
                                                                                             <span class="text-resalt-primary">Tipo</span>
-                                                                                            <h:selectOneMenu value="#{registroController.entidad.tipo}">
+                                                                                            <h:selectOneMenu value="#{registroController.entidad.tipo}" class="disabled-form" style="color: silver">
                                                                                                 <f:selectItem itemLabel="Seleccione" itemValue="0" />
                                                                                                 <f:selectItems value="#{listasComunesController.buscarTipoEntidad(false, false, false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
                                                                                             </h:selectOneMenu>
                                                                                         </td>
-
                                                                                         <td>
                                                                                             <span class="text-resalt-primary">Entidad</span>
-                                                                                            <input type="text" id="idBusquedaEntidad" style="width: 100%" placeholder="Ingrese nombre de la Entidad" jsf:value="#{registroController.entidad.nombre}"/>
+                                                                                            <input type="text" id="idBusquedaEntidad" style="width: 100%; color: silver" class="disabled-form" placeholder="Ingrese nombre de la Entidad" jsf:value="#{registroController.entidad.nombre}"/>
                                                                                         </td>
                                                                                     </tr>
                                                                                 </table>
-
                                                                             </td>
                                                                             <td style="vertical-align: bottom">
-                                                                                
+
                                                                                 <div class="popover-markup" style="float: right"> 
                                                                                     <div class="head hide ">
                                                                                         <table style="width: 100%">
@@ -317,10 +313,8 @@
                                                                                             </tr>
                                                                                         </table>
                                                                                     </div>
-
                                                                                     <h:panelGroup id="idPanel1">
                                                                                         <div class="content hide">
-
                                                                                             <h:dataTable value="#{registroController.entidadPopover}" id="idDatableBusquedaEntida" var="entidades" class="table table-hover">
                                                                                                 <h:column>
                                                                                                     <f:facet name="header">Nombre</f:facet>
@@ -410,11 +404,11 @@
                                                                     <br/>
 
                                                                     <h:inputHidden value="#{registroController.expedienteGestion.idEntidad}" />
-                                                                    <input type="text" disabled="true" style="color: silver" jsf:value="#{registroController.expedienteGestion.nombreEntidad}" placeholder="Institución" readonly="true"/>
+                                                                    <input type="text" class="disabled-form" style="color: silver" jsf:value="#{registroController.expedienteGestion.nombreEntidad}" placeholder="Institución" />
                                                                 </td>
                                                                 <td style="vertical-align: bottom;padding-bottom: 10px">
                                                                     Entidad
-                                                                    <h:selectBooleanCheckbox disabled="true" style="color: silver" value="#{registroController.expedienteGestion.indEntidadQuejada}" >
+                                                                    <h:selectBooleanCheckbox class="disabled-form" style="color: silver" value="#{registroController.expedienteGestion.indEntidadQuejada}" >
                                                                         <f:ajax render="idPanerl" listener="#{registroController.entidadQuejada()}" />
                                                                     </h:selectBooleanCheckbox>
                                                                 </td>
@@ -429,26 +423,24 @@
                                                         <tr>
                                                             <td style="width: 90%;padding-right: 10px">
                                                                 <label>Nombre del funcionario:</label>
-                                                                <input  disabled="true" style="color: silver" type="text" jsf:value="#{registroController.expedienteGestion.nombre}" placeholder="Nombre"/>
+                                                                <input class="disabled-form" style="color: silver" type="text" jsf:value="#{registroController.expedienteGestion.nombre}" placeholder="Nombre"/>
                                                             </td>
                                                             <td style="width: 34%;padding-right: 10px">
-                                                                
                                                             </td>
                                                             <td>
-                                                                
                                                             </td>
                                                         </tr>
                                                         <tr>
                                                             <td colspan="3" style="padding-top: 10px">
                                                                 <label>Cargo del funcionario:</label>
-                                                                <input disabled="true" style="color: silver;width: 50%" type="text" jsf:value="#{registroController.expedienteGestion.cargo}" placeholder="Cargo del funcionario" maxlength="190"/>
+                                                                <input class="disabled-form" style="color: silver;width: 50%" type="text" jsf:value="#{registroController.expedienteGestion.cargo}" placeholder="Cargo del funcionario" maxlength="190"/>
                                                             </td>
                                                         </tr>
-                                                        
+
                                                         <tr>
                                                             <td style="padding-top: 20px">
                                                                 <label><span style="font-size: large" class="glyphicon glyphicon-paperclip" />Adjuntar archivo:</label>
-                                                                <h:inputFile class="cMedio" value="#{registroController.file1}" disabled="true"/>
+                                                                <h:inputFile class="cMedio disabled-form" value="#{registroController.file1}"/>
                                                             </td>
                                                             <td>
                                                                 <h:panelGroup rendered="#{registroController.expedienteGestion.ruta1 != null}">
@@ -504,7 +496,7 @@
                                                                             <table style="width: 100%">
                                                                                 <tr>
                                                                                     <td style="width: 60%">
-                                                                                        <input type="text" id="idExpedienteNumero" jsf:value="#{registroController.expedienteBusquedaReplica.numero}" placeholder="Ingrese número de expediente" maxlength="50"/>
+                                                                                        <input type="text" jsf:value="#{registroController.expedienteBusquedaReplica.numero}" placeholder="Ingrese número de expediente" maxlength="50"/>
                                                                                     </td>
                                                                                     <td>
                                                                                         <a class="btn btn-primary" jsf:action="#{registroController.buscarModalReplica()}" jsf:onclick="loadingModal()">
@@ -536,7 +528,6 @@
                                                                                     <f:facet name="header">Estado expediente</f:facet>
                                                                                     <h:outputText value="#{exped.estadoDetalle}" />
                                                                                 </h:column>
-
                                                                                 <h:column>
                                                                                     <a class="btn btn-primary" jsf:action="#{registroController.gestionesPorExpediente(exped.numero)}">
                                                                                         <span class="glyphicon glyphicon-circle-arrow-right" />
@@ -565,23 +556,14 @@
                                                                                 <h:selectOneMenu value="#{registroController.idGestionReplica}">
                                                                                     <f:selectItems value="#{registroController.listaGestionesParaReplica}" var="x" itemValue="#{x.id}" itemLabel="#{x.codigoGestion}" />
                                                                                 </h:selectOneMenu>
-
-
-
                                                                             </h:panelGroup>
+                                                                            <br/><br/>
                                                                             <div class="modal-footer">
-
-                                                                                <a  class="btn btn-default" data-dismiss="modal">
-                                                                                    <span class="glyphicon glyphicon-remove"/>Cerrar
-                                                                                </a>
                                                                                 <a class="btn btn-primary" data-dismiss="modal" jsf:action="#{registroController.actualizarReplicaGestion()}">
                                                                                     <span class="glyphicon glyphicon-floppy-disk"/>Guardar
                                                                                 </a>
-
-
                                                                             </div>
                                                                         </h:panelGroup>
-
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -590,7 +572,6 @@
                                                 </td>
                                             </tr>
                                         </table>
-
                                         <br/><br/>
                                         <table style="width: 100%">
                                             <tr>
@@ -617,17 +598,10 @@
                                                         <table style="width: 100%">
                                                             <tr>
                                                                 <td>
-                                                                    
+
                                                                 </td>
 
                                                                 <td>
-                                                                    <!--<h:panelGroup rendered="#{registroController.expedienteGestion.indicadorRecomendacion}">
-                                                                        <label>Acogimiento de recomendaciones</label>
-                                                                        <h:selectOneMenu value="#{registroController.expedienteGestion.tipoAcogimiento}">
-                                                                            <f:selectItem itemValue="0" itemLabel="Selecione" />
-                                                                            <f:selectItems value="#{listasComunesController.buscarAcogimientoRecomendaciones(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
-                                                                        </h:selectOneMenu>
-                                                                    </h:panelGroup>-->
                                                                 </td>
                                                             </tr>
                                                         </table>
@@ -636,8 +610,6 @@
                                             </tr>
                                             <tr>
                                                 <td style="padding-bottom: 10px">
-                                                    <!--<label>Documento de respuesta:</label>
-                                                    <input type="text" placeholder="Documento de respuesta" jsf:value="#{registroController.expedienteGestion.documentoRespuesta}" style="width: 50%"/>-->
                                                 </td>
                                                 <td></td>
                                             </tr>
@@ -654,6 +626,7 @@
                                             <tr>
                                                 <td colspan="3" style="padding-bottom: 10px">
                                                     <label>Descripción respuesta:</label>
+                                                    <span style="color: red">(max: 4000 carateres)</span> 
                                                     <textarea rows="6" jsf:value="#{registroController.expedienteGestion.detalleRespuesta}" style="width: 100%;" placeholder="Descripción respuesta"/>
                                                 </td>
                                                 <td></td>
@@ -661,6 +634,7 @@
                                             <tr>
                                                 <td colspan="3">
                                                     <label>Observaciones:</label>
+                                                    <span style="color: red">(max: 4000 carateres)</span> 
                                                     <textarea rows="6" jsf:value="#{registroController.expedienteGestion.observacionRespuesta}" style="width: 100%;" placeholder="Observaciones"/>
                                                 </td>
                                                 <td></td>
@@ -710,11 +684,9 @@
                                                                         </tr>
                                                                         <tr>
                                                                             <td style="width:5%">
-                                                                                
                                                                             </td>
                                                                             <td style="width:25%">
                                                                                 <div class="input-group datepicker" id="idDivTxtInicioDefinitivo">
-                                                                                    
                                                                                     <input type="text" class="disabled-form" id="txtInicioDefinitivo" data-format="dd/MM/yyyy" jsf:value="#{registroController.expedienteGestion.inicioDefinitivo}">
                                                                                         <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
                                                                                     </input>
@@ -741,11 +713,11 @@
                                                                         </tr>
                                                                         <tr>
                                                                             <td style="width:5%">
-                                                                                
+
                                                                             </td>
                                                                             <td style="width:25%">
                                                                                 <div class="input-group datepicker" id="idDivTxtFinDefinitivo">
-                                                                                    
+
                                                                                     <input type="text" class="disabled-form" id="txtFinDefinitivo" data-format="dd/MM/yyyy" jsf:value="#{registroController.expedienteGestion.finDefinitivo}">
                                                                                         <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
                                                                                     </input>
@@ -762,11 +734,10 @@
                                                 </td>
                                                 <td style="vertical-align: top;  padding-left: 2px">
                                                     <label>Notas:</label>
-                                                    <textarea rows="6" jsf:value="#{registroController.expedienteGestion.nota}" class="disabled-form" style="width: 100%; color: silver" disabled="true" placeholder="Notas"/>
+                                                    <textarea rows="6" jsf:value="#{registroController.expedienteGestion.nota}" class="disabled-form" style="width: 100%; color: silver" placeholder="Notas"/>
                                                 </td>
                                             </tr>
                                             <tr>
-
                                             </tr>
                                         </table>
                                     </div>
