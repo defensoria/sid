@@ -77,6 +77,12 @@ public class CacheServiceImpl implements CacheService{
     
     private static final Integer CACHE_PARAMETRO_LISTA_NACIONALIDADES = 280;
     
+    private static final Integer CACHE_PARAMETRO_LISTA_FORMA_CAV = 320;
+    
+    private static final Integer CACHE_PARAMETRO_LISTA_ACCION_CAV = 330;
+    
+    private static final Integer CACHE_PARAMETRO_LISTA_TIPO_CAV = 340;
+    
 
     private volatile HashMap<Integer, Object> contenedor = null;
 
@@ -244,6 +250,21 @@ public class CacheServiceImpl implements CacheService{
     @Override
     public List<Parametro> buscarListaNacionalidades() {
         return buscarParametro(CACHE_PARAMETRO_LISTA_NACIONALIDADES, CACHE_PARAMETRO_LISTA_NACIONALIDADES);
+    }
+    
+    @Override
+    public List<Parametro> buscarListaFormaCAV() {
+        return buscarParametro(CACHE_PARAMETRO_LISTA_FORMA_CAV, CACHE_PARAMETRO_LISTA_FORMA_CAV);
+    }
+
+    @Override
+    public List<Parametro> buscarListaAccionCAV() {
+        return buscarParametro(CACHE_PARAMETRO_LISTA_ACCION_CAV, CACHE_PARAMETRO_LISTA_ACCION_CAV);
+    }
+
+    @Override
+    public List<Parametro> buscarListaTipoCAV() {
+        return buscarParametro(CACHE_PARAMETRO_LISTA_TIPO_CAV, CACHE_PARAMETRO_LISTA_TIPO_CAV);
     }
     
     private Object getElemento(Integer key) {

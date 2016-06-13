@@ -54,6 +54,7 @@
         <typeAlias type="gob.dp.sid.registro.entity.ExpedienteSuspencion" alias="expedienteSuspencion"/>
         <typeAlias type="gob.dp.sid.registro.entity.ExpedienteAmpliacion" alias="expedienteAmpliacion"/>
         <typeAlias type="gob.dp.sid.registro.entity.ExpedienteHistorial" alias="expedienteHistorial"/>
+        <typeAlias type="gob.dp.sid.registro.entity.ExpedienteFormularioVirtual" alias="expedienteFormularioVirtual"/>
         
         <typeAlias type="gob.dp.sid.reporte.entity.Reporte" alias="reporte"/>
         
@@ -96,6 +97,7 @@
         <mapper resource="gob/dp/sid/registro/dao/xml/ExpedienteSuspencion.xml" />
         <mapper resource="gob/dp/sid/registro/dao/xml/ExpedienteAmpliacion.xml" />
         <mapper resource="gob/dp/sid/registro/dao/xml/ExpedienteHistorial.xml" />
+        <mapper resource="gob/dp/sid/registro/dao/xml/ExpedienteFormularioVirtual.xml" />
         
         <mapper resource="gob/dp/sid/bandeja/dao/xml/Bandeja.xml" />
     </mappers>

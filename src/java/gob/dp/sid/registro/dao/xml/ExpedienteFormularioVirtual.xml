@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD iBatis Mapper 3.0 //EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="gob.dp.sid.registro.dao.ExpedienteFormularioVirtualDAO">
+    
+    <resultMap id="expedienteFormularioVirtualMap" type="expedienteFormularioVirtual">
+        <id property="id" column="N_ID_REGISTRO" />
+        <result property="nombre" column="C_NOMBRES"/>
+        <result property="apellidoPaterno" column="C_APELLIDOPATERNO"/>
+        <result property="apellidoMaterno" column="C_APELLIDOMATERNO"/>
+        <result property="tipoDocumento" column="C_TIPODOCUMENTO"/>
+        <result property="numeroDocumento" column="C_NUMERODOCUMENTO"/>
+        <result property="telefono" column="C_TELEFONO"/>
+        <result property="sexo" column="C_SEXO"/>
+        <result property="email" column="C_EMAIL"/>
+        <result property="fechaNacimiento" column="D_FECHANACIMIENTO"/>
+        <result property="direccion" column="C_DIRECCION"/>
+        <result property="departamento" column="C_DEPARTAMENTO"/>
+        <result property="provincia" column="C_PROVINCIA"/>
+        <result property="distrito" column="C_DISTRITO"/>
+        <result property="descripcion" column="C_DESCRIPCION"/>
+        <result property="ruta" column="C_RUTA"/>
+        <result property="fecha" column="D_FECHA"/>
+        <result property="forma" column="C_FORMA"/>
+        <result property="accion" column="C_ACCION"/>
+        <result property="respuesta" column="C_RESPUESTA"/>
+        <result property="fechaRegistro" column="D_FECHAREGISTRO"/>
+        <result property="usuarioRegistro" column="C_USUREGISTRO"/>
+        <result property="estado" column="C_ESTADO"/>
+        <result property="tipo" column="C_TIPO"/>
+    </resultMap> 
+    
+    
+    <insert id="expedienteFormularioVirtualInsertar" parameterType="expedienteFormularioVirtual">
+        INSERT INTO SID_REG_FORMULARIO_VIRTUAL
+        (
+        <if test="nombre != null">
+            C_NOMBRES,
+        </if>
+        <if test="apellidoPaterno != null">
+            C_APELLIDOPATERNO,
+        </if>
+        <if test="apellidoMaterno != null">
+            C_APELLIDOMATERNO,
+        </if>
+        <if test="tipoDocumento != null">
+            C_NUMERODOCUMENTO,
+        </if>
+        <if test="telefono != null">
+            C_TELEFONO,
+        </if>
+        <if test="sexo != null">
+            C_SEXO,
+        </if>
+        <if test="email != null">
+            C_EMAIL,
+        </if>
+        <if test="fechaNacimiento != null">
+            D_FECHANACIMIENTO,
+        </if>
+        <if test="direccion != null">
+            C_DIRECCION,
+        </if>
+        <if test="departamento != null">
+            C_DEPARTAMENTO,
+        </if>
+        <if test="provincia != null">
+            C_PROVINCIA,
+        </if>
+        <if test="distrito != null">
+            C_DISTRITO,
+        </if>
+        <if test="fecha != null">
+            D_FECHA,
+        </if>
+        <if test="forma != null">
+            C_FORMA,
+        </if>
+        <if test="accion != null">
+            C_ACCION,
+        </if>
+        <if test="fecha != null">
+            D_FECHA,
+        </if>
+        <if test="respuesta != null">
+            C_RESPUESTA,
+        </if>
+        <if test="fechaRegistro != null">
+            D_FECHAREGISTRO,
+        </if>
+        <if test="usuarioRegistro != null">
+            C_USUREGISTRO,
+        </if>
+        <if test="estado != null">
+            C_ESTADO,
+        </if>
+        <if test="tipo != null">
+            C_TIPO,
+        </if>
+        N_ID_REGISTRO
+        )
+        VALUES 
+        (
+        <if test="nombre != null">
+            #{nombre},
+        </if>
+        <if test="apellidoPaterno != null">
+            #{apellidoPaterno},
+        </if>
+        <if test="apellidoMaterno != null">
+            #{apellidoMaterno},
+        </if>
+        <if test="tipoDocumento != null">
+            #{tipoDocumento},
+        </if>
+        <if test="telefono != null">
+            #{telefono},
+        </if>
+        <if test="sexo != null">
+            #{sexo},
+        </if>
+        <if test="email != null">
+            #{email},
+        </if>
+        <if test="fechaNacimiento != null">
+            #{fechaNacimiento},
+        </if>
+        <if test="direccion != null">
+            #{direccion},
+        </if>
+        <if test="departamento != null">
+            #{departamento},
+        </if>
+        <if test="provincia != null">
+            #{provincia},
+        </if>
+        <if test="distrito != null">
+            #{distrito},
+        </if>
+        <if test="fecha != null">
+            #{fecha},
+        </if>
+        <if test="forma != null">
+            #{forma},
+        </if>
+        <if test="accion != null">
+            #{accion},
+        </if>
+        <if test="fecha != null">
+            #{fecha},
+        </if>
+        <if test="respuesta != null">
+            #{respuesta},
+        </if>
+        <if test="fechaRegistro != null">
+            #{fechaRegistro},
+        </if>
+        <if test="usuarioRegistro != null">
+            #{usuarioRegistro},
+        </if>
+        <if test="estado != null">
+            #{estado},
+        </if>
+        <if test="tipo != null">
+            #{tipo},
+        </if>
+        SEQ_SID_REG_FORMULARIO_VIRTUAL.NextVal
+        )
+        <selectKey keyProperty="id" resultType="Long">
+            SELECT SEQ_SID_REG_FORMULARIO_VIRTUAL.CURRVAL FROM DUAL
+        </selectKey>
+    </insert>
+    
+    <update id="expedienteFormularioVirtualUpdate" parameterType="expedienteFormularioVirtual">
+        UPDATE SID_REG_FORMULARIO_VIRTUAL
+        <set>
+        <if test="nombre != null">
+            C_NOMBRES = #{nombre},
+        </if>
+        <if test="apellidoPaterno != null">
+            C_APELLIDOPATERNO = #{apellidoPaterno},
+        </if>
+        <if test="apellidoMaterno != null">
+            C_APELLIDOMATERNO = #{apellidoMaterno},
+        </if>
+        <if test="tipoDocumento != null">
+            C_NUMERODOCUMENTO = #{tipoDocumento},
+        </if>
+        <if test="telefono != null">
+            C_TELEFONO = #{telefono},
+        </if>
+        <if test="sexo != null">
+            C_SEXO = #{sexo},
+        </if>
+        <if test="email != null">
+            C_EMAIL = #{email},
+        </if>
+        <if test="fechaNacimiento != null">
+            D_FECHANACIMIENTO = #{fechaNacimiento},
+        </if>
+        <if test="direccion != null">
+            C_DIRECCION = #{direccion},
+        </if>
+        <if test="departamento != null">
+            C_DEPARTAMENTO = #{departamento},
+        </if>
+        <if test="provincia != null">
+            C_PROVINCIA = #{provincia},
+        </if>
+        <if test="distrito != null">
+            C_DISTRITO = #{distrito},
+        </if>
+        <if test="fecha != null">
+            D_FECHA = #{fecha},
+        </if>
+        <if test="forma != null">
+            C_FORMA = #{forma},
+        </if>
+        <if test="accion != null">
+            C_ACCION = #{accion},
+        </if>
+        <if test="fecha != null">
+            D_FECHA = #{fecha},
+        </if>
+        <if test="respuesta != null">
+            C_RESPUESTA = #{respuesta},
+        </if>
+        <if test="fechaRegistro != null">
+            D_FECHAREGISTRO = #{fechaRegistro},
+        </if>
+        <if test="usuarioRegistro != null">
+            C_USUREGISTRO = #{usuarioRegistro},
+        </if>
+        <if test="tipo != null">
+            C_TIPO = #{tipo},
+        </if>
+        C_ESTADO = #{estado}
+        </set>
+        <where>
+            N_ID_REGISTRO = #{id}
+        </where>
+    </update>
+    
+    <select id="expedienteFormularioVirtualSelect" resultMap="expedienteFormularioVirtualMap" parameterType="expedienteFormularioVirtual">
+        SELECT * FROM SID_REG_FORMULARIO_VIRTUAL
+        WHERE 1 = 1 
+        <if test="fecha != null">
+            AND D_FECHA = #{fecha}
+        </if>
+    </select>
+    
+</mapper>

@@ -38,6 +38,9 @@ public class MenuController implements Serializable {
         menuPadre = menuService.menuPadre();
         FacesContext context = FacesContext.getCurrentInstance();
         SeguridadUtilController seguridadUtilController = (SeguridadUtilController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "seguridadUtilController");
+        if (!seguridadUtilController.tieneRecurso("REC_CAV001")) {
+            menuPadre.remove(5);
+        }
         if (!seguridadUtilController.tieneRecurso("REC_ONP001")) {
             menuPadre.remove(4);
         }
@@ -186,6 +189,11 @@ public class MenuController implements Serializable {
             CatalogoController catalogoController = (CatalogoController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "catalogoController");
             menuHijo = menuService.menuHijo(15);
             return catalogoController.cargarPaginaDerivados();
+        }
+        
+        if (codigoPagina == 35) {
+            RegistroController registroController = (RegistroController) context.getELContext().getELResolver().getValue(context.getELContext(), null, "registroController");
+            return registroController.cargarFormularioVirtual();
         }
 
         if (codigoPagina == 32) {

@@ -43,6 +43,7 @@ import gob.dp.sid.registro.entity.ExpedienteConsulta;
 import gob.dp.sid.registro.entity.ExpedienteDerivacion;
 import gob.dp.sid.registro.entity.ExpedienteEntidad;
 import gob.dp.sid.registro.entity.ExpedienteEtapa;
+import gob.dp.sid.registro.entity.ExpedienteFormularioVirtual;
 import gob.dp.sid.registro.entity.ExpedienteGestion;
 import gob.dp.sid.registro.entity.ExpedienteHistorial;
 import gob.dp.sid.registro.entity.ExpedienteNivel;
@@ -63,6 +64,7 @@ import gob.dp.sid.registro.service.ExpedienteConsultaService;
 import gob.dp.sid.registro.service.ExpedienteDerivacionService;
 import gob.dp.sid.registro.service.ExpedienteEntidadService;
 import gob.dp.sid.registro.service.ExpedienteEtapaService;
+import gob.dp.sid.registro.service.ExpedienteFormularioVirtualService;
 import gob.dp.sid.registro.service.ExpedienteGestionService;
 import gob.dp.sid.registro.service.ExpedienteHistorialService;
 import gob.dp.sid.registro.service.ExpedienteNivelService;
@@ -346,6 +348,8 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     private String usuarioCompartir;
     
     private Boolean esSupervisor;
+    
+    private ExpedienteFormularioVirtual expedienteFormularioVirtual;
 
     @Autowired
     private ExpedienteService expedienteService;
@@ -421,6 +425,9 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     
     @Autowired
     private BandejaService bandejaService;
+    
+    @Autowired
+    private ExpedienteFormularioVirtualService  expedienteFormularioVirtualService;
 
     public String cargarNuevoExpediente() {
         try {
@@ -441,6 +448,11 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             log.error("ERROR - cargarNuevoExpediente()" + e);
         }
         return null;
+    }
+    
+    public String cargarFormularioVirtual(){
+        expedienteFormularioVirtual = new ExpedienteFormularioVirtual();
+        return "expedienteFormularioVirtual";
     }
 
     private void cargarObjetoExpediente() {
@@ -6035,6 +6047,14 @@ public class RegistroController extends AbstractManagedBean implements Serializa
 
     public void setEsSupervisor(Boolean esSupervisor) {
         this.esSupervisor = esSupervisor;
+    }
+
+    public ExpedienteFormularioVirtual getExpedienteFormularioVirtual() {
+        return expedienteFormularioVirtual;
+    }
+
+    public void setExpedienteFormularioVirtual(ExpedienteFormularioVirtual expedienteFormularioVirtual) {
+        this.expedienteFormularioVirtual = expedienteFormularioVirtual;
     }
 
 }

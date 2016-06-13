@@ -70,4 +70,10 @@ public interface CacheService {
     public List<Parametro> buscarListaAdjuntia();
     
     public List<Parametro> buscarListaNacionalidades();
+    
+    public List<Parametro> buscarListaFormaCAV();
+    
+    public List<Parametro> buscarListaAccionCAV();
+    
+    public List<Parametro> buscarListaTipoCAV();
 }
