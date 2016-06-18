@@ -76,4 +76,7 @@ public interface CacheService {
     public List<Parametro> buscarListaAccionCAV();
     
     public List<Parametro> buscarListaTipoCAV();
+    
+    public List<Parametro> buscarListaDocumentoCAV();
+    
 }

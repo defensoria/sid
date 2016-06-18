@@ -83,6 +83,8 @@ public class CacheServiceImpl implements CacheService{
     
     private static final Integer CACHE_PARAMETRO_LISTA_TIPO_CAV = 340;
     
+    private static final Integer CACHE_PARAMETRO_LISTA_DOCUMENTO_CAV = 310;
+    
 
     private volatile HashMap<Integer, Object> contenedor = null;
 
@@ -265,6 +267,11 @@ public class CacheServiceImpl implements CacheService{
     @Override
     public List<Parametro> buscarListaTipoCAV() {
         return buscarParametro(CACHE_PARAMETRO_LISTA_TIPO_CAV, CACHE_PARAMETRO_LISTA_TIPO_CAV);
+    }
+    
+    @Override
+    public List<Parametro> buscarListaDocumentoCAV() {
+        return buscarParametro(CACHE_PARAMETRO_LISTA_DOCUMENTO_CAV, CACHE_PARAMETRO_LISTA_DOCUMENTO_CAV);
     }
     
     private Object getElemento(Integer key) {

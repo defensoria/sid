@@ -350,6 +350,8 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     private Boolean esSupervisor;
     
     private ExpedienteFormularioVirtual expedienteFormularioVirtual;
+    
+    private List<ExpedienteFormularioVirtual> listaExpedienteFormularioVirtual;
 
     @Autowired
     private ExpedienteService expedienteService;
@@ -452,6 +454,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     
     public String cargarFormularioVirtual(){
         expedienteFormularioVirtual = new ExpedienteFormularioVirtual();
+        listarRegistrosCAV();
         return "expedienteFormularioVirtual";
     }
 
@@ -587,6 +590,23 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         } catch (Exception e) {
             log.error("ERROR - cargarFichaONP()" + e);
         }
+    }
+    
+    public void guardarRegistroCAV(){
+        expedienteFormularioVirtual.setUsuarioRegistro(usuarioSession.getCodigo());
+        expedienteFormularioVirtualService.expedienteFormularioVirtualInsertar(expedienteFormularioVirtual);
+        listarRegistrosCAV();
+        limpiarCAV();
+        msg.messageInfo("Se ingreso un nuevo registro", null);
+    }
+    
+    private void limpiarCAV(){
+        expedienteFormularioVirtual = new ExpedienteFormularioVirtual();
+        expedienteFormularioVirtual.setFechaRegistro(new Date());
+    }
+    
+    private void listarRegistrosCAV(){
+        listaExpedienteFormularioVirtual = expedienteFormularioVirtualService.expedienteFormularioVirtualSelect(new ExpedienteFormularioVirtual());
     }
 
     private void insertarActualizarTiempos() {
@@ -6055,6 +6075,14 @@ public class RegistroController extends AbstractManagedBean implements Serializa
 
     public void setExpedienteFormularioVirtual(ExpedienteFormularioVirtual expedienteFormularioVirtual) {
         this.expedienteFormularioVirtual = expedienteFormularioVirtual;
+    }
+
+    public List<ExpedienteFormularioVirtual> getListaExpedienteFormularioVirtual() {
+        return listaExpedienteFormularioVirtual;
+    }
+
+    public void setListaExpedienteFormularioVirtual(List<ExpedienteFormularioVirtual> listaExpedienteFormularioVirtual) {
+        this.listaExpedienteFormularioVirtual = listaExpedienteFormularioVirtual;
     }
 
 }

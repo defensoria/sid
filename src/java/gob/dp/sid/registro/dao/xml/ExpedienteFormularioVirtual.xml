@@ -27,6 +27,9 @@
         <result property="usuarioRegistro" column="C_USUREGISTRO"/>
         <result property="estado" column="C_ESTADO"/>
         <result property="tipo" column="C_TIPO"/>
+        
+        <result property="formaDescripcion" column="FORMADESCRIPCION"/>
+        <result property="accionDescripcion" column="ACCIONDESCRIPCION"/>
     </resultMap> 
     
     
@@ -43,6 +46,9 @@
             C_APELLIDOMATERNO,
         </if>
         <if test="tipoDocumento != null">
+            C_TIPODOCUMENTO,
+        </if>
+        <if test="numeroDocumento != null">
             C_NUMERODOCUMENTO,
         </if>
         <if test="telefono != null">
@@ -111,6 +117,9 @@
         </if>
         <if test="tipoDocumento != null">
             #{tipoDocumento},
+        </if>
+        <if test="numeroDocumento != null">
+            #{numeroDocumento},
         </if>
         <if test="telefono != null">
             #{telefono},
@@ -241,7 +250,9 @@
     </update>
     
     <select id="expedienteFormularioVirtualSelect" resultMap="expedienteFormularioVirtualMap" parameterType="expedienteFormularioVirtual">
-        SELECT * FROM SID_REG_FORMULARIO_VIRTUAL
+        SELECT A.*, B.NOMBRE_PARAMETRO FORMADESCRIPCION, C.NOMBRE_PARAMETRO ACCIONDESCRIPCION FROM SID_REG_FORMULARIO_VIRTUAL A
+INNER JOIN SID_PARAMETRO B ON A.C_FORMA = B.VALOR_PARAMETRO AND B.PADRE_PARAMETRO = 320
+LEFT JOIN SID_PARAMETRO C ON A.C_ACCION = C.VALOR_PARAMETRO AND C.PADRE_PARAMETRO = 330
         WHERE 1 = 1 
         <if test="fecha != null">
             AND D_FECHA = #{fecha}

@@ -60,6 +60,11 @@ public class ExpedienteFormularioVirtual {
     private String estado;    
     
     private String tipo;
+    
+    /**AGREGADOS*/
+    private String formaDescripcion;
+    
+    private String accionDescripcion;
 
     public Long getId() {
         return id;
@@ -252,4 +257,22 @@ public class ExpedienteFormularioVirtual {
     public void setTipo(String tipo) {
         this.tipo = tipo;
     }
+
+    public String getFormaDescripcion() {
+        return formaDescripcion;
+    }
+
+    public void setFormaDescripcion(String formaDescripcion) {
+        this.formaDescripcion = formaDescripcion;
+    }
+
+    public String getAccionDescripcion() {
+        return accionDescripcion;
+    }
+
+    public void setAccionDescripcion(String accionDescripcion) {
+        this.accionDescripcion = accionDescripcion;
+    }
+
+    
 }
