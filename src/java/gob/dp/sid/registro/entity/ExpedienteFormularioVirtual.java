@@ -61,6 +61,8 @@ public class ExpedienteFormularioVirtual {
     
     private String tipo;
     
+    private String numeroExpediente;
+    
     /**AGREGADOS*/
     private String formaDescripcion;
     
@@ -272,6 +274,14 @@ public class ExpedienteFormularioVirtual {
 
     public void setAccionDescripcion(String accionDescripcion) {
         this.accionDescripcion = accionDescripcion;
+    }
+
+    public String getNumeroExpediente() {
+        return numeroExpediente;
+    }
+
+    public void setNumeroExpediente(String numeroExpediente) {
+        this.numeroExpediente = numeroExpediente;
     }
 
     

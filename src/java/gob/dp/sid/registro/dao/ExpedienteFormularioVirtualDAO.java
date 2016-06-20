@@ -20,4 +20,8 @@ public interface ExpedienteFormularioVirtualDAO {
             
     public List<ExpedienteFormularioVirtual> expedienteFormularioVirtualSelect(ExpedienteFormularioVirtual ExpedienteFormularioVirtual);
     
+    public List<ExpedienteFormularioVirtual> expedienteFormularioVirtualBuscar(ExpedienteFormularioVirtual ExpedienteFormularioVirtual);
+    
+    public void expedienteFormularioVirtualInactiva(Long idExpedienteFormularioVirtual);
+    
 }

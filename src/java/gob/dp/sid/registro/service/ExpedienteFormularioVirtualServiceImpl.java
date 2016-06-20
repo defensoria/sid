@@ -35,5 +35,15 @@ public class ExpedienteFormularioVirtualServiceImpl implements ExpedienteFormula
     public List<ExpedienteFormularioVirtual> expedienteFormularioVirtualSelect(ExpedienteFormularioVirtual ExpedienteFormularioVirtual) {
         return expedienteFormularioVirtualDAO.expedienteFormularioVirtualSelect(ExpedienteFormularioVirtual);
     }
+
+    @Override
+    public void expedienteFormularioVirtualInactiva(Long idExpedienteFormularioVirtual) {
+        expedienteFormularioVirtualDAO.expedienteFormularioVirtualInactiva(idExpedienteFormularioVirtual);
+    }
+
+    @Override
+    public List<ExpedienteFormularioVirtual> expedienteFormularioVirtualBuscar(ExpedienteFormularioVirtual ExpedienteFormularioVirtual) {
+        return expedienteFormularioVirtualDAO.expedienteFormularioVirtualBuscar(ExpedienteFormularioVirtual);
+    }
     
 }

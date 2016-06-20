@@ -351,6 +351,8 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     
     private ExpedienteFormularioVirtual expedienteFormularioVirtual;
     
+    private ExpedienteFormularioVirtual filtroFormularioVirtual;
+    
     private List<ExpedienteFormularioVirtual> listaExpedienteFormularioVirtual;
 
     @Autowired
@@ -454,10 +456,11 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     
     public String cargarFormularioVirtual(){
         expedienteFormularioVirtual = new ExpedienteFormularioVirtual();
+        filtroFormularioVirtual = new ExpedienteFormularioVirtual();
         listarRegistrosCAV();
         return "expedienteFormularioVirtual";
     }
-
+    
     private void cargarObjetoExpediente() {
         try {
             expediente = new Expediente();
@@ -499,8 +502,6 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         historial = new ExpedienteHistorial(HistorialType.HISTORIAL_COMPARTIR_EXPEDIENTE.getKey(), HistorialType.HISTORIAL_COMPARTIR_EXPEDIENTE.getValue());
         guardarHistorial(historial);
     }
-    
-    
     
     public void eliminarArchivo(){
         expediente.setRuta(null);
@@ -592,17 +593,88 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         }
     }
     
-    public void guardarRegistroCAV(){
-        expedienteFormularioVirtual.setUsuarioRegistro(usuarioSession.getCodigo());
-        expedienteFormularioVirtualService.expedienteFormularioVirtualInsertar(expedienteFormularioVirtual);
-        listarRegistrosCAV();
+    public void buscarCAV(){
+        listaExpedienteFormularioVirtual = expedienteFormularioVirtualService.expedienteFormularioVirtualBuscar(filtroFormularioVirtual);
         limpiarCAV();
-        msg.messageInfo("Se ingreso un nuevo registro", null);
     }
     
-    private void limpiarCAV(){
+    public void guardarRegistroCAV(){
+        if(StringUtils.equals(expedienteFormularioVirtual.getAccion(), "01") || StringUtils.equals(expedienteFormularioVirtual.getAccion(), "02") || StringUtils.equals(expedienteFormularioVirtual.getAccion(), "03")){
+            expedienteFormularioVirtual.setEstado("E");
+            if(expedienteFormularioVirtual.getId() == null){
+                expedienteFormularioVirtual.setUsuarioRegistro(usuarioSession.getCodigo());
+                expedienteFormularioVirtual.setFechaRegistro(new Date());
+                expedienteFormularioVirtualService.expedienteFormularioVirtualInsertar(expedienteFormularioVirtual);
+            }else{
+                expedienteFormularioVirtualService.expedienteFormularioVirtualUpdate(expedienteFormularioVirtual);
+            }
+            crearValidarExpediente();
+        }else{
+            expedienteFormularioVirtual.setEstado("A");
+            if(expedienteFormularioVirtual.getId() == null){
+                expedienteFormularioVirtual.setFechaRegistro(new Date());
+                expedienteFormularioVirtual.setUsuarioRegistro(usuarioSession.getCodigo());
+                expedienteFormularioVirtualService.expedienteFormularioVirtualInsertar(expedienteFormularioVirtual);
+            }else{
+                expedienteFormularioVirtualService.expedienteFormularioVirtualUpdate(expedienteFormularioVirtual);
+            }
+        }
+        listarRegistrosCAV();
+        limpiarCAV();
+        msg.messageInfo("Se realizo el registro", null);
+    }
+    
+    private void crearValidarExpediente(){
+        Persona perso = personaService.personaXDNI(expedienteFormularioVirtual.getNumeroDocumento());
+        Persona filtro = new Persona();
+        if (perso == null){
+            filtro.setNumeroDocumento(expedienteFormularioVirtual.getNumeroDocumento());
+            filtro.setNombre(expedienteFormularioVirtual.getNombre());
+            filtro.setApellidoPat(expedienteFormularioVirtual.getApellidoPaterno());
+            filtro.setApellidoMat(expedienteFormularioVirtual.getApellidoMaterno());
+            filtro.setIdDepartamento(expedienteFormularioVirtual.getDepartamento());
+            filtro.setIdProvincia(expedienteFormularioVirtual.getProvincia());
+            filtro.setIdDistrito(expedienteFormularioVirtual.getDistrito());
+            filtro.setSexo(expedienteFormularioVirtual.getSexo());
+            filtro.setDireccion(expedienteFormularioVirtual.getDireccion());
+            filtro.setFechaRegistro(expedienteFormularioVirtual.getFechaRegistro());
+            filtro.setUsuRegistro(expedienteFormularioVirtual.getUsuarioRegistro());
+            personaService.personaInsertar(filtro);
+        }else{
+            filtro = perso;
+        }
+        personaSeleccionada = filtro;
+        personaSeleccionada.setTipoExpediente(expedienteFormularioVirtual.getAccion());
+        generarExpedienteCAV();
+        expedienteFormularioVirtual.setNumeroExpediente(expediente.getNumero());
+        expedienteFormularioVirtualService.expedienteFormularioVirtualUpdate(expedienteFormularioVirtual);
+    }
+    
+    public void seteaFormularioVirtual(ExpedienteFormularioVirtual efv){
+        if(efv.getDepartamento() != null){
+           comboProvinciaId(efv.getDepartamento());
+        }
+        if(efv.getProvincia() != null){
+            comboDistritoId(efv.getProvincia(), efv.getDepartamento());
+        }
+        setExpedienteFormularioVirtual(efv);
+    }
+    
+    public void inactivaRegistroCAV(long id){
+        expedienteFormularioVirtualService.expedienteFormularioVirtualInactiva(id);
+        listarRegistrosCAV();
+        limpiarCAV();
+    }
+    
+    public void limpiarCAV(){
         expedienteFormularioVirtual = new ExpedienteFormularioVirtual();
         expedienteFormularioVirtual.setFechaRegistro(new Date());
+    }
+    
+    private void generarExpedienteCAV(){
+        iniciarExpedienteNuevo();
+        expediente.setSumilla(expedienteFormularioVirtual.getDescripcion());
+        guardarVersion();
     }
     
     private void listarRegistrosCAV(){
@@ -6083,6 +6155,14 @@ public class RegistroController extends AbstractManagedBean implements Serializa
 
     public void setListaExpedienteFormularioVirtual(List<ExpedienteFormularioVirtual> listaExpedienteFormularioVirtual) {
         this.listaExpedienteFormularioVirtual = listaExpedienteFormularioVirtual;
+    }
+
+    public ExpedienteFormularioVirtual getFiltroFormularioVirtual() {
+        return filtroFormularioVirtual;
+    }
+
+    public void setFiltroFormularioVirtual(ExpedienteFormularioVirtual filtroFormularioVirtual) {
+        this.filtroFormularioVirtual = filtroFormularioVirtual;
     }
 
 }

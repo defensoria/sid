@@ -58,4 +58,9 @@ public class PersonaServiceImpl implements PersonaService {
         return personaDAO.personaBusquedaOne(idPersona);
     }
 
+    @Override
+    public Persona personaXDNI(String dni) {
+        return personaDAO.personaXDNI(dni);
+    }
+
 }

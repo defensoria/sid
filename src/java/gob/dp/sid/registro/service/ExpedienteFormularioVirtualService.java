@@ -20,4 +20,8 @@ public interface ExpedienteFormularioVirtualService {
             
     public List<ExpedienteFormularioVirtual> expedienteFormularioVirtualSelect(ExpedienteFormularioVirtual ExpedienteFormularioVirtual);
     
+    public void expedienteFormularioVirtualInactiva(Long idExpedienteFormularioVirtual);
+    
+    public List<ExpedienteFormularioVirtual> expedienteFormularioVirtualBuscar(ExpedienteFormularioVirtual ExpedienteFormularioVirtual);
+    
 }

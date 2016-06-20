@@ -31,5 +31,15 @@ public class ExpedienteFormularioVirtualDAOImpl extends SqlSessionDaoSupport imp
     public List<ExpedienteFormularioVirtual> expedienteFormularioVirtualSelect(ExpedienteFormularioVirtual ExpedienteFormularioVirtual) {
         return getSqlSession().selectList("gob.dp.sid.registro.dao.ExpedienteFormularioVirtualDAO.expedienteFormularioVirtualSelect", ExpedienteFormularioVirtual);
     }
+
+    @Override
+    public void expedienteFormularioVirtualInactiva(Long idExpedienteFormularioVirtual) {
+        getSqlSession().update("gob.dp.sid.registro.dao.ExpedienteFormularioVirtualDAO.expedienteFormularioVirtualInactiva", idExpedienteFormularioVirtual);
+    }
+
+    @Override
+    public List<ExpedienteFormularioVirtual> expedienteFormularioVirtualBuscar(ExpedienteFormularioVirtual ExpedienteFormularioVirtual) {
+        return getSqlSession().selectList("gob.dp.sid.registro.dao.ExpedienteFormularioVirtualDAO.expedienteFormularioVirtualBuscar", ExpedienteFormularioVirtual);
+    }
     
 }

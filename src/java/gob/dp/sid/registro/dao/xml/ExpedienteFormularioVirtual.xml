@@ -27,7 +27,7 @@
         <result property="usuarioRegistro" column="C_USUREGISTRO"/>
         <result property="estado" column="C_ESTADO"/>
         <result property="tipo" column="C_TIPO"/>
-        
+        <result property="numeroExpediente" column="C_NUMEROEXPEDIENTE"/>
         <result property="formaDescripcion" column="FORMADESCRIPCION"/>
         <result property="accionDescripcion" column="ACCIONDESCRIPCION"/>
     </resultMap> 
@@ -84,9 +84,6 @@
         <if test="accion != null">
             C_ACCION,
         </if>
-        <if test="fecha != null">
-            D_FECHA,
-        </if>
         <if test="respuesta != null">
             C_RESPUESTA,
         </if>
@@ -101,6 +98,12 @@
         </if>
         <if test="tipo != null">
             C_TIPO,
+        </if>
+        <if test="descripcion != null">
+            C_DESCRIPCION,
+        </if>
+        <if test="numeroExpediente != null">
+            C_NUMEROEXPEDIENTE,
         </if>
         N_ID_REGISTRO
         )
@@ -154,9 +157,6 @@
         <if test="accion != null">
             #{accion},
         </if>
-        <if test="fecha != null">
-            #{fecha},
-        </if>
         <if test="respuesta != null">
             #{respuesta},
         </if>
@@ -171,6 +171,12 @@
         </if>
         <if test="tipo != null">
             #{tipo},
+        </if>
+        <if test="descripcion != null">
+            #{descripcion},
+        </if>
+        <if test="numeroExpediente != null">
+            #{numeroExpediente},
         </if>
         SEQ_SID_REG_FORMULARIO_VIRTUAL.NextVal
         )
@@ -227,9 +233,6 @@
         <if test="accion != null">
             C_ACCION = #{accion},
         </if>
-        <if test="fecha != null">
-            D_FECHA = #{fecha},
-        </if>
         <if test="respuesta != null">
             C_RESPUESTA = #{respuesta},
         </if>
@@ -242,7 +245,23 @@
         <if test="tipo != null">
             C_TIPO = #{tipo},
         </if>
+        <if test="descripcion != null">
+            C_DESCRIPCION = #{descripcion},
+        </if>
+        <if test="numeroExpediente != null">
+            C_NUMEROEXPEDIENTE = #{numeroExpediente},
+        </if>
         C_ESTADO = #{estado}
+        </set>
+        <where>
+            N_ID_REGISTRO = #{id}
+        </where>
+    </update>
+    
+    <update id="expedienteFormularioVirtualInactiva" parameterType="Long">
+        UPDATE SID_REG_FORMULARIO_VIRTUAL
+        <set>
+            C_ESTADO = 'I'
         </set>
         <where>
             N_ID_REGISTRO = #{id}
@@ -251,12 +270,27 @@
     
     <select id="expedienteFormularioVirtualSelect" resultMap="expedienteFormularioVirtualMap" parameterType="expedienteFormularioVirtual">
         SELECT A.*, B.NOMBRE_PARAMETRO FORMADESCRIPCION, C.NOMBRE_PARAMETRO ACCIONDESCRIPCION FROM SID_REG_FORMULARIO_VIRTUAL A
-INNER JOIN SID_PARAMETRO B ON A.C_FORMA = B.VALOR_PARAMETRO AND B.PADRE_PARAMETRO = 320
-LEFT JOIN SID_PARAMETRO C ON A.C_ACCION = C.VALOR_PARAMETRO AND C.PADRE_PARAMETRO = 330
-        WHERE 1 = 1 
+        INNER JOIN SID_PARAMETRO B ON A.C_FORMA = B.VALOR_PARAMETRO AND B.PADRE_PARAMETRO = 320
+        LEFT JOIN SID_PARAMETRO C ON A.C_ACCION = C.VALOR_PARAMETRO AND C.PADRE_PARAMETRO = 330
+        WHERE A.C_ESTADO NOT IN ('I') 
+        ORDER BY D_FECHAREGISTRO DESC
+    </select>
+    
+    <select id="expedienteFormularioVirtualBuscar" resultMap="expedienteFormularioVirtualMap" parameterType="expedienteFormularioVirtual">
+        SELECT A.*, B.NOMBRE_PARAMETRO FORMADESCRIPCION, C.NOMBRE_PARAMETRO ACCIONDESCRIPCION FROM SID_REG_FORMULARIO_VIRTUAL A
+        INNER JOIN SID_PARAMETRO B ON A.C_FORMA = B.VALOR_PARAMETRO AND B.PADRE_PARAMETRO = 320
+        LEFT JOIN SID_PARAMETRO C ON A.C_ACCION = C.VALOR_PARAMETRO AND C.PADRE_PARAMETRO = 330
+        WHERE A.C_ESTADO NOT IN ('I') 
         <if test="fecha != null">
-            AND D_FECHA = #{fecha}
+            AND A.D_FECHA = #{fecha}
         </if>
+        <if test="forma != 0">
+            AND A.C_FORMA = #{forma}
+        </if>
+        <if test="accion != 0">
+            AND A.C_ACCION = #{accion}
+        </if>
+        ORDER BY D_FECHAREGISTRO DESC
     </select>
     
 </mapper>

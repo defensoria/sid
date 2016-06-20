@@ -314,6 +314,9 @@
         and B.numfila BETWEEN #{ini} AND #{fin}
     </select>
     
+    <select id="personaXDNI" resultMap="personaMap" parameterType="String" >
+        SELECT * FROM SID_REG_PERSONA WHERE C_NUMERODOCUMENTO =  #{value} 
+    </select>
     
     <select id="personaValidaDNI" resultType="Long" parameterType="String" >
         SELECT COUNT(*) FROM SID_REG_PERSONA WHERE C_NUMERODOCUMENTO =  #{value}

@@ -26,4 +26,5 @@ public interface PersonaDAO {
     
     public Persona personaBusquedaOne(long idPersona);
     
+    public Persona personaXDNI(String dni);
 }
