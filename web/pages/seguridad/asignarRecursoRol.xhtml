@@ -5,39 +5,33 @@
       xmlns:jsf="http://xmlns.jcp.org/jsf"
       xmlns:gc="http://xmlns.jcp.org/jsf/composite/gc">
     <ui:composition template="../template/template.xhtml">
-
         <ui:define name="content">
             <h:form>
-                <h:messages  />
+                <h:messages />
                 <gc:confirmSubmit bean="#{asignarRecursoRolController.asignarRecursosRol()}" />
-                
-                <div class="panel panel-default" style="background: #F5F5F5">
+                <div class="panel panel-default" style="background:#F5F5F5">
                     <div class="panel-body">
-                        <span style="color: #0074cc; font-size: x-large;">Datos generales</span>
+                        <span style="color:#0074cc;font-size:x-large">Datos generales</span>
                         <br/>
                         <hr/>
                         <h:panelGrid columns="2" width="100%">
-                            <h:outputText  id="ouCodigo" value="Código:"/>
+                            <h:outputText id="ouCodigo" value="Código:"/>
                             <h:outputLabel id="lblCodigo" value="#{asignarRecursoRolController.rol.codigo}"/>
-
-                            <h:outputText  id="ouNombre"  value="Nombre:"/>
+                            <h:outputText id="ouNombre" value="Nombre:"/>
                             <h:outputLabel id="lblNombre" value="#{asignarRecursoRolController.rol.nombre}"/>
-
-                            <h:outputText  id="ouDescripcion" value="Descripcion:"/>
+                            <h:outputText id="ouDescripcion" value="Descripción:"/>
                             <h:outputLabel id="lblDescripcion" value="#{asignarRecursoRolController.rol.descripcion}"/>
                         </h:panelGrid>
                     </div>
                 </div>
-
-                <div class="panel panel-default" style="background: #F5F5F5">
+                <div class="panel panel-default" style="background:#F5F5F5">
                     <div class="panel-body">
-                        <table style="width: 100%">
+                        <table style="width:100%">
                             <tr>
-                                <td style="width: 50%">
-                                    <span style="color: #0074cc; font-size: x-large;">Lista de privilegios</span>
+                                <td style="width:50%">
+                                    <span style="color:#0074cc;font-size:x-large">Lista de privilegios</span>
                                 </td>
-                                <td style="text-align: right">
-                                    
+                                <td style="text-align:right">
                                     <h:outputText value="&#160;&#160;"/>
                                     <button class="btn btn-danger" jsf:action="#{rolController.cargarPagina()}" jsf:onclick="loadingModal()">
                                         <span class="glyphicon glyphicon-share"/>Regresar
@@ -48,15 +42,13 @@
                     </div>
                     <br/>
                     <hr/>
-                    <h:dataTable value="#{asignarRecursoRolController.listaRecurso}" var="item" id="table"
-                                 class="table table-striped">
+                    <h:dataTable value="#{asignarRecursoRolController.listaRecurso}" var="item" id="table" class="table table-striped">
                         <h:column id="colSel">
                             <f:facet name="header">
                                 <h:outputText value="Sel" />
                             </f:facet>
-                            <h:selectBooleanCheckbox disabled="true" value="#{item.seleccionado}" />
+                            <h:selectBooleanCheckbox value="#{item.seleccionado}" />
                         </h:column>
-
                         <h:column id="colCodigo">
                             <f:facet name="header">
                                 <h:outputText value="Código" />
@@ -71,7 +63,7 @@
                         </h:column>
                         <h:column id="colDescripcion">
                             <f:facet name="header">
-                                <h:outputText value="Descripcion"/>
+                                <h:outputText value="Descripción"/>
                             </f:facet>
                             <h:outputText value="#{item.descripcion}"/>
                         </h:column>
@@ -80,5 +72,4 @@
             </h:form>
         </ui:define>
     </ui:composition>
-</html>  
-
+</html>

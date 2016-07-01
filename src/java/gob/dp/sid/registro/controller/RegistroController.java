@@ -634,6 +634,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             filtro.setApellidoMat(expedienteFormularioVirtual.getApellidoMaterno());
             filtro.setIdDepartamento(expedienteFormularioVirtual.getDepartamento());
             filtro.setIdProvincia(expedienteFormularioVirtual.getProvincia());
+            filtro.setTipoDocumento(expedienteFormularioVirtual.getTipoDocumento());
             filtro.setIdDistrito(expedienteFormularioVirtual.getDistrito());
             filtro.setSexo(expedienteFormularioVirtual.getSexo());
             filtro.setDireccion(expedienteFormularioVirtual.getDireccion());
@@ -674,6 +675,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     private void generarExpedienteCAV(){
         iniciarExpedienteNuevo();
         expediente.setSumilla(expedienteFormularioVirtual.getDescripcion());
+        expediente.setTipoIngreso(expedienteFormularioVirtual.getForma());
         guardarVersion();
     }
     

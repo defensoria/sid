@@ -6,14 +6,18 @@
     <ui:composition template="../template/template.xhtml">
         <ui:define name="content">
             <h:form class="form-horizontal">
-                <div class="panel panel-default" style="background: #F5F5F5">
+                <h:messages/>
+                <script>
+                    sessionStorage.setItem("menuHijoSession", "Usuarios");
+                </script>
+                <div class="panel panel-default" style="background:#F5F5F5">
                     <div class="panel-body">
-                        <table style="width: 100%">
-                            <tr >
+                        <table style="width:100%">
+                            <tr>
                                 <td>
-                                    <span style="color: #0074cc; font-size: x-large;">Criterios de Busqueda</span>
+                                    <span style="color:#0074cc;font-size:x-large">Criterios de búsqueda</span>
                                 </td>
-                                <td style="text-align: right">
+                                <td style="text-align:right">
                                     <a jsf:action="#{busquedaUsuarioController.buscarUsuarios()}" class="btn btn-primary" jsf:onclick="loadingModal()">
                                         <span class="glyphicon glyphicon-search"/>Buscar
                                     </a>
@@ -21,61 +25,53 @@
                                 </td>
                             </tr>
                         </table>
-
                         <br/>
                         <hr/>
-                        <table style="width: 50%">
+                        <table style="width:50%">
                             <tr>
-                                <td style="padding-bottom: 10px">
-                                    <label class="text-bold">Codigo</label>
+                                <td style="padding-bottom:10px">
+                                    <label class="text-bold">Código</label>
                                 </td>
-                                <td  style="padding-bottom: 10px">
-                                    <input type="text" placeholder="Codigo" jsf:value="#{busquedaUsuarioController.usuarioBusqueda.codigo}" style="width: 100%;" autocomplete="off" maxlength="40"/>
+                                <td style="padding-bottom:10px">
+                                    <input type="text" placeholder="Código" jsf:value="#{busquedaUsuarioController.usuarioBusqueda.codigo}" style="width:100%" autocomplete="off" maxlength="40"/>
                                 </td>
                             </tr>
-                            
                             <tr>
-                                <td style="padding-bottom: 10px">
+                                <td style="padding-bottom:10px">
                                     <label class="text-bold">DNI</label>
                                 </td>
-                                <td style="padding-bottom: 10px">
-                                    <input type="text" placeholder="Documento" jsf:value="#{busquedaUsuarioController.usuarioBusqueda.documento}" style="width: 100%;" autocomplete="off" maxlength="8"  onkeypress="return soloNumbero(event);"/>
+                                <td style="padding-bottom:10px">
+                                    <input type="text" placeholder="Documento" jsf:value="#{busquedaUsuarioController.usuarioBusqueda.documento}" style="width:100%" autocomplete="off" maxlength="8" onkeypress="return soloNumbero(event);"/>
                                 </td>
                             </tr>
-                            
                             <tr>
-                                <td style="padding-bottom: 10px">
+                                <td style="padding-bottom:10px">
                                     <label class="text-bold">Nombre</label>
                                 </td>
-                                <td style="padding-bottom: 10px">
-                                    <input type="text" placeholder="Nombre" jsf:value="#{busquedaUsuarioController.usuarioBusqueda.nombre}" style="width: 100%;" autocomplete="off"/>
+                                <td style="padding-bottom:10px">
+                                    <input type="text" placeholder="Nombre" jsf:value="#{busquedaUsuarioController.usuarioBusqueda.nombre}" style="width:100%" autocomplete="off"/>
                                 </td>
                             </tr>
-                            
                             <tr>
-                                <td style="padding-bottom: 10px">
+                                <td style="padding-bottom:10px">
                                     <label class="text-bold">Apellido Paterno</label>
                                 </td>
-                                <td style="padding-bottom: 10px">
+                                <td style="padding-bottom:10px">
                                     <input type="text" placeholder="Apellido Paterno" jsf:value="#{busquedaUsuarioController.usuarioBusqueda.apellidoPaterno}" style="width: 100%;" autocomplete="off"/>
                                 </td>
                             </tr>
-                            
                             <tr>
-                                <td style="padding-bottom: 10px">
+                                <td style="padding-bottom:10px">
                                     <label class="text-bold">Apellido Materno</label>
                                 </td>
-                                <td style="padding-bottom: 10px">
+                                <td style="padding-bottom:10px">
                                     <input type="text" placeholder="Apellido Materno" jsf:value="#{busquedaUsuarioController.usuarioBusqueda.apellidoMaterno}" style="width: 100%;" autocomplete="off"/>
                                 </td>
                             </tr>
                         </table>
-                    </div>  
-                </div>    
-                
-
-                <h:dataTable value="#{busquedaUsuarioController.listaUsuarioBusqueda}" var="item" id="idDatatableActor"
-                             class="table table-striped" binding="#{usu}" rendered="#{busquedaUsuarioController.listaUsuarioBusqueda.size() > 0}">
+                    </div>
+                </div>
+                <h:dataTable value="#{busquedaUsuarioController.listaUsuarioBusqueda}" var="item" id="idDatatableActor" class="table table-striped" binding="#{usu}" rendered="#{busquedaUsuarioController.listaUsuarioBusqueda.size() > 0}">
                     <h:column>
                         <f:facet name="header">#</f:facet>
                         <h:outputText value="#{usu.rowIndex+1}" />
@@ -104,7 +100,6 @@
                         </f:facet>
                         <h:outputText value="#{item.apellidoMaterno}"/>
                     </h:column>
-
                     <h:column id="colDni">
                         <f:facet name="header">
                             <h:outputText value="DNI"/>
@@ -115,7 +110,7 @@
                         <f:facet name="header">
                         </f:facet>
                         <a jsf:action="#{usuarioDetalleController.verDetalleUsuario(item)}" data-toggle="tooltip" data-placement="bottom" title="Modificar usuario" jsf:onclick="loadingModal()">
-                            <span class="glyphicon glyphicon-edit" style="font-size: medium"/>
+                            <span class="glyphicon glyphicon-edit" style="font-size:medium"/>
                         </a>
                     </h:column>
                 </h:dataTable>

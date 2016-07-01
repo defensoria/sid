@@ -191,7 +191,7 @@
                                             <td style="width: 30%" class="trPadding">
                                                 <h:selectOneMenu value="#{registroController.expedienteFormularioVirtual.forma}" >
                                                     <f:selectItem itemValue="0" itemLabel="Selecione" />
-                                                    <f:selectItems value="#{listasComunesController.buscarListaFormaCAV(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
+                                                    <f:selectItems value="#{listasComunesController.buscarExpedienteTipoIngreso(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
                                                 </h:selectOneMenu>
                                             </td>
                                         </tr>
@@ -226,7 +226,9 @@
                                                     <f:selectItems value="#{listasComunesController.buscarListaTipoCAV(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
                                                 </h:selectOneMenu>
                                             </td>
-                                            <td colspan="2" class="trPadding"></td>
+                                            <td colspan="2" class="trPadding">
+                                                
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td class="trPadding">
@@ -317,6 +319,20 @@
                                                 </h:selectOneRadio>
                                             </td>
                                         </tr>
+                                        <tr>
+                                            <td class="trPadding">
+                                                <span class="text-bold">Email:</span>
+                                            </td>
+                                            <td class="trPaddingRight">
+                                                <h:inputText class="email" value="#{registroController.expedienteFormularioVirtual.email}" />
+                                            </td>
+                                            <td class="trPaddingLeft">
+                                                
+                                            </td>
+                                            <td class="trPadding">
+                                                
+                                            </td>
+                                        </tr>
                                     </table>
                                 </div>
                                 <div class="panel-footer">
@@ -343,14 +359,14 @@
                                             </td>
                                             <td style="width: 20%">
                                                 <label>Acción</label>
-                                                <h:selectOneMenu class="idAccion" value="#{registroController.filtroFormularioVirtual.accion}" >
+                                                <h:selectOneMenu value="#{registroController.filtroFormularioVirtual.accion}" >
                                                     <f:selectItem itemValue="0" itemLabel="Selecione" />
                                                     <f:selectItems value="#{listasComunesController.buscarListaAccionCAV(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
                                                 </h:selectOneMenu>
                                             </td>
                                             <td style="width: 20%">
                                                 <label>Forma de ingreso</label>
-                                                <h:selectOneMenu class="idForma" value="#{registroController.filtroFormularioVirtual.forma}" >
+                                                <h:selectOneMenu value="#{registroController.filtroFormularioVirtual.forma}" >
                                                     <f:selectItem itemValue="0" itemLabel="Selecione" />
                                                     <f:selectItems value="#{listasComunesController.buscarListaFormaCAV(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
                                                 </h:selectOneMenu>

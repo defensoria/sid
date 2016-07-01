@@ -4,18 +4,19 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:jsf="http://xmlns.jcp.org/jsf">
     <ui:composition template="../template/template.xhtml">
-
         <ui:define name="content">
             <h:form id="idForm" class="form-horizontal">
-                <h:messages  />
+                <h:messages />
+                <script>
+                    sessionStorage.setItem("menuHijoSession", "Roles");
+                </script>
                 <div class="panel panel-default">
                     <div class="panel-heading">Listado de Roles</div>
                     <div class="panel-body">
-                        <h:dataTable value="#{rolController.listaRol}" var="item" id="table" 
-                                     class="table table-striped" binding="#{rol}">
+                        <h:dataTable value="#{rolController.listaRol}" var="item" id="table" class="table table-striped" binding="#{rol}">
                             <h:column>
                                 <f:facet name="header">#</f:facet>
-                                    <h:outputText value="#{rol.rowIndex+1}" />
+                                <h:outputText value="#{rol.rowIndex+1}" />
                             </h:column>
                             <h:column id="colCodigo">
                                 <f:facet name="header">
@@ -28,25 +29,25 @@
                                     <h:outputText value="Nombre"/>
                                 </f:facet>
                                 <h:outputText value="#{item.nombre}"/>
-                            </h:column>  
+                            </h:column>
                             <h:column id="colDescripcion">
                                 <f:facet name="header">
                                     <h:outputText value="Descripción"/>
                                 </f:facet>
                                 <h:outputText value="#{item.descripcion}"/>
-                            </h:column>  
-                            <h:column id="colAsignarRecurso" >
+                            </h:column>
+                            <h:column id="colAsignarRecurso">
                                 <f:facet name="header">
                                     <h:outputText value="Ver rol"/>
                                 </f:facet>
                                 <a jsf:action="#{asignarRecursoRolController.verAsignarRecursoRol(item.codigo)}" jsf:onclick="loadingModal()">
-                                    <span class="glyphicon glyphicon-search" style="font-size: medium"></span>
+                                    <span class="glyphicon glyphicon-search" style="font-size:medium"></span>
                                 </a>
-                            </h:column>                            
+                            </h:column>
                         </h:dataTable>
                     </div>
                 </div>
             </h:form>
         </ui:define>
     </ui:composition>
-</html>            
+</html>

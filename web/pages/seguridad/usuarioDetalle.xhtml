@@ -9,44 +9,39 @@
             <h:form id="frm" class="form-horizontal">
                 <h:messages/>
                 <gc:confirmSubmit bean="#{usuarioDetalleController.guardarUsuario()}" />
-                <div class="panel panel-default" style="background: #F5F5F5">
+                <div class="panel panel-default" style="background:#F5F5F5">
                     <div class="panel-body">
-                        <span style="color: #0074cc; font-size: x-large;">Detalle del usuario</span>
+                        <span style="color:#0074cc;font-size:x-large">Detalle del usuario</span>
                         <br/>
                         <hr/>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">Código</label>                           
-                            <label class="col-sm-2 control-label" style="text-align: left">#{usuarioDetalleController.usuario.codigo}</label>
+                            <label class="col-sm-2 control-label">Código</label>
+                            <label class="col-sm-2 control-label" style="text-align:left">#{usuarioDetalleController.usuario.codigo}</label>
                         </div>
-
                         <div class="form-group">
                             <label class="col-sm-2 control-label">DNI</label>
                             <div class="col-sm-3">
-                                <input type="text" class="disabled-form" readonly="true" placeholder="DNI" jsf:value="#{usuarioDetalleController.usuario.dni}" style="width: 100%;" autocomplete="off" id="idTextDNI"  maxlength="8" onkeypress="return soloNumbero(event);"/>
+                                <input type="text" class="disabled-form" readonly="true" placeholder="DNI" jsf:value="#{usuarioDetalleController.usuario.dni}" style="width:100%" autocomplete="off" id="idTextDNI" maxlength="8" onkeypress="return soloNumbero(event)"/>
                             </div>
                         </div>
-
                         <div class="form-group">
                             <label class="col-sm-2 control-label">Nombre</label>
                             <div class="col-sm-3">
-                                <input type="text" class="disabled-form" readonly="true" placeholder="Nombre"  id="idTextNombre" jsf:value="#{usuarioDetalleController.usuario.nombre}" style="width: 100%;" autocomplete="off" />
+                                <input type="text" class="disabled-form" readonly="true" placeholder="Nombre" id="idTextNombre" jsf:value="#{usuarioDetalleController.usuario.nombre}" style="width:100%" autocomplete="off" />
                             </div>
                         </div>
-
                         <div class="form-group">
                             <label class="col-sm-2 control-label">Apellido Paterno</label>
                             <div class="col-sm-3">
-                                <input type="text" class="disabled-form" readonly="true" placeholder="Apellido Paterno" id="idTextApellidoPat" jsf:value="#{usuarioDetalleController.usuario.apellidoPaterno}" style="width: 100%;" autocomplete="off" />
+                                <input type="text" class="disabled-form" readonly="true" placeholder="Apellido Paterno" id="idTextApellidoPat" jsf:value="#{usuarioDetalleController.usuario.apellidoPaterno}" style="width:100%" autocomplete="off" />
                             </div>
                         </div>
-
                         <div class="form-group">
                             <label class="col-sm-2 control-label">Apellido Materno</label>
                             <div class="col-sm-3">
-                                <input type="text" class="disabled-form" readonly="true" placeholder="Apellido Materno" id="idTextApellidoMat" jsf:value="#{usuarioDetalleController.usuario.apellidoMaterno}" style="width: 100%;" autocomplete="off" />
+                                <input type="text" class="disabled-form" readonly="true" placeholder="Apellido Materno" id="idTextApellidoMat" jsf:value="#{usuarioDetalleController.usuario.apellidoMaterno}" style="width:100%" autocomplete="off" />
                             </div>
                         </div>
-
                         <div class="form-group">
                             <label class="col-sm-2 control-label">Sexo:</label>
                             <div class="col-sm-3">
@@ -56,8 +51,6 @@
                                 </h:selectOneRadio>
                             </div>
                         </div>
-
-                        
                         <div class="form-group">
                             <label class="col-sm-2 control-label">Oficina / Programa /Adjuntía Defensorial</label>
                             <div class="col-sm-3">
@@ -69,28 +62,28 @@
                             </div>
                         </div>
                         <h:panelGroup id="panelRol">
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">Roles</label>
-                            <div class="col-sm-3">
-                                <h:selectOneRadio rendered="#{usuarioDetalleController.usuario.codigoOD lt 10000}" value="#{usuarioDetalleController.rolSeleccionado}" layout="pageDirection">
-                                    <f:selectItem itemValue="ROL0000001" itemLabel="COMISIONADO OD" />
-                                    <f:selectItem itemValue="ROL0000002" itemLabel="SUPERVISOR OD" />
-                                    <f:selectItem itemValue="ROL0000005" itemLabel="PRACTICANTE OD" />
-                                    <f:selectItem itemValue="ROL0000008" itemLabel="COMISIONADO OD - ONP" />
-                                    <f:selectItem itemValue="ROL0000011" itemLabel="COMISIONADO OD - CAV" />
-                                    <f:selectItem itemValue="ROL0000010" itemLabel="OBSERVADOR" />
-                                </h:selectOneRadio>
-                                <h:selectOneRadio rendered="#{usuarioDetalleController.usuario.codigoOD ge 10000}" value="#{usuarioDetalleController.rolSeleccionado}" layout="pageDirection">
-                                    <f:selectItem itemValue="ROL0000003" itemLabel="COMISIONADO AD" />
-                                    <f:selectItem itemValue="ROL0000004" itemLabel="SUPERVISOR AD" />
-                                    <f:selectItem itemValue="ROL0000006" itemLabel="PRACTICANTE AD" />
-                                    <f:selectItem itemValue="ROL0000007" itemLabel="COMISIONADO PAD" />
-                                    <f:selectItem itemValue="ROL0000010" itemLabel="OBSERVADOR" />
-                                    <f:selectItem itemValue="ROL0000009" itemLabel="OPERADOR - MANTENIMIENTO" />
-                                </h:selectOneRadio>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Roles</label>
+                                <div class="col-sm-3">
+                                    <h:selectOneRadio rendered="#{usuarioDetalleController.usuario.codigoOD lt 10000}" value="#{usuarioDetalleController.rolSeleccionado}" layout="pageDirection">
+                                        <f:selectItem itemValue="ROL0000001" itemLabel="COMISIONADO OD" />
+                                        <f:selectItem itemValue="ROL0000002" itemLabel="SUPERVISOR OD" />
+                                        <f:selectItem itemValue="ROL0000005" itemLabel="PRACTICANTE OD" />
+                                        <f:selectItem itemValue="ROL0000008" itemLabel="COMISIONADO OD - ONP" />
+                                        <f:selectItem itemValue="ROL0000011" itemLabel="COMISIONADO OD - CAV" />
+                                        <f:selectItem itemValue="ROL0000010" itemLabel="OBSERVADOR" />
+                                    </h:selectOneRadio>
+                                    <h:selectOneRadio rendered="#{usuarioDetalleController.usuario.codigoOD ge 10000}" value="#{usuarioDetalleController.rolSeleccionado}" layout="pageDirection">
+                                        <f:selectItem itemValue="ROL0000003" itemLabel="COMISIONADO AD" />
+                                        <f:selectItem itemValue="ROL0000004" itemLabel="SUPERVISOR AD" />
+                                        <f:selectItem itemValue="ROL0000006" itemLabel="PRACTICANTE AD" />
+                                        <f:selectItem itemValue="ROL0000007" itemLabel="COMISIONADO PAD" />
+                                        <f:selectItem itemValue="ROL0000010" itemLabel="OBSERVADOR" />
+                                        <f:selectItem itemValue="ROL0000009" itemLabel="OPERADOR - MANTENIMIENTO" />
+                                    </h:selectOneRadio>
+                                </div>
                             </div>
-                        </div>
-                            </h:panelGroup>
+                        </h:panelGroup>
                     </div>  
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
@@ -100,11 +93,10 @@
                             <h:outputText value="&#160;&#160;"/>
                             <button type="submit" jsf:action="#{usuarioNuevoController.regresar}" class="btn btn-danger" jsf:onclick="loadingModal()">
                                 <span class="glyphicon glyphicon-share"/>Regresar
-                            </button>          
+                            </button>
                         </div>
                     </div>
                 </div>
-
                 <script>
                     $("#idBotonGuardar").click(function () {
                         if ($('#idTextDNI').val() === "") {

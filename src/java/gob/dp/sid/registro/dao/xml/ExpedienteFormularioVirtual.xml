@@ -273,7 +273,7 @@
         INNER JOIN SID_PARAMETRO B ON A.C_FORMA = B.VALOR_PARAMETRO AND B.PADRE_PARAMETRO = 320
         LEFT JOIN SID_PARAMETRO C ON A.C_ACCION = C.VALOR_PARAMETRO AND C.PADRE_PARAMETRO = 330
         WHERE A.C_ESTADO NOT IN ('I') 
-        ORDER BY D_FECHAREGISTRO DESC
+        ORDER BY N_ID_REGISTRO DESC
     </select>
     
     <select id="expedienteFormularioVirtualBuscar" resultMap="expedienteFormularioVirtualMap" parameterType="expedienteFormularioVirtual">
@@ -290,7 +290,7 @@
         <if test="accion != 0">
             AND A.C_ACCION = #{accion}
         </if>
-        ORDER BY D_FECHAREGISTRO DESC
+        ORDER BY N_ID_REGISTRO DESC
     </select>
     
 </mapper>
