@@ -11,6 +11,7 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.apache.commons.lang3.StringUtils;
 
 public enum ExpedienteType {
         
@@ -70,6 +71,16 @@ public enum ExpedienteType {
 		}
 		return rList;
 	}
+        
+        public static String tipoClasificacionNombre(String codigo){
+            if(StringUtils.equals(codigo, QUEJA.key))
+                return QUEJA.value;
+            if(StringUtils.equals(codigo, CONSULTA.key))
+                return CONSULTA.value;
+            if(StringUtils.equals(codigo, PETITORIO.key))
+                return PETITORIO.value;
+            return "";
+        }
         
 	public static ExpedienteType get(String key) {
 		return lookup.get(key);

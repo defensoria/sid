@@ -259,7 +259,7 @@
                                             <td class="trPaddingRight">
                                                 <h:selectOneMenu class="document" value="#{registroController.expedienteFormularioVirtual.tipoDocumento}" >
                                                     <f:selectItem itemValue="0" itemLabel="Selecione" />
-                                                    <f:selectItems value="#{listasComunesController.buscarListaDocumentoCAV(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
+                                                    <f:selectItems value="#{listasComunesController.buscarTipoDocumento(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
                                                 </h:selectOneMenu>
                                             </td>
                                             <td class="trPaddingLeft">

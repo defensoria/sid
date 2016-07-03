@@ -16,6 +16,7 @@ import gob.dp.sid.bandeja.service.BandejaService;
 import gob.dp.sid.comun.ConstantesUtil;
 import gob.dp.sid.comun.ListadoClasificacion;
 import gob.dp.sid.comun.controller.AbstractManagedBean;
+import gob.dp.sid.comun.entity.Departamento;
 import gob.dp.sid.comun.entity.Distrito;
 import gob.dp.sid.comun.entity.FiltroParametro;
 import gob.dp.sid.comun.entity.Parametro;
@@ -966,9 +967,9 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
         List<ExpedienteFicha> list = new ArrayList<>();
         ExpedienteFicha ficha = new ExpedienteFicha();
-        String oficina = usuarioSession.getNombreOD().replace("OD", "OFICINA DEFENSORIAL");
-        ficha.setNumeroExpediente("EXPEDIENTE " + expediente.getNumero());
-        ficha.setOficinaDefensorial(oficina + " - " + usuarioSession.getNombreOD());
+        String oficina = usuarioSession.getNombreOD().replace("OD", "Oficina Defensorial");
+        ficha.setNumeroExpediente("Expediente: " + expediente.getNumero());
+        ficha.setOficinaDefensorial(oficina /*+ " - " + usuarioSession.getNombreOD()*/);
         /**
          * LISTA DE PERSONAS
          */
@@ -979,14 +980,48 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         for (ExpedientePersona ep : personasSeleccionadas) {
             if (!ep.getIndicadorReserva()) {
                 nro++;
+                Persona p = personaService.personaBusquedaOne(ep.getPersona().getId());
                 ep.setNro(nro.toString() + ".-");
-                ep.setNombreCompleto(ep.getPersona().getNombre().toUpperCase() + " " + ep.getPersona().getApellidoPat().toUpperCase() + " " + ep.getPersona().getApellidoMat().toUpperCase());
+                String departam = "";
+                String provin = "";
+                String distrit = "";
+                if(!StringUtils.equals(p.getIdDepartamento(),"0")){
+                    departam = ubigeoService.departamentoOne(p.getIdDepartamento()).getDescripcion();
+                }
+                if(!StringUtils.equals(p.getIdDepartamento(),"0") && !StringUtils.equals(p.getIdProvincia(),"0")){
+                    Provincia p1 = new Provincia();
+                    p1.setIdDepartamento(p.getIdDepartamento());
+                    p1.setIdProvincia(p.getIdProvincia());
+                    provin = ", "+ubigeoService.provinciaOne(p1).getDescripcion();
+                }
+                if(!StringUtils.equals(p.getIdDepartamento(),"0") && !StringUtils.equals(p.getIdProvincia(),"0") && !StringUtils.equals(p.getIdDistrito(),"0")){
+                    Distrito d1 = new Distrito();
+                    d1.setIdDepartamento(p.getIdDepartamento());
+                    d1.setIdProvincia(p.getIdProvincia());
+                    d1.setIdDistrito(p.getIdDistrito());
+                    distrit = ", "+ubigeoService.distritoOne(d1).getDescripcion();
+                }
+                ep.setDireccionNotifica(departam+provin+distrit);
+                ep.setDireccion(p.getDireccion() == null? "" : p.getDireccion());
+                ep.setEmail(p.getEmail() == null? "" : p.getEmail());
+                ep.setTelefono1(p.getTelefono1() == null? "" : p.getTelefono1());
+                String nombre = p.getNombre() == null? "" : p.getNombre().toUpperCase();
+                String apePat = p.getApellidoPat() == null? "" :p.getApellidoPat().toUpperCase();
+                String apeMat = p.getApellidoMat() == null? "" : p.getApellidoMat().toUpperCase();
+                
+                ep.setNombreCompleto(nombre + " " + apePat + " " + apeMat);
                 fp.setCodigoPadreParametro(50);
                 fp.setValorParametro(ep.getTipo());
                 parametro = parametroService.consultarParametroValor(fp);
-                ep.setDetalleCargo(parametro.getNombreParametro().toUpperCase() + ": ");
+                ep.setDetalleCargo(parametro.getNombreParametro() + ": ");
                 eps.add(ep);
             }
+        }
+        List<ExpedienteEntidad> ees = new ArrayList<>();
+        for(ExpedienteEntidad enti : entidadSeleccionadas){
+            ExpedienteEntidad en = new ExpedienteEntidad();
+            en.setNombreCompleto(enti.getEntidad().getNombre());
+            ees.add(en);
         }
         Integer nro2 = 0;
         List<ExpedienteGestion> listaGestiones = expedienteGestionService.expedienteGestionListaXexpediente(expediente.getNumero());
@@ -1014,7 +1049,6 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 eg.setTipoAccionString("");
             }
         }
-        ficha.setExpedienteGestions(listaGestiones);
         if (expediente.getFechaIngreso() != null) {
             ficha.setFechaIngreso(simpleDateFormat.format(expediente.getFechaIngreso()));
         } else {
@@ -1022,37 +1056,33 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         }
 
         ficha.setFechaRegistro(simpleDateFormat.format(expediente.getFechaRegistro()));
-        if (expediente.getClasificacionTipoNombre() == null) {
-            fp.setCodigoPadreParametro(10);
-            fp.setValorParametro(expediente.getTipoClasificion());
-            parametro = parametroService.consultarParametroValor(fp);
-            ficha.setClaseExpediente(parametro.getNombreParametro());
-        } else {
-            ficha.setClaseExpediente(expediente.getClasificacionTipoNombre());
-        }
-        ficha.setClaseExpediente(expediente.getClasificacionTipoNombre());
+        ficha.setClaseExpediente(ExpedienteType.tipoClasificacionNombre(expediente.getTipoClasificion()));
         fp.setCodigoPadreParametro(20);
         fp.setValorParametro(expediente.getTipoIngreso());
         parametro = parametroService.consultarParametroValor(fp);
         if (parametro != null) {
-            ficha.setFormaIngreso(parametro.getNombreParametro().toUpperCase());
+            ficha.setFormaIngreso(parametro.getNombreParametro());
         } else {
             ficha.setFormaIngreso("");
         }
         ficha.setDireccion("Oficina");
         ficha.setLugarRecepcion("Oficina");
-        ficha.setDescripcion(expediente.getSumilla().toUpperCase());
-        ficha.setConclusion(expediente.getConclusion().toUpperCase());
+        ficha.setDescripcion(expediente.getSumilla());
+        ficha.setConclusion(expediente.getConclusion()== null? "" : expediente.getConclusion());
         ficha.setCodigoUsuario(usuarioSession.getCodigo().toUpperCase());
         ficha.setExpedientePersonas(eps);
-        /**
-         * LISTA DE PERSONAS
-         */
+        ficha.setExpedienteEntidades(ees);
+        ficha.setExpedienteNiveles(expediente.getListaExpedienteNivel());
+        Usuario u = usuarioService.buscarUsuarioOne(expediente.getUsuarioRegistro());
+        String nombreUsua = u.getNombre() == null? "" : u.getNombre();
+        String apePatUsua = u.getApellidoPaterno() == null? "" : u.getApellidoPaterno();
+        String apeMatUsua = u.getApellidoMaterno() == null? "" : u.getApellidoMaterno();
+        ficha.setComisionado(nombreUsua+" "+apePatUsua+" "+apeMatUsua);
+        /**add gestiones*/
+        ficha.setExpedienteGestions(listaGestiones);
         list.add(ficha);
-        JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(
-                list);
-        jasperPrint = JasperFillManager.fillReport("C:\\recursos\\reportesSID\\expedientePetitorio.jasper",
-                new HashMap(), beanCollectionDataSource);
+        JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(list);
+        jasperPrint = JasperFillManager.fillReport("C:\\recursos\\reportesSID\\fichaExpediente.jasper",new HashMap(), beanCollectionDataSource);
     }
 
     public void ordenar(int tipo) {
@@ -1069,7 +1099,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String fecha = simpleDateFormat.format(date);
         if (StringUtils.equals(expediente.getTipoClasificion(), ExpedienteType.CONSULTA.getKey())) {
-            initConsulta();
+            initPetitorio();
         }
         if (StringUtils.equals(expediente.getTipoClasificion(), ExpedienteType.PETITORIO.getKey())) {
             initPetitorio();
