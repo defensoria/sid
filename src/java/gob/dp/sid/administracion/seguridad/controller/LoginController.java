@@ -35,8 +35,6 @@ public class LoginController extends AbstractManagedBean implements Serializable
 
     private Usuario usuario;
 
-    
-
     @Autowired
     private UsuarioService usuarioService;
 
@@ -56,13 +54,11 @@ public class LoginController extends AbstractManagedBean implements Serializable
             filtro.setIncluirLstRol(true);
             filtro.setIncluirMapRol(true);
             filtro.setIncluirMapRecurso(true);
-
             UsuarioLogin login = new UsuarioLogin();
             login.setCodigo(usuario.getCodigo());
             String encPass = MEncript.getStringMessageDigest(usuario.getClave().trim());
             login.setClave(encPass);
             Integer val = usuarioLoginService.loginUsuario(login);
-
             if (val > 0) {
                 Usuario objUsuario = usuarioService.consultarUsuario(filtro);
                 if(objUsuario != null){

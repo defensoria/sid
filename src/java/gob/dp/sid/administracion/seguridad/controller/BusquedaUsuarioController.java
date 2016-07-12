@@ -213,7 +213,4 @@ public class BusquedaUsuarioController implements Serializable {
     public void setListaUsuarioBusqueda(List<UsuarioLogin> listaUsuarioBusqueda) {
         this.listaUsuarioBusqueda = listaUsuarioBusqueda;
     }
-
-    
-
 }

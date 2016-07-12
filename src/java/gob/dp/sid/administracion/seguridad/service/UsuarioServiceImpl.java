@@ -124,9 +124,7 @@ public class UsuarioServiceImpl implements UsuarioService {
             if (filtro.isIncluirMapRecurso()) {
                 u.setMapRecurso(recursoService.buscarMapRecursoSegunUsuario(u));
             }
-
         }
-
         return u;
     }
 

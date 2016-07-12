@@ -24,7 +24,7 @@
                         padding-left: 10px;
                         padding-bottom: 10px;
                     }
-                    
+
                     .clasRED{
                         background: #F2DEDE;
                         border: solid #A94442;
@@ -32,128 +32,126 @@
                 </style>
                 <script>
                     function confirmar1() {
-                        if($('.idAccion').val() === '0'){
+                        if ($('.idAccion').val() === '0') {
                             $('.idAccion').focus().addClass("clasRED");
                             alertar("Debe seleccionar una acción");
                             return false;
-                        }else{
+                        } else {
                             $('.idAccion').removeClass("clasRED");
                         }
-                        if($('.fechaRegistro').val() === ''){
+                        if ($('.fechaRegistro').val() === '') {
                             $('.fechaRegistro').focus().addClass("clasRED");
                             alertar("Debe ingresar la fecha de registro");
                             return false;
                         }
-                        else{
+                        else {
                             $('.fechaRegistro').removeClass("clasRED");
                         }
-                        if($('.idForma').val() === '0'){
+                        if ($('.idForma').val() === '0') {
                             $('.idForma').focus().addClass("clasRED");
                             alertar("Debe seleccionar una forma");
                             return false;
-                        }else{
+                        } else {
                             $('.idForma').removeClass("clasRED");
                         }
-                        if($('.descripcion').val() === ''){
+                        if ($('.descripcion').val() === '') {
                             $('.descripcion').focus().addClass("clasRED");
                             alertar("Debe ingresar una descripción");
                             return false;
-                        }else{
+                        } else {
                             $('.descripcion').removeClass("clasRED");
                         }
-                        if($('.respuesta').val() === ''){
+                        if ($('.respuesta').val() === '') {
                             $('.respuesta').focus().addClass("clasRED");
                             alertar("Debe ingresar una respuesta");
                             return false;
-                        }else{
+                        } else {
                             $('.respuesta').removeClass("clasRED");
                         }
-                        if($('.tipo').val() === '0'){
+                        if ($('.tipo').val() === '0') {
                             $('.tipo').focus().addClass("clasRED");
                             alertar("Debe seleccionar un tipo");
                             return false;
-                        }else{
+                        } else {
                             $('.tipo').removeClass("clasRED");
                         }
-                        if($('.nombre').val() === ''){
+                        if ($('.nombre').val() === '') {
                             $('.nombre').focus().addClass("clasRED");
                             alertar("Debe ingresar el nombre");
                             return false;
-                        }else{
+                        } else {
                             $('.nombre').removeClass("clasRED");
                         }
-                        if($('.apellidoPaterno').val() === ''){
+                        if ($('.apellidoPaterno').val() === '') {
                             $('.apellidoPaterno').focus().addClass("clasRED");
                             alertar("Debe ingresar el apellido paterno");
                             return false;
-                        }else{
+                        } else {
                             $('.apellidoPaterno').removeClass("clasRED");
                         }
-                        if($('.apellidoMaterno').val() === ''){
+                        if ($('.apellidoMaterno').val() === '') {
                             $('.apellidoMaterno').focus().addClass("clasRED");
                             alertar("Debe ingresar el apellido materno");
                             return false;
-                        }else{
+                        } else {
                             $('.apellidoMaterno').removeClass("clasRED");
                         }
-                        if($('.document').val() === '0'){
+                        if ($('.document').val() === '0') {
                             $('.document').focus().addClass("clasRED");
                             alertar("Debe ingresar el tipo de documento");
                             return false;
-                        }else{
+                        } else {
                             $('.document').removeClass("clasRED");
                         }
-                        if($('.nroDocumento').val() === ''){
+                        if ($('.nroDocumento').val() === '') {
                             $('.nroDocumento').focus().addClass("clasRED");
                             alertar("Debe ingresar el número de documento");
                             return false;
-                        }else{
+                        } else {
                             $('.nroDocumento').removeClass("clasRED");
                         }
-                        if($('.direccion').val() === ''){
+                        if ($('.direccion').val() === '') {
                             $('.direccion').focus().addClass("clasRED");
                             alertar("Debe ingresar la direccion");
                             return false;
-                        }else{
+                        } else {
                             $('.direccion').removeClass("clasRED");
                         }
-                        if($('.departamento').val() === '0'){
+                        if ($('.departamento').val() === '0') {
                             $('.departamento').focus().addClass("clasRED");
                             alertar("Debe ingresar el departamento");
                             return false;
-                        }else{
+                        } else {
                             $('.departamento').removeClass("clasRED");
                         }
-                        if($('.provincia').val() === '0'){
+                        if ($('.provincia').val() === '0') {
                             $('.provincia').focus().addClass("clasRED");
                             alertar("Debe ingresar la provincia");
                             return false;
-                        }else{
+                        } else {
                             $('.provincia').removeClass("clasRED");
                         }
-                        if($('.distrito').val() === '0'){
+                        if ($('.distrito').val() === '0') {
                             $('.distrito').focus().addClass("clasRED");
                             alertar("Debe ingresar el distrito");
                             return false;
-                        }else{
+                        } else {
                             $('.distrito').removeClass("clasRED");
                         }
-                        if($('.distrito').val() === '0'){
+                        if ($('.distrito').val() === '0') {
                             $('.distrito').focus().addClass("clasRED");
                             alertar("Debe ingresar el distrito");
                             return false;
-                        }else{
+                        } else {
                             $('.distrito').removeClass("clasRED");
                         }
-                        if($('.sexo').is(':checked')){
+                        if ($('.sexo').is(':checked')) {
                             $('.sexo').focus().addClass("clasRED");
                             alertar("Debe ingresar el sexo");
                             return false;
-                        }else{
+                        } else {
                             $('.sexo').removeClass("clasRED");
                         }
-                        
-                        
                         $(".confirmacion1").modal('show');
                     }
                 </script>
@@ -227,7 +225,7 @@
                                                 </h:selectOneMenu>
                                             </td>
                                             <td colspan="2" class="trPadding">
-                                                
+
                                             </td>
                                         </tr>
                                         <tr>
@@ -327,10 +325,10 @@
                                                 <h:inputText class="email" value="#{registroController.expedienteFormularioVirtual.email}" />
                                             </td>
                                             <td class="trPaddingLeft">
-                                                
+
                                             </td>
                                             <td class="trPadding">
-                                                
+
                                             </td>
                                         </tr>
                                     </table>
@@ -386,40 +384,14 @@
                                         .col2 { width: 45%; }
                                         .col3 { width: 5%; }
                                         .col4 { width: 15%; }
+                                        .colr{
+                                            color: red;
+                                            background: blue;
+                                        }
                                     </style>
                                     <h:dataTable value="#{registroController.listaExpedienteFormularioVirtual}" var="item" class="table table-hover" >
-                                        <h:column headerClass="col1">
-                                            <f:facet name="header">Ingreso</f:facet>
-                                            <h:outputText value="#{item.fecha}">
-                                                <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
-                                            </h:outputText>
-                                        </h:column>
-                                        <h:column headerClass="col1">
-                                            <f:facet name="header">Forma</f:facet>
-                                            <h:outputText value="#{item.formaDescripcion}" />
-                                        </h:column>
-                                        <h:column headerClass="col1">
-                                            <f:facet name="header">Acción</f:facet>
-                                            <h:outputText value="#{item.accionDescripcion}" />
-                                        </h:column>
-                                        <h:column headerClass="col2">
-                                            <f:facet name="header">Descripción</f:facet>
-                                            <h:outputText value="#{item.descripcion}" />
-                                        </h:column>
-                                        <h:column headerClass="col5">
-                                            <f:facet name="header">Doc.</f:facet>
-                                            <h:panelGroup rendered="#{item.ruta != null}">
-                                                <a target="_blank" href="/filesystem/#{item.ruta}">
-                                                                <span style="font-size: large" class="glyphicon glyphicon-link" />
-                                                            </a>
-                                            </h:panelGroup>
-                                        </h:column>
-                                        <h:column headerClass="col4">
-                                            <f:facet name="header">Expediente</f:facet>
-                                            <h:outputText value="#{item.numeroExpediente}" />
-                                        </h:column>
-                                        <h:column headerClass="col5">
-                                            <f:facet name="header">Acción</f:facet>
+                                        <h:column headerClass="col5" class="colr" >
+                                            <f:facet name="header"></f:facet>
                                             <a jsf:action="#{registroController.seteaFormularioVirtual(item)}" jsf:rendered="#{item.estado == 'A'}">
                                                 <span class="glyphicon glyphicon-pencil" />
                                             </a>
@@ -435,6 +407,44 @@
                                                 }
                                             </script>
                                             <gc:confirmSubmitRemove classGC="confirmacion0#{item.id}" bean="#{registroController.inactivaRegistroCAV(item.id)}" mensaje="Esta seguro que desea anular el registro?"/>
+                                        </h:column>
+                                        <h:column headerClass="col1">
+                                            <div style="#{item.accion == null? 'background: #FFD400' : ''}">
+                                                    <f:facet name="header">Ingreso</f:facet>
+                                            <h:outputText value="#{item.fecha}">
+                                                <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
+                                            </h:outputText>
+                                            </div>
+                                        </h:column>
+                                        <h:column headerClass="col1">
+                                            <div style="#{item.accion == null? 'background: #FFD400' : ''}">
+                                            <f:facet name="header">Forma</f:facet>
+                                            <h:outputText value="#{item.formaDescripcion}" />
+                                            </div>
+                                        </h:column>
+                                        <h:column headerClass="col1">
+                                            <div style="#{item.accion == null? 'background: #FFD400' : ''}">
+                                            <f:facet name="header">Acción</f:facet>
+                                            <h:outputText value="#{item.accionDescripcion}" />
+                                            </div>
+                                        </h:column>
+                                        <h:column headerClass="col2">
+                                            <div style="#{item.accion == null? 'background: #FFD400' : ''}">
+                                            <f:facet name="header">Descripción</f:facet>
+                                            <h:outputText value="#{item.descripcion}" />
+                                            </div>
+                                        </h:column>
+                                        <h:column headerClass="col5">
+                                            <f:facet name="header">Doc.</f:facet>
+                                            <h:panelGroup rendered="#{item.ruta != null}">
+                                                <a target="_blank" href="/filesystem/#{item.ruta}">
+                                                    <span style="font-size: large" class="glyphicon glyphicon-link" />
+                                                </a>
+                                            </h:panelGroup>
+                                        </h:column>
+                                        <h:column headerClass="col4">
+                                            <f:facet name="header">Expediente</f:facet>
+                                            <h:outputText value="#{item.numeroExpediente}" />
                                         </h:column>
                                     </h:dataTable>
                                 </div>
