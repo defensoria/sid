@@ -26,9 +26,9 @@ public class ConstantesUtil {
     /**LINUX*/
     //public static final String FILE_SYSTEM="/usr/local/glassfish4/glassfish/domains/domain1/docroot/filesystem/";
     
-    //public static final String BASE_URL_REPORT = "C:\\u01\\simco\\reportes\\";
+    public static final String BASE_URL_REPORT = "C:\\recursos\\reportesSID\\";
     /**LINUX*/
-    public static final String BASE_URL_REPORT = "/usr/local/recursos/reportes/";
+    //public static final String BASE_URL_REPORT = "/usr/local/recursos/reportes/";
     
      //public static final String BASE_URL_IMAGEPATH = "C:\\u01\\simco\\images\\";
     /**LINUX*/

@@ -959,8 +959,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         list.add(ficha);
         JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(
                 list);
-        jasperPrint = JasperFillManager.fillReport("C:\\recursos\\reportesSID\\expedienteConsulta.jasper",
-                new HashMap(), beanCollectionDataSource);
+        jasperPrint = JasperFillManager.fillReport(ConstantesUtil.BASE_URL_REPORT+"expedienteConsulta.jasper", new HashMap(), beanCollectionDataSource);
     }
 
     public void initPetitorio() throws JRException {
@@ -1082,7 +1081,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         ficha.setExpedienteGestions(listaGestiones);
         list.add(ficha);
         JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(list);
-        jasperPrint = JasperFillManager.fillReport("C:\\recursos\\reportesSID\\fichaExpediente.jasper",new HashMap(), beanCollectionDataSource);
+        jasperPrint = JasperFillManager.fillReport(ConstantesUtil.BASE_URL_REPORT+"fichaExpediente.jasper",new HashMap(), beanCollectionDataSource);
     }
 
     public void ordenar(int tipo) {

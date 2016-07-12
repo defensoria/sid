@@ -7,6 +7,7 @@ package gob.dp.sid.reporte.controller;
 
 import gob.dp.sid.administracion.seguridad.controller.LoginController;
 import gob.dp.sid.administracion.seguridad.entity.Usuario;
+import gob.dp.sid.comun.ConstantesUtil;
 import gob.dp.sid.comun.controller.AbstractManagedBean;
 import gob.dp.sid.registro.entity.Expediente;
 import gob.dp.sid.registro.service.ExpedienteService;
@@ -213,9 +214,7 @@ public class ReporteController extends AbstractManagedBean implements Serializab
     public void initJasper() throws JRException {
         JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(
                 listaReporte001);
-        jasperPrint = JasperFillManager.fillReport("C:\\recursos\\reportesSID\\reporteExpediente001.jasper",
-                new HashMap(), beanCollectionDataSource);
-
+        jasperPrint = JasperFillManager.fillReport(ConstantesUtil.BASE_URL_REPORT+"reporteExpediente001.jasper", new HashMap(), beanCollectionDataSource);
     }
 
     public void pdf() throws JRException, IOException {
@@ -235,8 +234,7 @@ public class ReporteController extends AbstractManagedBean implements Serializab
     
     public void initJasper2() throws JRException {
         JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(contenedors);
-        jasperPrint = JasperFillManager.fillReport("C:\\recursos\\reportesSID\\reporteExpediente001Total.jasper",
-                new HashMap(), beanCollectionDataSource);
+        jasperPrint = JasperFillManager.fillReport(ConstantesUtil.BASE_URL_REPORT+"reporteExpediente001Total.jasper", new HashMap(), beanCollectionDataSource);
 
     }
 
