@@ -476,11 +476,8 @@
 
                 </div>
             </h:form>
-
-
-
+            
             <br/><br/><br/><br/><br/>
-
             <div class="row">
                 <div>
                     <div class="panel-body idPanelBody" >
@@ -489,28 +486,33 @@
                         </ui:insert> 
                     </div>                
                 </div>
-                <!-- /.col-lg-12 -->
             </div>
-
         </section>
-        <!-- /#wrapper -->
+        <br/><br/><br/><br/><br/>
+        <style>
+            .site-footer {
+    background: #ECEDF0 none repeat scroll 0 0;
+    border-top: 1px solid #ABB4BE;
+    bottom: 0;
+    left: 0;
+    line-height: 1;
+    position: fixed;
+    white-space: nowrap;
+    z-index: 10;
+    width: 100%;
+    padding-right: 10px;    
+    padding-bottom : 10px;    
+    padding-top: 10px;    
+}
+        </style>
+        <br/><br/><br/>
+        <footer class="site-footer">
 
+<div style="text-align: right"> 
+    <img alt="" src="/sid/faces/bootstrap/img/giz.png" width="20%" /></div>
 
-
-
-
-
-
-        <div class="modal js-loading-bar" data-toggle="modal" id="loadModal" tabindex="-1" role="dialog" aria-labelledby="loadModal"> style="vertical-align: central"  aria-hidden="true">
-            <br/><br/><br/><br/><br/>
-            <center>
-                <img style="background: white" src="/sid/faces/bootstrap/img/loading.gif" ></img>
-            </center>
-        </div>
-
-
-
-
+</footer>
+        
         <script>
 
             this.$('.js-loading-bar').modal({
@@ -569,7 +571,8 @@
 
                 window.location = '#{facesContext.externalContext.requestContextPath}/cerrarSesion.jsp';
             }
-        </script>
-
+        </script>        
+        
+        
     </body>
 </html>
