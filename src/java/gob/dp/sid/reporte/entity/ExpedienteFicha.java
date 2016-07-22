@@ -48,6 +48,8 @@ public class ExpedienteFicha implements Serializable{
     
     private String comisionado;
     
+    private String estadoGeneral;
+    
     private List<ExpedientePersona> expedientePersonas;
     
     private List<ExpedienteEntidad> expedienteEntidades;
@@ -206,6 +208,14 @@ public class ExpedienteFicha implements Serializable{
 
     public void setComisionado(String comisionado) {
         this.comisionado = comisionado;
+    }
+
+    public String getEstadoGeneral() {
+        return estadoGeneral;
+    }
+
+    public void setEstadoGeneral(String estadoGeneral) {
+        this.estadoGeneral = estadoGeneral;
     }
     
 }

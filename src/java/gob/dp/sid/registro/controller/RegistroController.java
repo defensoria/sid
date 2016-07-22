@@ -473,7 +473,10 @@ public class RegistroController extends AbstractManagedBean implements Serializa
     }
     
     public String cargarHistorial(){
-        listaHistorialExpediente = expedienteHistorialService.expedienteHistorialBuscar(expediente.getNumero());
+        if(StringUtils.isNotBlank(expediente.getNumero())){
+            listaHistorialExpediente = expedienteHistorialService.expedienteHistorialBuscar(expediente.getNumero());
+        }else
+            listaHistorialExpediente = null;
         return "expedienteHistorial";
     }
     
@@ -1071,6 +1074,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         ficha.setCodigoUsuario(usuarioSession.getCodigo().toUpperCase());
         ficha.setExpedientePersonas(eps);
         ficha.setExpedienteEntidades(ees);
+        ficha.setEstadoGeneral(expediente.getGeneral().equals("C")? "Concluído" : "Trámite");
         ficha.setExpedienteNiveles(expediente.getListaExpedienteNivel());
         Usuario u = usuarioService.buscarUsuarioOne(expediente.getUsuarioRegistro());
         String nombreUsua = u.getNombre() == null? "" : u.getNombre();

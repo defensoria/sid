@@ -111,8 +111,8 @@ public class BusquedaController implements Serializable{
             if(StringUtils.isNotBlank(expediente.getAnhoBusqueda())){
                 sb.append(expediente.getAnhoBusqueda()).append("-");
             }
-            if(StringUtils.isNotBlank(expediente.getNumero())){
-                sb.append(expediente.getNumero());
+            if(StringUtils.isNotBlank(expediente.getObservacion())){
+                sb.append(expediente.getObservacion());
             }
             expediente.setCadenaBusqueda(sb.toString());
             expediente.setUsuarioRegistro(null);

@@ -85,7 +85,7 @@
                         </div>
                     </h:panelGroup>
                     <!--ETAPA 1 -->
-                    <h:panelGroup rendered="#{(seguridadUtilController.tieneRecurso('REC_EXP001') and registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo and registroController.etapaEstado.idEstado == null and !registroController.esSupervisor) or (registroController.esSupervisor and seguridadUtilController.tieneRecurso('REC_EXP002') and registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo and registroController.expedienteDerivacionEnvia.etapa == null)}">
+                    <h:panelGroup rendered="#{(seguridadUtilController.tieneRecurso('REC_EXP001') and registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo and registroController.etapaEstado.idEstado == null and !registroController.esSupervisor) or (registroController.esSupervisor and seguridadUtilController.tieneRecurso('REC_EXP002') and registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo and registroController.expedienteDerivacionEnvia.etapa == null and registroController.etapaEstado.idEstado == null)}">
                         <table style="width: 100%">
                             <tr>
                                 <td colspan="2" ><br/>

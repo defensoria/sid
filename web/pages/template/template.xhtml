@@ -347,20 +347,19 @@
                     </tr>
                 </table>
             </header>
-
             <aside id="sidebar-left" class="sidebar-left" style="max-width: 20%">
-
                 <div class="sidebar-header">
                     <div class="sidebar-title">
                         MENU
                     </div>
                     <div class="sidebar-toggle" id="idDivOcultarMenu" >
                         <i class="fa fa-bars" aria-label="Toggle sidebar"></i>
-
                     </div>
+                    <div class="sidebar-toggle" >
+                        <i class="fa fa-bars" aria-label="Toggle sidebar"></i>
+                    </div>
+                    
                 </div>
-
-
                 <div class="nano" >
                     <div class="nano-content">
                         <nav id="menu" class="nav-main" >
@@ -375,12 +374,36 @@
                                 </c:forEach>
                             </ul>
                         </nav>
-
                     </div>
-
                 </div>
-
+                <div style="text-align: right; height:70%; vertical-align: bottom"> 
+                    <table style="height: 100%">
+                        <tr>
+                            <td style="height: 100%; vertical-align: bottom">
+                                <div><img alt="" src="/sid/faces/bootstrap/img/giz.png" width="50%" style="vertical-align: bottom; position: static"/></div>
+                            </td>
+                        </tr>
+                    </table>
+    
+</div>
             </aside>
+            
+   <style>
+            .site-footer {
+    background: #ECEDF0 none repeat scroll 0 0;
+    border-top: 1px solid #ABB4BE;
+    bottom: 0;
+    left: 0;
+    line-height: 1;
+    position: fixed;
+    white-space: nowrap;
+    z-index: 10;
+    width: 100%;
+    padding-right: 10px;    
+    padding-bottom : 10px;    
+    padding-top: 10px;    
+}
+        </style>         
         </h:form>
         <!-- /.navbar-static-side -->
 
@@ -488,31 +511,6 @@
                 </div>
             </div>
         </section>
-        <br/><br/><br/><br/><br/>
-        <style>
-            .site-footer {
-    background: #ECEDF0 none repeat scroll 0 0;
-    border-top: 1px solid #ABB4BE;
-    bottom: 0;
-    left: 0;
-    line-height: 1;
-    position: fixed;
-    white-space: nowrap;
-    z-index: 10;
-    width: 100%;
-    padding-right: 10px;    
-    padding-bottom : 10px;    
-    padding-top: 10px;    
-}
-        </style>
-        <br/><br/><br/>
-        <footer class="site-footer">
-
-<div style="text-align: right"> 
-    <img alt="" src="/sid/faces/bootstrap/img/giz.png" width="20%" /></div>
-
-</footer>
-        
         <script>
 
             this.$('.js-loading-bar').modal({
