@@ -16,7 +16,6 @@ import gob.dp.sid.bandeja.service.BandejaService;
 import gob.dp.sid.comun.ConstantesUtil;
 import gob.dp.sid.comun.ListadoClasificacion;
 import gob.dp.sid.comun.controller.AbstractManagedBean;
-import gob.dp.sid.comun.entity.Departamento;
 import gob.dp.sid.comun.entity.Distrito;
 import gob.dp.sid.comun.entity.FiltroParametro;
 import gob.dp.sid.comun.entity.Parametro;

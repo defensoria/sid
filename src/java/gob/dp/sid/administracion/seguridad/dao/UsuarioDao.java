@@ -12,11 +12,9 @@ public interface UsuarioDao {
     
     public Usuario consultarUsuario(FiltroUsuario filtro);
 
-    public void insertarUsuario(Usuario usuario) throws Exception;
+    public void insertarUsuario(Usuario usuario);
 
-    public void modificarUsuario(Usuario usuario) throws Exception;
-
-    public void cambiarClaveUsuario(Usuario usuario) throws Exception;
+    public void modificarUsuario(Usuario usuario);
 
     public String generarCodigoUsuario();
 

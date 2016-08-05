@@ -11,6 +11,7 @@ import gob.dp.sid.administracion.seguridad.entity.Rol;
 import gob.dp.sid.administracion.seguridad.entity.Usuario;
 import gob.dp.sid.comun.MEncript;
 import java.util.List;
+import java.util.logging.Level;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.apache.log4j.Logger;
@@ -56,7 +57,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public void insertarUsuario(Usuario usuario, List<Rol> listaRol) throws Exception {
+    public void insertarUsuario(Usuario usuario, List<Rol> listaRol){
         // 2013-08-19- Comentado para cambiar el algoritmo de encriptacion
         //String encPass = CryptoAES.getInstance().encriptar(usuario.getClave().trim());
 
@@ -73,34 +74,31 @@ public class UsuarioServiceImpl implements UsuarioService {
          */
 
         usuarioDao.insertarUsuario(usuario);
-        /**
-         * Auditoria
-         */
-        auditoriaService.auditar(ConstantesAuditoria.SEGURIDAD_REGISTRAR_USUARIO, "Registrar Usu:" + usuario.getCodigo());
-        rolService.asignarRolUsuario(usuario, listaRol);
+        try {
+            /**
+             * Auditoria
+             */
+            auditoriaService.auditar(ConstantesAuditoria.SEGURIDAD_REGISTRAR_USUARIO, "Registrar Usu:" + usuario.getCodigo());
+            rolService.asignarRolUsuario(usuario, listaRol);
+        } catch (Exception ex) {
+            java.util.logging.Logger.getLogger(UsuarioServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
 
     @Override
-    public void modificarUsuario(Usuario usuario, List<Rol> listaRol) throws Exception {
-        usuarioDao.modificarUsuario(usuario);
-
-        /**
-         * Auditoria
-         */
-        auditoriaService.auditar(ConstantesAuditoria.SEGURIDAD_MODIFICAR_USUARIO, "Mofificar Usu:" + usuario.getCodigo());
-        rolService.asignarRolUsuario(usuario, listaRol);
-    }
-
-    @Override
-    public void cambiarClave(Usuario usuario) throws Exception {
-        //String encPass = CryptoAES.getInstance().encriptar(usuario.getClave().trim());
-        String encPass = MEncript.getStringMessageDigest(usuario.getClave().trim());
-        usuario.setClave(encPass);
-        usuarioDao.cambiarClaveUsuario(usuario);
-        /**
-         * Auditoria
-         */
-        auditoriaService.auditar(ConstantesAuditoria.SEGURIDAD_MODIFICAR_USUARIO, "Cambiar Clave:" + usuario.getCodigo());
+    public void modificarUsuario(Usuario usuario, List<Rol> listaRol){
+        try {
+            usuarioDao.modificarUsuario(usuario);
+            
+            /**
+             * Auditoria
+             */
+            auditoriaService.auditar(ConstantesAuditoria.SEGURIDAD_MODIFICAR_USUARIO, "Mofificar Usu:" + usuario.getCodigo());
+            rolService.asignarRolUsuario(usuario, listaRol);
+        } catch (Exception ex) {
+            java.util.logging.Logger.getLogger(UsuarioServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override
@@ -112,7 +110,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public Usuario consultarUsuario(FiltroUsuario filtro) throws Exception {
+    public Usuario consultarUsuario(FiltroUsuario filtro){
         Usuario u = usuarioDao.consultarUsuario(filtro);
         if (u != null) {
             if (filtro.isIncluirLstRol()) {

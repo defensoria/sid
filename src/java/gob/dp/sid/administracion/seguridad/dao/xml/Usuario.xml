@@ -13,11 +13,9 @@
         ape_materno        as apellidoMaterno,
         num_dni            as dni,
         est_usuario        as estado,
-        clave_usuario      as clave,
         des_email          as email,
         tel_movil          as telefonoMovil,
         tel_fijo           as telefonoFijo,
-        flag_clave_inicial as flagClaveInicial,
         c_cargo            as cargo,
         c_sexo             as sexo,
         n_nivel            as nivel,
@@ -62,11 +60,9 @@
         ape_materno        as apellidoMaterno,
         num_dni            as dni,
         est_usuario        as estado,
-        clave_usuario      as clave,
         des_email          as email,
         tel_movil          as telefonoMovil,
         tel_fijo           as telefonoFijo,
-        flag_clave_inicial as flagClaveInicial,
         c_cargo            as cargo,
         c_ruta             as ruta,
         c_iddepartamento   as idDepartamento,
@@ -79,11 +75,9 @@
         ape_materno,
         num_dni,
         est_usuario,
-        clave_usuario,
         des_email,
         tel_movil,
         tel_fijo,
-        flag_clave_inicial,
         c_cargo,
         c_ruta,
         c_iddepartamento,
@@ -97,11 +91,9 @@
         ape_materno,
         num_dni,
         est_usuario,
-        clave_usuario,
         des_email,
         tel_movil,
         tel_fijo,
-        flag_clave_inicial,
         c_cargo,
         c_ruta,
         C_IDDEPARTAMENTO,
@@ -152,9 +144,6 @@
         <if test="estado!=null">
             ,est_usuario = #{estado}
         </if>
-        <if test="clave!=null">
-            ,clave_usuario = #{clave}
-        </if>
         <if test="email!=null">
             ,des_email =#{email}
         </if>
@@ -163,9 +152,6 @@
         </if>
         <if test="telefonoFijo!=null">
             ,tel_fijo = #{telefonoFijo}
-        </if>
-        <if test="flagClaveInicial!=null">
-            ,flag_clave_inicial = #{flagClaveInicial}
         </if>
         <if test="ruta!=null">
             ,c_ruta = #{ruta}
@@ -179,13 +165,6 @@
         <if test="codigoOD!=null">
             ,c_iddepartamento = #{idDepartamento}
         </if>
-        where codigo_usuario = #{codigo}
-    </update>
-
-
-    <update id="cambiarClaveUsuario" parameterType="usuario">
-        update sid_seg_usuario
-        set clave_usuario = #{clave}    
         where codigo_usuario = #{codigo}
     </update>
 
@@ -255,11 +234,9 @@
         u.ape_paterno        as apellidoPaterno,
         u.ape_materno        as apellidoMaterno,
         u.num_dni            as dni,
-        u.num_dni            as clave,
         u.des_email          as email,
         u.tel_movil          as telefonoMovil,
         u.tel_fijo           as telefonoFijo,
-        u.flag_clave_inicial as flagClaveInicial,
         u.c_cargo            as cargo,
         u.c_ruta             as ruta,
         u.N_ID_OD            as codigoOD,
@@ -312,7 +289,6 @@
             AND B.CODIGO_ROL = #{rol}
         </if>
         ORDER BY u.nom_usuario
-        
     </select>
     
     <select id="listaUsuarioCount" resultType="java.lang.Integer" parameterType="String">

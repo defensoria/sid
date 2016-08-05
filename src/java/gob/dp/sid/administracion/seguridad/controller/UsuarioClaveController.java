@@ -55,21 +55,6 @@ public class UsuarioClaveController implements Serializable {
         return "usuarioClave";
      }
 
-     public void cambiarClave(){
-          if(!this.usuario.getClave().trim().equals(this.usuario.getConfirmacionClave().trim())){
-              return;
-          }
-          try{
-            usuarioService.cambiarClave(usuario);
-            usuario.setClave("");
-            usuario.setConfirmacionClave("");
-            msg.messageInfo("Se realizaron todos los cambios correctamente", null);
-         }catch(Exception ex){
-             log.error("Ocurrió un error:",ex);
-         }
-
-     }
-
      public String regresar(){
          return "usuarioLista";
      }

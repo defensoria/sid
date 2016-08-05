@@ -21,18 +21,13 @@ public class UsuarioDaoImpl extends SqlSessionDaoSupport implements UsuarioDao {
     private static final Logger log = Logger.getLogger(UsuarioDaoImpl.class);
 
     @Override
-    public void insertarUsuario(Usuario usuario) throws Exception {
+    public void insertarUsuario(Usuario usuario){
         getSqlSession().insert("usuarioDao.insertarUsuario", usuario);
     }
 
     @Override
-    public void modificarUsuario(Usuario usuario) throws Exception {
+    public void modificarUsuario(Usuario usuario){
         getSqlSession().update("usuarioDao.modificarUsuario", usuario);
-    }
-
-    @Override
-    public void cambiarClaveUsuario(Usuario usuario) throws Exception {
-        getSqlSession().update("usuarioDao.cambiarClaveUsuario", usuario);
     }
 
     @Override
