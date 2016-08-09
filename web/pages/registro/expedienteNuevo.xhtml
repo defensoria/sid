@@ -653,17 +653,15 @@
                                                             <span class="text-resalt-primary">Clasificación temática</span>
                                                         </td>
                                                         <td style="text-align: right">
-                                                            <h:panelGroup rendered="#{registroController.expediente.numero != null}">
-                                                                <a jsf:action="#{registroController.guardarNivel()}" jsf:onclick="loadingModal()">
+                                                            <h:panelGroup rendered="#{registroController.expediente.numero != null and registroController.expediente.numero != ''}">
+                                                                <a jsf:rendered="#{registroController.expediente.numero != null}" jsf:action="#{registroController.guardarNivel()}" jsf:onclick="loadingModal()">
                                                                     <span class="glyphicon glyphicon-plus" style="font-size: 1.3em" />Agregar/Actualizar clasificación
-
                                                                 </a>
                                                             </h:panelGroup>
                                                         </td>
                                                     </tr>
                                                 </table>
-                                                <br/><br/>
-
+                                                <br/>
                                                 <script>
                                                     $(function () {
                                                     #{registroController.cadenaEtiquetaAutocomplete}
@@ -706,7 +704,7 @@
 
                                                                     </td>
                                                                     <td>
-                                                                        <a jsf:rendered="#{registroController.expediente.numero != null and registroController.expediente.tipoClasificion == '01'}" style="cursor: pointer" jsf:action="#{registroController.limpiarModalBusquedaClasificacion()}" jsf:onclick="loadingModal()">
+                                                                        <a jsf:rendered="#{registroController.expediente.numero != null and registroController.expediente.numero != '' and registroController.expediente.tipoClasificion == '01'}" style="cursor: pointer" jsf:action="#{registroController.limpiarModalBusquedaClasificacion()}" jsf:onclick="loadingModal()">
                                                                             <span class="glyphicon glyphicon-search" style="font-size: large" />
                                                                             <f:ajax render="idPanelModalBusquedaClasificacion" onevent="openModalBusquedaClasificacion" />
                                                                         </a>
@@ -749,10 +747,10 @@
                                                                                                     <br/>
 
                                                                                                     <c:forEach var="nivel" items="#{registroController.listaExpedienteNivelModal}">
-                                                                                                        <div class="alert alert-warning fade in" style="margin-bottom: 3px">
+                                                                                                        <div class="alert alert-warning fade in" style="margin-bottom: 3px; padding: 4px">
                                                                                                             <table style="width: 100%">
                                                                                                                 <tr>
-                                                                                                                    <td style="width: 90%">
+                                                                                                                    <td style="width: 95%">
                                                                                                                         <h:outputText style="font-weight: bold" value="#{nivel.primerNivel}"/>
                                                                                                                         <h:outputText style="color: gray; font-weight: bold;" value=" > " rendered="#{nivel.segundoNivel != null}"/>
                                                                                                                         <h:outputText style="font-weight: bold" value="#{nivel.segundoNivel}" />
@@ -768,7 +766,6 @@
                                                                                                                     <td>
                                                                                                                         <a jsf:action="#{registroController.guardarNivel(nivel)}" jsf:onclick="loadingModal()">
                                                                                                                             <span class="glyphicon glyphicon-plus"  style="color: #007ACC; font-size: medium"/>
-                                                                                                                            <f:ajax render="idPanelClasificacionTem" onevent="closeModal" />
                                                                                                                         </a>
                                                                                                                     </td>
                                                                                                                 </tr>
@@ -790,11 +787,6 @@
                                                                                                     </ul>
 
                                                                                                 </h:panelGroup>
-                                                                                            </div>
-                                                                                            <div class="modal-footer">
-                                                                                                <a  class="btn btn-default" data-dismiss="modal">
-                                                                                                    <span class="glyphicon glyphicon-remove"/>Cerrar
-                                                                                                </a>
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
@@ -1062,7 +1054,6 @@
                                                                                                             <td>
                                                                                                                 <a class="btn btn-primary" jsf:action="#{registroController.addSegundaClasificacion()}" >
                                                                                                                     <span class="glyphicon glyphicon-share-alt" />Guardar
-
                                                                                                                 </a>
                                                                                                             </td>
                                                                                                         </tr>
@@ -1080,7 +1071,6 @@
                                                                                                             <f:facet name="header">Eliminar</f:facet>
                                                                                                             <a jsf:action="#{registroController.removeSegundaClasificacion(ec)}" jsf:onclick="loadingModal()">
                                                                                                                 <span class="glyphicon glyphicon-remove" style="color: red" />
-
                                                                                                             </a>
                                                                                                         </h:column>
                                                                                                     </h:dataTable>

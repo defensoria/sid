@@ -2870,8 +2870,12 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 msg.messageAlert("Debe ingresar la descripción", null);
                 return null;
             }
-            String ruta1 = uploadArchive(file1);
-            String ruta2 = uploadArchive(file2);
+            String ruta1 = null;
+            String ruta2 = null;
+            if(file1 != null)
+                ruta1 = uploadArchive(file1);
+            if(file2 != null)
+                ruta2 = uploadArchive(file2);
             expedienteGestion.setRuta1(ruta1);
             expedienteGestion.setRuta2(ruta2);
             if (StringUtils.isBlank(expedienteGestion.getCodigoGestion())) {
@@ -2906,6 +2910,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             }
             return cargarExpedienteGestionLista();
         } catch (Exception e) {
+            e.printStackTrace();
             log.error("ERROR - registarExpedienteGestion()" + e);
         }
         return null;
@@ -4042,7 +4047,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             expediente.setEstado("A");
             expediente.setEtiqueta(encadenarEtiquetas());
             expediente.setUsuarioRegistro(usuarioSession.getCodigo());
-            expediente.setNumero(" ");
+            expediente.setNumero("");
             if (expediente.getId() == null) {
                 expedienteService.expedienteInsertar(expediente);
                 insertUpdateListasPersonaEntidad();

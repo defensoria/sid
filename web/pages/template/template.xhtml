@@ -49,44 +49,6 @@
             background: #EEEEEE; pointer-events:none;
         }
     </style>
-    <h:form>
-        <script>
-
-            $(document).ready(function () {
-                $('.selectRadio').multiselect();
-                var stateMenu;
-                var i = 0;
-                stateMenu = sessionStorage.getItem('stateMenu');
-                if (stateMenu === '0') {
-                    $('#idHtml').removeClass("sidebar-left-collapsed");
-                }
-
-                if (stateMenu === '1') {
-                    $('#idHtml').addClass("sidebar-left-collapsed");
-                }
-
-                if (stateMenu !== null) {
-                    if (stateMenu === '0') {
-                        i = 0;
-                    }
-                    if (stateMenu === '1') {
-                        i = 1;
-                    }
-                }
-                $('#idDivOcultarMenu').click(function () {
-                    if (i === 0) {
-                        $('#idHtml').addClass("sidebar-left-collapsed");
-                        i = 1;
-                    }
-                    else {
-                        $('#idHtml').removeClass("sidebar-left-collapsed");
-                        i = 0;
-                    }
-                    sessionStorage.setItem('stateMenu', i);
-                });
-            });
-        </script>
-    </h:form>
     <body>
         <style>
             body{
@@ -347,6 +309,41 @@
                     </tr>
                 </table>
             </header>
+            <script>
+                $(document).ready(function(){
+                    $('.selectRadio').multiselect();
+                var stateMenu;
+                var i = 0;
+                stateMenu = sessionStorage.getItem('stateMenu');
+                if (stateMenu === '0') {
+                    $('#idHtml').removeClass("sidebar-left-collapsed");
+                }
+
+                if (stateMenu === '1') {
+                    $('#idHtml').addClass("sidebar-left-collapsed");
+                }
+
+                if (stateMenu !== null) {
+                    if (stateMenu === '0') {
+                        i = 0;
+                    }
+                    if (stateMenu === '1') {
+                        i = 1;
+                    }
+                }
+                    $('#idDivOcultarMenu').click(function () {
+                    if (i === 0) {
+                        $('#idHtml').addClass("sidebar-left-collapsed");
+                        i = 1;
+                    }
+                    else {
+                        $('#idHtml').removeClass("sidebar-left-collapsed");
+                        i = 0;
+                    }
+                    sessionStorage.setItem('stateMenu', i);
+                });
+                });
+            </script>
             <aside id="sidebar-left" class="sidebar-left" style="max-width: 20%">
                 <div class="sidebar-header">
                     <div class="sidebar-title">
@@ -355,9 +352,9 @@
                     <div class="sidebar-toggle" id="idDivOcultarMenu" >
                         <i class="fa fa-bars" aria-label="Toggle sidebar"></i>
                     </div>
-                    <div class="sidebar-toggle" >
+                    <!--<div class="sidebar-toggle" >CCC
                         <i class="fa fa-bars" aria-label="Toggle sidebar"></i>
-                    </div>
+                    </div>-->
                     
                 </div>
                 <div class="nano" >
@@ -376,7 +373,7 @@
                         </nav>
                     </div>
                 </div>
-                <div style="text-align: right; height:70%; vertical-align: bottom"> 
+                <!--<div style="text-align: right; height:70%; vertical-align: bottom"> 
                     <table style="height: 100%">
                         <tr>
                             <td style="height: 100%; vertical-align: bottom">
@@ -385,7 +382,7 @@
                         </tr>
                     </table>
     
-</div>
+</div>-->
             </aside>
             
    <style>
