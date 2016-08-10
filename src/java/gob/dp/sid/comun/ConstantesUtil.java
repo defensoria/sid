@@ -12,8 +12,6 @@ package gob.dp.sid.comun;
  */
 public class ConstantesUtil {
     
-    public static final String REGISTRO_ACTIVIDAD_NOMBRE_DEFAULT="SIN NOMBRE";
-    
     public static final int PAGINADO_5=5;
     
     public static final int PAGINADO_10=10;
@@ -30,9 +28,9 @@ public class ConstantesUtil {
     /**LINUX*/
     //public static final String BASE_URL_REPORT = "/usr/local/recursos/reportes/";
     
-     //public static final String BASE_URL_IMAGEPATH = "C:\\u01\\simco\\images\\";
+    public static final String BASE_URL_IMAGEPATH = "C:\\u01\\simco\\images\\";
     /**LINUX*/
-    public static final String BASE_URL_IMAGEPATH = "/usr/local/recursos/images/";
+    //public static final String BASE_URL_IMAGEPATH = "/usr/local/recursos/images/";
     
     public static final String BASE_URL_PRODUCCION_IMAGE = "http://localhost:8080/filesystem/";
     
