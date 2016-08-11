@@ -5,6 +5,7 @@
  */
 package gob.dp.sid.comun.controller;
 
+import gob.dp.sid.comun.ConstantesUtil;
 import gob.dp.sid.comun.MessagesUtil;
 import gob.dp.sid.comun.StringUtil;
 import java.io.Serializable;
@@ -20,11 +21,15 @@ public abstract class AbstractManagedBean implements Serializable{
     
     FacesContext context = FacesContext.getCurrentInstance();
     
+    public ConstantesUtil constantesUtil = new ConstantesUtil();
+    
     protected StringUtil stringUtil;
 
     public AbstractManagedBean() {
         msg = new MessagesUtil();
         stringUtil = new StringUtil();
     }
+    
+    
     
 }

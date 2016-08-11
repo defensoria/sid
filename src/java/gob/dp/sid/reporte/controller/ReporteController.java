@@ -214,7 +214,7 @@ public class ReporteController extends AbstractManagedBean implements Serializab
     public void initJasper() throws JRException {
         JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(
                 listaReporte001);
-        jasperPrint = JasperFillManager.fillReport(ConstantesUtil.BASE_URL_REPORT+"reporteExpediente001.jasper", new HashMap(), beanCollectionDataSource);
+        jasperPrint = JasperFillManager.fillReport(constantesUtil.BASE_URL_REPORT+"reporteExpediente001.jasper", new HashMap(), beanCollectionDataSource);
     }
 
     public void pdf() throws JRException, IOException {
@@ -234,7 +234,7 @@ public class ReporteController extends AbstractManagedBean implements Serializab
     
     public void initJasper2() throws JRException {
         JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(contenedors);
-        jasperPrint = JasperFillManager.fillReport(ConstantesUtil.BASE_URL_REPORT+"reporteExpediente001Total.jasper", new HashMap(), beanCollectionDataSource);
+        jasperPrint = JasperFillManager.fillReport(constantesUtil.BASE_URL_REPORT+"reporteExpediente001Total.jasper", new HashMap(), beanCollectionDataSource);
 
     }
 

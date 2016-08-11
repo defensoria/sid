@@ -363,7 +363,7 @@ public class ImportarController extends AbstractManagedBean implements Serializa
         if (StringUtils.isNoneBlank(nameArchive)) {
             String formato = RandomStringUtils.random(32, 0, 20, true, true, "qw32rfHIJk9iQ8Ud7h0X".toCharArray());
             String ruta = formato + extencion;
-            File file = new File(ConstantesUtil.FILE_SYSTEM + ruta);
+            File file = new File(constantesUtil.FILE_SYSTEM + ruta);
             try (InputStream input = fil.getInputStream()) {
                 Files.copy(input, file.toPath());
                 importar(file);

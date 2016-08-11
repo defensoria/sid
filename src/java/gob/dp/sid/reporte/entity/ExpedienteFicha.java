@@ -5,6 +5,7 @@
  */
 package gob.dp.sid.reporte.entity;
 
+import gob.dp.sid.comun.controller.AbstractManagedBean;
 import gob.dp.sid.registro.entity.ExpedienteEntidad;
 import gob.dp.sid.registro.entity.ExpedienteGestion;
 import gob.dp.sid.registro.entity.ExpedienteNivel;
@@ -16,7 +17,7 @@ import java.util.List;
  *
  * @author carlos
  */
-public class ExpedienteFicha implements Serializable{
+public class ExpedienteFicha extends AbstractManagedBean implements Serializable {
     
     private String oficinaDefensorial;
     
@@ -57,6 +58,14 @@ public class ExpedienteFicha implements Serializable{
     private List<ExpedienteNivel> expedienteNiveles;
     
     private List<ExpedienteGestion> expedienteGestions;
+    
+    private String basePathImage = constantesUtil.BASE_URL_IMAGEPATH+"defensoria-Large.jpg";
+    
+    private String tieneOrientacion;
+    
+    private String orientacion;
+    
+    private String rutaJasper = constantesUtil.BASE_URL_REPORT;
 
     public String getOficinaDefensorial() {
         return oficinaDefensorial;
@@ -216,6 +225,38 @@ public class ExpedienteFicha implements Serializable{
 
     public void setEstadoGeneral(String estadoGeneral) {
         this.estadoGeneral = estadoGeneral;
+    }
+
+    public String getBasePathImage() {
+        return basePathImage;
+    }
+
+    public void setBasePathImage(String basePathImage) {
+        this.basePathImage = basePathImage;
+    }
+
+    public String getTieneOrientacion() {
+        return tieneOrientacion;
+    }
+
+    public void setTieneOrientacion(String tieneOrientacion) {
+        this.tieneOrientacion = tieneOrientacion;
+    }
+
+    public String getOrientacion() {
+        return orientacion;
+    }
+
+    public void setOrientacion(String orientacion) {
+        this.orientacion = orientacion;
+    }
+
+    public String getRutaJasper() {
+        return rutaJasper;
+    }
+
+    public void setRutaJasper(String rutaJasper) {
+        this.rutaJasper = rutaJasper;
     }
     
 }

@@ -959,9 +959,9 @@ public class RegistroController extends AbstractManagedBean implements Serializa
          * LISTA DE PERSONAS
          */
         list.add(ficha);
-        JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(
-                list);
-        jasperPrint = JasperFillManager.fillReport(ConstantesUtil.BASE_URL_REPORT+"expedienteConsulta.jasper", new HashMap(), beanCollectionDataSource);
+        JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(list);
+        
+        jasperPrint = JasperFillManager.fillReport(constantesUtil.BASE_URL_REPORT+"expedienteConsulta.jasper", new HashMap(), beanCollectionDataSource);
     }
 
     public void initPetitorio() throws JRException {
@@ -970,7 +970,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         ExpedienteFicha ficha = new ExpedienteFicha();
         String oficina = usuarioSession.getNombreOD().replace("OD", "Oficina Defensorial");
         ficha.setNumeroExpediente("Expediente: " + expediente.getNumero());
-        ficha.setOficinaDefensorial(oficina /*+ " - " + usuarioSession.getNombreOD()*/);
+        ficha.setOficinaDefensorial(oficina);
         /**
          * LISTA DE PERSONAS
          */
@@ -1080,11 +1080,17 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         String apePatUsua = u.getApellidoPaterno() == null? "" : u.getApellidoPaterno();
         String apeMatUsua = u.getApellidoMaterno() == null? "" : u.getApellidoMaterno();
         ficha.setComisionado(nombreUsua+" "+apePatUsua+" "+apeMatUsua);
+        ficha.setTieneOrientacion(null);
+        ficha.setOrientacion(null);
+        if(StringUtils.equals(expediente.getTipoClasificion(), ExpedienteType.CONSULTA.getKey())){
+            ficha.setTieneOrientacion("Orientación:");
+            ficha.setOrientacion(expediente.getObservacion());
+        }
         /**add gestiones*/
         ficha.setExpedienteGestions(listaGestiones);
         list.add(ficha);
         JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(list);
-        jasperPrint = JasperFillManager.fillReport(ConstantesUtil.BASE_URL_REPORT+"fichaExpediente.jasper",new HashMap(), beanCollectionDataSource);
+        jasperPrint = JasperFillManager.fillReport(constantesUtil.BASE_URL_REPORT+"fichaExpediente.jasper",new HashMap(), beanCollectionDataSource);
     }
 
     public void ordenar(int tipo) {
@@ -4049,6 +4055,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             expediente.setUsuarioRegistro(usuarioSession.getCodigo());
             expediente.setNumero("");
             if (expediente.getId() == null) {
+                expediente.setGeneral("A");
                 expedienteService.expedienteInsertar(expediente);
                 insertUpdateListasPersonaEntidad();
                 msg.messageInfo("Se registro el borrador del Expediente", null);
@@ -4242,6 +4249,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 }
             }
             cargarGruposVulnerables();
+            expediente.setGeneral("A");
             expedienteService.expedienteInsertar(expediente);
             insertListasPersonaEntidad();
         } catch (Exception e) {
@@ -4276,6 +4284,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 }
             }
             cargarGruposVulnerables();
+            expediente.setGeneral("A");
             expedienteService.expedienteInsertar(expediente);
             insertListasPersonaEntidad();
         } catch (Exception e) {
@@ -4322,6 +4331,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             expediente.setIndDerivado(1);
             expediente.setEstado("A");
             expediente.setCodigoOD(usu.getCodigoOD());
+            expediente.setGeneral("A");
             expedienteService.expedienteInsertar(expediente);
             insertListasPersonaEntidad();
         } catch (Exception e) {
@@ -5249,7 +5259,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             if (StringUtils.isNoneBlank(nameArchive)) {
                 String formato = RandomStringUtils.random(32, 0, 20, true, true, "qw32rfHIJk9iQ8Ud7h0X".toCharArray());
                 String ruta = formato + extencion;
-                File file = new File(ConstantesUtil.FILE_SYSTEM + ruta);
+                File file = new File(constantesUtil.FILE_SYSTEM + ruta);
                 try (InputStream input = fil.getInputStream()) {
                     Files.copy(input, file.toPath());
                 } catch (IOException ex) {

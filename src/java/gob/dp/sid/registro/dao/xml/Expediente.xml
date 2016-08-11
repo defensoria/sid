@@ -219,7 +219,9 @@
         <if test="detalleAtr != null">
             C_DETALLEEJERCICIOATR,
         </if>
-        C_ESTADOGENERAL,
+        <if test="general != null">
+            C_ESTADOGENERAL,
+        </if>
         N_IDEXPEDIENTE
         )
         VALUES 
@@ -365,7 +367,9 @@
         <if test="detalleAtr != null">
             #{detalleAtr},
         </if>
-        'A',
+        <if test="general != null">
+            #{general},
+        </if>
         SEQ_SID_REG_EXPEDIENTE.NextVal
         )
         <selectKey keyProperty="id" resultType="Long">
