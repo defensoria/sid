@@ -40,11 +40,9 @@
         .error{
             background: #F2DEDE;
         }
-
         a:hover {
             cursor: pointer
         }
-
         .disabled-form{
             background: #EEEEEE; pointer-events:none;
         }
@@ -153,7 +151,7 @@
             <header class="header">
                 <table style="width: 100%">
                     <tr>
-                        <td style="width: 23%">
+                        <td style="width: 16%">
                             <table>
                                 <tr>
                                     <td>
@@ -169,8 +167,7 @@
                                 </tr>
                             </table>
                         </td>
-
-                        <td  style="width: 40%">
+                        <td  style="width: 38%">
                             <table style="width: 100%">
                                 <tr>
                                     <td style="width: 22%">
@@ -199,19 +196,15 @@
                                     </td>
                                 </tr>
                             </table>
-
                         </td>
-                        <td style="width: 47%">
-
+                        <td>
                             <div class="header-right">							
-
                                 <ul class="notifications">
                                     <li>
                                         <a href="#" class="dropdown-toggle notification-icon" data-toggle="dropdown">
                                             <i class="fa fa-bell"></i>
                                             <span class="badge">#{bandejaController.listaMensajesPendientesInternos.size()}</span>
                                         </a>
-
                                         <div class="dropdown-menu notification-menu">
                                             <div class="notification-title">
                                                 Mensajes
@@ -283,7 +276,6 @@
                                         <figure class="profile-picture">
                                             <img src="#{loginController.usuarioSesion.ruta == null? '/sid/faces/bootstrap/img/user-admin.png' : loginController.usuarioSesion.ruta}" alt="#{loginController.usuarioSesion.nombre} &#160; #{loginController.usuarioSesion.apellidoPaterno} &#160; #{loginController.usuarioSesion.apellidoMaterno}" class="img-circle" data-lock-picture="images/!logged-user.jpg" />
                                         </figure>
-
                                         <div class="profile-info">
                                             <span >#{loginController.usuarioSesion.nombre} &#160; #{loginController.usuarioSesion.apellidoPaterno} &#160; #{loginController.usuarioSesion.apellidoMaterno}</span>
                                             <span class="role">#{loginController.usuarioSesion.cargo}</span>

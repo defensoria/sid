@@ -128,6 +128,8 @@ public class UsuarioDetalleController extends AbstractManagedBean implements Ser
         UsuarioLogin usuarioLogin = new UsuarioLogin();
         usuarioLogin.setCodigo(usuarioSession.getCodigo());
         verDetalleUsuario(usuarioLogin);
+        if(StringUtils.isNotBlank(usuario.getRuta()))
+            loginController.cambiarImagen(usuario.getRuta());
         return "perfil";
     }
 

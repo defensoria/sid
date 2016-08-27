@@ -102,6 +102,10 @@ public class LoginController extends AbstractManagedBean implements Serializable
     public Usuario getUsuarioSesion() {
         return SessionUtil.getUsuario();
     }
+    
+    public void cambiarImagen(String ruta) {
+        getUsuarioSesion().setRuta(ruta);
+    }
 
     public void setAuditoriaService(AuditoriaService auditoriaService) {
         this.auditoriaService = auditoriaService;

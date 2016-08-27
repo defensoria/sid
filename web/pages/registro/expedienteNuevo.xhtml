@@ -1119,10 +1119,8 @@
                                                                 <input type="hidden" id="idEtiqueta" jsf:value="#{registroController.expediente.idEtiqueta}" />
                                                                 <a jsf:action="#{registroController.agregarEtiqueta()}">
                                                                     <span class="glyphicon glyphicon-plus form-control-feedback"/>
-                                                                    <f:ajax render="idPanelEtiquetas" execute="idPanelEtiquetas" />
                                                                 </a>
                                                             </div>
-
                                                             <br/>
                                                         </td>
                                                     </tr>
@@ -1139,7 +1137,6 @@
                                                                     <td style="text-align: right">
                                                                         <a jsf:action="#{registroController.removeEtiqueta(x)}" jsf:onclick="loadingModal()">
                                                                             <span class="glyphicon glyphicon-remove"  style="color: red"/>
-                                                                            <f:ajax render="@form" onevent="closeModal" />
                                                                         </a>
                                                                     </td>
                                                                 </tr>
@@ -1159,8 +1156,11 @@
                                             <h:outputText rendered="#{registroController.expediente.tipoClasificion == '02'}" value="Motivo de la consulta:" class="text-bold"/>
                                             <h:outputText rendered="#{registroController.expediente.tipoClasificion != '02'}" value="Sumilla:" class="text-bold"/>
                                             <span style="color: red">(max: 4000 carateres)</span> 
-                                            <textarea jsf:rendered="#{registroController.expediente.tipoClasificion == '02'}" rows="5" jsf:value="#{registroController.expediente.sumilla}" style="width: 100%;" maxlength="4000"/>
-                                            <textarea jsf:rendered="#{registroController.expediente.tipoClasificion != '02'}" rows="5" jsf:value="#{registroController.expediente.sumilla}" style="width: 100%;" maxlength="4000"/>
+                                            <textarea jsf:rendered="#{registroController.expediente.tipoClasificion == '02'}" rows="6" jsf:value="#{registroController.expediente.sumilla}" style="width: 100%;" maxlength="4000"/>
+                                            <textarea jsf:rendered="#{registroController.expediente.tipoClasificion != '02'}" rows="6" jsf:value="#{registroController.expediente.sumilla}" style="width: 100%;" maxlength="4000" placeholder="Los hechos son:
+
+
+El pedido concreto es:"/>
                                             <br/>
                                             <h:outputText class="text-bold" value="Observaciones:" rendered="#{registroController.expediente.tipoClasificion != '02'}" />
                                             <h:outputText class="text-bold" value="Orientación:" rendered="#{registroController.expediente.tipoClasificion == '02'}" />
@@ -1539,7 +1539,7 @@
                                                                                                     </td>
                                                                                                 </tr>
                                                                                                 <tr>
-                                                                                                    <td style="padding-top: 5px"><b>Pueblo indígena u originarios:</b></td>
+                                                                                                    <td style="padding-top: 5px"><b>Población indígena u originarios:</b></td>
                                                                                                     <td style="padding-bottom: 5px; padding-top: 10px" colspan="2">
                                                                                                         <h:selectOneMenu value="#{registroController.persona.tipoLengua}" style="width: 50%">
                                                                                                             <f:selectItem itemLabel="Seleccione" itemValue="0"/>
