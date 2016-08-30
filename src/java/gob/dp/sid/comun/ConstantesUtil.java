@@ -33,7 +33,7 @@ public class ConstantesUtil implements Serializable{
     //public static final String BASE_URL_IMAGEPATH = "C:\\recursos\\images\\";
     /**LINUX*/
     public String BASE_URL_IMAGEPATH = "/usr/local/recursos/images/";
-    public String BASE_URL_PRODUCCION_IMAGE = "http://localhost:8080/filesystem/";
+    public String BASE_URL_PRODUCCION_IMAGE = "http://localhost/filesystem/";
     
     public static final String LISTA_VALOR_TODOS_CODIGO = "-1000";
     public static final String LISTA_VALOR_TODOS_NOMBRE = "TODOS";
