@@ -68,7 +68,6 @@
                     </div>
 <!--crear consulta-->
                     <h:panelGroup rendered="#{registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo and seguridadUtilController.tieneRecurso('REC_EXP004')}">
-                        XXXXXXXXXXXXXXXXXXXXXXXXXX
                         <table style="width: 100%">
                             <tr>
                                 <td colspan="2" >
@@ -283,7 +282,6 @@
                     </h:panelGroup>
 <!--aprobar consulta-->
 <h:panelGroup rendered="#{seguridadUtilController.tieneRecurso('REC_EXP005') and registroController.esSupervisor}">
-    YYYYYYYYYYYYYYYYYY
                         <h:dataTable value="#{registroController.listaExpedienteTotalesAprueba}" var="aprueba" class="table table-hover" binding="#{it1}" rendered="#{registroController.listaExpedienteTotalesAprueba.size() > 0}">
                             <h:column>
                                 <f:facet name="header">N°</f:facet>
@@ -335,6 +333,13 @@
                                 <a jsf:rendered="#{aprueba.etapa == 5 and aprueba.estado == 'ACT'}" jsf:action="#{registroController.limpiarModalRespuestaAcepta(aprueba)}">
                                     <span style="font-size: large" class="glyphicon glyphicon-pencil" />
                                     <f:ajax render="@form" onevent="openModalNuevaRespuesAcepta" />
+                                </a>
+                            </h:column>
+                            <h:column rendered="#{seguridadUtilController.tieneRecurso('REC_EXP004') and registroController.esSupervisor and registroController.expediente.usuarioRegistro == registroController.usuarioSession.codigo}">
+                                <f:facet name="header">ver respuesta</f:facet>
+                                <a jsf:rendered="#{aprueba.etapa == 6}" jsf:action="#{registroController.limpiarModalRespuestaRecibe(aprueba)}">
+                                    <span style="font-size: large" class="glyphicon glyphicon-search" />
+                                    <f:ajax render="@form" onevent="openModalRecibeRespuesta" />
                                 </a>
                             </h:column>
                         </h:dataTable>
@@ -518,7 +523,6 @@
                     </h:panelGroup>
 <!--aceptar consulta-->
                     <h:panelGroup rendered="#{seguridadUtilController.tieneRecurso('REC_EXP006') and registroController.listaExpedienteTotalesReasigna.size() > 0}">
-                        ZZZZZZZZZZZZZZZZZZZZZ
                         <h:dataTable value="#{registroController.listaExpedienteTotalesReasigna}" var="reasigna" class="table table-hover" binding="#{it2}" rendered="#{registroController.listaExpedienteTotalesReasigna.size() > 0}">
                             <h:column>
                                 <f:facet name="header">N°</f:facet>
@@ -744,7 +748,6 @@
                     </h:panelGroup> 
 <!--responde-->
                     <h:panelGroup rendered="#{seguridadUtilController.tieneRecurso('REC_EXP007') and registroController.listaExpedienteTotalesResponde.size() > 0}">
-                        ZZZZZZZZZZZZZZSSSSSSSSSSSSSSSSSSSS
                         <h:dataTable value="#{registroController.listaExpedienteTotalesResponde}" var="responde" class="table table-hover" binding="#{it3}" rendered="#{registroController.listaExpedienteTotalesResponde.size() > 0}">
                             <h:column>
                                 <f:facet name="header">N°</f:facet>

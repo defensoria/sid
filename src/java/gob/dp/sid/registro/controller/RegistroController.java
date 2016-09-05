@@ -447,11 +447,21 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             setVerBotonRegistrarExpediente(true);
             expedienteClasificacionBusqueda = new ExpedienteClasificacion();
             expedientepersonaModalEdit = new ExpedientePersona();
+            setearSumilla();
             return "expedienteNuevo";
         } catch (Exception e) {
             log.error("ERROR - cargarNuevoExpediente()" + e);
         }
         return null;
+    }
+    
+    private void setearSumilla(){
+        if(!StringUtils.equals(expediente.getTipoClasificion(), "02")){
+            if(stringUtil.isBlank(expediente.getSumilla())){
+                String cadena = "hechos son:\n\nEl pedido concreto es:";
+                expediente.setSumilla(cadena);
+            }
+        }
     }
     
     public String cargarFormularioVirtual(){
@@ -542,6 +552,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             inicializarEtapaEstado(0);
             setVerBotonRegistrarExpediente(true);
             expedienteClasificacionBusqueda = new ExpedienteClasificacion();
+            setearSumilla();
             return "expedienteNuevo";
         } catch (Exception e) {
             log.error("ERROR - cargarObjetoExpediente()" + e);
@@ -903,6 +914,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             iniciarExpedienteNuevo();
             expediente.setIndicadorOficio(true);
             personasSeleccionadas = new ArrayList<>();
+            setearSumilla();
             return "expedienteNuevo";
         } catch (Exception e) {
             log.error("ERROR - irOficio()" + e);
@@ -1231,6 +1243,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
 
     public String datosGeneralesExpediente() {
         defineBotonRegistro();
+        setearSumilla();
         return "expedienteNuevo";
     }
 
@@ -4611,6 +4624,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                         }
                     }
                 }*/
+                
                 if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.PERSUACION_QUEJA.getKey())) {
                     if (listaExpedientesPersuacionQueja != null) {
                         if (listaExpedientesPersuacionQueja.size() == 0) {
@@ -4625,6 +4639,12 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                             msg.messageAlert("Debe ingresar por lo menos una gestion para culminar la etapa", null);
                             return false;
                         }
+                    }
+                }
+                if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.CALIFICACION_PETITORIO.getKey())) {
+                    if (expediente.getListaExpedienteNivel().size() == 0) {
+                        msg.messageAlert("Debe ingresar al menos una clasificación", null);
+                        return false;
                     }
                 }
                 if (Objects.equals(etapaEstado.getVerEtapa(), EtapaType.GESTION_PETITORIO.getKey())) {

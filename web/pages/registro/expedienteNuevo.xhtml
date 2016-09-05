@@ -1157,10 +1157,7 @@
                                             <h:outputText rendered="#{registroController.expediente.tipoClasificion != '02'}" value="Sumilla:" class="text-bold"/>
                                             <span style="color: red">(max: 4000 carateres)</span> 
                                             <textarea jsf:rendered="#{registroController.expediente.tipoClasificion == '02'}" rows="6" jsf:value="#{registroController.expediente.sumilla}" style="width: 100%;" maxlength="4000"/>
-                                            <textarea jsf:rendered="#{registroController.expediente.tipoClasificion != '02'}" rows="6" jsf:value="#{registroController.expediente.sumilla}" style="width: 100%;" maxlength="4000" placeholder="Los hechos son:
-
-
-El pedido concreto es:"/>
+                                            <textarea jsf:rendered="#{registroController.expediente.tipoClasificion != '02'}" rows="6" jsf:value="#{registroController.expediente.sumilla}" style="width: 100%;" maxlength="4000" placeholder="Los hechos son:                       El pedido concreto es:"/>
                                             <br/>
                                             <h:outputText class="text-bold" value="Observaciones:" rendered="#{registroController.expediente.tipoClasificion != '02'}" />
                                             <h:outputText class="text-bold" value="Orientación:" rendered="#{registroController.expediente.tipoClasificion == '02'}" />
