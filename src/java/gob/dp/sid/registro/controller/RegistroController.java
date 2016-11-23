@@ -287,6 +287,8 @@ public class RegistroController extends AbstractManagedBean implements Serializa
 
     private boolean verBotonRegistrarExpediente = true;
 
+    private List<SelectItem> listaClasificacionPrimerLevel;
+    
     private List<SelectItem> listaClasificacionSegundoLevel;
 
     private List<SelectItem> listaClasificacionTercerLevel;
@@ -6232,6 +6234,20 @@ public class RegistroController extends AbstractManagedBean implements Serializa
 
     public void setFiltroFormularioVirtual(ExpedienteFormularioVirtual filtroFormularioVirtual) {
         this.filtroFormularioVirtual = filtroFormularioVirtual;
+    }
+
+    public List<SelectItem> getListaClasificacionPrimerLevel() {
+        List<ExpedienteClasificacion> listaClasi = expedienteClasificacionService.listaExpedienteClasificacion(new ExpedienteClasificacion(0, 1, "ACT"));
+        List<SelectItem> listaClasificacion = new ArrayList<>();    
+                for (ExpedienteClasificacion ec : listaClasi) {
+                    listaClasificacion.add(new SelectItem(ec.getId(), ec.getNombre()));
+                }
+        listaClasificacionPrimerLevel = listaClasificacion;
+        return listaClasificacionPrimerLevel;
+    }
+
+    public void setListaClasificacionPrimerLevel(List<SelectItem> listaClasificacionPrimerLevel) {
+        this.listaClasificacionPrimerLevel = listaClasificacionPrimerLevel;
     }
 
 }

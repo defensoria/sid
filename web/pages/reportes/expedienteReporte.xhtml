@@ -14,34 +14,33 @@
                     <div class="panel-body">
                         <span class="text-titulo-primary-simco">Reporte 001</span>
                         <script>
-                                                $(function () {
-                                                    
+                            $(function () {
 
-                                                    // Use Morris.Bar
-                                                    Morris.Bar({
-                                                        element: 'graph2',
-                                                        data: [
-                                                #{registroController.grafico002}
-                                                        ],
-                                                        xkey: 'x',
-                                                        ykeys: ['y', 'z'],
-                                                        labels: ['Activo', 'Concluido']
-                                                    }).on('click', function (i, row) {
-                                                        console.log(i, row);
-                                                    });
 
-                                                });
-                                            </script>
+                                // Use Morris.Bar
+                                Morris.Bar({
+                                    element: 'graph2',
+                                    data: [
+                            #{registroController.grafico002}
+                                    ],
+                                    xkey: 'x',
+                                    ykeys: ['y', 'z'],
+                                    labels: ['Activo', 'Concluido']
+                                }).on('click', function (i, row) {
+                                    console.log(i, row);
+                                });
+
+                            });
+                        </script>
                         <a jsf:action="#{reporteController.pdf()}">
-                                                            <img src="../../bootstrap/img/pdf.png" alt="Plan de Intervencion" height="30" width="30"/>
-                                                        </a>
-                         <a jsf:action="#{reporteController.pdf2()}">
-                                                            <img src="../../bootstrap/img/pdf.png" alt="Plan de Intervencion" height="30" width="30"/>
-                                                        </a>
-                                            <div id="graph2"></div>
+                            <img src="../../bootstrap/img/pdf.png" alt="Plan de Intervencion" height="30" width="30"/>
+                        </a>
+                        <a jsf:action="#{reporteController.pdf2()}">
+                            <img src="../../bootstrap/img/pdf.png" alt="Plan de Intervencion" height="30" width="30"/>
+                        </a>
+                        <div id="graph2"></div>
                     </div>
                 </div>
-                
             </h:form>
         </ui:define>
     </ui:composition>

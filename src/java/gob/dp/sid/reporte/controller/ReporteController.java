@@ -7,7 +7,6 @@ package gob.dp.sid.reporte.controller;
 
 import gob.dp.sid.administracion.seguridad.controller.LoginController;
 import gob.dp.sid.administracion.seguridad.entity.Usuario;
-import gob.dp.sid.comun.ConstantesUtil;
 import gob.dp.sid.comun.controller.AbstractManagedBean;
 import gob.dp.sid.registro.entity.Expediente;
 import gob.dp.sid.registro.service.ExpedienteService;

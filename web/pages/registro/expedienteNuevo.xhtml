@@ -808,7 +808,7 @@
                                                             <td style="padding-bottom: 10px">
                                                                 <h:selectOneMenu value="#{registroController.expedienteNivel.idPrimerNivel}" id="idSelectPrimerNivel" onchange="loadingModal()">
                                                                     <f:selectItem itemLabel="Seleccione" itemValue="0" />
-                                                                    <f:selectItems value="#{listasComunesController.listaPrimerNivel(false, false, false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
+                                                                    <f:selectItems value="#{registroController.listaClasificacionPrimerLevel}" />
                                                                     <f:ajax listener="#{registroController.cargarNivelesClasificacion(registroController.expedienteNivel.idPrimerNivel, 2)}" 
                                                                             render="idClasificador" onevent="closeModal"/>
                                                                 </h:selectOneMenu>
