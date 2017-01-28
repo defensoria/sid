@@ -13,6 +13,7 @@ import gob.dp.sid.administracion.seguridad.service.UsuarioService;
 import gob.dp.sid.comun.ConstantesUtil;
 import gob.dp.sid.comun.MessagesUtil;
 import gob.dp.sid.comun.controller.AbstractManagedBean;
+import gob.dp.sid.comun.type.RutaType;
 import gob.dp.sid.registro.entity.OficinaDefensorial;
 import gob.dp.sid.registro.service.OficinaDefensorialService;
 import java.io.File;
@@ -288,7 +289,7 @@ public class UsuarioDetalleController extends AbstractManagedBean implements Ser
             DateFormat fechaHora = new SimpleDateFormat("yyyyMMddHHmmss");
             String formato = fechaHora.format(new Date());
             String ruta = formato + extencion;
-            File file = new File(constantesUtil.FILE_SYSTEM + ruta);
+            File file = new File(RutaType.URL_FILE_SYSTEM.getValue() + ruta);
             try (InputStream input = file1.getInputStream()) {
                 Files.copy(input, file.toPath());
             } catch (IOException ex) {

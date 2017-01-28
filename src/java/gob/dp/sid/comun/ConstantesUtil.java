@@ -24,11 +24,11 @@ public class ConstantesUtil implements Serializable{
     
     //public String FILE_SYSTEM="C:/server/glassfish-4.0/glassfish4/glassfish/domains/domain1/docroot/filesystem/";
     /**LINUX*/
-    public String FILE_SYSTEM="/usr/local/glassfish4/glassfish/domains/domain1/docroot/filesystem/";
+    //public String FILE_SYSTEM="/usr/local/glassfish4/glassfish/domains/domain1/docroot/filesystem/";
     
     //public static final String BASE_URL_REPORT = "C:\\recursos\\reportesSID\\";
     /**LINUX*/
-    public String BASE_URL_REPORT = "/usr/local/recursos/reportes/";
+    //public String BASE_URL_REPORT = "/usr/local/recursos/reportes/";
     
     //public static final String BASE_URL_IMAGEPATH = "C:\\recursos\\images\\";
     /**LINUX*/

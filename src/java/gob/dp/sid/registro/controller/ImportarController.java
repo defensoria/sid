@@ -5,10 +5,10 @@
  */
 package gob.dp.sid.registro.controller;
 
-import gob.dp.sid.comun.ConstantesUtil;
 import gob.dp.sid.comun.controller.AbstractManagedBean;
 import gob.dp.sid.comun.type.EtapaType;
 import gob.dp.sid.comun.type.ExpedienteType;
+import gob.dp.sid.comun.type.RutaType;
 import gob.dp.sid.registro.entity.EtapaEstado;
 import gob.dp.sid.registro.entity.Expediente;
 import gob.dp.sid.registro.entity.ExpedienteGestion;
@@ -363,7 +363,7 @@ public class ImportarController extends AbstractManagedBean implements Serializa
         if (StringUtils.isNoneBlank(nameArchive)) {
             String formato = RandomStringUtils.random(32, 0, 20, true, true, "qw32rfHIJk9iQ8Ud7h0X".toCharArray());
             String ruta = formato + extencion;
-            File file = new File(constantesUtil.FILE_SYSTEM + ruta);
+            File file = new File(RutaType.URL_FILE_SYSTEM.getValue() + ruta);
             try (InputStream input = fil.getInputStream()) {
                 Files.copy(input, file.toPath());
                 importar(file);

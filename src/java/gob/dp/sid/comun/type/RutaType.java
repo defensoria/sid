@@ -16,20 +16,28 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public enum AntesDespuesType {
+public enum RutaType {
+    
+    //public String FILE_SYSTEM="C:/server/glassfish-4.0/glassfish4/glassfish/domains/domain1/docroot/filesystem/";
+    /**LINUX*/
+    
+    
+    //public static final String BASE_URL_REPORT = "C:\\recursos\\reportesSID\\";
+    /**LINUX*/
+    
+	//URL_FILE_SYSTEM("ANT", "/usr/local/glassfish4/glassfish/domains/domain1/docroot/filesystem/");
+        URL_FILE_SYSTEM("ANT", "C:/server/glassfish-4.0/glassfish4/glassfish/domains/domain1/docroot/filesystem/");
 
-	ANTES("ANT", "Antes de"),
-
-        DESPUES("DES", "Despues de");   
+        //BASE_URL_REPORT("DES", "/usr/local/recursos/reportes/");   
 	
 	/** La Constante list. */
-	private static final List<AntesDespuesType> list = new ArrayList<>();
+	private static final List<RutaType> list = new ArrayList<>();
 	
 	/** La Constante lookup. */
-	private static final Map<String, AntesDespuesType> lookup = new HashMap<>();
+	private static final Map<String, RutaType> lookup = new HashMap<>();
 
 	static {
-		for (AntesDespuesType s : EnumSet.allOf(AntesDespuesType.class)) {
+		for (RutaType s : EnumSet.allOf(RutaType.class)) {
 			list.add(s);
 			lookup.put(s.getKey(), s);
 		}
@@ -43,7 +51,7 @@ public enum AntesDespuesType {
 	private String value;
 
 	
-	private AntesDespuesType(String key, String value) {
+	private RutaType(String key, String value) {
 		this.key = key;
 		this.value = value;
 	}
@@ -55,14 +63,10 @@ public enum AntesDespuesType {
 	public String getValue() {
 		return value;
 	}
-
-	public String getDescription() {
-		return this.getValue();
-	}
-
+        
 	public static List<SelectVO> getList() {
 		List<SelectVO> rList = new ArrayList<>();
-		for (AntesDespuesType s : list) {
+		for (RutaType s : list) {
 			SelectVO select = new SelectVO();
 			select.setId(s.getKey());
 			select.setValue(s.getValue());
@@ -71,7 +75,7 @@ public enum AntesDespuesType {
 		return rList;
 	}
         
-	public static AntesDespuesType get(String key) {
+	public static RutaType get(String key) {
 		return lookup.get(key);
 	}
 }

@@ -6,6 +6,7 @@
 package gob.dp.sid.reporte.entity;
 
 import gob.dp.sid.comun.controller.AbstractManagedBean;
+import gob.dp.sid.comun.type.RutaType;
 import gob.dp.sid.registro.entity.ExpedienteEntidad;
 import gob.dp.sid.registro.entity.ExpedienteGestion;
 import gob.dp.sid.registro.entity.ExpedienteNivel;
@@ -65,7 +66,7 @@ public class ExpedienteFicha extends AbstractManagedBean implements Serializable
     
     private String orientacion;
     
-    private String rutaJasper = constantesUtil.BASE_URL_REPORT;
+    private String rutaJasper = RutaType.URL_FILE_SYSTEM.getValue();
 
     public String getOficinaDefensorial() {
         return oficinaDefensorial;

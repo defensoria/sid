@@ -32,6 +32,7 @@ import gob.dp.sid.comun.type.ExpedienteType;
 import gob.dp.sid.comun.type.HistorialType;
 import gob.dp.sid.comun.type.MensajeType;
 import gob.dp.sid.comun.type.RolType;
+import gob.dp.sid.comun.type.RutaType;
 import gob.dp.sid.registro.entity.Entidad;
 import gob.dp.sid.registro.entity.EtapaEstado;
 import gob.dp.sid.registro.entity.Expediente;
@@ -975,7 +976,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         list.add(ficha);
         JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(list);
         
-        jasperPrint = JasperFillManager.fillReport(constantesUtil.BASE_URL_REPORT+"expedienteConsulta.jasper", new HashMap(), beanCollectionDataSource);
+        jasperPrint = JasperFillManager.fillReport(RutaType.URL_FILE_SYSTEM.getValue()+"expedienteConsulta.jasper", new HashMap(), beanCollectionDataSource);
     }
 
     public void initPetitorio() throws JRException {
@@ -1104,7 +1105,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         ficha.setExpedienteGestions(listaGestiones);
         list.add(ficha);
         JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(list);
-        jasperPrint = JasperFillManager.fillReport(constantesUtil.BASE_URL_REPORT+"fichaExpediente.jasper",new HashMap(), beanCollectionDataSource);
+        jasperPrint = JasperFillManager.fillReport(RutaType.URL_FILE_SYSTEM.getValue()+"fichaExpediente.jasper",new HashMap(), beanCollectionDataSource);
     }
 
     public void ordenar(int tipo) {
@@ -5281,7 +5282,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             if (StringUtils.isNoneBlank(nameArchive)) {
                 String formato = RandomStringUtils.random(32, 0, 20, true, true, "qw32rfHIJk9iQ8Ud7h0X".toCharArray());
                 String ruta = formato + extencion;
-                File file = new File(constantesUtil.FILE_SYSTEM + ruta);
+                File file = new File(RutaType.URL_FILE_SYSTEM.getValue() + ruta);
                 try (InputStream input = fil.getInputStream()) {
                     Files.copy(input, file.toPath());
                 } catch (IOException ex) {
