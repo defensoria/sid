@@ -271,7 +271,8 @@ public class UsuarioDetalleController extends AbstractManagedBean implements Ser
     }
 
     public void agregarImagen() {
-        String nameArchive = getFilename(file1);
+        if(file1 != null){
+            String nameArchive = getFilename(file1);
         String extencion = "";
         if (!stringUtil.isBlank(nameArchive)) {
             switch (file1.getContentType()) {
@@ -298,6 +299,7 @@ public class UsuarioDetalleController extends AbstractManagedBean implements Ser
             usuario.setRuta("/filesystem/" + ruta);
             usuarioService.modificarUsuarioSimple(usuario);
             verDetallePerfil();
+        }
         }
     }
 
