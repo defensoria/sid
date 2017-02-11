@@ -21,22 +21,6 @@
      					http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
      					">
 
-    <!-- CONFIGURACION IBATIS -->
-    <!--<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="locations">
-            <list>
-                <value>/WEB-INF/jdbc.properties</value>
-            </list>
-        </property>
-    </bean>
-
-    <bean id="dataSource1" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-            <property name="driverClassName" value="${jdbc.driverClassName}" />
-            <property name="url" value="${jdbc.url}" />
-            <property name="username" value="${jdbc.username}" />
-            <property name="password" value="${jdbc.password}" />
-    </bean>-->
-
     
     <jee:jndi-lookup id="dataSource1" jndi-name="jdbc/sid"/>
   
@@ -47,8 +31,8 @@
             <property name="dataSource" ref="dataSource1" />
     </bean>
 
-    <context:component-scan base-package="gob.dp.sid.administracion.seguridad.dao"/>
-    <context:component-scan base-package="gob.dp.sid.administracion.parametro.dao"/>
+    <context:component-scan base-package="gob.dp.sid.seguridad.dao"/>
+    <context:component-scan base-package="gob.dp.sid.parametro.dao"/>
     <context:component-scan base-package="gob.dp.sid.comun.dao"/>
     <context:component-scan base-package="gob.dp.sid.registro.dao"/>
     <context:component-scan base-package="gob.dp.sid.reporte.dao"/>

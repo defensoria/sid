@@ -5,8 +5,8 @@
  */
 package gob.dp.sid.comun.controller;
 
-import gob.dp.sid.administracion.seguridad.controller.LoginController;
-import gob.dp.sid.administracion.seguridad.entity.Usuario;
+import gob.dp.sid.seguridad.controller.LoginController;
+import gob.dp.sid.seguridad.entity.Usuario;
 import gob.dp.sid.comun.ConstantesUtil;
 import gob.dp.sid.comun.type.EtapaType;
 import gob.dp.sid.registro.entity.Expediente;

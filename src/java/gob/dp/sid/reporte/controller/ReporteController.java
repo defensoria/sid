@@ -5,8 +5,8 @@
  */
 package gob.dp.sid.reporte.controller;
 
-import gob.dp.sid.administracion.seguridad.controller.LoginController;
-import gob.dp.sid.administracion.seguridad.entity.Usuario;
+import gob.dp.sid.seguridad.controller.LoginController;
+import gob.dp.sid.seguridad.entity.Usuario;
 import gob.dp.sid.comun.controller.AbstractManagedBean;
 import gob.dp.sid.comun.type.RutaType;
 import gob.dp.sid.registro.entity.Expediente;

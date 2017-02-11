@@ -4,7 +4,7 @@
  */
 package gob.dp.sid.comun;
 
-import gob.dp.sid.administracion.seguridad.entity.Usuario;
+import gob.dp.sid.seguridad.entity.Usuario;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;

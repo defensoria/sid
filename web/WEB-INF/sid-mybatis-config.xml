@@ -14,16 +14,16 @@
     </settings>
 
     <typeAliases>
-        <typeAlias type="gob.dp.sid.administracion.seguridad.entity.Usuario" alias="usuario"/>
-        <typeAlias type="gob.dp.sid.administracion.seguridad.entity.UsuarioRol" alias="usuarioRol"/>
-        <typeAlias type="gob.dp.sid.administracion.seguridad.entity.Rol" alias="rol"/>
-        <typeAlias type="gob.dp.sid.administracion.seguridad.entity.Recurso" alias="recurso"/>
-        <typeAlias type="gob.dp.sid.administracion.seguridad.entity.RolRecurso" alias="rolRecurso"/>
-        <typeAlias type="gob.dp.sid.administracion.seguridad.bean.FiltroUsuario" alias="filtroUsuario"/>
-        <typeAlias type="gob.dp.sid.administracion.seguridad.entity.UsuarioLogin" alias="usuarioLogin"/>
+        <typeAlias type="gob.dp.sid.seguridad.entity.Usuario" alias="usuario"/>
+        <typeAlias type="gob.dp.sid.seguridad.entity.UsuarioRol" alias="usuarioRol"/>
+        <typeAlias type="gob.dp.sid.seguridad.entity.Rol" alias="rol"/>
+        <typeAlias type="gob.dp.sid.seguridad.entity.Recurso" alias="recurso"/>
+        <typeAlias type="gob.dp.sid.seguridad.entity.RolRecurso" alias="rolRecurso"/>
+        <typeAlias type="gob.dp.sid.seguridad.bean.FiltroUsuario" alias="filtroUsuario"/>
+        <typeAlias type="gob.dp.sid.seguridad.entity.UsuarioLogin" alias="usuarioLogin"/>
         
-        <typeAlias type="gob.dp.sid.administracion.parametro.entity.Catalogo" alias="catalogo"/>
-        <typeAlias type="gob.dp.sid.administracion.parametro.bean.FiltroCatalogo" alias="filtroCatalogo"/>
+        <typeAlias type="gob.dp.sid.parametro.entity.Catalogo" alias="catalogo"/>
+        <typeAlias type="gob.dp.sid.parametro.bean.FiltroCatalogo" alias="filtroCatalogo"/>
         <typeAlias type="gob.dp.sid.comun.entity.Parametro" alias="parametro"/>
         <typeAlias type="gob.dp.sid.comun.entity.FiltroParametro" alias="filtroParametro"/>
         
@@ -62,13 +62,13 @@
     </typeAliases>
 
     <mappers>
-        <mapper resource="gob/dp/sid/administracion/seguridad/dao/xml/Usuario.xml" />
-        <mapper resource="gob/dp/sid/administracion/seguridad/dao/xml/Rol.xml" />
-        <mapper resource="gob/dp/sid/administracion/seguridad/dao/xml/Recurso.xml" />
-        <mapper resource="gob/dp/sid/administracion/seguridad/dao/xml/Auditoria.xml" />
-        <mapper resource="gob/dp/sid/administracion/seguridad/dao/xml/UsuarioLogin.xml" />
+        <mapper resource="gob/dp/sid/seguridad/dao/xml/Usuario.xml" />
+        <mapper resource="gob/dp/sid/seguridad/dao/xml/Rol.xml" />
+        <mapper resource="gob/dp/sid/seguridad/dao/xml/Recurso.xml" />
+        <mapper resource="gob/dp/sid/seguridad/dao/xml/Auditoria.xml" />
+        <mapper resource="gob/dp/sid/seguridad/dao/xml/UsuarioLogin.xml" />
         
-        <mapper resource="gob/dp/sid/administracion/parametro/dao/xml/Catalogo.xml" />
+        <mapper resource="gob/dp/sid/parametro/dao/xml/Catalogo.xml" />
         
         <mapper resource="gob/dp/sid/comun/dao/xml/Departamento.xml" />
         <mapper resource="gob/dp/sid/comun/dao/xml/Provincia.xml" />

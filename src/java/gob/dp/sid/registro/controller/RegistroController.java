@@ -5,11 +5,11 @@
  */
 package gob.dp.sid.registro.controller;
 
-import gob.dp.sid.administracion.seguridad.controller.LoginController;
-import gob.dp.sid.administracion.seguridad.controller.MenuController;
-import gob.dp.sid.administracion.seguridad.controller.SeguridadUtilController;
-import gob.dp.sid.administracion.seguridad.entity.Usuario;
-import gob.dp.sid.administracion.seguridad.service.UsuarioService;
+import gob.dp.sid.seguridad.controller.LoginController;
+import gob.dp.sid.seguridad.controller.MenuController;
+import gob.dp.sid.seguridad.controller.SeguridadUtilController;
+import gob.dp.sid.seguridad.entity.Usuario;
+import gob.dp.sid.seguridad.service.UsuarioService;
 import gob.dp.sid.bandeja.controller.BandejaController;
 import gob.dp.sid.bandeja.entity.Bandeja;
 import gob.dp.sid.bandeja.service.BandejaService;

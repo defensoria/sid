@@ -5,7 +5,7 @@
 
 package gob.dp.sid.comun;
 
-import gob.dp.sid.administracion.seguridad.entity.Usuario;
+import gob.dp.sid.seguridad.entity.Usuario;
 import gob.dp.sid.comun.entity.Parametro;
 import java.io.Serializable;
 

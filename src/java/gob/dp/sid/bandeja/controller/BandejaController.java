@@ -5,9 +5,9 @@
  */
 package gob.dp.sid.bandeja.controller;
 
-import gob.dp.sid.administracion.seguridad.controller.LoginController;
-import gob.dp.sid.administracion.seguridad.entity.Usuario;
-import gob.dp.sid.administracion.seguridad.service.UsuarioService;
+import gob.dp.sid.seguridad.controller.LoginController;
+import gob.dp.sid.seguridad.entity.Usuario;
+import gob.dp.sid.seguridad.service.UsuarioService;
 import gob.dp.sid.bandeja.entity.Bandeja;
 import gob.dp.sid.bandeja.service.BandejaService;
 import gob.dp.sid.comun.controller.AbstractManagedBean;
