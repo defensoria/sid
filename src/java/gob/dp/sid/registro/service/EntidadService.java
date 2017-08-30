@@ -19,4 +19,6 @@ public interface EntidadService {
     public void entidadUpdate(Entidad entidad);
     
     public List<Entidad> entidadBuscarCadena(Entidad entidad);    
+    
+    public List<String> entidadPorExpediente(Long idExpediente);
 }

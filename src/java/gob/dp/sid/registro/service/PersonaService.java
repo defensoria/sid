@@ -6,6 +6,7 @@
 package gob.dp.sid.registro.service;
 
 import gob.dp.sid.registro.entity.Persona;
+import gob.dp.sid.reporte.entity.StringReport;
 import java.util.List;
 
 /**
@@ -27,4 +28,8 @@ public interface PersonaService {
     public Persona personaBusquedaOne(long idPersona);
     
     public Persona personaXDNI(String dni);
+    
+    public List<StringReport> personaPorExpedienteRecurrente(Long idExpediente);
+    
+    public List<StringReport> personaPorExpedienteAfectado(Long idExpediente);
 }

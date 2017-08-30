@@ -33,4 +33,11 @@
         
     </select>
     
+    <select id="entidadPorExpediente" resultMap="entidadMap"  parameterType="long">
+        SELECT A.*, B.C_NOMENTIDAD
+        FROM SID_REG_EXPEDE_ENTIDAD A
+        INNER JOIN SID_REG_ENTIDAD B ON A.N_ID_ENTIDAD = B.N_ID_ENTIDAD
+        WHERE A.N_IDEXPEDIENTE = #{id}
+    </select>
+    
 </mapper>

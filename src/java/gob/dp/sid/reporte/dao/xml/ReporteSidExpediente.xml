@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD iBatis Mapper 3.0 //EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="gob.dp.sid.reporte.dao.ReporteSidExpedienteDAO">
+    
+    <resultMap id="reporteSidExpedienteMap" type="reporteSidExpediente">
+        <result property="idExpediente" column="N_IDEXPEDIENTE" />
+        <result property="numeroExpediente" column="C_NUMEROEXPEDIENTE" />
+        <result property="tipoExpediente" column="TIPOEXPEDIENTE" />
+        <result property="fechaRegistro" column="D_FECHAREGISTRO" />
+        <result property="etapaExpediente" column="ETAPAEXPEDIENTE" />
+        <result property="estadoGeneral" column="C_ESTADOGENERAL" />
+        <result property="sumilla" column="C_SUMILLA" />
+        <result property="fechaIngreso" column="D_FECHAINGRESO" />
+        <result property="nombreOD" column="OD" />
+        <result property="comisionado" column="USUARIONOMBRE" />
+        <result property="numeroExpediente" column="C_NUMEROEXPEDIENTE" />
+        <result property="canalIngreso" column="CANALINGRESO" />
+        <result property="canalIngresoDetalle" column="CANALINGRESODETALLE" />
+        <result property="tipoGrupoVulnerable" column="C_TIPOGRUPOVULNERABLE"/>
+        <result property="estadoCalificacion" column="ESTADOCALIFICACION"/>
+        <result property="estadoInvestigacion" column="ESTADOINVESTIGACION"/>
+        <result property="estadoPersuacion" column="ESTADOPERSUACION"/>
+        <result property="estadoSeguimiento" column="ESTADOSEGUIMIENTO"/>
+        <result property="estadoRegistro" column="ESTADOREGISTRO"/>
+        <result property="etiqueta" column="C_ETIQUETA"/>
+        
+    </resultMap> 
+    
+    <select id="listaExpedienteReporte" resultMap="reporteSidExpedienteMap" parameterType="reporteSidExpediente">
+        SELECT A.*
+        FROM (
+        SELECT
+        B.*,
+        ROWNUM numfila
+        FROM (
+        SELECT DISTINCT A.C_NUMEROEXPEDIENTE, B.NOMBRE_PARAMETRO TIPOEXPEDIENTE, A.D_FECHAREGISTRO, C.NOMBRE_PARAMETRO CANALINGRESO, E.C_VALOR ETAPAEXPEDIENTE, F.C_NOMBRE ESTADOCALIFICACION, 
+G.C_NOMBRE ESTADOINVESTIGACION, H.C_NOMBRE ESTADOPERSUACION, I.C_NOMBRE ESTADOSEGUIMIENTO, A.C_TIPOGRUPOVULNERABLE, A.C_ETIQUETA,
+CASE WHEN C_ESTADOGENERAL = 'A' THEN 'Trámite' WHEN C_ESTADOGENERAL = 'C' AND N_INDDESESTIMIENTO IS NULL THEN 'Concluido' WHEN C_ESTADOGENERAL = 'C' AND N_INDDESESTIMIENTO = 1 THEN 'Desistido' END ESTADOGENERAL,
+CASE N_VERSION WHEN 0 THEN 'Borrador' ELSE 'En registro' END ESTADOREGISTRO, A.C_SUMILLA, J.C_NOMBRE OD, A.D_FECHAINGRESO, A.C_USUREGISTRO, K.NOM_USUARIO||' '||K.APE_PATERNO||' '||K.APE_MATERNO USUARIONOMBRE, A.N_IDEXPEDIENTE
+FROM SID_REG_EXPEDIENTE A 
+LEFT JOIN SID_PARAMETRO B ON A.C_TIPOCLASIFICACION = B.VALOR_PARAMETRO AND B.PADRE_PARAMETRO = 10
+LEFT JOIN SID_PARAMETRO C ON A.C_TIPOINGRESO = C.VALOR_PARAMETRO AND C.PADRE_PARAMETRO = 20
+LEFT JOIN SID_REG_ETAPA_ESTADO D ON A.N_IDEXPEDIENTE = D.N_ID_EXPEDIENTE AND D.C_INDICADOR = 'ACT'
+LEFT JOIN SID_REG_ETAPA E ON D.N_ID_ETAPA = E.N_ID_ETAPA
+LEFT JOIN SID_REG_ESTADO F ON F.N_ID_ESTADO = A.C_ESTADOCALIFICACION
+LEFT JOIN SID_REG_ESTADO G ON G.N_ID_ESTADO = A.C_ESTADOINVESTIGACION
+LEFT JOIN SID_REG_ESTADO H ON H.N_ID_ESTADO = A.C_ESTADOPERSUACION
+LEFT JOIN SID_REG_ESTADO I ON I.N_ID_ESTADO = A.C_ESTADOSEGUIMIENTO
+LEFT JOIN SID_SEG_OFICINA_DEFENSORIAL J ON A.N_CODIGOOD = J.N_ID_OD
+INNER JOIN SID_SEG_USUARIO K ON A.C_USUREGISTRO = K.CODIGO_USUARIO
+LEFT JOIN SID_REG_EXPEDE_ENTIDAD N ON N.N_IDEXPEDIENTE = A.N_IDEXPEDIENTE      
+LEFT JOIN SID_REG_ENTIDAD M ON M.N_ID_ENTIDAD = N.N_ID_ENTIDAD 
+LEFT JOIN SID_REG_EXPEDIENTE_CLASI O ON O.C_NUMEROEXPEDIENTE = A.C_NUMEROEXPEDIENTE
+LEFT JOIN SID_REG_EXPEDE_PERSONA P ON P.N_IDEXPEDIENTE = A.N_IDEXPEDIENTE      
+LEFT JOIN SID_REG_PERSONA Q ON Q.N_IDPERSONA = P.N_IDPERSONA
+WHERE A.C_ESTADO = 'A' 
+<if test="fechaIngresoDesde != null">
+    AND TO_NUMBER(TO_CHAR(A.D_FECHAINGRESO, 'YYYYMMDD')) &gt; TO_NUMBER(#{fechaIngresoDesdeString})-1 AND TO_NUMBER(TO_CHAR(A.D_FECHAINGRESO, 'YYYYMMDD')) &lt; TO_NUMBER(#{fechaIngresoHastaString})+1 
+</if>
+<if test="fechaConclusionDesde != null">
+    AND A.C_ESTADOGENERAL = 'C' AND TO_NUMBER(TO_CHAR(A.D_FECHAMODIFICACION, 'YYYYMMDD')) &gt; TO_NUMBER(#{fechaConclusionDesdeString})-1 AND TO_NUMBER(TO_CHAR(A.D_FECHAMODIFICACION, 'YYYYMMDD')) &lt; TO_NUMBER(#{fechaConclusionHastaString})+1 
+</if>
+<if test="tipoExpediente != ''">
+    AND A.C_TIPOCLASIFICACION = #{tipoExpediente}
+</if>
+<if test="codigoEntidad != null">
+    AND N.N_ID_ENTIDAD = #{codigoEntidad}
+</if>
+<if test="idDepartamentoEntidad != ''">
+    AND M.C_IDDEPARTAMENTO = #{idDepartamentoEntidad}
+</if>
+<if test="canalIngreso != ''">
+    AND A.C_TIPOINGRESO = #{canalIngreso}
+</if>
+<if test="ODBusqueda != ''">
+    AND J.N_ID_OD = #{ODBusqueda}
+</if>
+<if test="usuarioCodigo != ''">
+    AND K.CODIGO_USUARIO = #{usuarioCodigo}
+</if>
+<if test="gruposVulnerables != null">
+    AND A.C_TIPOGRUPOVULNERABLE  IN
+            <foreach item="item" index="index" collection="gruposVulnerables"
+           open="(" separator="," close=")">
+                #{item}
+            </foreach>
+</if>
+<if test="etiqueta != ''">
+    AND A.C_ETIQUETA = #{etiqueta}
+</if>
+<if test="idPrimerNivel != 0">
+    AND O.N_ID_PRIMERNIVEL = #{idPrimerNivel}
+</if>
+<if test="idSegundoNivel != 0">
+    AND O.N_ID_SEGUNDONIVEL = #{idSegundoNivel}
+</if>
+<if test="idTercerNivel != 0">
+    AND O.N_ID_TERCERNIVEL = #{idTercerNivel}
+</if>
+<if test="idCuartoNivel != 0">
+    AND O.N_ID_CUARTONIVEL = #{idCuartoNivel}
+</if>
+<if test="idQuintoNivel != 0">
+    AND O.N_ID_QUINTONIVEL = #{idQuintoNivel}
+</if>
+<if test="idSextoNivel != 0">
+    AND O.N_ID_SEXTONIVEL = #{idSextoNivel}
+</if>
+
+<if test="idDepartamentoRecurrente != ''">
+    AND Q.C_IDDEPA = #{idDepartamentoRecurrente} 
+    AND P.C_TIPO IN ('01','03')
+</if>
+<if test="idProvinciaRecurrente != ''">
+    AND Q.C_IDPROV = #{idProvinciaRecurrente} 
+    AND P.C_TIPO IN ('01','03')
+</if>
+<if test="idDistritoRecurrente != ''">
+    AND Q.C_IDDISTR = #{idDistritoRecurrente} 
+    AND P.C_TIPO IN ('01','03')
+</if>
+<if test="esDiscapacitadoRecurrente != ''">
+    AND Q.C_INDDISCAPACITADO = #{esDiscapacitadoRecurrente} 
+    AND P.C_TIPO IN ('01','03')
+</if>
+<if test="tipoLenguaRecurrente != ''">
+    AND Q.C_TIPOLENGUA = #{tipoLenguaRecurrente} 
+    AND P.C_TIPO IN ('01','03')
+</if>
+<if test="tipoPuebloRecurrente != ''">
+    AND Q.C_TIPOPUEBLO = #{tipoPuebloRecurrente} 
+    AND P.C_TIPO IN ('01','03')
+</if>
+
+<if test="idDepartamentoAfectado != ''">
+    AND Q.C_IDDEPA = #{idDepartamentoAfectado} 
+    AND P.C_TIPO IN ('02','03')
+</if>
+<if test="idProvinciaAfectado != ''">
+    AND Q.C_IDPROV = #{idProvinciaAfectado} 
+    AND P.C_TIPO IN ('02','03')
+</if>
+<if test="idDistritoAfectado != ''">
+    AND Q.C_IDDISTR = #{idDistritoAfectado} 
+    AND P.C_TIPO IN ('02','03')
+</if>
+<if test="esDiscapacitadoAfectado != ''">
+    AND Q.C_INDDISCAPACITADO = #{esDiscapacitadoAfectado} 
+    AND P.C_TIPO IN ('02','03')
+</if>
+<if test="tipoLenguaAfectado != ''">
+    AND Q.C_TIPOLENGUA = #{tipoLenguaAfectado} 
+    AND P.C_TIPO IN ('02','03')
+</if>
+<if test="tipoPuebloAfectado != ''">
+    AND Q.C_TIPOPUEBLO = #{tipoPuebloAfectado} 
+    AND P.C_TIPO IN ('02','03')
+</if>
+ORDER BY A.N_IDEXPEDIENTE DESC
+        ) B
+        ) A WHERE a.numfila BETWEEN #{ini} AND #{fin}
+    </select>
+    
+    <select id="listaExpedienteReporteExport" resultMap="reporteSidExpedienteMap" parameterType="reporteSidExpediente">
+       
+        SELECT DISTINCT A.C_NUMEROEXPEDIENTE, B.NOMBRE_PARAMETRO TIPOEXPEDIENTE, A.D_FECHAREGISTRO, C.NOMBRE_PARAMETRO CANALINGRESO, E.C_VALOR ETAPAEXPEDIENTE, F.C_NOMBRE ESTADOCALIFICACION, 
+G.C_NOMBRE ESTADOINVESTIGACION, H.C_NOMBRE ESTADOPERSUACION, I.C_NOMBRE ESTADOSEGUIMIENTO, A.C_TIPOGRUPOVULNERABLE, A.C_ETIQUETA,
+CASE WHEN C_ESTADOGENERAL = 'A' THEN 'Trámite' WHEN C_ESTADOGENERAL = 'C' AND N_INDDESESTIMIENTO IS NULL THEN 'Concluido' WHEN C_ESTADOGENERAL = 'C' AND N_INDDESESTIMIENTO = 1 THEN 'Desistido' END ESTADOGENERAL,
+CASE N_VERSION WHEN 0 THEN 'Borrador' ELSE 'En registro' END ESTADOREGISTRO, A.C_SUMILLA, J.C_NOMBRE OD, A.D_FECHAINGRESO, A.C_USUREGISTRO, K.NOM_USUARIO||' '||K.APE_PATERNO||' '||K.APE_MATERNO USUARIONOMBRE, A.N_IDEXPEDIENTE
+FROM SID_REG_EXPEDIENTE A 
+LEFT JOIN SID_PARAMETRO B ON A.C_TIPOCLASIFICACION = B.VALOR_PARAMETRO AND B.PADRE_PARAMETRO = 10
+LEFT JOIN SID_PARAMETRO C ON A.C_TIPOINGRESO = C.VALOR_PARAMETRO AND C.PADRE_PARAMETRO = 20
+LEFT JOIN SID_REG_ETAPA_ESTADO D ON A.N_IDEXPEDIENTE = D.N_ID_EXPEDIENTE AND D.C_INDICADOR = 'ACT'
+LEFT JOIN SID_REG_ETAPA E ON D.N_ID_ETAPA = E.N_ID_ETAPA
+LEFT JOIN SID_REG_ESTADO F ON F.N_ID_ESTADO = A.C_ESTADOCALIFICACION
+LEFT JOIN SID_REG_ESTADO G ON G.N_ID_ESTADO = A.C_ESTADOINVESTIGACION
+LEFT JOIN SID_REG_ESTADO H ON H.N_ID_ESTADO = A.C_ESTADOPERSUACION
+LEFT JOIN SID_REG_ESTADO I ON I.N_ID_ESTADO = A.C_ESTADOSEGUIMIENTO
+LEFT JOIN SID_SEG_OFICINA_DEFENSORIAL J ON A.N_CODIGOOD = J.N_ID_OD
+INNER JOIN SID_SEG_USUARIO K ON A.C_USUREGISTRO = K.CODIGO_USUARIO
+LEFT JOIN SID_REG_EXPEDE_ENTIDAD N ON N.N_IDEXPEDIENTE = A.N_IDEXPEDIENTE      
+LEFT JOIN SID_REG_ENTIDAD M ON M.N_ID_ENTIDAD = N.N_ID_ENTIDAD 
+LEFT JOIN SID_REG_EXPEDIENTE_CLASI O ON O.C_NUMEROEXPEDIENTE = A.C_NUMEROEXPEDIENTE
+WHERE A.C_ESTADO = 'A' 
+<if test="fechaIngresoDesde != null">
+    AND TO_NUMBER(TO_CHAR(A.D_FECHAINGRESO, 'YYYYMMDD')) &gt; TO_NUMBER(#{fechaIngresoDesdeString})-1 AND TO_NUMBER(TO_CHAR(A.D_FECHAINGRESO, 'YYYYMMDD')) &lt; TO_NUMBER(#{fechaIngresoHastaString})+1 
+</if>
+<if test="fechaConclusionDesde != null">
+    AND A.C_ESTADOGENERAL = 'C' AND TO_NUMBER(TO_CHAR(A.D_FECHAMODIFICACION, 'YYYYMMDD')) &gt; TO_NUMBER(#{fechaConclusionDesdeString})-1 AND TO_NUMBER(TO_CHAR(A.D_FECHAMODIFICACION, 'YYYYMMDD')) &lt; TO_NUMBER(#{fechaConclusionHastaString})+1 
+</if>
+<if test="tipoExpediente != ''">
+    AND A.C_TIPOCLASIFICACION = #{tipoExpediente}
+</if>
+<if test="codigoEntidad != null">
+    AND N.N_ID_ENTIDAD = #{codigoEntidad}
+</if>
+<if test="idDepartamentoEntidad != ''">
+    AND M.C_IDDEPARTAMENTO = #{idDepartamentoEntidad}
+</if>
+<if test="canalIngreso != ''">
+    AND A.C_TIPOINGRESO = #{canalIngreso}
+</if>
+<if test="ODBusqueda != ''">
+    AND J.N_ID_OD = #{ODBusqueda}
+</if>
+<if test="usuarioCodigo != ''">
+    AND K.CODIGO_USUARIO = #{usuarioCodigo}
+</if>
+<if test="gruposVulnerables != null">
+    AND A.C_TIPOGRUPOVULNERABLE  IN
+            <foreach item="item" index="index" collection="gruposVulnerables"
+           open="(" separator="," close=")">
+                #{item}
+            </foreach>
+</if>
+ORDER BY A.N_IDEXPEDIENTE DESC
+        
+    </select>
+    
+    
+    <select id="listaExpedienteReporteClasificacion" resultMap="reporteSidExpedienteMap" parameterType="reporteSidExpediente">
+        SELECT A.*
+        FROM (
+        SELECT
+        B.*,
+        ROWNUM numfila
+        FROM (
+        SELECT DISTINCT A.C_NUMEROEXPEDIENTE, B.NOMBRE_PARAMETRO TIPOEXPEDIENTE, A.D_FECHAREGISTRO, C.NOMBRE_PARAMETRO CANALINGRESO, E.C_VALOR ETAPAEXPEDIENTE, F.C_NOMBRE ESTADOCALIFICACION, 
+G.C_NOMBRE ESTADOINVESTIGACION, H.C_NOMBRE ESTADOPERSUACION, I.C_NOMBRE ESTADOSEGUIMIENTO, 
+CASE WHEN C_ESTADOGENERAL = 'A' THEN 'Trámite' WHEN C_ESTADOGENERAL = 'C' AND N_INDDESESTIMIENTO IS NULL THEN 'Concluido' WHEN C_ESTADOGENERAL = 'C' AND N_INDDESESTIMIENTO = 1 THEN 'Desistido' END ESTADOGENERAL,
+CASE N_VERSION WHEN 0 THEN 'Borrador' ELSE 'En registro' END ESTADOREGISTRO, A.C_SUMILLA, J.C_NOMBRE OD, A.D_FECHAINGRESO, A.C_USUREGISTRO, K.NOM_USUARIO||' '||K.APE_PATERNO||' '||K.APE_MATERNO USUARIONOMBRE, A.N_IDEXPEDIENTE
+FROM SID_REG_EXPEDIENTE A 
+LEFT JOIN SID_PARAMETRO B ON A.C_TIPOCLASIFICACION = B.VALOR_PARAMETRO AND B.PADRE_PARAMETRO = 10
+LEFT JOIN SID_PARAMETRO C ON A.C_TIPOINGRESO = C.VALOR_PARAMETRO AND C.PADRE_PARAMETRO = 20
+LEFT JOIN SID_REG_ETAPA_ESTADO D ON A.N_IDEXPEDIENTE = D.N_ID_EXPEDIENTE AND D.C_INDICADOR = 'ACT'
+LEFT JOIN SID_REG_ETAPA E ON D.N_ID_ETAPA = E.N_ID_ETAPA
+LEFT JOIN SID_REG_ESTADO F ON F.N_ID_ESTADO = A.C_ESTADOCALIFICACION
+LEFT JOIN SID_REG_ESTADO G ON G.N_ID_ESTADO = A.C_ESTADOINVESTIGACION
+LEFT JOIN SID_REG_ESTADO H ON H.N_ID_ESTADO = A.C_ESTADOPERSUACION
+LEFT JOIN SID_REG_ESTADO I ON I.N_ID_ESTADO = A.C_ESTADOSEGUIMIENTO
+LEFT JOIN SID_SEG_OFICINA_DEFENSORIAL J ON A.N_CODIGOOD = J.N_ID_OD
+INNER JOIN SID_SEG_USUARIO K ON A.C_USUREGISTRO = K.CODIGO_USUARIO
+LEFT JOIN SID_REG_EXPEDE_ENTIDAD N ON N.N_IDEXPEDIENTE = A.N_IDEXPEDIENTE      
+LEFT JOIN SID_REG_ENTIDAD M ON M.N_ID_ENTIDAD = N.N_ID_ENTIDAD 
+INNER JOIN SID_REG_EXPEDIENTE_CLASI O ON O.C_NUMEROEXPEDIENTE = A.C_NUMEROEXPEDIENTE AND O.C_ESTADO = 'ACT'
+WHERE A.C_ESTADO = 'A' 
+<if test="idPrimerNivel != 0">
+    AND O.N_ID_PRIMERNIVEL = #{idPrimerNivel}
+</if>
+<if test="idSegundoNivel != 0">
+    AND O.N_ID_SEGUNDONIVEL = #{idSegundoNivel}
+</if>
+<if test="idTercerNivel != 0">
+    AND O.N_ID_TERCERNIVEL = #{idTercerNivel}
+</if>
+<if test="idCuartoNivel != 0">
+    AND O.N_ID_CUARTONIVEL = #{idCuartoNivel}
+</if>
+<if test="idQuintoNivel != 0">
+    AND O.N_ID_QUINTONIVEL = #{idQuintoNivel}
+</if>
+<if test="idSextoNivel != 0">
+    AND O.N_ID_SEXTONIVEL = #{idSextoNivel}
+</if>
+ORDER BY A.N_IDEXPEDIENTE DESC
+        ) B
+        ) A WHERE a.numfila BETWEEN #{ini} AND #{fin}
+    </select>
+    
+    
+  <select id="listaExpedienteReporteRecurrente" resultMap="reporteSidExpedienteMap" parameterType="reporteSidExpediente">
+        SELECT A.*
+        FROM (
+        SELECT
+        B.*,
+        ROWNUM numfila
+        FROM (
+        SELECT DISTINCT A.C_NUMEROEXPEDIENTE, B.NOMBRE_PARAMETRO TIPOEXPEDIENTE, A.D_FECHAREGISTRO, C.NOMBRE_PARAMETRO CANALINGRESO, E.C_VALOR ETAPAEXPEDIENTE, F.C_NOMBRE ESTADOCALIFICACION, 
+G.C_NOMBRE ESTADOINVESTIGACION, H.C_NOMBRE ESTADOPERSUACION, I.C_NOMBRE ESTADOSEGUIMIENTO, 
+CASE WHEN C_ESTADOGENERAL = 'A' THEN 'Trámite' WHEN C_ESTADOGENERAL = 'C' AND N_INDDESESTIMIENTO IS NULL THEN 'Concluido' WHEN C_ESTADOGENERAL = 'C' AND N_INDDESESTIMIENTO = 1 THEN 'Desistido' END ESTADOGENERAL,
+CASE N_VERSION WHEN 0 THEN 'Borrador' ELSE 'En registro' END ESTADOREGISTRO, A.C_SUMILLA, J.C_NOMBRE OD, A.D_FECHAINGRESO, A.C_USUREGISTRO, K.NOM_USUARIO||' '||K.APE_PATERNO||' '||K.APE_MATERNO USUARIONOMBRE, A.N_IDEXPEDIENTE
+FROM SID_REG_EXPEDIENTE A 
+LEFT JOIN SID_PARAMETRO B ON A.C_TIPOCLASIFICACION = B.VALOR_PARAMETRO AND B.PADRE_PARAMETRO = 10
+LEFT JOIN SID_PARAMETRO C ON A.C_TIPOINGRESO = C.VALOR_PARAMETRO AND C.PADRE_PARAMETRO = 20
+LEFT JOIN SID_REG_ETAPA_ESTADO D ON A.N_IDEXPEDIENTE = D.N_ID_EXPEDIENTE AND D.C_INDICADOR = 'ACT'
+LEFT JOIN SID_REG_ETAPA E ON D.N_ID_ETAPA = E.N_ID_ETAPA
+LEFT JOIN SID_REG_ESTADO F ON F.N_ID_ESTADO = A.C_ESTADOCALIFICACION
+LEFT JOIN SID_REG_ESTADO G ON G.N_ID_ESTADO = A.C_ESTADOINVESTIGACION
+LEFT JOIN SID_REG_ESTADO H ON H.N_ID_ESTADO = A.C_ESTADOPERSUACION
+LEFT JOIN SID_REG_ESTADO I ON I.N_ID_ESTADO = A.C_ESTADOSEGUIMIENTO
+LEFT JOIN SID_SEG_OFICINA_DEFENSORIAL J ON A.N_CODIGOOD = J.N_ID_OD
+INNER JOIN SID_SEG_USUARIO K ON A.C_USUREGISTRO = K.CODIGO_USUARIO
+INNER JOIN SID_REG_EXPEDE_PERSONA N ON N.N_IDEXPEDIENTE = A.N_IDEXPEDIENTE      
+INNER JOIN SID_REG_PERSONA M ON M.N_IDPERSONA = N.N_IDPERSONA
+WHERE A.C_ESTADO = 'A' AND N.C_TIPO IN ('01','03')
+<if test="idDepartamentoRecurrente != ''">
+    AND M.C_IDDEPA = #{idDepartamentoRecurrente} 
+</if>
+<if test="idProvinciaRecurrente != ''">
+    AND M.C_IDPROV = #{idProvinciaRecurrente} 
+</if>
+<if test="idDistritoRecurrente != ''">
+    AND M.C_IDDISTR = #{idDistritoRecurrente} 
+</if>
+<if test="esDiscapacitadoRecurrente != ''">
+    AND M.C_INDDISCAPACITADO = #{esDiscapacitadoRecurrente} 
+</if>
+<if test="tipoLenguaRecurrente != ''">
+    AND M.C_TIPOLENGUA = #{tipoLenguaRecurrente} 
+</if>
+<if test="tipoPuebloRecurrente != ''">
+    AND M.C_TIPOPUEBLO = #{tipoPuebloRecurrente} 
+</if>
+ORDER BY A.N_IDEXPEDIENTE DESC
+        ) B
+        ) A WHERE a.numfila BETWEEN #{ini} AND #{fin}
+    </select>  
+    
+    
+    <select id="listaExpedienteReporteAfectado" resultMap="reporteSidExpedienteMap" parameterType="reporteSidExpediente">
+        SELECT A.*
+        FROM (
+        SELECT
+        B.*,
+        ROWNUM numfila
+        FROM (
+        SELECT DISTINCT A.C_NUMEROEXPEDIENTE, B.NOMBRE_PARAMETRO TIPOEXPEDIENTE, A.D_FECHAREGISTRO, C.NOMBRE_PARAMETRO CANALINGRESO, E.C_VALOR ETAPAEXPEDIENTE, F.C_NOMBRE ESTADOCALIFICACION, 
+G.C_NOMBRE ESTADOINVESTIGACION, H.C_NOMBRE ESTADOPERSUACION, I.C_NOMBRE ESTADOSEGUIMIENTO, 
+CASE WHEN C_ESTADOGENERAL = 'A' THEN 'Trámite' WHEN C_ESTADOGENERAL = 'C' AND N_INDDESESTIMIENTO IS NULL THEN 'Concluido' WHEN C_ESTADOGENERAL = 'C' AND N_INDDESESTIMIENTO = 1 THEN 'Desistido' END ESTADOGENERAL,
+CASE N_VERSION WHEN 0 THEN 'Borrador' ELSE 'En registro' END ESTADOREGISTRO, A.C_SUMILLA, J.C_NOMBRE OD, A.D_FECHAINGRESO, A.C_USUREGISTRO, K.NOM_USUARIO||' '||K.APE_PATERNO||' '||K.APE_MATERNO USUARIONOMBRE, A.N_IDEXPEDIENTE
+FROM SID_REG_EXPEDIENTE A 
+LEFT JOIN SID_PARAMETRO B ON A.C_TIPOCLASIFICACION = B.VALOR_PARAMETRO AND B.PADRE_PARAMETRO = 10
+LEFT JOIN SID_PARAMETRO C ON A.C_TIPOINGRESO = C.VALOR_PARAMETRO AND C.PADRE_PARAMETRO = 20
+LEFT JOIN SID_REG_ETAPA_ESTADO D ON A.N_IDEXPEDIENTE = D.N_ID_EXPEDIENTE AND D.C_INDICADOR = 'ACT'
+LEFT JOIN SID_REG_ETAPA E ON D.N_ID_ETAPA = E.N_ID_ETAPA
+LEFT JOIN SID_REG_ESTADO F ON F.N_ID_ESTADO = A.C_ESTADOCALIFICACION
+LEFT JOIN SID_REG_ESTADO G ON G.N_ID_ESTADO = A.C_ESTADOINVESTIGACION
+LEFT JOIN SID_REG_ESTADO H ON H.N_ID_ESTADO = A.C_ESTADOPERSUACION
+LEFT JOIN SID_REG_ESTADO I ON I.N_ID_ESTADO = A.C_ESTADOSEGUIMIENTO
+LEFT JOIN SID_SEG_OFICINA_DEFENSORIAL J ON A.N_CODIGOOD = J.N_ID_OD
+INNER JOIN SID_SEG_USUARIO K ON A.C_USUREGISTRO = K.CODIGO_USUARIO
+INNER JOIN SID_REG_EXPEDE_PERSONA N ON N.N_IDEXPEDIENTE = A.N_IDEXPEDIENTE      
+INNER JOIN SID_REG_PERSONA M ON M.N_IDPERSONA = N.N_IDPERSONA
+WHERE A.C_ESTADO = 'A' AND N.C_TIPO IN ('02','03')
+<if test="idDepartamentoAfectado != ''">
+    AND M.C_IDDEPA = #{idDepartamentoAfectado} 
+</if>
+<if test="idProvinciaAfectado != ''">
+    AND M.C_IDPROV = #{idProvinciaAfectado} 
+</if>
+<if test="idDistritoAfectado != ''">
+    AND M.C_IDDISTR = #{idDistritoAfectado} 
+</if>
+<if test="esDiscapacitadoAfectado != ''">
+    AND M.C_INDDISCAPACITADO = #{esDiscapacitadoAfectado} 
+</if>
+<if test="tipoLenguaAfectado != ''">
+    AND M.C_TIPOLENGUA = #{tipoLenguaAfectado} 
+</if>
+<if test="tipoPuebloAfectado != ''">
+    AND M.C_TIPOPUEBLO = #{tipoPuebloAfectado} 
+</if>
+ORDER BY A.N_IDEXPEDIENTE DESC
+        ) B
+        ) A WHERE a.numfila BETWEEN #{ini} AND #{fin}
+    </select>  
+    
+    
+   
+    
+    
+</mapper>

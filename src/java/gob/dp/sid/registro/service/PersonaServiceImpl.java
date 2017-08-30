@@ -7,7 +7,10 @@ package gob.dp.sid.registro.service;
 
 import gob.dp.sid.registro.dao.PersonaDAO;
 import gob.dp.sid.registro.entity.Persona;
+import gob.dp.sid.reporte.entity.StringReport;
+import java.util.ArrayList;
 import java.util.List;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -61,6 +64,44 @@ public class PersonaServiceImpl implements PersonaService {
     @Override
     public Persona personaXDNI(String dni) {
         return personaDAO.personaXDNI(dni);
+    }
+
+    @Override
+    public List<StringReport> personaPorExpedienteRecurrente(Long idExpediente) {
+        List<Persona> lista = personaDAO.personaPorExpediente(idExpediente);
+        List<StringReport> list = new ArrayList<>();
+        for(Persona p : lista){
+            StringBuilder sb = new StringBuilder();
+            if(StringUtils.equals(p.getTipo(), "01") || StringUtils.equals(p.getTipo(), "03")){
+                if(StringUtils.isNotBlank(p.getNombre()))
+                    sb.append(p.getNombre()+" ");
+                if(StringUtils.isNotBlank(p.getApellidoPat()))
+                    sb.append(p.getApellidoPat()+" ");
+                if(StringUtils.isNotBlank(p.getApellidoMat()))
+                    sb.append(p.getApellidoMat()+" ");
+                list.add(new StringReport(sb.toString()));
+            }
+        }
+        return list;
+    }
+
+    @Override
+    public List<StringReport> personaPorExpedienteAfectado(Long idExpediente) {
+        List<Persona> lista = personaDAO.personaPorExpediente(idExpediente);
+        List<StringReport> list = new ArrayList<>();
+        for(Persona p : lista){
+            StringBuilder sb = new StringBuilder();
+            if(StringUtils.equals(p.getTipo(), "02") || StringUtils.equals(p.getTipo(), "03")){
+                if(StringUtils.isNotBlank(p.getNombre()))
+                    sb.append(p.getNombre()+" ");
+                if(StringUtils.isNotBlank(p.getApellidoPat()))
+                    sb.append(p.getApellidoPat()+" ");
+                if(StringUtils.isNotBlank(p.getApellidoMat()))
+                    sb.append(p.getApellidoMat()+" ");
+                list.add(new StringReport(sb.toString()));
+            }
+        }
+        return list;
     }
 
 }

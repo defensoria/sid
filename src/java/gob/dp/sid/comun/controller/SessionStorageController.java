@@ -5,8 +5,8 @@
  */
 package gob.dp.sid.comun.controller;
 
-import gob.dp.sid.seguridad.controller.LoginController;
-import gob.dp.sid.seguridad.entity.Usuario;
+import gob.dp.sid.administracion.seguridad.controller.LoginController;
+import gob.dp.sid.administracion.seguridad.entity.Usuario;
 import java.io.Serializable;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;

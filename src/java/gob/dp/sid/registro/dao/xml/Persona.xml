@@ -326,4 +326,11 @@
         SELECT * FROM SID_REG_PERSONA WHERE N_IDPERSONA =  #{id}
     </select>
     
+    <select id="personaPorExpediente" resultMap="personaMap"  parameterType="long">
+        SELECT A.C_TIPO, B.C_NOMBRE, B.C_APELLIDOPAT, B.C_APELLIDOMAT, B.C_NUMERODOCUMENTO
+        FROM SID_REG_EXPEDE_PERSONA A
+        INNER JOIN SID_REG_PERSONA B ON A.N_IDPERSONA = B.N_IDPERSONA
+        WHERE A.N_IDEXPEDIENTE = #{id}
+    </select>
+    
 </mapper>

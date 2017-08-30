@@ -182,14 +182,63 @@
         ORDER BY N_ID_BANDEJA DESC
     </select>
     
-    <select id="bandejaBuscarUsuarioInternos" resultMap="bandejaMap" parameterType="String" >
-        SELECT * FROM SID_MSG_BANDEJA WHERE C_DESTINATARIO = #{value} AND C_TIPOMENSAJE = 'INT' AND C_ACTIVO = 'A'
+    <select id="bandejaContarPendientesAutomaticos" resultType="Long" parameterType="String" >
+        SELECT count(*) FROM SID_MSG_BANDEJA WHERE C_DESTINATARIO = #{value} AND C_ESTADO = 'PEN' AND C_TIPOMENSAJE = 'AUT' AND C_ACTIVO = 'A'
         ORDER BY N_ID_BANDEJA DESC
     </select>
     
-    <select id="bandejaBuscarUsuarioAutomaticos" resultMap="bandejaMap" parameterType="String" >
-        SELECT * FROM SID_MSG_BANDEJA WHERE C_DESTINATARIO = #{value} AND C_TIPOMENSAJE = 'AUT' AND C_ACTIVO = 'A'
+    <select id="bandejaContarUsuarioInternos" resultType="Long" parameterType="String" >
+        SELECT COUNT(*) FROM SID_MSG_BANDEJA WHERE C_DESTINATARIO = #{value} AND C_TIPOMENSAJE = 'INT' AND C_ACTIVO = 'A'
+    </select>
+    
+    <select id="bandejaContarUsuarioProgramados" resultType="Long" parameterType="String" >
+        SELECT COUNT(*) FROM SID_MSG_BANDEJA WHERE C_DESTINATARIO = #{value} AND C_TIPOMENSAJE = 'PRO' AND C_ACTIVO = 'A'
+    </select>
+    
+    <select id="bandejaContarUsuarioAutomaticos"  resultType="Long" parameterType="String" >
+        SELECT COUNT(*) FROM SID_MSG_BANDEJA WHERE C_DESTINATARIO = #{value} AND C_TIPOMENSAJE = 'AUT' AND C_ACTIVO = 'A'
+    </select>
+    
+    <select id="bandejaBuscarUsuarioInternos" resultMap="bandejaMap" parameterType="filtroBusquedaMensaje" >
+        SELECT A.*
+        FROM (
+        SELECT
+        B.*,
+        ROWNUM numfila
+        FROM (
+        SELECT * FROM SID_MSG_BANDEJA WHERE
+        C_DESTINATARIO = #{codigoUsuario} AND C_TIPOMENSAJE = 'INT' AND C_ACTIVO = 'A'
         ORDER BY N_ID_BANDEJA DESC
+        ) B
+        ) A WHERE a.numfila BETWEEN #{ini} AND #{fin}
+    </select>
+    
+    <select id="bandejaBuscarUsuarioProgramados" resultMap="bandejaMap" parameterType="filtroBusquedaMensaje" >
+        SELECT A.*
+        FROM (
+        SELECT
+        B.*,
+        ROWNUM numfila
+        FROM (
+        SELECT * FROM SID_MSG_BANDEJA WHERE
+        C_DESTINATARIO = #{codigoUsuario} AND C_TIPOMENSAJE = 'PRO' AND C_ACTIVO = 'A'
+        ORDER BY N_ID_BANDEJA DESC
+        ) B
+        ) A WHERE a.numfila BETWEEN #{ini} AND #{fin}
+    </select>
+    
+    <select id="bandejaBuscarUsuarioAutomaticos" resultMap="bandejaMap" parameterType="filtroBusquedaMensaje" >
+        SELECT A.*
+        FROM (
+        SELECT
+        B.*,
+        ROWNUM numfila
+        FROM (
+        SELECT * FROM SID_MSG_BANDEJA WHERE
+        C_DESTINATARIO = #{codigoUsuario} AND C_TIPOMENSAJE = 'AUT' AND C_ACTIVO = 'A'
+        ORDER BY N_ID_BANDEJA DESC
+        ) B
+        ) A WHERE a.numfila BETWEEN #{ini} AND #{fin}
     </select>
     
     <select id="bandejaBuscarUsuarioPendientesProgramados" resultMap="bandejaMap" parameterType="String" >
@@ -197,9 +246,6 @@
         ORDER BY N_ID_BANDEJA DESC
     </select>
     
-    <select id="bandejaBuscarUsuarioProgramados" resultMap="bandejaMap" parameterType="String" >
-        SELECT * FROM SID_MSG_BANDEJA WHERE C_DESTINATARIO = #{value} AND C_TIPOMENSAJE = 'PRO' AND C_ACTIVO = 'A'
-        ORDER BY N_ID_BANDEJA DESC
-    </select>
+    
     
 </mapper>

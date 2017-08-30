@@ -17,9 +17,9 @@
                             <div class="space-25"></div>
 
                             <ul style="padding: 0" class="folder-list m-b-md">
-                                <li><a jsf:action="#{bandejaController.cargarTotalInternos()}" style="text-decoration: none; cursor: pointer; font-size: 13px"> <i class="fa fa-inbox "></i> Alertas internas <span class="label label-warning pull-right">#{bandejaController.listaMensajesInternos.size()}</span> </a></li>
-                                <li><a jsf:action="#{bandejaController.cargarTotalAutomaticos()}" style="text-decoration: none; cursor: pointer; font-size: 13px"> <i class="fa fa-envelope-o"></i> Alertas automáticas <span class="label label-warning pull-right">#{bandejaController.listaMensajesAutomaticos.size()}</span></a></li>
-                                <li><a jsf:action="#{bandejaController.cargarTotalProgramados()}" style="text-decoration: none; cursor: pointer; font-size: 13px"> <i class="fa fa-certificate"></i> Alertas programadas <span class="label label-warning pull-right">#{bandejaController.listaMensajesProgramados.size()}</span></a></li>
+                                <li><a jsf:action="#{bandejaController.cargarTotalInternos(1)}" style="text-decoration: none; cursor: pointer; font-size: 13px"> <i class="fa fa-inbox "></i> Alertas internas <span class="label label-warning pull-right">#{bandejaController.nroMensajesInternos}</span> </a></li>
+                                <li><a jsf:action="#{bandejaController.cargarTotalAutomaticos(1)}" style="text-decoration: none; cursor: pointer; font-size: 13px"> <i class="fa fa-envelope-o"></i> Alertas automáticas <span class="label label-warning pull-right">#{bandejaController.nroMensajesAutomaticos}</span></a></li>
+                                <li><a jsf:action="#{bandejaController.cargarTotalProgramados(1)}" style="text-decoration: none; cursor: pointer; font-size: 13px"> <i class="fa fa-certificate"></i> Alertas programadas <span class="label label-warning pull-right">#{bandejaController.nroMensajesProgramados}</span></a></li>
                             </ul>
 
                             <div class="clearfix"></div>
@@ -54,17 +54,44 @@
                                         </a>
                                     </td>
                                     <td style="text-align: right; padding-right: 15px">
-                                        <a style="color: #676a6c;" class="btn btn-sm btn-default">
-                                            <span class="glyphicon glyphicon-arrow-left" />
-                                        </a>
-                                        <a style="color: #676a6c;" class="btn btn-sm btn-default">
-                                            <span class="glyphicon glyphicon-arrow-right" />
-                                        </a>
+                                        <h:panelGroup rendered="#{bandejaController.indicadorBandeja == 1}">
+                                            <a style="color: #676a6c;" class="btn btn-sm btn-default" jsf:action="#{bandejaController.cargarTotalAutomaticos(bandejaController.nroPaginaAutomatica - 1)}">
+                                                <span class="glyphicon glyphicon-arrow-left" />
+                                            </a>
+                                            <a style="color: #676a6c;" class="btn btn-sm btn-default" jsf:action="#{bandejaController.cargarTotalAutomaticos(bandejaController.nroPaginaAutomatica + 1)}">
+                                                <span class="glyphicon glyphicon-arrow-right" />
+                                            </a>
+                                            <br/>
+                                            <h:outputText rendered="#{bandejaController.nroPaginaAutomatica > 0}" style="font-weight: bold" value="#{((bandejaController.nroPaginaAutomatica - 1)*20)+bandejaController.listaMensajes.size()} de #{bandejaController.nroMensajesAutomaticos}" />
+                                            <h:outputText rendered="#{bandejaController.nroPaginaAutomatica == 0}" style="font-weight: bold" value="#{bandejaController.listaMensajes.size()} de #{bandejaController.nroMensajesAutomaticos}" />
+                                        </h:panelGroup>
+                                        <h:panelGroup rendered="#{bandejaController.indicadorBandeja == 2}">
+                                            <a style="color: #676a6c;" class="btn btn-sm btn-default" jsf:action="#{bandejaController.cargarTotalProgramados(bandejaController.nroPaginaAutomatica - 1)}">
+                                                <span class="glyphicon glyphicon-arrow-left" />
+                                            </a>
+                                            <a style="color: #676a6c;" class="btn btn-sm btn-default" jsf:action="#{bandejaController.cargarTotalProgramados(bandejaController.nroPaginaAutomatica + 1)}">
+                                                <span class="glyphicon glyphicon-arrow-right" />
+                                            </a>
+                                            <br/>
+                                            <h:outputText rendered="#{bandejaController.nroPaginaAutomatica > 0}" style="font-weight: bold" value="#{((bandejaController.nroPaginaAutomatica - 1)*20)+bandejaController.listaMensajes.size()} de #{bandejaController.nroMensajesProgramados}" />
+                                            <h:outputText rendered="#{bandejaController.nroPaginaAutomatica == 0}" style="font-weight: bold" value="#{bandejaController.listaMensajes.size()} de #{bandejaController.nroMensajesProgramados}" />
+                                        </h:panelGroup>
+                                        <h:panelGroup rendered="#{bandejaController.indicadorBandeja == 3}">
+                                            <a style="color: #676a6c;" class="btn btn-sm btn-default" jsf:action="#{bandejaController.cargarTotalInternos(bandejaController.nroPaginaAutomatica - 1)}">
+                                                <span class="glyphicon glyphicon-arrow-left" />
+                                            </a>
+                                            <a style="color: #676a6c;" class="btn btn-sm btn-default" jsf:action="#{bandejaController.cargarTotalInternos(bandejaController.nroPaginaAutomatica + 1)}">
+                                                <span class="glyphicon glyphicon-arrow-right" />
+                                            </a>
+                                            <br/>
+                                            <h:outputText rendered="#{bandejaController.nroPaginaAutomatica > 0}" style="font-weight: bold" value="#{((bandejaController.nroPaginaAutomatica - 1)*20)+bandejaController.listaMensajes.size()} de #{bandejaController.nroMensajesInternos}" />
+                                            <h:outputText rendered="#{bandejaController.nroPaginaAutomatica == 0}" style="font-weight: bold" value="#{bandejaController.listaMensajes.size()} de #{bandejaController.nroMensajesInternos}" />
+                                        </h:panelGroup>
                                     </td>
                                 </tr>
                             </table>
                             <br/><br/>
-                            
+
 
                             <table style="width: 100%;border-top: 1px solid #ddd;" class="table table-hover table-mail" >
                                 <c:forEach var="x" items="#{bandejaController.listaMensajes}">
@@ -73,7 +100,7 @@
                                             <h:selectBooleanCheckbox value="#{x.indicador}"  class="i-checks" />
                                         </td>
                                         <td class="mail-ontact">
-                                            <a jsf:action="#{bandejaController.verMensajeBandeja(x)}" style="color: #{x.estado == 'VIS'? '' : 'black'} ;">
+                                            <a jsf:action="#{bandejaController.verMensajeBandeja(x)}" style="color: #{x.estado == 'VIS'? '#787878' : 'red'} ; font-weight:  #{x.estado == 'VIS'? '' : 'bold'}">
                                                 #{x.nombreRemitente}
                                             </a>
                                         </td>
@@ -81,7 +108,7 @@
                                             <span class="label pull-left" style="color: white; background-color: #{x.colorTipo}">#{x.detalleTipo}</span>
                                         </td>
                                         <td class="mail-subject">
-                                            <a jsf:action="#{bandejaController.verMensajeBandeja(x)}" style="color: #{x.estado == 'VIS'? '' : 'black'} ;">
+                                            <a jsf:action="#{bandejaController.verMensajeBandeja(x)}" style="color: #{x.estado == 'VIS'? '#787878' : 'red'} ; font-weight:  #{x.estado == 'VIS'? '' : 'bold'}">
                                                 #{x.numeroExpediente}
                                             </a>
                                         </td>

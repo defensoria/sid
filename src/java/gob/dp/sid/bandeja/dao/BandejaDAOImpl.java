@@ -6,6 +6,7 @@
 package gob.dp.sid.bandeja.dao;
 
 import gob.dp.sid.bandeja.entity.Bandeja;
+import gob.dp.sid.bandeja.entity.FiltroBusquedaMensaje;
 import java.util.List;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Repository;
@@ -43,13 +44,13 @@ public class BandejaDAOImpl extends SqlSessionDaoSupport implements BandejaDAO{
     }
 
     @Override
-    public List<Bandeja> bandejaBuscarUsuarioInternos(String destinatario) {
-        return getSqlSession().selectList("gob.dp.sid.bandeja.dao.BandejaDAO.bandejaBuscarUsuarioInternos", destinatario);
+    public List<Bandeja> bandejaBuscarUsuarioInternos(FiltroBusquedaMensaje fbm) {
+        return getSqlSession().selectList("gob.dp.sid.bandeja.dao.BandejaDAO.bandejaBuscarUsuarioInternos", fbm);
     }
 
     @Override
-    public List<Bandeja> bandejaBuscarUsuarioAutomaticos(String destinatario) {
-        return getSqlSession().selectList("gob.dp.sid.bandeja.dao.BandejaDAO.bandejaBuscarUsuarioAutomaticos", destinatario);
+    public List<Bandeja> bandejaBuscarUsuarioAutomaticos(FiltroBusquedaMensaje fbm) {
+        return getSqlSession().selectList("gob.dp.sid.bandeja.dao.BandejaDAO.bandejaBuscarUsuarioAutomaticos", fbm);
     }
 
     @Override
@@ -63,8 +64,28 @@ public class BandejaDAOImpl extends SqlSessionDaoSupport implements BandejaDAO{
     }
 
     @Override
-    public List<Bandeja> bandejaBuscarUsuarioProgramados(String destinatario) {
-        return getSqlSession().selectList("gob.dp.sid.bandeja.dao.BandejaDAO.bandejaBuscarUsuarioProgramados", destinatario);
+    public List<Bandeja> bandejaBuscarUsuarioProgramados(FiltroBusquedaMensaje fbm) {
+        return getSqlSession().selectList("gob.dp.sid.bandeja.dao.BandejaDAO.bandejaBuscarUsuarioProgramados", fbm);
+    }
+
+    @Override
+    public Long bandejaContarPendientesAutomaticos(String destinatario) {
+        return getSqlSession().selectOne("gob.dp.sid.bandeja.dao.BandejaDAO.bandejaContarPendientesAutomaticos", destinatario);
+    }
+
+    @Override
+    public Long bandejaContarUsuarioInternos(String destinatario) {
+        return getSqlSession().selectOne("gob.dp.sid.bandeja.dao.BandejaDAO.bandejaContarUsuarioInternos", destinatario);
+    }
+
+    @Override
+    public Long bandejaContarUsuarioAutomaticos(String destinatario) {
+        return getSqlSession().selectOne("gob.dp.sid.bandeja.dao.BandejaDAO.bandejaContarUsuarioAutomaticos", destinatario);
+    }
+
+    @Override
+    public Long bandejaContarUsuarioProgramados(String destinatario) {
+        return getSqlSession().selectOne("gob.dp.sid.bandeja.dao.BandejaDAO.bandejaContarUsuarioProgramados", destinatario);
     }
     
 }

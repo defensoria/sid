@@ -748,7 +748,7 @@
         FROM SID_REG_EXPEDIENTE A
         INNER JOIN SID_PARAMETRO B ON A.C_TIPOCLASIFICACION = B.VALOR_PARAMETRO AND B.PADRE_PARAMETRO = 10
         INNER JOIN SID_SEG_USUARIO L ON L.CODIGO_USUARIO = A.C_USUREGISTRO 
-        INNER JOIN SID_SEG_OFICINA_DEFENSORIAL J ON J.N_ID_OD = L.N_ID_OD
+        INNER JOIN SID_SEG_OFICINA_DEFENSORIAL J ON J.N_ID_OD = A.N_CODIGOOD
         LEFT JOIN SID_REG_ETAPA_ESTADO C ON A.N_IDEXPEDIENTE = C.N_ID_EXPEDIENTE
         LEFT JOIN SID_REG_ESTADO D ON C.N_ID_ESTADO = D.N_ID_ESTADO
         LEFT JOIN SID_REG_EXPEDE_ENTIDAD E ON A.N_IDEXPEDIENTE = E.N_IDEXPEDIENTE
@@ -756,15 +756,20 @@
         LEFT JOIN SID_REG_EXPEDE_PERSONA G ON G.N_IDEXPEDIENTE = A.N_IDEXPEDIENTE
         LEFT JOIN SID_REG_PERSONA H ON G.N_IDPERSONA = H.N_IDPERSONA
         WHERE A.C_ESTADO = 'A' 
-        <if test="observacion != null">
-            AND UPPER(A.C_SUMILLA||''||F.C_NOMENTIDAD||''||H.C_NOMBRE||''||H.C_APELLIDOPAT||''||H.C_APELLIDOMAT||''||A.N_CONSECUTIVO) LIKE '%'||UPPER(#{observacion})||'%' 
+        <if test="filtroSumilla != null">
+            AND UPPER(A.C_SUMILLA) LIKE '%'||UPPER(#{filtroSumilla})||'%' 
         </if>
-        
+        <if test="filtroNroExpediente != null">
+            AND A.N_CONSECUTIVO = #{filtroNroExpediente}
+        </if>
+        <if test="anhoBusqueda != null">
+            AND TO_CHAR(A.D_FECHAREGISTRO, 'YYYY') = #{anhoBusqueda}
+        </if>
+        <if test="ODBusqueda != null">
+            AND A.N_CODIGOOD = #{ODBusqueda}
+        </if>
         <if test="usuarioRegistro != null">
             AND A.C_USUREGISTRO  = #{usuarioRegistro}     
-        </if>
-        <if test="cadenaBusqueda != null">
-            AND A.C_NUMEROEXPEDIENTE  LIKE '%'||#{cadenaBusqueda}||'%'      
         </if>
         <if test="tipoBusqueda == 1">
             ORDER BY A.N_IDEXPEDIENTE DESC

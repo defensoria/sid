@@ -51,5 +51,10 @@ public class PersonaDAOImpl extends SqlSessionDaoSupport implements PersonaDAO{
     public Persona personaXDNI(String dni) {
         return getSqlSession().selectOne("gob.dp.sid.registro.dao.PersonaDAO.personaXDNI", dni);
     }
+
+    @Override
+    public List<Persona> personaPorExpediente(Long idExpediente) {
+        return getSqlSession().selectList("gob.dp.sid.registro.dao.PersonaDAO.personaPorExpediente", idExpediente);
+    }
     
 }

@@ -7,6 +7,7 @@ package gob.dp.sid.bandeja.service;
 
 import gob.dp.sid.bandeja.dao.BandejaDAO;
 import gob.dp.sid.bandeja.entity.Bandeja;
+import gob.dp.sid.bandeja.entity.FiltroBusquedaMensaje;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,13 +48,13 @@ public class BandejaServiceImpl implements BandejaService{
     }
 
     @Override
-    public List<Bandeja> bandejaBuscarUsuarioInternos(String destinatario) {
-        return bandejaDAO.bandejaBuscarUsuarioInternos(destinatario);
+    public List<Bandeja> bandejaBuscarUsuarioInternos(FiltroBusquedaMensaje fbm) {
+        return bandejaDAO.bandejaBuscarUsuarioInternos(fbm);
     }
 
     @Override
-    public List<Bandeja> bandejaBuscarUsuarioAutomaticos(String destinatario) {
-        return bandejaDAO.bandejaBuscarUsuarioAutomaticos(destinatario);
+    public List<Bandeja> bandejaBuscarUsuarioAutomaticos(FiltroBusquedaMensaje fbm) {
+        return bandejaDAO.bandejaBuscarUsuarioAutomaticos(fbm);
     }
 
     @Override
@@ -67,8 +68,28 @@ public class BandejaServiceImpl implements BandejaService{
     }
 
     @Override
-    public List<Bandeja> bandejaBuscarUsuarioProgramados(String destinatario) {
-        return bandejaDAO.bandejaBuscarUsuarioProgramados(destinatario);
+    public List<Bandeja> bandejaBuscarUsuarioProgramados(FiltroBusquedaMensaje fbm) {
+        return bandejaDAO.bandejaBuscarUsuarioProgramados(fbm);
+    }
+
+    @Override
+    public Long bandejaContarPendientesAutomaticos(String destinatario) {
+        return bandejaDAO.bandejaContarPendientesAutomaticos(destinatario);
+    }
+
+    @Override
+    public Long bandejaContarUsuarioInternos(String destinatario) {
+        return bandejaDAO.bandejaContarUsuarioInternos(destinatario);
+    }
+
+    @Override
+    public Long bandejaContarUsuarioAutomaticos(String destinatario) {
+        return bandejaDAO.bandejaContarUsuarioAutomaticos(destinatario);
+    }
+
+    @Override
+    public Long bandejaContarUsuarioProgramados(String destinatario) {
+        return bandejaDAO.bandejaContarUsuarioProgramados(destinatario);
     }
     
 }

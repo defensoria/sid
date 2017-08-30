@@ -172,6 +172,10 @@ public class Expediente implements Serializable{
     
     private String detalleAtr;
     
+    private String filtroSumilla;
+    
+    private String filtroNroExpediente;
+    
     public Long getId() {
         return id;
     }
@@ -796,6 +800,22 @@ public class Expediente implements Serializable{
 
     public void setDetalleAtr(String detalleAtr) {
         this.detalleAtr = detalleAtr;
+    }
+
+    public String getFiltroSumilla() {
+        return filtroSumilla;
+    }
+
+    public void setFiltroSumilla(String filtroSumilla) {
+        this.filtroSumilla = filtroSumilla;
+    }
+
+    public String getFiltroNroExpediente() {
+        return filtroNroExpediente;
+    }
+
+    public void setFiltroNroExpediente(String filtroNroExpediente) {
+        this.filtroNroExpediente = filtroNroExpediente;
     }
 
 }

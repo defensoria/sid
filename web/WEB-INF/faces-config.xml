@@ -200,13 +200,6 @@
   
   <navigation-rule>
         <navigation-case>
-                <from-outcome>expedienteReporte</from-outcome>
-                <to-view-id>/pages/reportes/expedienteReporte.xhtml</to-view-id>
-        </navigation-case>
-  </navigation-rule>
-  
-  <navigation-rule>
-        <navigation-case>
                 <from-outcome>reporteCaso</from-outcome>
                 <to-view-id>/pages/reportes/reporteCaso.xhtml</to-view-id>
         </navigation-case>
@@ -294,6 +287,20 @@
         <navigation-case>
                 <from-outcome>importarONP</from-outcome>
                 <to-view-id>/pages/onp/importarONP.xhtml</to-view-id>
+        </navigation-case>
+  </navigation-rule>
+  
+  <navigation-rule>
+        <navigation-case>
+                <from-outcome>expedienteReporte</from-outcome>
+                <to-view-id>/pages/reportes/expedienteReporte.xhtml</to-view-id>
+        </navigation-case>
+  </navigation-rule>
+  
+  <navigation-rule>
+        <navigation-case>
+                <from-outcome>gestionReporte</from-outcome>
+                <to-view-id>/pages/reportes/gestionReporte.xhtml</to-view-id>
         </navigation-case>
   </navigation-rule>
   

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD iBatis Mapper 3.0 //EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="gob.dp.sid.administracion.seguridad.dao.UsuarioLoginDAO">
+    
+    <resultMap id="usuarioLoginMap" type="usuarioLogin">
+        <result property="codigo" column="USUARIO_USU" />
+        <result property="nombreCompleto" column="NOMB_CORT_USU"/>
+        <result property="apellidoPaterno" column="APE_PAT_PER"/>
+        <result property="apellidoMaterno" column="APE_MAT_PER"/>
+        <result property="nombre" column="NOM_EMP_PER"/>
+        <result property="documento" column="LIBR_ELEC_PER"/>
+        <result property="clave" column="TPIRCNE"/>
+        
+        <result property="codigoOD" column="N_ID_OD"/>
+        <result property="sexo" column="SEX_EMP_PER"/>
+        <result property="cargo" column="C_CARGO"/>
+        <result property="idDepartamento" column="C_IDDEPARTAMENTO"/>
+        <result property="ruta" column="C_RUTA"/>
+        <result property="nivel" column="N_NIVEL"/>
+    </resultMap> 
+    
+    <select id="loginUsuario" resultType="java.lang.Integer" parameterType="usuarioLogin">
+        SELECT COUNT(*) FROM VW_SEG_USUARIO WHERE TRIM(USUARIO_USU) = TRIM(#{codigo}) and TPIRCNE = #{clave}
+    </select>
+    
+    <select id="buscarUsuarios" resultMap="usuarioLoginMap" parameterType="usuarioLogin">
+        SELECT * FROM VW_SEG_USUARIO WHERE 1 = 1
+        <if test="codigo != null">
+            and upper(USUARIO_USU) = upper(#{codigo}) 
+        </if>
+        <if test="nombre != null">
+            and upper(NOM_EMP_PER) LIKE '%'||UPPER(#{nombre})||'%' 
+        </if>
+        <if test="apellidoPaterno != null">
+            and upper(APE_PAT_PER) LIKE '%'||UPPER(#{apellidoPaterno})||'%'  
+        </if>
+        <if test="apellidoMaterno != null">
+            and upper(APE_MAT_PER) LIKE '%'||UPPER(#{apellidoMaterno})||'%' 
+        </if>
+        <if test="documento != null">
+            and LIBR_ELEC_PER = #{documento}
+        </if>
+    </select>
+    
+</mapper>

@@ -5,11 +5,13 @@
  */
 package gob.dp.sid.bandeja.controller;
 
-import gob.dp.sid.seguridad.controller.LoginController;
-import gob.dp.sid.seguridad.entity.Usuario;
-import gob.dp.sid.seguridad.service.UsuarioService;
+import gob.dp.sid.administracion.seguridad.controller.LoginController;
+import gob.dp.sid.administracion.seguridad.entity.Usuario;
+import gob.dp.sid.administracion.seguridad.service.UsuarioService;
 import gob.dp.sid.bandeja.entity.Bandeja;
+import gob.dp.sid.bandeja.entity.FiltroBusquedaMensaje;
 import gob.dp.sid.bandeja.service.BandejaService;
+import gob.dp.sid.comun.ConstantesUtil;
 import gob.dp.sid.comun.controller.AbstractManagedBean;
 import gob.dp.sid.comun.type.EtapaConsultaType;
 import gob.dp.sid.comun.type.MensajeType;
@@ -51,20 +53,24 @@ public class BandejaController extends AbstractManagedBean implements Serializab
     
     private List<Bandeja> listaMensajesPendientes;
     
-    private List<Bandeja> listaMensajesPendientesInternos;
-    
-    private List<Bandeja> listaMensajesPendientesAutomaticos;
-    
-    private List<Bandeja> listaMensajesPendientesProgramados;
-    
     private List<Bandeja> listaMensajesInternos;
     
     private List<Bandeja> listaMensajesAutomaticos;
     
     private List<Bandeja> listaMensajesProgramados;
+    
+    private Long nroMensajesInternos = 0L;
+    
+    private Long nroMensajesAutomaticos = 0L;
+    
+    private Long nroMensajesProgramados = 0L;
 
     private Bandeja mensajeBandeja;
-
+    
+    private Integer nroPaginaAutomatica = 1;
+    
+    private Integer indicadorBandeja = 0;
+    
     @Autowired
     private BandejaService bandejaService;
 
@@ -82,7 +88,8 @@ public class BandejaController extends AbstractManagedBean implements Serializab
 
     public String cargarBandeja() {
         usuarioSession();
-        listaMensajes = bandejaService.bandejaBuscarUsuario(usuarioSession.getCodigo());
+        listaMensajes = null;
+        nroPaginaAutomatica = null;
         return "bandeja";
     }
     
@@ -96,56 +103,136 @@ public class BandejaController extends AbstractManagedBean implements Serializab
                 list.add(b);
             }
         }
-        listaMensajes = list;
+        if(indicadorBandeja == 1)
+            cargarTotalAutomaticos(nroPaginaAutomatica);
+        if(indicadorBandeja == 2)
+            cargarTotalProgramados(nroPaginaAutomatica);
+        if(indicadorBandeja == 3)
+            cargarTotalInternos(nroPaginaAutomatica);
+            
     }
     
     public void cargarMensajesPendientes(){
         usuarioSession();
-        cargarMensajesInternos();
-        cargarMensajesAutomaticos();
-        cargarMensajesProgramados();
+        cargarMensajesCabecera();
     }
     
-    public String cargarMensajesInternos(){
-        listaMensajesPendientesInternos = bandejaService.bandejaBuscarUsuarioPendientesInternos(usuarioSession.getCodigo());
-        listaMensajesInternos = bandejaService.bandejaBuscarUsuarioInternos(usuarioSession.getCodigo());
-        listaMensajes = listaMensajesPendientesInternos;
-        return "bandeja";
-    }
-
-    public String cargarMensajesAutomaticos(){
-        listaMensajesPendientesAutomaticos = bandejaService.bandejaBuscarUsuarioPendientesAutomaticos(usuarioSession.getCodigo());
-        listaMensajesAutomaticos = bandejaService.bandejaBuscarUsuarioAutomaticos(usuarioSession.getCodigo());
-        listaMensajes = listaMensajesPendientesAutomaticos;
-        return "bandeja";
+    private void cargarMensajesCabecera(){
+        nroMensajesInternos = bandejaService.bandejaContarUsuarioInternos(usuarioSession.getCodigo());
+        nroMensajesProgramados = bandejaService.bandejaContarUsuarioProgramados(usuarioSession.getCodigo());
+        nroMensajesAutomaticos = bandejaService.bandejaContarUsuarioAutomaticos(usuarioSession.getCodigo());
     }
     
-    public String cargarMensajesProgramados(){
-        listaMensajesPendientesProgramados = bandejaService.bandejaBuscarUsuarioPendientesProgramados(usuarioSession.getCodigo());
-        listaMensajesProgramados = bandejaService.bandejaBuscarUsuarioProgramados(usuarioSession.getCodigo());
-        listaMensajes = listaMensajesPendientesProgramados;
-        return "bandeja";
-    }
-    
-    public void cargarTotalInternos(){
-        listaMensajesInternos = bandejaService.bandejaBuscarUsuarioInternos(usuarioSession.getCodigo());
+    public String cargarTotalInternos(Integer pagina){
+        indicadorBandeja = 3;
+        FiltroBusquedaMensaje fbm = new FiltroBusquedaMensaje();
+        int paginado = ConstantesUtil.PAGINADO_20;
+        Integer ini;
+        Integer fin;
+        if(pagina > 0){
+            ini = paginado * (pagina - 1) + 1;
+            fin = paginado * pagina;
+            fbm.setIni(ini);
+            fbm.setFin(fin);
+        }else{
+            return null;
+        }
+        fbm.setCodigoUsuario(usuarioSession.getCodigo());
+        try {
+                        listaMensajesInternos = bandejaService.bandejaBuscarUsuarioInternos(fbm);
+                        if (listaMensajesInternos.size() > 0) {
+                            nroPaginaAutomatica = pagina;
+                        } else {
+                            if (fbm.getIni() == 1) {
+                                listaMensajesInternos = null;
+                                msg.messageAlert("No se han mensajes", null);
+                            }else{
+                                listaMensajesInternos = listaMensajes;
+                            }
+                        }
+                    } catch (Exception e) {
+                        log.error("ERROR : BandejaController.cargarTotalAutomaticos: " + e.getMessage());
+                    }
+        
         listaMensajes = listaMensajesInternos;
+        return "bandeja";
     }
 
-    public void cargarTotalAutomaticos(){
-        listaMensajesAutomaticos = bandejaService.bandejaBuscarUsuarioAutomaticos(usuarioSession.getCodigo());
+    public String cargarTotalAutomaticos(Integer pagina){
+        indicadorBandeja = 1;
+        FiltroBusquedaMensaje fbm = new FiltroBusquedaMensaje();
+        int paginado = ConstantesUtil.PAGINADO_20;
+        Integer ini;
+        Integer fin;
+        if(pagina > 0){
+            ini = paginado * (pagina - 1) + 1;
+            fin = paginado * pagina;
+            fbm.setIni(ini);
+            fbm.setFin(fin);
+        }else{
+            return null;
+        }
+        fbm.setCodigoUsuario(usuarioSession.getCodigo());
+        try {
+                        listaMensajesAutomaticos = bandejaService.bandejaBuscarUsuarioAutomaticos(fbm);
+                        if (listaMensajesAutomaticos.size() > 0) {
+                            nroPaginaAutomatica = pagina;
+                        } else {
+                            if (fbm.getIni() == 1) {
+                                listaMensajesAutomaticos = null;
+                                msg.messageAlert("No se han mensajes", null);
+                            }else{
+                                listaMensajesAutomaticos = listaMensajes;
+                            }
+                        }
+                    } catch (Exception e) {
+                        log.error("ERROR : BandejaController.cargarTotalAutomaticos: " + e.getMessage());
+                    }
+        
         listaMensajes = listaMensajesAutomaticos;
+        return "bandeja";
     }
     
-    public void cargarTotalProgramados(){
-        listaMensajesProgramados = bandejaService.bandejaBuscarUsuarioProgramados(usuarioSession.getCodigo());
+    public String cargarTotalProgramados(Integer pagina){
+        indicadorBandeja = 2;
+        FiltroBusquedaMensaje fbm = new FiltroBusquedaMensaje();
+        int paginado = ConstantesUtil.PAGINADO_20;
+        Integer ini;
+        Integer fin;
+        if(pagina > 0){
+            ini = paginado * (pagina - 1) + 1;
+            fin = paginado * pagina;
+            fbm.setIni(ini);
+            fbm.setFin(fin);
+        }else{
+            return null;
+        }
+        fbm.setCodigoUsuario(usuarioSession.getCodigo());
+        try {
+                        listaMensajesProgramados = bandejaService.bandejaBuscarUsuarioProgramados(fbm);
+                        if (listaMensajesProgramados.size() > 0) {
+                            nroPaginaAutomatica = pagina;
+                        } else {
+                            if (fbm.getIni() == 1) {
+                                listaMensajesProgramados = null;
+                                msg.messageAlert("No se han mensajes", null);
+                            }else{
+                                listaMensajesProgramados = listaMensajes;
+                            }
+                        }
+                    } catch (Exception e) {
+                        log.error("ERROR : BandejaController.cargarTotalAutomaticos: " + e.getMessage());
+                    }
+        
         listaMensajes = listaMensajesProgramados;
+        return "bandeja";
     }
     
     public String verMensajeBandeja(Bandeja b) {
         setMensajeBandeja(b);
         b.setEstado("VIS");
         bandejaService.mensajeEstadoVisto(b.getId());
+        //contarMensajesAutomaticosPendientes();
         return "verMensaje";
     }
     
@@ -672,22 +759,6 @@ public class BandejaController extends AbstractManagedBean implements Serializab
         this.mensajeBandeja = mensajeBandeja;
     }
 
-    public List<Bandeja> getListaMensajesPendientesInternos() {
-        return listaMensajesPendientesInternos;
-    }
-
-    public void setListaMensajesPendientesInternos(List<Bandeja> listaMensajesPendientesInternos) {
-        this.listaMensajesPendientesInternos = listaMensajesPendientesInternos;
-    }
-
-    public List<Bandeja> getListaMensajesPendientesAutomaticos() {
-        return listaMensajesPendientesAutomaticos;
-    }
-
-    public void setListaMensajesPendientesAutomaticos(List<Bandeja> listaMensajesPendientesAutomaticos) {
-        this.listaMensajesPendientesAutomaticos = listaMensajesPendientesAutomaticos;
-    }
-
     public List<Bandeja> getListaMensajesPendientes() {
         return listaMensajesPendientes;
     }
@@ -712,14 +783,6 @@ public class BandejaController extends AbstractManagedBean implements Serializab
         this.listaMensajesAutomaticos = listaMensajesAutomaticos;
     }
 
-    public List<Bandeja> getListaMensajesPendientesProgramados() {
-        return listaMensajesPendientesProgramados;
-    }
-
-    public void setListaMensajesPendientesProgramados(List<Bandeja> listaMensajesPendientesProgramados) {
-        this.listaMensajesPendientesProgramados = listaMensajesPendientesProgramados;
-    }
-
     public List<Bandeja> getListaMensajesProgramados() {
         return listaMensajesProgramados;
     }
@@ -728,6 +791,44 @@ public class BandejaController extends AbstractManagedBean implements Serializab
         this.listaMensajesProgramados = listaMensajesProgramados;
     }
 
-    
+    public Integer getNroPaginaAutomatica() {
+        return nroPaginaAutomatica;
+    }
+
+    public void setNroPaginaAutomatica(Integer nroPaginaAutomatica) {
+        this.nroPaginaAutomatica = nroPaginaAutomatica;
+    }
+
+    public Integer getIndicadorBandeja() {
+        return indicadorBandeja;
+    }
+
+    public void setIndicadorBandeja(Integer indicadorBandeja) {
+        this.indicadorBandeja = indicadorBandeja;
+    }
+
+    public Long getNroMensajesInternos() {
+        return nroMensajesInternos;
+    }
+
+    public void setNroMensajesInternos(Long nroMensajesInternos) {
+        this.nroMensajesInternos = nroMensajesInternos;
+    }
+
+    public Long getNroMensajesAutomaticos() {
+        return nroMensajesAutomaticos;
+    }
+
+    public void setNroMensajesAutomaticos(Long nroMensajesAutomaticos) {
+        this.nroMensajesAutomaticos = nroMensajesAutomaticos;
+    }
+
+    public Long getNroMensajesProgramados() {
+        return nroMensajesProgramados;
+    }
+
+    public void setNroMensajesProgramados(Long nroMensajesProgramados) {
+        this.nroMensajesProgramados = nroMensajesProgramados;
+    }
 
 }

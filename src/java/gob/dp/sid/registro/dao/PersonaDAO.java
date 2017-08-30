@@ -27,4 +27,7 @@ public interface PersonaDAO {
     public Persona personaBusquedaOne(long idPersona);
     
     public Persona personaXDNI(String dni);
+    
+    public List<Persona> personaPorExpediente(Long idExpediente);
 }
+

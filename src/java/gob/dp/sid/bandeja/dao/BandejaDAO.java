@@ -6,6 +6,7 @@
 package gob.dp.sid.bandeja.dao;
 
 import gob.dp.sid.bandeja.entity.Bandeja;
+import gob.dp.sid.bandeja.entity.FiltroBusquedaMensaje;
 import java.util.List;
 
 /**
@@ -24,14 +25,22 @@ public interface BandejaDAO {
     
     public List<Bandeja> bandejaBuscarUsuarioPendientesProgramados(String destinatario);
     
-    public List<Bandeja> bandejaBuscarUsuarioInternos(String destinatario);
+    public List<Bandeja> bandejaBuscarUsuarioInternos(FiltroBusquedaMensaje fbm);
             
-    public List<Bandeja> bandejaBuscarUsuarioAutomaticos(String destinatario);
+    public List<Bandeja> bandejaBuscarUsuarioAutomaticos(FiltroBusquedaMensaje fbm);
     
-    public List<Bandeja> bandejaBuscarUsuarioProgramados(String destinatario);
+    public List<Bandeja> bandejaBuscarUsuarioProgramados(FiltroBusquedaMensaje fbm);
     
     public void mensajeEstadoVisto(Long id);
     
     public void mensajeInactivar(Long id);
+    
+    public Long bandejaContarPendientesAutomaticos(String destinatario);
+    
+    public Long bandejaContarUsuarioInternos(String destinatario);
+    
+    public Long bandejaContarUsuarioAutomaticos(String destinatario);
+    
+    public Long bandejaContarUsuarioProgramados(String destinatario);
     
 }

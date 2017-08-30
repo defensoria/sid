@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD iBatis Mapper 3.0 //EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="usuarioDao">
+
+    <select id="generarCodigoUsuario" resultType="java.lang.String" >
+        select 'sid'||lpad(to_char(SEQ_sid_SEG_USUARIO.NEXTVAL),4,'0') from dual
+    </select>
+
+    <sql id="sqlBuscarUsuario">
+        select codigo_usuario     as codigo,
+        nom_usuario        as nombre,
+        ape_paterno        as apellidoPaterno,
+        ape_materno        as apellidoMaterno,
+        num_dni            as dni,
+        est_usuario        as estado,
+        des_email          as email,
+        tel_movil          as telefonoMovil,
+        tel_fijo           as telefonoFijo,
+        c_cargo            as cargo,
+        c_sexo             as sexo,
+        n_nivel            as nivel,
+        N_ID_OD            as codigoOD,
+        c_iddepartamento   as idDepartamento
+        from sid_seg_usuario
+        where
+        1=1
+        <if test="codigo!=null">
+            and  upper(codigo_usuario)=upper(#{codigo})
+        </if>
+        <if test="dni!=null">
+            and  num_dni=#{dni}
+        </if>
+        <if test="nombre!=null">
+            and UPPER(nom_usuario)  LIKE '%'||UPPER(#{nombre})||'%'
+        </if>
+        <if test="apellidoPaterno!=null">
+            and UPPER(ape_paterno)  LIKE '%'||UPPER(#{apellidoPaterno})||'%'
+        </if>
+        <if test="apellidoMaterno!=null">
+            and UPPER(ape_materno)  LIKE '%'||UPPER(#{apellidoMaterno})||'%'
+        </if>
+        order by codigo
+    </sql>
+   
+    <select id="getTotalBuscarUsuario"   parameterType="filtroUsuario" resultType="java.lang.Integer" >
+        SELECT COUNT(*) FROM (
+        <include refid="sqlBuscarUsuario"/>
+        ) TABLA_COUNT
+    </select>
+    
+    <select id="buscarUsuarioTotal" resultType="usuario" >
+        <include refid="sqlBuscarUsuario"/>
+    </select>
+
+    <select id="buscarUsuario" resultType="usuario" parameterType="filtroUsuario">
+        SELECT DISTINCT 
+        codigo_usuario     as codigo,
+        nom_usuario        as nombre,
+        ape_paterno        as apellidoPaterno,
+        ape_materno        as apellidoMaterno,
+        num_dni            as dni,
+        est_usuario        as estado,
+        des_email          as email,
+        tel_movil          as telefonoMovil,
+        tel_fijo           as telefonoFijo,
+        c_cargo            as cargo,
+        c_ruta             as ruta,
+        c_iddepartamento   as idDepartamento,
+        c_sexo             as sexo,
+        n_id_od            as codigoOD 
+        FROM (
+        SELECT codigo_usuario,
+        nom_usuario,
+        ape_paterno,
+        ape_materno,
+        num_dni,
+        est_usuario,
+        des_email,
+        tel_movil,
+        tel_fijo,
+        c_cargo,
+        c_ruta,
+        c_iddepartamento,
+        c_sexo,
+        n_id_od,
+        ROWNUM numfila
+        FROM (
+        select codigo_usuario,
+        nom_usuario,
+        ape_paterno,
+        ape_materno,
+        num_dni,
+        est_usuario,
+        des_email,
+        tel_movil,
+        tel_fijo,
+        c_cargo,
+        c_ruta,
+        C_IDDEPARTAMENTO,
+        c_sexo,
+        n_id_od
+        from sid_seg_usuario
+        where 1=1
+        order by codigo_usuario
+        ) B
+        ) A WHERE 1=1
+        
+        <if test="codigo!=null">
+            and upper(codigo_usuario)=upper(#{codigo}) 
+        </if>
+        <if test="dni != null">
+            and num_dni LIKE '%'||#{dni}||'%'
+        </if>
+        <if test="nombre!=null">
+            and UPPER(nom_usuario)  LIKE '%'||UPPER(#{nombre})||'%'
+        </if>
+        <if test="apellidoPaterno!=null">
+            and UPPER(ape_paterno)  LIKE '%'||UPPER(#{apellidoPaterno})||'%'
+        </if>
+        <if test="apellidoMaterno!=null">
+            and UPPER(ape_materno)  LIKE '%'||UPPER(#{apellidoMaterno})||'%'
+        </if>
+    </select>
+
+
+    <select id="loginUsuario" resultType="java.lang.Integer" parameterType="usuario">
+        select count(*)
+        from sid_seg_usuario u, sid_vw_usuario t
+        where
+        u.codigo_usuario = t.usuario_usu and
+        upper(u.codigo_usuario)=upper(#{codigo}) and
+        t.tpircne =#{clave} 
+    </select>
+
+    <update id="modificarUsuario" parameterType="usuario">
+        update sid_seg_usuario
+        set
+        nom_usuario = UPPER(#{nombre}),
+        ape_paterno = UPPER(#{apellidoPaterno}),
+        ape_materno = UPPER(#{apellidoMaterno})
+        <if test="dni!=null">
+            ,num_dni = #{dni}
+        </if>
+        <if test="estado!=null">
+            ,est_usuario = #{estado}
+        </if>
+        <if test="email!=null">
+            ,des_email =#{email}
+        </if>
+        <if test="telefonoMovil!=null">
+            ,tel_movil = #{telefonoMovil}
+        </if>
+        <if test="telefonoFijo!=null">
+            ,tel_fijo = #{telefonoFijo}
+        </if>
+        <if test="ruta!=null">
+            ,c_ruta = #{ruta}
+        </if>
+        <if test="cargo!=null">
+            ,c_cargo = #{cargo}
+        </if>
+        <if test="codigoOD!=null">
+            ,N_ID_OD = #{codigoOD}
+        </if>
+        <if test="codigoOD!=null">
+            ,c_iddepartamento = #{idDepartamento}
+        </if>
+        where codigo_usuario = #{codigo}
+    </update>
+
+    <insert id="insertarUsuario" parameterType="usuario">
+        insert into sid_seg_usuario
+        (codigo_usuario,
+        nom_usuario,
+        ape_paterno,
+        <if test="codigoOD !=null">
+            n_id_od,
+        </if>
+        <if test="sexo !=null">
+            c_sexo,
+        </if>
+        <if test="idDepartamento !=null">
+            C_IDDEPARTAMENTO,
+        </if>
+        <if test="cargo !=null">
+            C_CARGO,
+        </if>        
+        num_dni,
+        <if test="email!=null">
+            des_email,
+        </if>
+        <if test="telefonoMovil!=null">
+            tel_movil,
+        </if>
+        <if test="telefonoFijo!=null">
+            tel_fijo,
+        </if>
+        ape_materno
+        )
+        values
+        (
+        UPPER(#{codigo}),
+        UPPER(#{nombre}),
+        UPPER(#{apellidoPaterno}),
+        <if test="codigoOD !=null">
+            #{codigoOD},
+        </if>
+        <if test="sexo !=null">
+            #{sexo},
+        </if>
+        <if test="idDepartamento !=null">
+            #{idDepartamento},
+        </if>
+        <if test="cargo != null">
+            #{cargo},
+        </if>
+        #{dni},
+        <if test="email!=null">
+            #{email},
+        </if>
+        <if test="telefonoMovil!=null">
+            #{telefonoMovil},
+        </if>
+        <if test="telefonoFijo!=null">
+            #{telefonoFijo},
+        </if>
+        UPPER(#{apellidoMaterno})
+        )
+    </insert>
+
+    <select id="consultarUsuario" resultType="usuario" parameterType="filtroUsuario">
+        select u.codigo_usuario     as codigo,
+        u.nom_usuario        as nombre,
+        u.ape_paterno        as apellidoPaterno,
+        u.ape_materno        as apellidoMaterno,
+        u.num_dni            as dni,
+        u.des_email          as email,
+        u.tel_movil          as telefonoMovil,
+        u.tel_fijo           as telefonoFijo,
+        u.c_cargo            as cargo,
+        u.c_ruta             as ruta,
+        u.N_ID_OD            as codigoOD,
+        u.c_iddepartamento   as idDepartamento,
+        a.C_NOMBRE           as nombreOD
+        from 
+        sid_seg_usuario u
+        inner join SID_SEG_OFICINA_DEFENSORIAL a on a.N_ID_OD = u.N_ID_OD
+        <where>
+            1=1
+            <if test="codigo!=null">
+                and  upper(codigo_usuario)=UPPER(#{codigo})
+            </if>
+            <if test="dni!=null">
+                and  num_dni=#{dni}
+            </if>
+            <if test="nombre!=null">
+                and UPPER(nom_usuario)  LIKE '%'||UPPER(#{nombre})||'%'
+            </if>
+            <if test="apellidoPaterno!=null">
+                and UPPER(ape_paterno)  LIKE '%'||UPPER(#{apellidoPaterno})||'%'
+            </if>
+            <if test="apellidoMaterno!=null">
+                and UPPER(ape_materno)  LIKE '%'||UPPER(#{apellidoMaterno})||'%'
+            </if>
+        </where>
+    </select>
+    
+    <select id="listaUsuariosPorOD" resultType="usuario" parameterType="usuario">
+        select u.codigo_usuario     as codigo,
+        u.nom_usuario        as nombre,
+        u.ape_paterno        as apellidoPaterno,
+        u.ape_materno        as apellidoMaterno,
+        u.num_dni            as dni,
+        u.est_usuario        as estado,
+        u.num_dni            as clave,
+        u.des_email          as email,
+        u.tel_movil          as telefonoMovil,
+        u.tel_fijo           as telefonoFijo,
+        u.flag_clave_inicial as flagClaveInicial,
+        u.c_cargo            as cargo,
+        u.c_ruta             as ruta,
+        u.N_ID_OD            as codigoOD
+        from 
+        sid_seg_usuario u
+        INNER JOIN SID_SEG_USUARIO_ROL B ON B.CODIGO_USUARIO = u.CODIGO_USUARIO
+        WHERE u.N_ID_OD = #{codigoOD} 
+        AND B.CODIGO_ROL NOT IN ('ROL0000010')
+        <if test="rol!=null">
+            AND B.CODIGO_ROL = #{rol}
+        </if>
+        ORDER BY u.nom_usuario
+    </select>
+    
+    <select id="listaUsuarioCount" resultType="java.lang.Integer" parameterType="String">
+        SELECT COUNT(*) FROM SID_SEG_USUARIO WHERE CODIGO_USUARIO = #{value}
+    </select>
+
+
+</mapper>

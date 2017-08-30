@@ -5,8 +5,8 @@
  */
 package gob.dp.sid.comun.controller;
 
-import gob.dp.sid.seguridad.controller.LoginController;
-import gob.dp.sid.seguridad.entity.Usuario;
+import gob.dp.sid.administracion.seguridad.controller.LoginController;
+import gob.dp.sid.administracion.seguridad.entity.Usuario;
 import gob.dp.sid.comun.ConstantesUtil;
 import gob.dp.sid.comun.type.EtapaType;
 import gob.dp.sid.registro.entity.Expediente;
@@ -27,7 +27,7 @@ import org.springframework.context.annotation.Scope;
  */
 @Named
 @Scope("session")
-public class BusquedaController implements Serializable{
+public class BusquedaController extends AbstractManagedBean implements Serializable{
     
     private List<Expediente> listadoGeneral;
     
@@ -96,6 +96,7 @@ public class BusquedaController implements Serializable{
     }
     
     public String listarExpedientesPaginado(Integer pagina) {
+        if(StringUtils.isNotBlank(expediente.getODBusqueda()) || StringUtils.isNotBlank(expediente.getAnhoBusqueda()) || StringUtils.isNotBlank(expediente.getObservacion())){
         if (pagina > 0) {
             int paginado = ConstantesUtil.PAGINADO_20;
             Integer ini = paginado * (pagina - 1) + 1;
@@ -104,21 +105,24 @@ public class BusquedaController implements Serializable{
                 ini = 1;
                 fin = 20;
             }
-            StringBuilder sb = new StringBuilder();
-            if(StringUtils.isNotBlank(expediente.getODBusqueda())){
-                sb.append(expediente.getODBusqueda()).append("-");
-            }
-            if(StringUtils.isNotBlank(expediente.getAnhoBusqueda())){
-                sb.append(expediente.getAnhoBusqueda()).append("-");
-            }
-            if(StringUtils.isNotBlank(expediente.getObservacion())){
-                sb.append(expediente.getObservacion());
-            }
-            expediente.setCadenaBusqueda(sb.toString());
             expediente.setUsuarioRegistro(null);
             expediente.setIni(ini);
             expediente.setFin(fin);
-
+            if(StringUtils.isBlank(expediente.getODBusqueda())){
+                expediente.setODBusqueda(null);
+            }
+            if(StringUtils.isBlank(expediente.getAnhoBusqueda())){
+                expediente.setAnhoBusqueda(null);
+            }
+            if(StringUtils.isNotBlank(expediente.getObservacion())){
+                if(StringUtils.isNumeric(expediente.getObservacion())){
+                    expediente.setFiltroNroExpediente(expediente.getObservacion().trim());
+                    expediente.setFiltroSumilla(null);
+                }else{
+                    expediente.setFiltroSumilla(expediente.getObservacion());
+                    expediente.setFiltroNroExpediente(null);
+                }    
+            }
             List<Expediente> list = expedienteService.expedienteBuscarUsuarioPaginado(expediente);
             
             if (list.size() > 0) {
@@ -136,6 +140,10 @@ public class BusquedaController implements Serializable{
             }
         }
         return "busquedaGeneral";
+        }else{
+            msg.messageAlert("Debe ingresar almenos un criterio de búsqueda",null);
+        }
+        return null;
     }
     
     private String detalleUltimoEstado(String numeroExpediente){

@@ -23,11 +23,11 @@
 
         
         
-        <context:component-scan  base-package="gob.dp.sid.seguridad.service"/>
-        <context:component-scan  base-package="gob.dp.sid.seguridad.controller" scoped-proxy="targetClass"  />
+        <context:component-scan  base-package="gob.dp.sid.administracion.seguridad.service"/>
+        <context:component-scan  base-package="gob.dp.sid.administracion.seguridad.controller" scoped-proxy="targetClass"  />
         
-        <context:component-scan  base-package="gob.dp.sid.parametro.service"/>
-        <context:component-scan  base-package="gob.dp.sid.parametro.controller" scoped-proxy="targetClass"  />
+        <context:component-scan  base-package="gob.dp.sid.administracion.parametro.service"/>
+        <context:component-scan  base-package="gob.dp.sid.administracion.parametro.controller" scoped-proxy="targetClass"  />
         
         <context:component-scan  base-package="gob.dp.sid.comun.service"/>
         <context:component-scan  base-package="gob.dp.sid.comun.controller" scoped-proxy="targetClass"  />

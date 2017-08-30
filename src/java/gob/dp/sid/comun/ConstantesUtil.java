@@ -22,6 +22,8 @@ public class ConstantesUtil implements Serializable{
     
     public static final int PAGINADO_20=20;
     
+    public static final int PAGINADO_30=30;
+    
     //public String FILE_SYSTEM="C:/server/glassfish-4.0/glassfish4/glassfish/domains/domain1/docroot/filesystem/";
     /**LINUX*/
     //public String FILE_SYSTEM="/usr/local/glassfish4/glassfish/domains/domain1/docroot/filesystem/";

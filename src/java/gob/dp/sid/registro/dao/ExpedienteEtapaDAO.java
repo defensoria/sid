@@ -13,6 +13,6 @@ import gob.dp.sid.registro.entity.ExpedienteEtapa;
  */
 public interface ExpedienteEtapaDAO {
     
-    public ExpedienteEtapa expedienteEtapaBuscar(int idEtapa);
+    public ExpedienteEtapa expedienteEtapaBuscar(int idEtapa); 
     
 }

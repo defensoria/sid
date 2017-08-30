@@ -5,11 +5,11 @@
  */
 package gob.dp.sid.registro.controller;
 
-import gob.dp.sid.seguridad.controller.LoginController;
-import gob.dp.sid.seguridad.controller.MenuController;
-import gob.dp.sid.seguridad.controller.SeguridadUtilController;
-import gob.dp.sid.seguridad.entity.Usuario;
-import gob.dp.sid.seguridad.service.UsuarioService;
+import gob.dp.sid.administracion.seguridad.controller.LoginController;
+import gob.dp.sid.administracion.seguridad.controller.MenuController;
+import gob.dp.sid.administracion.seguridad.controller.SeguridadUtilController;
+import gob.dp.sid.administracion.seguridad.entity.Usuario;
+import gob.dp.sid.administracion.seguridad.service.UsuarioService;
 import gob.dp.sid.bandeja.controller.BandejaController;
 import gob.dp.sid.bandeja.entity.Bandeja;
 import gob.dp.sid.bandeja.service.BandejaService;
@@ -561,6 +561,17 @@ public class RegistroController extends AbstractManagedBean implements Serializa
             log.error("ERROR - cargarObjetoExpediente()" + e);
         }
         return null;
+    }
+    
+    public void inicializaEntidad(){
+        entidad = new Entidad();
+        entidad.setIdDepartamento(0);
+        entidad.setTipo("0");
+    }
+    
+    public void limpiaListasReporte(){
+        entidadPopover = null;
+        inicializaEntidad();
     }
 
     public void inactivarExpediente(Expediente e) {
@@ -3036,10 +3047,6 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 int paginado = ConstantesUtil.PAGINADO_10;
                 Integer ini = paginado * (pagina - 1) + 1;
                 Integer fin = paginado * pagina;
-                if (pagina == 0) {
-                    ini = 1;
-                    fin = 10;
-                }
                 e.setIni(ini);
                 e.setFin(fin);
                 List<Expediente> list;
@@ -3054,7 +3061,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
                 }
 
                 if (list.size() > 0) {
-                    for (Expediente e1 : list) {
+                    for(Expediente e1 : list) {
                         e1.setEtapaDetalle(devolverEtapa(e1));
                         if (StringUtils.isNoneBlank(e1.getNumero())) {
                             e1.setEstadoDetalle(detalleUltimoEstado(e1.getNumero()));
@@ -3652,6 +3659,10 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         } catch (Exception e) {
             log.error("ERROR - usuarioSession()" + e);
         }
+    }
+    
+    public void seleccionarUsuario(Usuario u){
+        
     }
 
     public void entidadQuejada() {

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD iBatis Mapper 3.0 //EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="rolDao">
+    
+    <select id="buscarRol" resultType="rol" parameterType="rol">
+        select
+             codigo_rol as codigo,
+             nom_rol    as nombre,
+             des_rol    as descripcion,
+             cod_estado as estado
+        from sid_seg_rol
+        where
+        1=1
+        <if test="codigo!=null">
+            and codigo_rol=#{codigo}
+        </if>
+        <if test="nombre!=null">
+            and UPPER(nom_rol)  LIKE '%'||UPPER(#{nombre})||'%'
+        </if>
+        <if test="estado!=null">
+             and estado=#{estado}
+        </if>
+        order by codigo
+    </select>
+
+    <select id="buscarRolSegunUsuario" parameterType="usuario" resultType="rol">
+        select
+           rol.codigo_rol as codigo,
+           rol.nom_rol    as nombre,
+           rol.cod_estado as estado
+        from
+               sid_seg_usuario_rol usu,
+               sid_seg_rol rol
+        where
+               rol.cod_estado='A' and
+               usu.codigo_rol = rol.codigo_rol and
+               usu.codigo_usuario=#{codigo}
+</select>
+
+<insert id="insertarUsuarioRol" parameterType="usuarioRol">
+    insert into sid_seg_usuario_rol
+        (codigo_rol,
+         codigo_usuario)
+    values(
+          #{rol.codigo},
+          #{usuario.codigo}
+         )
+</insert>
+
+<delete id="deleteUsuarioRol" parameterType="usuarioRol">
+    delete sid_seg_usuario_rol
+    where codigo_rol = #{rol.codigo}
+    and codigo_usuario = #{usuario.codigo}
+</delete>
+
+</mapper>

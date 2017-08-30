@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD iBatis Mapper 3.0 //EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="gob.dp.sid.administracion.parametro.dao.CatalogoDao">
+
+    <resultMap id="catalogoMap" type="gob.dp.sid.administracion.parametro.entity.Catalogo">
+        <result property="numParametro" column="num_parametro" jdbcType="INTEGER"/>
+        <result property="padreParametro" column="padre_parametro" jdbcType="INTEGER"/>
+        <result property="nombreParametro" column="nombre_parametro" jdbcType="VARCHAR"/>
+        <result property="valorParametro" column="valor_parametro" jdbcType="CHAR"/>
+        <result property="codEstado" column="cod_estado" jdbcType="CHAR"/>
+        <result property="nombreEstado" column="nombre_estado" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <resultMap id="catalogoPadreMap" type="gob.dp.sid.administracion.parametro.entity.Catalogo">
+        <result property="numParametro" column="num_parametro" jdbcType="INTEGER"/>
+        <result property="padreParametro" column="padre_parametro" jdbcType="INTEGER"/>
+        <result property="nombreParametro" column="nombre_parametro" jdbcType="VARCHAR"/>
+        <result property="valorParametro" column="valor_parametro" jdbcType="CHAR"/>
+        <result property="codEstado" column="cod_estado" jdbcType="CHAR"/>
+    </resultMap>
+
+
+    <sql id="sqlBuscarCatalogoPadre">
+        SELECT DISTINCT(P.NUM_PARAMETRO),
+        P.PADRE_PARAMETRO,
+        P.NOMBRE_PARAMETRO,
+        NVL(P.VALOR_PARAMETRO,' ') VALOR_PARAMETRO,
+        P.COD_ESTADO,
+        PAR2.NOMBRE_PARAMETRO AS "NOMBRE_ESTADO"
+        FROM sid_PARAMETRO P
+        LEFT OUTER JOIN
+        sid_PARAMETRO PAR2 ON P.COD_ESTADO = PAR2.VALOR_PARAMETRO
+        AND PAR2.PADRE_PARAMETRO = 130
+        INNER JOIN sid_PARAMETRO PAR1 ON P.PADRE_PARAMETRO=PAR1.PADRE_PARAMETRO
+        AND P.PADRE_PARAMETRO='0'
+        <if test="numParametro!=null">
+            AND P.NUM_PARAMETRO=#{numParametro}
+        </if>
+        <if test="nombreParametro!=null">
+            AND UPPER(P.NOMBRE_PARAMETRO)  LIKE '%'||UPPER(#{nombreParametro})||'%'
+        </if>
+        ORDER BY P.NUM_PARAMETRO
+    </sql>
+
+    <sql id="sqlBuscarCatalogoHijo">
+        SELECT DISTINCT(P.NUM_PARAMETRO),
+        P.PADRE_PARAMETRO,
+        P.NOMBRE_PARAMETRO,
+        NVL(P.VALOR_PARAMETRO,' ') VALOR_PARAMETRO,
+        P.COD_ESTADO,
+        PAR2.NOMBRE_PARAMETRO AS "NOMBRE_ESTADO"
+        FROM sid_PARAMETRO P
+        LEFT OUTER JOIN
+        sid_PARAMETRO PAR2 ON P.COD_ESTADO = PAR2.VALOR_PARAMETRO 
+        AND PAR2.PADRE_PARAMETRO = 130
+        INNER JOIN sid_PARAMETRO PAR1 ON P.PADRE_PARAMETRO=PAR1.PADRE_PARAMETRO
+        <if test="padreParametro!=null">
+            AND P.PADRE_PARAMETRO=#{padreParametro}
+        </if>
+        <if test="numParametro!=null">
+            AND P.NUM_PARAMETRO=#{numParametro}
+        </if>
+        <if test="nombreParametro!=null">
+            AND UPPER(P.NOMBRE_PARAMETRO) LIKE '%'||UPPER(#{nombreParametro})||'%' 
+        </if>
+        ORDER BY P.NUM_PARAMETRO
+    </sql>
+
+    <select id="generarCodigoCatalogoPadre" resultType="java.lang.Integer" >
+        select SEQ_sid_PADRE_PARAMETRO.NEXTVAL from dual
+    </select>
+    
+    <insert id="nuevoCatalogoPadre" parameterType="catalogo">
+        insert into sid_PARAMETRO
+        (num_parametro,
+        padre_parametro,
+        nombre_parametro,
+        cod_estado)
+        values(
+        #{numParametro},
+        #{padreParametro},
+        #{nombreParametro},
+        #{codEstado}
+        )
+    </insert>
+    
+    <select id="generarCodigoCatalogoHijo" resultType="java.lang.Integer" >
+        select SEQ_sid_HIJO_PARAMETRO.NEXTVAL from dual
+    </select>
+    <insert id="nuevoCatalogoHijo" parameterType="catalogo">
+        insert into sid_PARAMETRO
+        (num_parametro,
+        padre_parametro,
+        nombre_parametro,
+        valor_parametro,
+        cod_estado)
+        values(
+        #{numParametro},
+        #{padreParametro},
+        #{nombreParametro},
+        #{valorParametro},
+        #{codEstado}
+        )
+    </insert>
+
+    <update id="updateCatalogoPadre" parameterType="catalogo">
+        update sid_PARAMETRO
+        set nombre_parametro = #{nombreParametro},
+        valor_parametro = #{valorParametro},
+        cod_estado = #{codEstado}
+        where num_parametro = #{numParametro}
+    </update>
+    <update id="updateCatalogoHijo" parameterType="catalogo">
+        update sid_PARAMETRO
+        set nombre_parametro = #{nombreParametro},
+        valor_parametro = #{valorParametro},
+        cod_estado = #{codEstado},
+        padre_parametro = #{padreParametro}
+        where num_parametro = #{numParametro}
+    </update>
+
+    <update id="updateEstadoCatalogoHijo" parameterType="catalogo">
+        update sid_PARAMETRO
+        set cod_estado=#{codEstado}
+        where padre_parametro=#{padreParametro}
+    </update>
+
+    <select id="listarCatalogoPadre" resultMap="catalogoMap">
+        select num_parametro,
+        padre_parametro,
+        nombre_parametro,
+        nvl(valor_parametro,' ') valor_parametro,
+        cod_estado
+        from sid_PARAMETRO
+        where IND_PADRE = '1'
+    </select>
+
+    <delete id="eliminarCatalogo" parameterType="catalogo">
+        delete from sid_PARAMETRO
+        where num_parametro = #{numParametro},
+        and padre_parametro = #{padreParametro}
+    </delete>
+
+    <select id="getTotalBuscarCatalogoPadre" parameterType="filtroCatalogo" resultType="java.lang.Integer" >
+        SELECT COUNT(*) FROM (
+        <include refid="sqlBuscarCatalogoPadre"/>
+        ) TABLA_COUNT
+    </select>
+
+    <select id="buscarCatalogoPadre" resultMap="catalogoMap" parameterType="filtroCatalogo">
+        SELECT DISTINCT 
+        A.NUM_PARAMETRO,
+        A.PADRE_PARAMETRO,
+        A.NOMBRE_PARAMETRO,
+        A.VALOR_PARAMETRO,
+        A.COD_ESTADO,
+        case A.COD_ESTADO when 'A' then 'Activo' else 'Inactivo' end NOMBRE_ESTADO
+        FROM (
+        SELECT
+        B.NUM_PARAMETRO,
+        B.PADRE_PARAMETRO,
+        B.NOMBRE_PARAMETRO,
+        B.VALOR_PARAMETRO,
+        B.COD_ESTADO,
+        B.NOMBRE_ESTADO,   
+        ROWNUM numfila
+        FROM (
+        SELECT distinct (P.NUM_PARAMETRO),
+        P.PADRE_PARAMETRO,
+        P.NOMBRE_PARAMETRO,
+        NVL(P.VALOR_PARAMETRO,' ') VALOR_PARAMETRO,
+        P.COD_ESTADO,
+        PAR2.NOMBRE_PARAMETRO AS "NOMBRE_ESTADO"
+        FROM sid_PARAMETRO P
+        LEFT OUTER JOIN
+        sid_PARAMETRO PAR2 ON P.COD_ESTADO = PAR2.VALOR_PARAMETRO
+        AND PAR2.PADRE_PARAMETRO = 130
+        INNER JOIN sid_PARAMETRO PAR1 ON P.PADRE_PARAMETRO=PAR1.PADRE_PARAMETRO
+        AND P.IND_PADRE='1'
+        ORDER BY P.NUM_PARAMETRO
+        ) B
+        ) A WHERE a.numfila BETWEEN #{ini} AND #{fin}
+        <if test="numParametro!=null">
+            AND A.NUM_PARAMETRO=#{numParametro}
+        </if>
+        <if test="nombreParametro!=null">
+            AND UPPER(A.NOMBRE_PARAMETRO)  LIKE '%'||UPPER(#{nombreParametro})||'%'
+        </if>
+        ORDER BY A.NUM_PARAMETRO
+    </select>
+
+    <select id="buscarCatalogoHijo" resultMap="catalogoMap" parameterType="filtroCatalogo">
+        SELECT DISTINCT 
+        A.NUM_PARAMETRO,
+        A.PADRE_PARAMETRO,
+        A.NOMBRE_PARAMETRO,
+        A.VALOR_PARAMETRO,
+        A.COD_ESTADO,
+        case A.COD_ESTADO when 'A' then 'Activo' else 'Inactivo' end NOMBRE_ESTADO
+        FROM (
+        SELECT
+        B.NUM_PARAMETRO,
+        B.PADRE_PARAMETRO,
+        B.NOMBRE_PARAMETRO,
+        B.VALOR_PARAMETRO,
+        B.COD_ESTADO,
+        B.NOMBRE_ESTADO,   
+        ROWNUM numfila
+        FROM (
+        SELECT DISTINCT(P.NUM_PARAMETRO),
+        P.PADRE_PARAMETRO,
+        P.NOMBRE_PARAMETRO,
+        NVL(P.VALOR_PARAMETRO,' ') VALOR_PARAMETRO,
+        P.COD_ESTADO,
+        PAR2.NOMBRE_PARAMETRO AS "NOMBRE_ESTADO"
+        FROM sid_PARAMETRO P
+        LEFT OUTER JOIN
+        sid_PARAMETRO PAR2 ON P.COD_ESTADO = PAR2.VALOR_PARAMETRO 
+        AND PAR2.PADRE_PARAMETRO = 130
+        INNER JOIN sid_PARAMETRO PAR1 ON P.PADRE_PARAMETRO=PAR1.PADRE_PARAMETRO
+        AND P.PADRE_PARAMETRO != '0'
+        <if test="padreParametro!=null">
+            AND P.PADRE_PARAMETRO=#{padreParametro}
+        </if>
+        <if test="numParametro!=null">
+            AND P.NUM_PARAMETRO=#{numParametro}
+        </if>
+        <if test="nombreParametro!=null">
+            AND UPPER(P.NOMBRE_PARAMETRO) LIKE '%'||UPPER(#{nombreParametro})||'%' 
+        </if>
+        ORDER BY P.NUM_PARAMETRO
+        ) B
+        ) A WHERE a.numfila BETWEEN #{ini} AND #{fin}
+        ORDER BY A.VALOR_PARAMETRO
+    </select>
+
+    <select id="getTotalBuscarCatalogoHijo" parameterType="filtroCatalogo" resultType="java.lang.Integer" >
+        SELECT COUNT(*) FROM (
+        <include refid="sqlBuscarCatalogoHijo"/>
+        ) TABLA_COUNT
+    </select>
+
+    <select id="viewCatalogoPadre" resultMap="catalogoPadreMap" parameterType="catalogo">
+        select num_parametro,
+        padre_parametro,
+        nombre_parametro,
+        valor_parametro,
+        cod_estado
+        from sid_PARAMETRO
+        where num_parametro = #{numParametro}
+    </select>
+
+    <select id="viewCatalogoHijo" resultMap="catalogoMap" parameterType="catalogo">
+        select num_parametro,
+        padre_parametro,
+        nombre_parametro,
+        nvl(valor_parametro,' ') valor_parametro,
+        cod_estado
+        from sid_PARAMETRO
+        where num_parametro = #{numParametro}
+    </select>
+
+</mapper>
