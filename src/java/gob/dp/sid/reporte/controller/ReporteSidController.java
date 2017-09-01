@@ -66,6 +66,8 @@ public class ReporteSidController extends AbstractManagedBean implements Seriali
     private ReporteSidExpediente reporteSidExpediente;
 
     private List<ReporteSidExpediente> listaReporteSidExpediente;
+    
+    private List<ReporteSidExpediente> listaReporteSidGestion;
 
     private Long nroPaginaEntidad = 1L;
 
@@ -154,13 +156,70 @@ public class ReporteSidController extends AbstractManagedBean implements Seriali
     public String cargarPaginaGestionReporte() {
         reporteSidExpediente = new ReporteSidExpediente();
         expedienteClasificacionBusqueda = new ExpedienteClasificacion();
-        listaReporteSidExpediente = null;
+        listaReporteSidGestion = null;
         entidadReporte = new Entidad();
         usuarioSession();
         expedienteNivel = new ExpedienteNivel();
         setTipoReporte(1);
         return "gestionReporte";
     }
+    
+    public String cargarPaginaEntidadReporte() {
+        reporteSidExpediente = new ReporteSidExpediente();
+        expedienteClasificacionBusqueda = new ExpedienteClasificacion();
+        listaReporteSidGestion = null;
+        entidadReporte = new Entidad();
+        usuarioSession();
+        expedienteNivel = new ExpedienteNivel();
+        setTipoReporte(1);
+        return "entidadReporte";
+    }
+    
+    public String cargarPaginaDependenciaReporte() {
+        reporteSidExpediente = new ReporteSidExpediente();
+        expedienteClasificacionBusqueda = new ExpedienteClasificacion();
+        listaReporteSidGestion = null;
+        entidadReporte = new Entidad();
+        usuarioSession();
+        expedienteNivel = new ExpedienteNivel();
+        setTipoReporte(1);
+        return "dependenciaReporte";
+    }
+    
+    public String cargarPaginaGestionInternaReporte() {
+        reporteSidExpediente = new ReporteSidExpediente();
+        expedienteClasificacionBusqueda = new ExpedienteClasificacion();
+        listaReporteSidGestion = null;
+        entidadReporte = new Entidad();
+        usuarioSession();
+        expedienteNivel = new ExpedienteNivel();
+        setTipoReporte(1);
+        return "gestionInternaReporte";
+    }
+    
+    public String cargarPaginaTematicaReporte() {
+        reporteSidExpediente = new ReporteSidExpediente();
+        expedienteClasificacionBusqueda = new ExpedienteClasificacion();
+        listaReporteSidGestion = null;
+        entidadReporte = new Entidad();
+        usuarioSession();
+        expedienteNivel = new ExpedienteNivel();
+        setTipoReporte(1);
+        return "tematicaReporte";
+    }
+    
+    public String cargarPaginaComisionadoReporte() {
+        reporteSidExpediente = new ReporteSidExpediente();
+        expedienteClasificacionBusqueda = new ExpedienteClasificacion();
+        listaReporteSidGestion = null;
+        entidadReporte = new Entidad();
+        usuarioSession();
+        expedienteNivel = new ExpedienteNivel();
+        setTipoReporte(1);
+        return "comisionadoReporte";
+    }
+    
+    
 
     public void limpiaListasReporte() {
         System.out.println(entidadReporte);
@@ -168,6 +227,22 @@ public class ReporteSidController extends AbstractManagedBean implements Seriali
     }
 
     public void reporte(Integer tipoReporte, Integer pag) {
+        setTipoReporte(tipoReporte);
+        if (tipoReporte == 1) {
+            buscarReporteExpediente(pag);
+        }
+        if (tipoReporte == 2) {
+            buscarReporteExpedienteClasificacion(pag);
+        }
+        if (tipoReporte == 3) {
+            buscarReporteExpedienteRecurrente(pag);
+        }
+        if (tipoReporte == 4) {
+            buscarReporteExpedienteAfectado(pag);
+        }
+    }
+    
+    public void reporteGestion(Integer tipoReporte, Integer pag) {
         setTipoReporte(tipoReporte);
         if (tipoReporte == 1) {
             buscarReporteExpediente(pag);
@@ -341,7 +416,7 @@ public class ReporteSidController extends AbstractManagedBean implements Seriali
         facesContext.renderResponse();
     }
 
-    private boolean buscarReporteExpediente(Integer pag) {
+    public boolean buscarReporteExpediente(Integer pag) {
         try {
             if (reporteSidExpediente.getFechaIngresoDesde() == null && reporteSidExpediente.getFechaIngresoHasta() == null && reporteSidExpediente.getFechaConclusionDesde() == null && reporteSidExpediente.getFechaConclusionHasta() == null) {
                 msg.messageAlert("Debe ingresar un rango de fechas ingreso / conclusión", null);
@@ -409,6 +484,84 @@ public class ReporteSidController extends AbstractManagedBean implements Seriali
                 } else {
                     if (reporteSidExpediente.getIni() == 1) {
                         listaReporteSidExpediente = null;
+                    }
+                }
+            }
+            return true;
+        } catch (Exception e) {
+            log.error("ERROR - buscarClasificacion()" + e);
+        }
+        return false;
+    }
+    
+    public boolean buscarReporteGestion(Integer pag) {
+        try {
+            if (reporteSidExpediente.getFechaIngresoDesde() == null && reporteSidExpediente.getFechaIngresoHasta() == null && reporteSidExpediente.getFechaConclusionDesde() == null && reporteSidExpediente.getFechaConclusionHasta() == null) {
+                msg.messageAlert("Debe ingresar un rango de fechas ingreso / conclusión", null);
+                return false;
+            }
+            if (reporteSidExpediente.getFechaIngresoDesde() == null && reporteSidExpediente.getFechaIngresoHasta() != null) {
+                msg.messageAlert("Debe ingresar la fecha de inicio de ingreso", null);
+                return false;
+            }
+            if (reporteSidExpediente.getFechaIngresoDesde() != null && reporteSidExpediente.getFechaIngresoHasta() == null) {
+                msg.messageAlert("Debe ingresar la fecha de fin de ingreso", null);
+                return false;
+            }
+            DateFormat format = new SimpleDateFormat("yyyyMMdd");
+            if (reporteSidExpediente.getFechaIngresoDesde() != null && reporteSidExpediente.getFechaIngresoHasta() != null) {
+                reporteSidExpediente.setFechaIngresoDesdeString(format.format(reporteSidExpediente.getFechaIngresoDesde()));
+                reporteSidExpediente.setFechaIngresoHastaString(format.format(reporteSidExpediente.getFechaIngresoHasta()));
+            }
+
+            if (reporteSidExpediente.getFechaConclusionDesde() == null && reporteSidExpediente.getFechaConclusionHasta() != null) {
+                msg.messageAlert("Debe ingresar la fecha de inicio de conclusión", null);
+                return false;
+            }
+            if (reporteSidExpediente.getFechaConclusionDesde() != null && reporteSidExpediente.getFechaConclusionHasta() == null) {
+                msg.messageAlert("Debe ingresar la fecha de fin de conclusión", null);
+                return false;
+            }
+
+            if (reporteSidExpediente.getFechaConclusionDesde() != null && reporteSidExpediente.getFechaConclusionHasta() != null) {
+                reporteSidExpediente.setFechaConclusionDesdeString(format.format(reporteSidExpediente.getFechaConclusionDesde()));
+                reporteSidExpediente.setFechaConclusionHastaString(format.format(reporteSidExpediente.getFechaConclusionHasta()));
+            }
+            if (StringUtils.isNotBlank(reporteSidExpediente.getGrupoVulnerable())) {
+                List<String> lis = new ArrayList<>();
+                String[] adArray = reporteSidExpediente.getGrupoVulnerable().split(",");
+                for (String adArray1 : adArray) {
+                    lis.add(adArray1);
+                }
+                if (lis.size() > 0) {
+                    reporteSidExpediente.setGruposVulnerables(lis);
+                }
+            }
+            if (pag > 0) {
+                int paginado = ConstantesUtil.PAGINADO_10;
+                Integer ini = paginado * (pag - 1) + 1;
+                Integer fin = paginado * pag;
+                if (pag == 0) {
+                    ini = 1;
+                    fin = 10;
+                }
+                reporteSidExpediente.setIni(ini);
+                reporteSidExpediente.setFin(fin);
+                List<ReporteSidExpediente> list = expedienteReporteService.listaGestionReporte(reporteSidExpediente);
+                for (ReporteSidExpediente ec : list) {
+                    //ec.setPersonasRecurrentes(personaService.personaPorExpedienteRecurrente(ec.getIdExpediente()));
+                    //ec.setPersonasAfectados(personaService.personaPorExpedienteAfectado(ec.getIdExpediente()));
+                    //ec.setEntidades(entidadService.entidadPorExpediente(ec.getIdExpediente()));
+                    /*if (ec.getNumeroExpediente() != null) {
+                        ec.setNiveles(expedienteNivelService.expedienteNivelPorExpediente(ec.getNumeroExpediente()));
+                    }*/
+                }
+                if (list.size() > 0) {
+                    listaReporteSidGestion = list;
+                    pagina = pag;
+                } else {
+                    if (reporteSidExpediente.getIni() == 1) {
+                        listaReporteSidGestion = null;
                     }
                 }
             }
@@ -1111,6 +1264,14 @@ public class ReporteSidController extends AbstractManagedBean implements Seriali
 
     public void setTipoReporte(Integer tipoReporte) {
         this.tipoReporte = tipoReporte;
+    }
+
+    public List<ReporteSidExpediente> getListaReporteSidGestion() {
+        return listaReporteSidGestion;
+    }
+
+    public void setListaReporteSidGestion(List<ReporteSidExpediente> listaReporteSidGestion) {
+        this.listaReporteSidGestion = listaReporteSidGestion;
     }
 
 }

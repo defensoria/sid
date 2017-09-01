@@ -23,7 +23,16 @@
         <result property="estadoSeguimiento" column="ESTADOSEGUIMIENTO"/>
         <result property="estadoRegistro" column="ESTADOREGISTRO"/>
         <result property="etiqueta" column="C_ETIQUETA"/>
-        
+        <result property="codigoGestion" column="C_CODIGOGESTION"/>
+        <result property="fechaRecepcionGestion" column="D_FECHA"/>
+        <result property="entidadGestion" column="C_NOMENTIDAD"/>
+        <result property="descripcionGestion" column="C_DESCRIPCION"/>
+        <result property="fechaRegistroGestion" column="D_FECHAREGISTRO"/>
+        <result property="fechaModificacionGestion" column="D_FECHAMODIFICACION"/>
+        <result property="respuestaGestion" column="C_RESPUESTA"/>
+        <result property="fechaRespuestaGestion" column="D_FECHARESPUESTA"/>
+        <result property="codigoGestionOrigen" column="C_CODIGOGESTIONORIGEN"/>
+         
     </resultMap> 
     
     <select id="listaExpedienteReporte" resultMap="reporteSidExpedienteMap" parameterType="reporteSidExpediente">
@@ -160,6 +169,147 @@ ORDER BY A.N_IDEXPEDIENTE DESC
         ) B
         ) A WHERE a.numfila BETWEEN #{ini} AND #{fin}
     </select>
+    
+    
+    
+   <select id="listaGestionReporte" resultMap="reporteSidExpedienteMap" parameterType="reporteSidExpediente">
+       SELECT A.*
+        FROM (
+        SELECT
+        B.*,
+        ROWNUM numfila
+        FROM (
+         SELECT DISTINCT A.C_NUMEROEXPEDIENTE, B.NOMBRE_PARAMETRO TIPOEXPEDIENTE, X.D_FECHA, X.C_CODIGOGESTION, M.C_NOMENTIDAD, 
+            X.C_DESCRIPCION, X.D_FECHAREGISTRO, X.D_FECHAMODIFICACION, X.C_RESPUESTA,  X.D_FECHARESPUESTA, X.C_CODIGOGESTIONORIGEN
+FROM SID_REG_EXPEDIENTE A
+INNER JOIN SID_REG_GESTION_ETAPA Y ON A.C_NUMEROEXPEDIENTE = Y.C_NUMEROEXPEDIENTE
+INNER JOIN SID_REG_GESTION X ON X.N_ID_GESTION = Y.N_ID_GESTION
+LEFT JOIN SID_PARAMETRO B ON A.C_TIPOCLASIFICACION = B.VALOR_PARAMETRO AND B.PADRE_PARAMETRO = 10
+LEFT JOIN SID_PARAMETRO C ON A.C_TIPOINGRESO = C.VALOR_PARAMETRO AND C.PADRE_PARAMETRO = 20
+LEFT JOIN SID_REG_ETAPA_ESTADO D ON A.N_IDEXPEDIENTE = D.N_ID_EXPEDIENTE AND D.C_INDICADOR = 'ACT'
+LEFT JOIN SID_REG_ETAPA E ON D.N_ID_ETAPA = E.N_ID_ETAPA
+LEFT JOIN SID_REG_ESTADO F ON F.N_ID_ESTADO = A.C_ESTADOCALIFICACION
+LEFT JOIN SID_REG_ESTADO G ON G.N_ID_ESTADO = A.C_ESTADOINVESTIGACION
+LEFT JOIN SID_REG_ESTADO H ON H.N_ID_ESTADO = A.C_ESTADOPERSUACION
+LEFT JOIN SID_REG_ESTADO I ON I.N_ID_ESTADO = A.C_ESTADOSEGUIMIENTO
+LEFT JOIN SID_SEG_OFICINA_DEFENSORIAL J ON A.N_CODIGOOD = J.N_ID_OD
+INNER JOIN SID_SEG_USUARIO K ON A.C_USUREGISTRO = K.CODIGO_USUARIO 
+LEFT JOIN SID_REG_ENTIDAD M ON M.N_ID_ENTIDAD =X.N_IDENTIDAD 
+LEFT JOIN SID_REG_EXPEDIENTE_CLASI O ON O.C_NUMEROEXPEDIENTE = A.C_NUMEROEXPEDIENTE
+LEFT JOIN SID_REG_EXPEDE_PERSONA P ON P.N_IDEXPEDIENTE = A.N_IDEXPEDIENTE      
+LEFT JOIN SID_REG_PERSONA Q ON Q.N_IDPERSONA = P.N_IDPERSONA
+WHERE A.C_ESTADO = 'A'
+       <if test="fechaIngresoDesde != null">
+    AND TO_NUMBER(TO_CHAR(A.D_FECHAINGRESO, 'YYYYMMDD')) &gt; TO_NUMBER(#{fechaIngresoDesdeString})-1 AND TO_NUMBER(TO_CHAR(A.D_FECHAINGRESO, 'YYYYMMDD')) &lt; TO_NUMBER(#{fechaIngresoHastaString})+1 
+</if>
+<if test="fechaConclusionDesde != null">
+    AND A.C_ESTADOGENERAL = 'C' AND TO_NUMBER(TO_CHAR(A.D_FECHAMODIFICACION, 'YYYYMMDD')) &gt; TO_NUMBER(#{fechaConclusionDesdeString})-1 AND TO_NUMBER(TO_CHAR(A.D_FECHAMODIFICACION, 'YYYYMMDD')) &lt; TO_NUMBER(#{fechaConclusionHastaString})+1 
+</if>
+<if test="tipoExpediente != ''">
+    AND A.C_TIPOCLASIFICACION = #{tipoExpediente}
+</if>
+<if test="codigoEntidad != null">
+    AND N.N_ID_ENTIDAD = #{codigoEntidad}
+</if>
+<if test="idDepartamentoEntidad != ''">
+    AND M.C_IDDEPARTAMENTO = #{idDepartamentoEntidad}
+</if>
+<if test="canalIngreso != ''">
+    AND A.C_TIPOINGRESO = #{canalIngreso}
+</if>
+<if test="ODBusqueda != ''">
+    AND J.N_ID_OD = #{ODBusqueda}
+</if>
+<if test="usuarioCodigo != ''">
+    AND K.CODIGO_USUARIO = #{usuarioCodigo}
+</if>
+<if test="gruposVulnerables != null">
+    AND A.C_TIPOGRUPOVULNERABLE  IN
+            <foreach item="item" index="index" collection="gruposVulnerables"
+           open="(" separator="," close=")">
+                #{item}
+            </foreach>
+</if>
+<if test="etiqueta != ''">
+    AND A.C_ETIQUETA = #{etiqueta}
+</if>
+<if test="idPrimerNivel != 0">
+    AND O.N_ID_PRIMERNIVEL = #{idPrimerNivel}
+</if>
+<if test="idSegundoNivel != 0">
+    AND O.N_ID_SEGUNDONIVEL = #{idSegundoNivel}
+</if>
+<if test="idTercerNivel != 0">
+    AND O.N_ID_TERCERNIVEL = #{idTercerNivel}
+</if>
+<if test="idCuartoNivel != 0">
+    AND O.N_ID_CUARTONIVEL = #{idCuartoNivel}
+</if>
+<if test="idQuintoNivel != 0">
+    AND O.N_ID_QUINTONIVEL = #{idQuintoNivel}
+</if>
+<if test="idSextoNivel != 0">
+    AND O.N_ID_SEXTONIVEL = #{idSextoNivel}
+</if>
+
+<if test="idDepartamentoRecurrente != ''">
+    AND Q.C_IDDEPA = #{idDepartamentoRecurrente} 
+    AND P.C_TIPO IN ('01','03')
+</if>
+<if test="idProvinciaRecurrente != ''">
+    AND Q.C_IDPROV = #{idProvinciaRecurrente} 
+    AND P.C_TIPO IN ('01','03')
+</if>
+<if test="idDistritoRecurrente != ''">
+    AND Q.C_IDDISTR = #{idDistritoRecurrente} 
+    AND P.C_TIPO IN ('01','03')
+</if>
+<if test="esDiscapacitadoRecurrente != ''">
+    AND Q.C_INDDISCAPACITADO = #{esDiscapacitadoRecurrente} 
+    AND P.C_TIPO IN ('01','03')
+</if>
+<if test="tipoLenguaRecurrente != ''">
+    AND Q.C_TIPOLENGUA = #{tipoLenguaRecurrente} 
+    AND P.C_TIPO IN ('01','03')
+</if>
+<if test="tipoPuebloRecurrente != ''">
+    AND Q.C_TIPOPUEBLO = #{tipoPuebloRecurrente} 
+    AND P.C_TIPO IN ('01','03')
+</if>
+
+<if test="idDepartamentoAfectado != ''">
+    AND Q.C_IDDEPA = #{idDepartamentoAfectado} 
+    AND P.C_TIPO IN ('02','03')
+</if>
+<if test="idProvinciaAfectado != ''">
+    AND Q.C_IDPROV = #{idProvinciaAfectado} 
+    AND P.C_TIPO IN ('02','03')
+</if>
+<if test="idDistritoAfectado != ''">
+    AND Q.C_IDDISTR = #{idDistritoAfectado} 
+    AND P.C_TIPO IN ('02','03')
+</if>
+<if test="esDiscapacitadoAfectado != ''">
+    AND Q.C_INDDISCAPACITADO = #{esDiscapacitadoAfectado} 
+    AND P.C_TIPO IN ('02','03')
+</if>
+<if test="tipoLenguaAfectado != ''">
+    AND Q.C_TIPOLENGUA = #{tipoLenguaAfectado} 
+    AND P.C_TIPO IN ('02','03')
+</if>
+<if test="tipoPuebloAfectado != ''">
+    AND Q.C_TIPOPUEBLO = #{tipoPuebloAfectado} 
+    AND P.C_TIPO IN ('02','03')
+</if>
+
+
+        ) B
+        ) A WHERE a.numfila BETWEEN #{ini} AND #{fin}
+    </select> 
+    
+    
+    
+    
     
     <select id="listaExpedienteReporteExport" resultMap="reporteSidExpedienteMap" parameterType="reporteSidExpediente">
        

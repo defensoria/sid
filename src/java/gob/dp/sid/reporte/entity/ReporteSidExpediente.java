@@ -151,7 +151,25 @@ public class ReporteSidExpediente {
 
     private String entidadesString;
     
-        
+    private String codigoGestion;
+    
+    private String fechaRecepcionGestion;
+    
+    private String entidadGestion;
+    
+    private String descripcionGestion;
+    
+    private Date fechaRegistroGestion;
+    
+    private Date fechaModificacionGestion;
+    
+    private String respuestaGestion;
+    
+    private String fechaRespuestaGestion;
+    
+    private String codigoGestionOrigen;
+    
+    
     public Date getFechaIngresoDesde() {
         return fechaIngresoDesde;
     }
@@ -700,4 +718,77 @@ public class ReporteSidExpediente {
         this.entidadesString = entidadesString;
     }
 
+    public String getCodigoGestion() {
+        return codigoGestion;
+    }
+
+    public void setCodigoGestion(String codigoGestion) {
+        this.codigoGestion = codigoGestion;
+    }
+
+    public String getFechaRecepcionGestion() {
+        return fechaRecepcionGestion;
+    }
+
+    public void setFechaRecepcionGestion(String fechaRecepcionGestion) {
+        this.fechaRecepcionGestion = fechaRecepcionGestion;
+    }
+
+    public String getEntidadGestion() {
+        return entidadGestion;
+    }
+
+    public void setEntidadGestion(String entidadGestion) {
+        this.entidadGestion = entidadGestion;
+    }
+
+    public String getDescripcionGestion() {
+        return descripcionGestion;
+    }
+
+    public void setDescripcionGestion(String descripcionGestion) {
+        this.descripcionGestion = descripcionGestion;
+    }
+
+    public Date getFechaRegistroGestion() {
+        return fechaRegistroGestion;
+    }
+
+    public void setFechaRegistroGestion(Date fechaRegistroGestion) {
+        this.fechaRegistroGestion = fechaRegistroGestion;
+    }
+
+    public Date getFechaModificacionGestion() {
+        return fechaModificacionGestion;
+    }
+
+    public void setFechaModificacionGestion(Date fechaModificacionGestion) {
+        this.fechaModificacionGestion = fechaModificacionGestion;
+    }
+
+    public String getRespuestaGestion() {
+        return respuestaGestion;
+    }
+
+    public void setRespuestaGestion(String respuestaGestion) {
+        this.respuestaGestion = respuestaGestion;
+    }
+
+    public String getFechaRespuestaGestion() {
+        return fechaRespuestaGestion;
+    }
+
+    public void setFechaRespuestaGestion(String fechaRespuestaGestion) {
+        this.fechaRespuestaGestion = fechaRespuestaGestion;
+    }
+
+    public String getCodigoGestionOrigen() {
+        return codigoGestionOrigen;
+    }
+
+    public void setCodigoGestionOrigen(String codigoGestionOrigen) {
+        this.codigoGestionOrigen = codigoGestionOrigen;
+    }
+
+    
 }

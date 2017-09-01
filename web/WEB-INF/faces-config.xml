@@ -304,4 +304,38 @@
         </navigation-case>
   </navigation-rule>
   
+  <navigation-rule>
+        <navigation-case>
+                <from-outcome>entidadReporte</from-outcome>
+                <to-view-id>/pages/reportes/entidadReporte.xhtml</to-view-id>
+        </navigation-case>
+  </navigation-rule>
+  
+  <navigation-rule>
+        <navigation-case>
+                <from-outcome>tematicaReporte</from-outcome>
+                <to-view-id>/pages/reportes/tematicaReporte.xhtml</to-view-id>
+        </navigation-case>
+  </navigation-rule>
+  
+  <navigation-rule>
+        <navigation-case>
+                <from-outcome>comionadoReporte</from-outcome>
+                <to-view-id>/pages/reportes/comionadoReporte.xhtml</to-view-id>
+        </navigation-case>
+  </navigation-rule>
+  
+  <navigation-rule>
+        <navigation-case>
+                <from-outcome>dependenciaReporte</from-outcome>
+                <to-view-id>/pages/reportes/dependenciasReporte.xhtml</to-view-id>
+        </navigation-case>
+  </navigation-rule>
+  
+  <navigation-rule>
+        <navigation-case>
+                <from-outcome>gestionInternaReporte</from-outcome>
+                <to-view-id>/pages/reportes/gestionesInternasReporte.xhtml</to-view-id>
+        </navigation-case>
+  </navigation-rule>
 </faces-config>
