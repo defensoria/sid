@@ -5,6 +5,7 @@
  */
 package gob.dp.sid.reporte.dao;
 
+import gob.dp.sid.reporte.entity.ReporteSidConteo;
 import gob.dp.sid.reporte.entity.ReporteSidExpediente;
 import java.util.List;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
@@ -45,6 +46,11 @@ public class ReporteSidExpedienteDAOImpl extends SqlSessionDaoSupport implements
     @Override
     public List<ReporteSidExpediente> listaGestionReporte(ReporteSidExpediente reporteSidExpediente) {
         return getSqlSession().selectList("gob.dp.sid.reporte.dao.ReporteSidExpedienteDAO.listaGestionReporte", reporteSidExpediente);
+    }
+
+    @Override
+    public List<ReporteSidConteo> listaEntidadReporte(ReporteSidExpediente reporteSidExpediente) {
+        return getSqlSession().selectList("gob.dp.sid.reporte.dao.ReporteSidExpedienteDAO.listaEntidadReporte", reporteSidExpediente);
     }
     
     

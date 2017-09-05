@@ -5,6 +5,7 @@
  */
 package gob.dp.sid.reporte.dao;
 
+import gob.dp.sid.reporte.entity.ReporteSidConteo;
 import gob.dp.sid.reporte.entity.ReporteSidExpediente;
 import java.util.List;
 
@@ -18,6 +19,8 @@ public interface ReporteSidExpedienteDAO {
     
     public List<ReporteSidExpediente> listaGestionReporte(ReporteSidExpediente reporteSidExpediente);
     
+    public List<ReporteSidConteo> listaEntidadReporte(ReporteSidExpediente reporteSidExpediente);
+    
     public List<ReporteSidExpediente> listaExpedienteReporteClasificacion(ReporteSidExpediente reporteSidExpediente);
     
     public List<ReporteSidExpediente> listaExpedienteReporteRecurrente(ReporteSidExpediente reporteSidExpediente);
@@ -25,5 +28,7 @@ public interface ReporteSidExpedienteDAO {
     public List<ReporteSidExpediente> listaExpedienteReporteAfectado(ReporteSidExpediente reporteSidExpediente);
     
     public List<ReporteSidExpediente> listaExpedienteReporteExport(ReporteSidExpediente reporteSidExpediente);
+    
+    
     
 }

@@ -5,6 +5,7 @@
  */
 package gob.dp.sid.reporte.service;
 
+import gob.dp.sid.reporte.entity.ReporteSidConteo;
 import gob.dp.sid.reporte.entity.ReporteSidExpediente;
 import java.util.List;
 
@@ -25,5 +26,7 @@ public interface ReporteSidExpedienteService {
     public List<ReporteSidExpediente> listaExpedienteReporteAfectado(ReporteSidExpediente reporteSidExpediente);
     
     public List<ReporteSidExpediente> listaExpedienteReporteExport(ReporteSidExpediente reporteSidExpediente);
+    
+    public List<ReporteSidConteo> listaEntidadReporte(ReporteSidExpediente reporteSidExpediente);
     
 }

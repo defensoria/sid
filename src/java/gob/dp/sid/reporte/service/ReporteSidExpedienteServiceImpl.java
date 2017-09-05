@@ -6,6 +6,7 @@
 package gob.dp.sid.reporte.service;
 
 import gob.dp.sid.reporte.dao.ReporteSidExpedienteDAO;
+import gob.dp.sid.reporte.entity.ReporteSidConteo;
 import gob.dp.sid.reporte.entity.ReporteSidExpediente;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +50,11 @@ public class ReporteSidExpedienteServiceImpl implements ReporteSidExpedienteServ
     @Override
     public List<ReporteSidExpediente> listaExpedienteReporteExport(ReporteSidExpediente reporteSidExpediente) {
         return reporteSidExpedienteDAO.listaExpedienteReporteExport(reporteSidExpediente);
+    }
+
+    @Override
+    public List<ReporteSidConteo> listaEntidadReporte(ReporteSidExpediente reporteSidExpediente) {
+        return reporteSidExpedienteDAO.listaEntidadReporte(reporteSidExpediente);
     }
 
     

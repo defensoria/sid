@@ -58,6 +58,7 @@
         
         <typeAlias type="gob.dp.sid.reporte.entity.Reporte" alias="reporte"/>
         <typeAlias type="gob.dp.sid.reporte.entity.ReporteSidExpediente" alias="reporteSidExpediente"/>
+        <typeAlias type="gob.dp.sid.reporte.entity.ReporteSidConteo" alias="reporteSidConteo"/>
         
         <typeAlias type="gob.dp.sid.bandeja.entity.Bandeja" alias="bandeja"/>
         <typeAlias type="gob.dp.sid.bandeja.entity.FiltroBusquedaMensaje" alias="filtroBusquedaMensaje"/>
