@@ -29,11 +29,11 @@ public abstract class AbstractManagedBean implements Serializable{
     
     protected StringUtil stringUtil;
     
-    //protected String separador = "/"; //linux
-    protected String separador = "\\"; //windows
+    protected String separador = "/"; //linux
+    //protected String separador = "\\"; //windows
 
-    //protected static String FILE_SYSTEM="/home/glassfish/glassfish4/glassfish/domains/domain1/docroot/filesystem/";//linux
-    protected static String FILE_SYSTEM = "C:/server/glassfish-4.0/glassfish4/glassfish/domains/domain1/docroot/filesystem/";//windows
+    protected static String FILE_SYSTEM="/home/glassfish/glassfish4/glassfish/domains/domain1/docroot/filesystem/";//linux
+    //protected static String FILE_SYSTEM = "C:/server/glassfish-4.0/glassfish4/glassfish/domains/domain1/docroot/filesystem/";//windows
 
     public String hostAddress() {
         try {//windows

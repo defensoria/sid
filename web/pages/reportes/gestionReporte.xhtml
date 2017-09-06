@@ -570,13 +570,13 @@
                                 <br/>
                                 <div>
                                     <a jsf:action="#{reporteSidController.reporteExpdienteExcel()}">
-                                        <img src="../../bootstrap/img/excel.png" height="45" width="45"/>
+                                        <!--<img src="../../bootstrap/img/excel.png" height="45" width="45"/>-->
                                     </a>
                                     <a jsf:action="#{reporteSidController.reporteExpdientePdf()}">
-                                        <img src="../../bootstrap/img/pdf.png" height="45" width="45"/>
+                                        <!--<img src="../../bootstrap/img/pdf.png" height="45" width="45"/>-->
                                     </a>
                                 </div>
-                                <style>
+                                <!--<style>
                                     .column1 { width: 1%; color: black}
                                     .column2 { width: 8%; color: black}
                                     .column3 { width: 7%; color: black}
@@ -589,7 +589,7 @@
                                     .column10 { width: 8%; color: black; font-size: 0.9em}
                                     .column11 { width: 8%; color: black; font-size: 0.9em}
                                     .column12 { width: 24%; color: black}
-                                </style>
+                                </style>-->
                                 <h:panelGroup id="idPanelBusquedaExpediente1">
                                     <h:dataTable value="#{reporteSidController.listaReporteSidGestion}" var="exped" class="table table-hover" binding="#{row31}" width="100%" columnClasses="column1,column2,column3,column4,column5,column6,column7,column8,column9,column10,column11,column12">
                                         <h:column>
@@ -651,12 +651,12 @@
                                     </h:dataTable>
                                     <ul class="pager">
                                         <li>
-                                            <a jsf:action="#{reporteSidController.reporte(reporteSidController.pagina -1)}" jsf:rendered="#{!empty registroController.listaExpedienteXUsuarioPaginado}" jsf:onclick="loadingModal()">Anterior
+                                            <a jsf:action="#{reporteSidController.buscarReporteGestion(reporteSidController.pagina -1)}" jsf:rendered="#{!empty reporteSidController.listaReporteSidGestion}" jsf:onclick="loadingModal()">Anterior
                                                 <f:ajax render="idPanelBusquedaExpediente1" onevent="closeModal"/>
                                             </a>
                                         </li>
                                         <li>
-                                            <a jsf:action="#{reporteSidController.reporte(reporteSidController.pagina +1)}" jsf:rendered="#{!empty registroController.listaExpedienteXUsuarioPaginado}" jsf:onclick="loadingModal()">Siguiente
+                                            <a jsf:action="#{reporteSidController.buscarReporteGestion(reporteSidController.pagina +1)}" jsf:rendered="#{!empty reporteSidController.listaReporteSidGestion}" jsf:onclick="loadingModal()">Siguiente
                                                 <f:ajax render="idPanelBusquedaExpediente1" onevent="closeModal"/>
                                             </a>
                                         </li>

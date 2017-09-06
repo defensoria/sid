@@ -571,10 +571,10 @@
                                 <br/>
                                 <div>
                                     <a jsf:action="#{reporteSidController.reporteExpdienteExcel()}">
-                                        <img src="../../bootstrap/img/excel.png" height="45" width="45"/>
+                                        <!--<img src="../../bootstrap/img/excel.png" height="45" width="45"/>-->
                                     </a>
                                     <a jsf:action="#{reporteSidController.reporteExpdientePdf()}">
-                                        <img src="../../bootstrap/img/pdf.png" height="45" width="45"/>
+                                        <!--<img src="../../bootstrap/img/pdf.png" height="45" width="45"/>-->
                                     </a>
                                 </div>
                                 <style>
@@ -667,12 +667,12 @@
                                     </h:dataTable>
                                     <ul class="pager">
                                         <li>
-                                            <a jsf:action="#{reporteSidController.reporte(reporteSidController.pagina -1)}" jsf:rendered="#{!empty registroController.listaExpedienteXUsuarioPaginado}" jsf:onclick="loadingModal()">Anterior
+                                            <a jsf:action="#{reporteSidController.reporte(reporteSidController.pagina -1)}" jsf:rendered="#{!empty reporteSidController.listaReporteSidExpediente}" jsf:onclick="loadingModal()">Anterior
                                                 <f:ajax render="idPanelBusquedaExpediente" onevent="closeModal"/>
                                             </a>
                                         </li>
                                         <li>
-                                            <a jsf:action="#{reporteSidController.reporte(reporteSidController.pagina +1)}" jsf:rendered="#{!empty registroController.listaExpedienteXUsuarioPaginado}" jsf:onclick="loadingModal()">Siguiente
+                                            <a jsf:action="#{reporteSidController.reporte(reporteSidController.pagina +1)}" jsf:rendered="#{!empty reporteSidController.listaReporteSidExpediente}" jsf:onclick="loadingModal()">Siguiente
                                                 <f:ajax render="idPanelBusquedaExpediente" onevent="closeModal"/>
                                             </a>
                                         </li>

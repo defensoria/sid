@@ -234,7 +234,7 @@ WHERE A.C_ESTADO = 'A'
     AND A.C_TIPOCLASIFICACION = #{tipoExpediente}
 </if>
 <if test="codigoEntidad != null">
-    AND N.N_ID_ENTIDAD = #{codigoEntidad}
+    AND X.N_IDENTIDAD = #{codigoEntidad}
 </if>
 <if test="idDepartamentoEntidad != ''">
     AND M.C_IDDEPARTAMENTO = #{idDepartamentoEntidad}
