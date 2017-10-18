@@ -16,7 +16,7 @@
                                     <span class="text-resalt-comun"/>Reporte de expedientes
                                 </a>
                             </li>
-                            <li role="presentation" class="active">
+                            <li role="presentation">
                                 <a aria-controls="profile" role="tab" data-toggle="tab" jsf:action="#{reporteSidController.cargarPaginaGestionReporte()}">
                                     <span class="text-resalt-comun"/>Reporte de gestiones
                                 </a>
@@ -26,7 +26,7 @@
                                     <span class="text-resalt-comun"/>Reporte de entidades
                                 </a>
                             </li>
-                            <li role="presentation">
+                            <li role="presentation"  class="active">
                                 <a aria-controls="profile" role="tab" data-toggle="tab" jsf:action="#{reporteSidController.cargarPaginaTematicaReporte()}">
                                     <span class="text-resalt-comun"/>Reporte de tematicas
                                 </a>
@@ -556,7 +556,7 @@
                                                     </tr>
                                                     <tr>
                                                         <td colspan="2">
-                                                            <a class="btn btn-primary" jsf:action="#{reporteSidController.buscarReporteGestion(1)}" >
+                                                            <a class="btn btn-primary" jsf:action="#{reporteSidController.buscarReporteExpedienteClasificacion(1)}" >
                                                                 <span class="glyphicon glyphicon-search" />Buscar
                                                             </a>
                                                         </td>
@@ -591,72 +591,85 @@
                                     .column12 { width: 24%; color: black}
                                 </style>
                                 <h:panelGroup id="idPanelBusquedaExpediente1">
-                                    <h:dataTable value="#{reporteSidController.listaReporteSidGestion}" var="exped" class="table table-hover" binding="#{row31}" width="100%" columnClasses="column1,column2,column3,column4,column5,column6,column7,column8,column9,column10,column11,column12">
+                                    <h:dataTable value="#{reporteSidController.listaReporteSidClasificacion}" var="exped" class="table table-hover" binding="#{row33}" width="100%" columnClasses="column1,column2,column3,column4,column5,column6,column7,column8,column9,column10,column11,column12">
                                         <h:column>
                                             <f:facet name="header">Nro</f:facet>
-                                            <h:outputText value="#{(row31.rowIndex+1)+(reporteSidController.pagina-1)*10}" />
+                                            <h:outputText value="#{(row33.rowIndex+1)+(reporteSidController.pagina-1)*10}" />
                                         </h:column>
                                         <h:column>
-                                            <f:facet name="header">Expediente</f:facet>
-                                            <a data-toggle="tooltip" data-placement="right" title="#{exped.sumilla}">#{exped.numeroExpediente}</a>
+                                            <f:facet name="header">Primer nivel</f:facet>
+                                            <h:outputText value="#{exped.nombrePrimerNivel}" />
                                         </h:column>
                                         <h:column>
-                                            <f:facet name="header">Tipo</f:facet>
-                                            <h:outputText value="#{exped.tipoExpediente}" />
+                                            <f:facet name="header">Segundo nivel</f:facet>
+                                            <h:outputText value="#{exped.nombreSegundoNivel}" />
                                         </h:column>
                                         <h:column>
-                                            <f:facet name="header">Fecha gestión</f:facet>
-                                            <h:outputText value="#{exped.fechaRecepcionGestion}" >
-                                                <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
-                                            </h:outputText>
+                                            <f:facet name="header">Tercer nivel</f:facet>
+                                            <h:outputText value="#{exped.nombreTercerNivel}" />
                                         </h:column>
                                         <h:column>
-                                            <f:facet name="header">Código gestión</f:facet>
-                                            <h:outputText value="#{exped.codigoGestion}" />
+                                            <f:facet name="header">Cuarto nivel</f:facet>
+                                            <h:outputText value="#{exped.nombreCuartoNivel}" />
                                         </h:column>
                                         <h:column>
-                                            <f:facet name="header">Entidad</f:facet>
-                                            <h:outputText value="#{exped.entidadGestion}" />
+                                            <f:facet name="header">Quinto nivel</f:facet>
+                                            <h:outputText value="#{exped.nombreQuintoNivel}" />
                                         </h:column>
                                         <h:column>
-                                            <f:facet name="header">Descripción</f:facet>
-                                            <h:outputText value="#{exped.descripcionGestion}" />
+                                            <f:facet name="header">Sexto nivel</f:facet>
+                                            <h:outputText value="#{exped.nombreSextoNivel}" />
                                         </h:column>
                                         <h:column>
-                                            <f:facet name="header">Fecha registro</f:facet>
-                                            <h:outputText value="#{exped.fechaRegistroGestion}" >
-                                                <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
-                                            </h:outputText>
+                                            <f:facet name="header">Total Expedientes</f:facet>
+                                            <h:outputText value="#{exped.totalExpediente}" />
                                         </h:column>
                                         <h:column>
-                                            <f:facet name="header">Fecha modificación</f:facet>
-                                            <h:outputText value="#{exped.fechaModificacionGestion}" >
-                                                <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
-                                            </h:outputText>
+                                            <f:facet name="header">Total quejas</f:facet>
+                                            <h:outputText value="#{exped.totalExpedienteQueja}" />
                                         </h:column>
                                         <h:column>
-                                            <f:facet name="header">Respuesta</f:facet>
-                                            <h:outputText value="#{exped.respuestaGestion}" />
+                                            <f:facet name="header">Total quejas concluidas</f:facet>
+                                            <h:outputText value="#{exped.totalExpedienteQuejaConcluido}"/>
                                         </h:column>
                                         <h:column>
-                                            <f:facet name="header">Fecha Respuesta</f:facet>
-                                            <h:outputText value="#{exped.fechaRespuestaGestion}" >
-                                                <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
-                                            </h:outputText>
+                                            <f:facet name="header">Total quejas en tramite</f:facet>
+                                            <h:outputText value="#{exped.totalExpedienteQuejaTramite}" />
                                         </h:column>
                                         <h:column>
-                                            <f:facet name="header">Origen</f:facet>
-                                            <h:outputText value="#{exped.codigoGestionOrigen}" />
+                                            <f:facet name="header">Total consultas</f:facet>
+                                            <h:outputText value="#{exped.totalExpedienteConsulta}" />
                                         </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Total consultas concluidas</f:facet>
+                                            <h:outputText value="#{exped.totalExpedienteConsultaConcluido}" />
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Total consultas en tramite</f:facet>
+                                            <h:outputText value="#{exped.totalExpedienteConsultaTramite}" />
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Total petitorios</f:facet>
+                                            <h:outputText value="#{exped.totalExpedientePetitorio}" />
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Total petitorios concluidos</f:facet>
+                                            <h:outputText value="#{exped.totalExpedientePetitorioConcluido}" />
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Total petitorios en tramite</f:facet>
+                                            <h:outputText value="#{exped.totalExpedientePetitorioTramite}" />
+                                        </h:column>
+                                        
                                     </h:dataTable>
                                     <ul class="pager">
                                         <li>
-                                            <a jsf:action="#{reporteSidController.reporte(reporteSidController.pagina -1)}" jsf:rendered="#{!empty registroController.listaExpedienteXUsuarioPaginado}" jsf:onclick="loadingModal()">Anterior
+                                            <a jsf:action="#{reporteSidController.buscarReporteExpedienteClasificacion(reporteSidController.pagina -1)}" jsf:rendered="#{!empty registroController.listaExpedienteXUsuarioPaginado}" jsf:onclick="loadingModal()">Anterior
                                                 <f:ajax render="idPanelBusquedaExpediente1" onevent="closeModal"/>
                                             </a>
                                         </li>
                                         <li>
-                                            <a jsf:action="#{reporteSidController.reporte(reporteSidController.pagina +1)}" jsf:rendered="#{!empty registroController.listaExpedienteXUsuarioPaginado}" jsf:onclick="loadingModal()">Siguiente
+                                            <a jsf:action="#{reporteSidController.buscarReporteExpedienteClasificacion(reporteSidController.pagina +1)}" jsf:rendered="#{!empty registroController.listaExpedienteXUsuarioPaginado}" jsf:onclick="loadingModal()">Siguiente
                                                 <f:ajax render="idPanelBusquedaExpediente1" onevent="closeModal"/>
                                             </a>
                                         </li>

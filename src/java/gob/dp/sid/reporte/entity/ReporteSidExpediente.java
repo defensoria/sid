@@ -169,7 +169,6 @@ public class ReporteSidExpediente {
     
     private String codigoGestionOrigen;
     
-    
     public Date getFechaIngresoDesde() {
         return fechaIngresoDesde;
     }
@@ -790,5 +789,4 @@ public class ReporteSidExpediente {
         this.codigoGestionOrigen = codigoGestionOrigen;
     }
 
-    
 }

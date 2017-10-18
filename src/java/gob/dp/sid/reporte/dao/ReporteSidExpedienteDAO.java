@@ -21,7 +21,7 @@ public interface ReporteSidExpedienteDAO {
     
     public List<ReporteSidConteo> listaEntidadReporte(ReporteSidExpediente reporteSidExpediente);
     
-    public List<ReporteSidExpediente> listaExpedienteReporteClasificacion(ReporteSidExpediente reporteSidExpediente);
+    public List<ReporteSidConteo> listaExpedienteReporteClasificacion(ReporteSidExpediente reporteSidExpediente);
     
     public List<ReporteSidExpediente> listaExpedienteReporteRecurrente(ReporteSidExpediente reporteSidExpediente);
     

@@ -50,6 +50,12 @@ public class ReporteSidConteo implements Serializable{
     
     private Integer totalExpedientePetitorioConcluidoNoAcogido;
     
+    private Integer totalExpedienteConsulta;
+    
+    private Integer totalExpedienteConsultaTramite;
+    
+    private Integer totalExpedienteConsultaConcluido;
+    
     private Integer totalGestion;
     
     private Integer totalGestionSi;
@@ -59,6 +65,18 @@ public class ReporteSidConteo implements Serializable{
     private String entidad;
     
     private String departamento;
+    
+    private String nombrePrimerNivel;
+    
+    private String nombreSegundoNivel;
+    
+    private String nombreTercerNivel;
+    
+    private String nombreCuartoNivel;
+    
+    private String nombreQuintoNivel;
+    
+    private String nombreSextoNivel;
 
     public Integer getTotalExpediente() {
         return totalExpediente;
@@ -244,6 +262,78 @@ public class ReporteSidConteo implements Serializable{
 
     public void setDepartamento(String departamento) {
         this.departamento = departamento;
+    }
+
+    public String getNombrePrimerNivel() {
+        return nombrePrimerNivel;
+    }
+
+    public void setNombrePrimerNivel(String nombrePrimerNivel) {
+        this.nombrePrimerNivel = nombrePrimerNivel;
+    }
+
+    public String getNombreSegundoNivel() {
+        return nombreSegundoNivel;
+    }
+
+    public void setNombreSegundoNivel(String nombreSegundoNivel) {
+        this.nombreSegundoNivel = nombreSegundoNivel;
+    }
+
+    public String getNombreTercerNivel() {
+        return nombreTercerNivel;
+    }
+
+    public void setNombreTercerNivel(String nombreTercerNivel) {
+        this.nombreTercerNivel = nombreTercerNivel;
+    }
+
+    public String getNombreCuartoNivel() {
+        return nombreCuartoNivel;
+    }
+
+    public void setNombreCuartoNivel(String nombreCuartoNivel) {
+        this.nombreCuartoNivel = nombreCuartoNivel;
+    }
+
+    public String getNombreQuintoNivel() {
+        return nombreQuintoNivel;
+    }
+
+    public void setNombreQuintoNivel(String nombreQuintoNivel) {
+        this.nombreQuintoNivel = nombreQuintoNivel;
+    }
+
+    public String getNombreSextoNivel() {
+        return nombreSextoNivel;
+    }
+
+    public void setNombreSextoNivel(String nombreSextoNivel) {
+        this.nombreSextoNivel = nombreSextoNivel;
+    }
+
+    public Integer getTotalExpedienteConsulta() {
+        return totalExpedienteConsulta;
+    }
+
+    public void setTotalExpedienteConsulta(Integer totalExpedienteConsulta) {
+        this.totalExpedienteConsulta = totalExpedienteConsulta;
+    }
+
+    public Integer getTotalExpedienteConsultaTramite() {
+        return totalExpedienteConsultaTramite;
+    }
+
+    public void setTotalExpedienteConsultaTramite(Integer totalExpedienteConsultaTramite) {
+        this.totalExpedienteConsultaTramite = totalExpedienteConsultaTramite;
+    }
+
+    public Integer getTotalExpedienteConsultaConcluido() {
+        return totalExpedienteConsultaConcluido;
+    }
+
+    public void setTotalExpedienteConsultaConcluido(Integer totalExpedienteConsultaConcluido) {
+        this.totalExpedienteConsultaConcluido = totalExpedienteConsultaConcluido;
     }
     
 }

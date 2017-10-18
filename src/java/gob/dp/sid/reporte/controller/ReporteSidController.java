@@ -71,6 +71,8 @@ public class ReporteSidController extends AbstractManagedBean implements Seriali
     private List<ReporteSidExpediente> listaReporteSidGestion;
     
     private List<ReporteSidConteo> listaReporteSidEntidad;
+    
+    private List<ReporteSidConteo> listaReporteSidClasificacion;
 
     private Long nroPaginaEntidad = 1L;
 
@@ -653,7 +655,7 @@ public class ReporteSidController extends AbstractManagedBean implements Seriali
         return false;
     }
     
-    private boolean buscarReporteExpedienteClasificacion(Integer pag) {
+    public boolean buscarReporteExpedienteClasificacion(Integer pag) {
         try {
             if (StringUtils.equals(reporteSidExpediente.getIdPrimerNivel(), "0")) {
                 msg.messageAlert("Debe de ingresar como mínimo un nivel ", nombreEntidad);
@@ -669,21 +671,14 @@ public class ReporteSidController extends AbstractManagedBean implements Seriali
                 }
                 reporteSidExpediente.setIni(ini);
                 reporteSidExpediente.setFin(fin);
-                List<ReporteSidExpediente> list = expedienteReporteService.listaExpedienteReporteClasificacion(reporteSidExpediente);
-                for (ReporteSidExpediente ec : list) {
-                    ec.setPersonasRecurrentes(personaService.personaPorExpedienteRecurrente(ec.getIdExpediente()));
-                    ec.setPersonasAfectados(personaService.personaPorExpedienteAfectado(ec.getIdExpediente()));
-                    ec.setEntidades(entidadService.entidadPorExpediente(ec.getIdExpediente()));
-                    if (ec.getNumeroExpediente() != null) {
-                        ec.setNiveles(expedienteNivelService.expedienteNivelPorExpediente(ec.getNumeroExpediente()));
-                    }
-                }
+                List<ReporteSidConteo> list = expedienteReporteService.listaExpedienteReporteClasificacion(reporteSidExpediente);
+                
                 if (list.size() > 0) {
-                    listaReporteSidExpediente = list;
+                    listaReporteSidClasificacion = list;
                     pagina = pag;
                 } else {
                     if (reporteSidExpediente.getIni() == 1) {
-                        listaReporteSidExpediente = null;
+                        listaReporteSidClasificacion = null;
                     }
                 }
             }
@@ -1361,6 +1356,14 @@ public class ReporteSidController extends AbstractManagedBean implements Seriali
 
     public void setListaReporteSidEntidad(List<ReporteSidConteo> listaReporteSidEntidad) {
         this.listaReporteSidEntidad = listaReporteSidEntidad;
+    }
+
+    public List<ReporteSidConteo> getListaReporteSidClasificacion() {
+        return listaReporteSidClasificacion;
+    }
+
+    public void setListaReporteSidClasificacion(List<ReporteSidConteo> listaReporteSidClasificacion) {
+        this.listaReporteSidClasificacion = listaReporteSidClasificacion;
     }
     
     

@@ -19,7 +19,7 @@ public interface ReporteSidExpedienteService {
     
     public List<ReporteSidExpediente> listaGestionReporte(ReporteSidExpediente reporteSidExpediente);
     
-    public List<ReporteSidExpediente> listaExpedienteReporteClasificacion(ReporteSidExpediente reporteSidExpediente);
+    public List<ReporteSidConteo> listaExpedienteReporteClasificacion(ReporteSidExpediente reporteSidExpediente);
     
     public List<ReporteSidExpediente> listaExpedienteReporteRecurrente(ReporteSidExpediente reporteSidExpediente);
     

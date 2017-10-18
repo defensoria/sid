@@ -33,7 +33,7 @@ public class ReporteSidExpedienteServiceImpl implements ReporteSidExpedienteServ
     }
 
     @Override
-    public List<ReporteSidExpediente> listaExpedienteReporteClasificacion(ReporteSidExpediente reporteSidExpediente) {
+    public List<ReporteSidConteo> listaExpedienteReporteClasificacion(ReporteSidExpediente reporteSidExpediente) {
         return reporteSidExpedienteDAO.listaExpedienteReporteClasificacion(reporteSidExpediente);
     }
 
