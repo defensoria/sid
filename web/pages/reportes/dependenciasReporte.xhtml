@@ -7,7 +7,7 @@
       xmlns:gc="http://xmlns.jcp.org/jsf/composite/gc">
     <ui:composition template="../template/template.xhtml">
         <ui:define name="content">
-            <h:form id="idForm" class="form-horizontal">
+            <h:form id="idForm11" class="form-horizontal">
                 <div class="panel panel-primary">
                     <div class="panel-body">
                         <ul class="nav nav-tabs" role="tablist">
@@ -16,7 +16,7 @@
                                     <span class="text-resalt-comun"/>Reporte de expedientes
                                 </a>
                             </li>
-                            <li role="presentation" class="active">
+                            <li role="presentation">
                                 <a aria-controls="profile" role="tab" data-toggle="tab" jsf:action="#{reporteSidController.cargarPaginaGestionReporte()}">
                                     <span class="text-resalt-comun"/>Reporte de gestiones
                                 </a>
@@ -36,7 +36,7 @@
                                     <span class="text-resalt-comun"/>Reporte de comisionados
                                 </a>
                             </li>
-                            <li role="presentation">
+                            <li role="presentation"  class="active">
                                 <a aria-controls="profile" role="tab" data-toggle="tab" jsf:action="#{reporteSidController.cargarPaginaDependenciaReporte()}">
                                     <span class="text-resalt-comun"/>Reporte de dependencias
                                 </a>
@@ -110,12 +110,12 @@
                                                                     <td>
                                                                         <a style="vertical-align: bottom" jsf:action="#{reporteSidController.limpiaListasReporte()}" jsf:onclick="loadingModal()" >
                                                                             <span style="color: #3183B9; font-size: large;" class="glyphicon glyphicon-search"></span>
-                                                                            <f:ajax render=":idForm:idPanelModalEntidad" onevent="openModalBusquedaEntidad()"/>
+                                                                            <f:ajax render=":idForm11:idPanelModalEntidad11" onevent="openModalBusquedaEntidad()"/>
                                                                         </a>
                                                                     </td>
                                                                 </tr>
                                                             </table>
-                                                            <div class="modal fade" tabindex="-1" role="dialog" id="idModalBusquedaEntidad">
+                                                            <div class="modal fade" tabindex="-1" role="dialog" id="idModalBusquedaEntidad11">
                                                                 <div class="modal-dialog" role="document">
                                                                     <div class="modal-content">
                                                                         <div class="modal-header">
@@ -125,8 +125,8 @@
                                                                             <span class="modal-title text-resalt-primary">Búsqueda de Entidades</span>
                                                                         </div>
                                                                         <div class="modal-body">
-                                                                            <h:panelGroup id="idPanelModalEntidad">
-                                                                                <div id="idDivRegistro" class="form-group has-feedback" style="width:100%;margin:auto">
+                                                                            <h:panelGroup id="idPanelModalEntidad11">
+                                                                                <div class="form-group has-feedback" style="width:100%;margin:auto">
                                                                                     <table style="width: 100%">
                                                                                         <tr>
                                                                                             <td style="width: 80%">
@@ -135,17 +135,17 @@
                                                                                             <td>
                                                                                                 <a style="vertical-align: bottom" jsf:action="#{reporteSidController.cargarPopoverEntidad(1)}" jsf:onclick="loadingModal()">
                                                                                                     <span style="color: #3183B9; font-size: large;" class="glyphicon glyphicon-search"></span>
-                                                                                                    <f:ajax execute="@form" render=":idForm:idPanelModalEntidad" onevent="closeModal"/>
+                                                                                                    <f:ajax execute="@form" render=":idForm11:idPanelModalEntidad11" onevent="closeModal"/>
                                                                                                 </a>
                                                                                             </td>
                                                                                         </tr>
                                                                                     </table>
                                                                                 </div>
                                                                                 <br/>
-                                                                                <h:dataTable  var="item" value="#{reporteSidController.entidadPopover}" class="table table-striped" style="font-size:small" binding="#{row1}">
+                                                                                <h:dataTable  var="item" value="#{reporteSidController.entidadPopover}" class="table table-striped" style="font-size:small" binding="#{row38}">
                                                                                     <h:column>
                                                                                         <f:facet name="header">N.°</f:facet>
-                                                                                        <h:outputText value="#{(reporteSidController.nroPaginaEntidad-1)*10+row1.rowIndex+1}" />
+                                                                                        <h:outputText value="#{(reporteSidController.nroPaginaEntidad-1)*10+row38.rowIndex+1}" />
                                                                                     </h:column>
                                                                                     <h:column>
                                                                                         <f:facet name="header">Nombre</f:facet>
@@ -165,12 +165,12 @@
                                                                                 <ul class="pager">
                                                                                     <li>
                                                                                         <a jsf:rendered="#{reporteSidController.entidadPopover.size() > 0}" jsf:action="#{reporteSidController.cargarPopoverEntidad(reporteSidController.nroPaginaEntidad -1)}">Anterior
-                                                                                            <f:ajax render="idPanelModalEntidad" />
+                                                                                            <f:ajax render="idPanelModalEntidad11" />
                                                                                         </a>
                                                                                     </li>
                                                                                     <li>
                                                                                         <a jsf:rendered="#{reporteSidController.entidadPopover.size() > 0}" jsf:action="#{reporteSidController.cargarPopoverEntidad(reporteSidController.nroPaginaEntidad +1)}">Siguiente
-                                                                                            <f:ajax render="idPanelModalEntidad" />
+                                                                                            <f:ajax render="idPanelModalEntidad11" />
                                                                                         </a>
                                                                                     </li>
                                                                                 </ul>
@@ -181,7 +181,7 @@
                                                             </div>
                                                             <script>
                                                                 function openModalBusquedaActor() {
-                                                                    $("#idModalBusquedaEntidad").modal('show');
+                                                                    $("#idModalBusquedaEntidad11").modal('show');
                                                                 }
                                                             </script>
                                                         </td>
@@ -189,7 +189,7 @@
                                                     <tr>
                                                         <td style="padding-right: 5px; padding-bottom: 10px">
                                                             <label>Región de la entidad quejada</label>
-                                                            <h:panelGroup id="idUbigeoPersona">
+                                                            <h:panelGroup>
                                                                 <table style="width:100%">
                                                                     <tr>
                                                                         <td style="width:33%">
@@ -233,9 +233,9 @@
                                                                     <td>
                                                                         <a style="vertical-align: bottom" jsf:action="#{reporteSidController.limpiarComisionado()}" jsf:onclick="loadingModal()" >
                                                                             <span style="color: #3183B9; font-size: large;" class="glyphicon glyphicon-search"></span>
-                                                                            <f:ajax render=":idForm:idPanelCompartir" onevent="modalAsignar()"/>
+                                                                            <f:ajax render=":idForm11:idPanelCompartir11" onevent="modalAsignar()"/>
                                                                         </a>
-                                                                        <div class="modal fade" data-backdrop="static" data-keyboard="false" id="idModalCompartir" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                                        <div class="modal fade" data-backdrop="static" data-keyboard="false" id="idModalCompartir11" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                                                             <div class="modal-dialog" style="text-align: left">
                                                                                 <div class="modal-content">
                                                                                     <div class="modal-header">
@@ -244,7 +244,7 @@
                                                                                         </a>
                                                                                     </div>
                                                                                     <div class="modal-body" style="padding:5px">
-                                                                                        <h:panelGroup id="idPanelCompartir">
+                                                                                        <h:panelGroup id="idPanelCompartir11">
                                                                                             <span class="text-bold">Seleccione Comisionado:</span>
                                                                                             <h:selectOneMenu value="#{reporteSidController.usuarioPalabra}">
                                                                                                 <f:selectItems value="#{reporteSidController.listaUsuarioOD}" var="item" itemLabel="#{item.nombre} #{item.apellidoPaterno} #{item.apellidoMaterno}" itemValue="#{item.codigo}" />
@@ -261,7 +261,7 @@
                                                                         </div>
                                                                         <script>
                                                                             function modalAsignar() {
-                                                                                $("#idModalCompartir").modal('show');
+                                                                                $("#idModalCompartir11").modal('show');
                                                                             }
                                                                         </script>
                                                                     </td>
@@ -287,7 +287,7 @@
                                                                 <span class="text-bold">Buscador de clasificación temática:</span>
                                                                 <a style="cursor: pointer" jsf:action="#{reporteSidController.limpiarModalBusquedaClasificacion()}" jsf:onclick="loadingModal()">
                                                                     <span class="glyphicon glyphicon-search" style="font-size: large" />
-                                                                    <f:ajax render="idPanelModalBusquedaClasificacion" onevent="openModalBusquedaClasificacion" />
+                                                                    <f:ajax render="idPanelModalBusquedaClasificacion11" onevent="openModalBusquedaClasificacion" />
                                                                 </a>
                                                             </td>
                                                             <td style="padding-left: 5px; padding-bottom: 10px">
@@ -297,12 +297,12 @@
                                                                             $("#loadModal").modal('hide');
                                                                             $('body').removeClass('modal-open');
                                                                             $(".modal-backdrop").removeClass("modal-backdrop");
-                                                                            $("#idModalBusquedaClasificacion").modal('show');
+                                                                            $("#idModalBusquedaClasificacion11").modal('show');
                                                                         }
                                                                     }
                                                                 </script>
-                                                                <h:panelGroup id="idPanelModalBusquedaClasificacion">
-                                                                    <div class="modal fade" data-backdrop="static" data-keyboard="false" id="idModalBusquedaClasificacion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                                <h:panelGroup id="idPanelModalBusquedaClasificacion11">
+                                                                    <div class="modal fade" data-backdrop="static" data-keyboard="false" id="idModalBusquedaClasificacion11" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                                                         <div class="modal-dialog" style="text-align: left">
                                                                             <div class="modal-content">
                                                                                 <div class="modal-header">
@@ -313,7 +313,7 @@
                                                                                 </div>
                                                                                 <div class="modal-body" style="padding:5px">
                                                                                     <div class="panel-body">
-                                                                                        <h:panelGroup id="idPanelBusquedaClasificacion">
+                                                                                        <h:panelGroup id="idPanelBusquedaClasificacion11">
                                                                                             <table style="width: 100%">
                                                                                                 <tr>
                                                                                                     <td>
@@ -322,7 +322,7 @@
                                                                                                     <td>
                                                                                                         <a class="btn btn-primary" jsf:action="#{reporteSidController.buscarClasificacion(1)}" jsf:onclick="loadingModal()">
                                                                                                             <span class="glyphicon glyphicon-search" />
-                                                                                                            <f:ajax render="idPanelBusquedaClasificacion" execute="idPanelBusquedaClasificacion" onevent="closeModal"/>Buscar
+                                                                                                            <f:ajax render="idPanelBusquedaClasificacion11" execute="idPanelBusquedaClasificacion11" onevent="closeModal"/>Buscar
                                                                                                         </a>
                                                                                                     </td>
                                                                                                 </tr>
@@ -358,12 +358,12 @@
                                                                                             <ul class="pager">
                                                                                                 <li>
                                                                                                     <a jsf:action="#{registroController.buscarClasificacion(registroController.nroPaginaModal -1)}" jsf:rendered="#{!empty registroController.listaExpedienteNivelModal}" jsf:onclick="loadingModal()">Anterior
-                                                                                                        <f:ajax render="idPanelBusquedaClasificacion" onevent="closeModal"/>
+                                                                                                        <f:ajax render="idPanelBusquedaClasificacion11" onevent="closeModal"/>
                                                                                                     </a>
                                                                                                 </li>
                                                                                                 <li>
                                                                                                     <a jsf:action="#{registroController.buscarClasificacion(registroController.nroPaginaModal +1)}" jsf:rendered="#{!empty registroController.listaExpedienteNivelModal}" jsf:onclick="loadingModal()">Siguiente
-                                                                                                        <f:ajax render="idPanelBusquedaClasificacion" onevent="closeModal"/>
+                                                                                                        <f:ajax render="idPanelBusquedaClasificacion11" onevent="closeModal"/>
                                                                                                     </a>
                                                                                                 </li>
                                                                                             </ul>
@@ -377,63 +377,63 @@
                                                             </td>
                                                         </tr> 
                                                     </table>
-                                                    <h:panelGroup id="idClasificador">
+                                                    <h:panelGroup id="idClasificador11">
                                                         <table style="width: 100%">
                                                             <tr>
                                                                 <td style="padding-bottom: 10px; padding-right: 5px; width: 50%;">
                                                                     <span class="text-bold">Tema:</span>
-                                                                    <h:selectOneMenu value="#{reporteSidController.reporteSidExpediente.idPrimerNivel}" id="idSelectPrimerNivel" onchange="loadingModal()">
+                                                                    <h:selectOneMenu value="#{reporteSidController.reporteSidExpediente.idPrimerNivel}" onchange="loadingModal()">
                                                                         <f:selectItem itemLabel="Seleccione" itemValue="0" />
                                                                         <f:selectItems value="#{reporteSidController.listaClasificacionPrimerLevel}" />
                                                                         <f:ajax listener="#{reporteSidController.cargarNivelesClasificacion(reporteSidController.reporteSidExpediente.idPrimerNivel, 2)}" 
-                                                                                render="idClasificador" onevent="closeModal"/>
+                                                                                render="idClasificador11" onevent="closeModal"/>
                                                                     </h:selectOneMenu>
                                                                 </td>
                                                                 <td style="padding-bottom: 10px; padding-left: 5px">
-                                                                    <h:panelGroup id="ides">
+                                                                    <h:panelGroup>
                                                                         <span class="text-bold">Sub tema:</span>
                                                                     </h:panelGroup>
-                                                                    <h:selectOneMenu id="idSelectSegundoNivel" value="#{reporteSidController.reporteSidExpediente.idSegundoNivel}" onchange="loadingModal()">
+                                                                    <h:selectOneMenu value="#{reporteSidController.reporteSidExpediente.idSegundoNivel}" onchange="loadingModal()">
                                                                         <f:selectItem itemLabel="Seleccione" itemValue="0" />
                                                                         <f:selectItems value="#{reporteSidController.listaClasificacionSegundoLevel}" />
                                                                         <f:ajax listener="#{reporteSidController.cargarNivelesClasificacion(reporteSidController.reporteSidExpediente.idSegundoNivel, 3)}"  
-                                                                                render="idClasificador" onevent="closeModal"/>
+                                                                                render="idClasificador11" onevent="closeModal"/>
                                                                     </h:selectOneMenu>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td style="padding-bottom: 10px; padding-right: 5px">
                                                                     <span class="text-bold">Tercer nivel:</span>
-                                                                    <h:selectOneMenu id="idSelectTercerNivel" value="#{reporteSidController.reporteSidExpediente.idTercerNivel}" onchange="loadingModal()">
+                                                                    <h:selectOneMenu value="#{reporteSidController.reporteSidExpediente.idTercerNivel}" onchange="loadingModal()">
                                                                         <f:selectItem itemLabel="Seleccione" itemValue="0" />
                                                                         <f:selectItems value="#{reporteSidController.listaClasificacionTercerLevel}" />
                                                                         <f:ajax listener="#{reporteSidController.cargarNivelesClasificacion(reporteSidController.reporteSidExpediente.idTercerNivel, 4)}" 
-                                                                                render="idClasificador" onevent="closeModal"/>
+                                                                                render="idClasificador11" onevent="closeModal"/>
                                                                     </h:selectOneMenu>
                                                                 </td>
                                                                 <td  style="padding-bottom: 10px; padding-left: 5px">
                                                                     <span class="text-bold">Cuarto nivel:</span>
-                                                                    <h:selectOneMenu id="idSelectCuartoNivel" value="#{reporteSidController.reporteSidExpediente.idCuartoNivel}" onchange="loadingModal()">
+                                                                    <h:selectOneMenu value="#{reporteSidController.reporteSidExpediente.idCuartoNivel}" onchange="loadingModal()">
                                                                         <f:selectItem itemLabel="Seleccione" itemValue="0" />
                                                                         <f:selectItems value="#{reporteSidController.listaClasificacionCuartoLevel}" />
                                                                         <f:ajax listener="#{reporteSidController.cargarNivelesClasificacion(reporteSidController.reporteSidExpediente.idCuartoNivel, 5)}" 
-                                                                                render="idClasificador" onevent="closeModal"/>
+                                                                                render="idClasificador11" onevent="closeModal"/>
                                                                     </h:selectOneMenu>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td  style="padding-bottom: 10px; padding-right: 5px">
                                                                     <span class="text-bold">Quinto nivel:</span>
-                                                                    <h:selectOneMenu id="idSelectQuintoNivel" value="#{reporteSidController.reporteSidExpediente.idQuintoNivel}" onchange="loadingModal()">
+                                                                    <h:selectOneMenu value="#{reporteSidController.reporteSidExpediente.idQuintoNivel}" onchange="loadingModal()">
                                                                         <f:selectItem itemLabel="Seleccione" itemValue="0" />
                                                                         <f:selectItems value="#{reporteSidController.listaClasificacionQuintoLevel}" />
                                                                         <f:ajax listener="#{reporteSidController.cargarNivelesClasificacion(reporteSidController.reporteSidExpediente.idQuintoNivel, 6)}" 
-                                                                                render="idClasificador" onevent="closeModal"/>
+                                                                                render="idClasificador11" onevent="closeModal"/>
                                                                     </h:selectOneMenu>
                                                                 </td>
                                                                 <td  style="padding-bottom: 10px; padding-left: 5px">
                                                                     <span class="text-bold">Sexto nivel:</span>
-                                                                    <h:selectOneMenu id="idSelectSextoNivel" value="#{reporteSidController.reporteSidExpediente.idSextoNivel}">
+                                                                    <h:selectOneMenu value="#{reporteSidController.reporteSidExpediente.idSextoNivel}">
                                                                         <f:selectItem itemLabel="Seleccione" itemValue="0" />
                                                                         <f:selectItems value="#{reporteSidController.listaClasificacionSextoLevel}" />
                                                                     </h:selectOneMenu>
@@ -453,18 +453,18 @@
                                                                             <h:selectOneMenu value="#{reporteSidController.reporteSidExpediente.idDepartamentoRecurrente}" onchange="loadingModal()">
                                                                                 <f:selectItem itemLabel="Departamento" itemValue=""/>
                                                                                 <f:selectItems value="#{listasComunesController.listaDepartamentos(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
-                                                                                <f:ajax listener="#{reporteSidController.comboProvinciaRecurrente()}" render="cmbProvincia2 cmbDistrito2" onevent="closeModal"/>
+                                                                                <f:ajax listener="#{reporteSidController.comboProvinciaRecurrente()}" render="cmbProvincia11 cmbDistrito11" onevent="closeModal"/>
                                                                             </h:selectOneMenu>
                                                                         </td>
                                                                         <td style="width:33%">
-                                                                            <h:selectOneMenu id="cmbProvincia2" value="#{reporteSidController.reporteSidExpediente.idProvinciaRecurrente}" onchange="loadingModal()">
+                                                                            <h:selectOneMenu id="cmbProvincia11" value="#{reporteSidController.reporteSidExpediente.idProvinciaRecurrente}" onchange="loadingModal()">
                                                                                 <f:selectItem itemLabel="Provincia" itemValue=""/>
                                                                                 <f:selectItems value="#{reporteSidController.listaProvincia}" />
-                                                                                <f:ajax listener="#{reporteSidController.comboDistritoRecurrente()}" render="cmbDistrito2" onevent="closeModal"/>
+                                                                                <f:ajax listener="#{reporteSidController.comboDistritoRecurrente()}" render="cmbDistrito11" onevent="closeModal"/>
                                                                             </h:selectOneMenu>
                                                                         </td>
                                                                         <td style="width:34%">
-                                                                            <h:selectOneMenu id="cmbDistrito2" value="#{reporteSidController.reporteSidExpediente.idDistritoRecurrente}">
+                                                                            <h:selectOneMenu id="cmbDistrito11" value="#{reporteSidController.reporteSidExpediente.idDistritoRecurrente}">
                                                                                 <f:selectItem itemLabel="Distrito" itemValue=""/>
                                                                                 <f:selectItems value="#{reporteSidController.listaDistrito}" />
                                                                             </h:selectOneMenu>
@@ -556,8 +556,8 @@
                                                     </tr>
                                                     <tr>
                                                         <td colspan="2">
-                                                            <a class="btn btn-primary" jsf:action="#{reporteSidController.buscarReporteGestion(1)}" >
-                                                                <!--<span class="glyphicon glyphicon-search" />Buscar-->
+                                                            <a class="btn btn-primary" jsf:action="#{reporteSidController.buscarReporteExpedienteDependencia(1)}" >
+                                                                <span class="glyphicon glyphicon-search" />Buscar
                                                             </a>
                                                         </td>
                                                     </tr>
@@ -590,74 +590,67 @@
                                     .column11 { width: 8%; color: black; font-size: 0.9em}
                                     .column12 { width: 24%; color: black}
                                 </style>
-                                <h:panelGroup id="idPanelBusquedaExpediente1">
-                                    <h:dataTable value="#{reporteSidController.listaReporteSidGestion}" var="exped" class="table table-hover" binding="#{row31}" width="100%" columnClasses="column1,column2,column3,column4,column5,column6,column7,column8,column9,column10,column11,column12">
+                                <h:panelGroup id="idPanelBusquedaExpediente11">
+                                    <h:dataTable value="#{reporteSidController.listaReporteSidDependencia}" var="exped" class="table table-hover" binding="#{row39}" width="100%" columnClasses="column1,column2,column3,column4,column5,column6,column7,column8,column9,column10,column11,column12">
                                         <h:column>
                                             <f:facet name="header">Nro</f:facet>
-                                            <h:outputText value="#{(row31.rowIndex+1)+(reporteSidController.pagina-1)*10}" />
+                                            <h:outputText value="#{(row39.rowIndex+1)+(reporteSidController.pagina-1)*10}" />
                                         </h:column>
                                         <h:column>
-                                            <f:facet name="header">Expediente</f:facet>
-                                            <a data-toggle="tooltip" data-placement="right" title="#{exped.sumilla}">#{exped.numeroExpediente}</a>
+                                            <f:facet name="header">Dependencia</f:facet>
+                                            <h:outputText value="#{exped.nombreAdjuntia}" />
+                                        </h:column>
+                                        
+                                        <h:column>
+                                            <f:facet name="header">Total Expedientes</f:facet>
+                                            <h:outputText value="#{exped.totalExpediente}" />
                                         </h:column>
                                         <h:column>
-                                            <f:facet name="header">Tipo</f:facet>
-                                            <h:outputText value="#{exped.tipoExpediente}" />
+                                            <f:facet name="header">Total quejas</f:facet>
+                                            <h:outputText value="#{exped.totalExpedienteQueja}" />
                                         </h:column>
                                         <h:column>
-                                            <f:facet name="header">Fecha gestión</f:facet>
-                                            <h:outputText value="#{exped.fechaRecepcionGestion}" >
-                                                <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
-                                            </h:outputText>
+                                            <f:facet name="header">Total quejas concluidas</f:facet>
+                                            <h:outputText value="#{exped.totalExpedienteQuejaConcluido}"/>
                                         </h:column>
                                         <h:column>
-                                            <f:facet name="header">Código gestión</f:facet>
-                                            <h:outputText value="#{exped.codigoGestion}" />
+                                            <f:facet name="header">Total quejas en tramite</f:facet>
+                                            <h:outputText value="#{exped.totalExpedienteQuejaTramite}" />
                                         </h:column>
                                         <h:column>
-                                            <f:facet name="header">Entidad</f:facet>
-                                            <h:outputText value="#{exped.entidadGestion}" />
+                                            <f:facet name="header">Total consultas</f:facet>
+                                            <h:outputText value="#{exped.totalExpedienteConsulta}" />
                                         </h:column>
                                         <h:column>
-                                            <f:facet name="header">Descripción</f:facet>
-                                            <h:outputText value="#{exped.descripcionGestion}" />
+                                            <f:facet name="header">Total consultas concluidas</f:facet>
+                                            <h:outputText value="#{exped.totalExpedienteConsultaConcluido}" />
                                         </h:column>
                                         <h:column>
-                                            <f:facet name="header">Fecha registro</f:facet>
-                                            <h:outputText value="#{exped.fechaRegistroGestion}" >
-                                                <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
-                                            </h:outputText>
+                                            <f:facet name="header">Total consultas en tramite</f:facet>
+                                            <h:outputText value="#{exped.totalExpedienteConsultaTramite}" />
                                         </h:column>
                                         <h:column>
-                                            <f:facet name="header">Fecha modificación</f:facet>
-                                            <h:outputText value="#{exped.fechaModificacionGestion}" >
-                                                <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
-                                            </h:outputText>
+                                            <f:facet name="header">Total petitorios</f:facet>
+                                            <h:outputText value="#{exped.totalExpedientePetitorio}" />
                                         </h:column>
                                         <h:column>
-                                            <f:facet name="header">Respuesta</f:facet>
-                                            <h:outputText value="#{exped.respuestaGestion}" />
+                                            <f:facet name="header">Total petitorios concluidos</f:facet>
+                                            <h:outputText value="#{exped.totalExpedientePetitorioConcluido}" />
                                         </h:column>
                                         <h:column>
-                                            <f:facet name="header">Fecha Respuesta</f:facet>
-                                            <h:outputText value="#{exped.fechaRespuestaGestion}" >
-                                                <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Lima" />
-                                            </h:outputText>
-                                        </h:column>
-                                        <h:column>
-                                            <f:facet name="header">Origen</f:facet>
-                                            <h:outputText value="#{exped.codigoGestionOrigen}" />
+                                            <f:facet name="header">Total petitorios en tramite</f:facet>
+                                            <h:outputText value="#{exped.totalExpedientePetitorioTramite}" />
                                         </h:column>
                                     </h:dataTable>
                                     <ul class="pager">
                                         <li>
-                                            <a jsf:action="#{reporteSidController.reporte(reporteSidController.pagina -1)}" jsf:rendered="#{!empty registroController.listaExpedienteXUsuarioPaginado}" jsf:onclick="loadingModal()">Anterior
-                                                <f:ajax render="idPanelBusquedaExpediente1" onevent="closeModal"/>
+                                            <a jsf:action="#{reporteSidController.buscarReporteExpedienteDependencia(reporteSidController.pagina -1)}" jsf:rendered="#{!empty reporteSidController.listaReporteSidDependencia}" jsf:onclick="loadingModal()">Anterior
+                                                <f:ajax render="idPanelBusquedaExpediente11" onevent="closeModal"/>
                                             </a>
                                         </li>
                                         <li>
-                                            <a jsf:action="#{reporteSidController.reporte(reporteSidController.pagina +1)}" jsf:rendered="#{!empty registroController.listaExpedienteXUsuarioPaginado}" jsf:onclick="loadingModal()">Siguiente
-                                                <f:ajax render="idPanelBusquedaExpediente1" onevent="closeModal"/>
+                                            <a jsf:action="#{reporteSidController.buscarReporteExpedienteDependencia(reporteSidController.pagina +1)}" jsf:rendered="#{!empty reporteSidController.listaReporteSidDependencia}" jsf:onclick="loadingModal()">Siguiente
+                                                <f:ajax render="idPanelBusquedaExpediente11" onevent="closeModal"/>
                                             </a>
                                         </li>
                                     </ul>
@@ -669,7 +662,7 @@
                         </div>
                         <script>
                             function openModalBusquedaEntidad() {
-                                $("#idModalBusquedaEntidad").modal('show');
+                                $("#idModalBusquedaEntidad11").modal('show');
                             }
                         </script>
                     </div>

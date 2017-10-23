@@ -52,6 +52,16 @@ public class ReporteSidExpedienteDAOImpl extends SqlSessionDaoSupport implements
     public List<ReporteSidConteo> listaEntidadReporte(ReporteSidExpediente reporteSidExpediente) {
         return getSqlSession().selectList("gob.dp.sid.reporte.dao.ReporteSidExpedienteDAO.listaEntidadReporte", reporteSidExpediente);
     }
+
+    @Override
+    public List<ReporteSidConteo> listaExpedienteReporteComisionado(ReporteSidExpediente reporteSidExpediente) {
+        return getSqlSession().selectList("gob.dp.sid.reporte.dao.ReporteSidExpedienteDAO.listaExpedienteReporteComisionado", reporteSidExpediente);
+    }
+
+    @Override
+    public List<ReporteSidConteo> listaExpedienteReporteDependencia(ReporteSidExpediente reporteSidExpediente) {
+        return getSqlSession().selectList("gob.dp.sid.reporte.dao.ReporteSidExpedienteDAO.listaExpedienteReporteDependencia", reporteSidExpediente);
+    }
     
     
     

@@ -29,4 +29,7 @@ public interface ReporteSidExpedienteService {
     
     public List<ReporteSidConteo> listaEntidadReporte(ReporteSidExpediente reporteSidExpediente);
     
+    public List<ReporteSidConteo> listaExpedienteReporteComisionado(ReporteSidExpediente reporteSidExpediente);
+    
+    public List<ReporteSidConteo> listaExpedienteReporteDependencia(ReporteSidExpediente reporteSidExpediente);
 }

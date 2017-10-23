@@ -73,6 +73,10 @@ public class ReporteSidController extends AbstractManagedBean implements Seriali
     private List<ReporteSidConteo> listaReporteSidEntidad;
     
     private List<ReporteSidConteo> listaReporteSidClasificacion;
+    
+    private List<ReporteSidConteo> listaReporteSidComisionado;
+    
+    private List<ReporteSidConteo> listaReporteSidDependencia;
 
     private Long nroPaginaEntidad = 1L;
 
@@ -679,6 +683,66 @@ public class ReporteSidController extends AbstractManagedBean implements Seriali
                 } else {
                     if (reporteSidExpediente.getIni() == 1) {
                         listaReporteSidClasificacion = null;
+                    }
+                }
+            }
+            return true;
+        } catch (Exception e) {
+            log.error("ERROR - buscarClasificacion()" + e);
+        }
+        return false;
+    }
+    
+    public boolean buscarReporteExpedienteComisionado(Integer pag) {
+        try {
+            if (pag > 0) {
+                int paginado = ConstantesUtil.PAGINADO_10;
+                Integer ini = paginado * (pag - 1) + 1;
+                Integer fin = paginado * pag;
+                if (pag == 0) {
+                    ini = 1;
+                    fin = 10;
+                }
+                reporteSidExpediente.setIni(ini);
+                reporteSidExpediente.setFin(fin);
+                List<ReporteSidConteo> list = expedienteReporteService.listaExpedienteReporteComisionado(reporteSidExpediente);
+                
+                if (list.size() > 0) {
+                    listaReporteSidComisionado = list;
+                    pagina = pag;
+                } else {
+                    if (reporteSidExpediente.getIni() == 1) {
+                        listaReporteSidComisionado = null;
+                    }
+                }
+            }
+            return true;
+        } catch (Exception e) {
+            log.error("ERROR - buscarClasificacion()" + e);
+        }
+        return false;
+    }
+    
+    public boolean buscarReporteExpedienteDependencia(Integer pag) {
+        try {
+            if (pag > 0) {
+                int paginado = ConstantesUtil.PAGINADO_10;
+                Integer ini = paginado * (pag - 1) + 1;
+                Integer fin = paginado * pag;
+                if (pag == 0) {
+                    ini = 1;
+                    fin = 10;
+                }
+                reporteSidExpediente.setIni(ini);
+                reporteSidExpediente.setFin(fin);
+                List<ReporteSidConteo> list = expedienteReporteService.listaExpedienteReporteDependencia(reporteSidExpediente);
+                
+                if (list.size() > 0) {
+                    listaReporteSidDependencia = list;
+                    pagina = pag;
+                } else {
+                    if (reporteSidExpediente.getIni() == 1) {
+                        listaReporteSidDependencia = null;
                     }
                 }
             }
@@ -1364,6 +1428,22 @@ public class ReporteSidController extends AbstractManagedBean implements Seriali
 
     public void setListaReporteSidClasificacion(List<ReporteSidConteo> listaReporteSidClasificacion) {
         this.listaReporteSidClasificacion = listaReporteSidClasificacion;
+    }
+
+    public List<ReporteSidConteo> getListaReporteSidComisionado() {
+        return listaReporteSidComisionado;
+    }
+
+    public void setListaReporteSidComisionado(List<ReporteSidConteo> listaReporteSidComisionado) {
+        this.listaReporteSidComisionado = listaReporteSidComisionado;
+    }
+
+    public List<ReporteSidConteo> getListaReporteSidDependencia() {
+        return listaReporteSidDependencia;
+    }
+
+    public void setListaReporteSidDependencia(List<ReporteSidConteo> listaReporteSidDependencia) {
+        this.listaReporteSidDependencia = listaReporteSidDependencia;
     }
     
     

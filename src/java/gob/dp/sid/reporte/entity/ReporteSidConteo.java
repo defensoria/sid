@@ -77,6 +77,16 @@ public class ReporteSidConteo implements Serializable{
     private String nombreQuintoNivel;
     
     private String nombreSextoNivel;
+    
+    private String nombreComsionado;
+    
+    private String apellidoPaternoComisionado;
+    
+    private String apellidoMaternoComisionado;
+    
+    private String codigoComisionado;
+    
+    private String nombreAdjuntia;
 
     public Integer getTotalExpediente() {
         return totalExpediente;
@@ -334,6 +344,46 @@ public class ReporteSidConteo implements Serializable{
 
     public void setTotalExpedienteConsultaConcluido(Integer totalExpedienteConsultaConcluido) {
         this.totalExpedienteConsultaConcluido = totalExpedienteConsultaConcluido;
+    }
+
+    public String getNombreComsionado() {
+        return nombreComsionado;
+    }
+
+    public void setNombreComsionado(String nombreComsionado) {
+        this.nombreComsionado = nombreComsionado;
+    }
+
+    public String getApellidoPaternoComisionado() {
+        return apellidoPaternoComisionado;
+    }
+
+    public void setApellidoPaternoComisionado(String apellidoPaternoComisionado) {
+        this.apellidoPaternoComisionado = apellidoPaternoComisionado;
+    }
+
+    public String getApellidoMaternoComisionado() {
+        return apellidoMaternoComisionado;
+    }
+
+    public void setApellidoMaternoComisionado(String apellidoMaternoComisionado) {
+        this.apellidoMaternoComisionado = apellidoMaternoComisionado;
+    }
+
+    public String getCodigoComisionado() {
+        return codigoComisionado;
+    }
+
+    public void setCodigoComisionado(String codigoComisionado) {
+        this.codigoComisionado = codigoComisionado;
+    }
+
+    public String getNombreAdjuntia() {
+        return nombreAdjuntia;
+    }
+
+    public void setNombreAdjuntia(String nombreAdjuntia) {
+        this.nombreAdjuntia = nombreAdjuntia;
     }
     
 }
