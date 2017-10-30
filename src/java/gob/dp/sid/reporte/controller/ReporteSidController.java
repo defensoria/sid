@@ -383,7 +383,45 @@ public class ReporteSidController extends AbstractManagedBean implements Seriali
             jasperPrint = JasperFillManager.fillReport(retornaRutaPath().concat("/jasper/reporteSidExpedientePDF.jasper"), new HashMap(), beanCollectionDataSource);
         }
         if (tipo == 2) {
-            jasperPrint = JasperFillManager.fillReport(retornaRutaPath().concat("/jasper/reporteSidExpedienteExcel.jasper"), new HashMap(), beanCollectionDataSource);
+            String ruta = retornaRutaPath().concat("/jasper/reporteSidExpedienteExcel.jasper");
+            jasperPrint = JasperFillManager.fillReport(ruta, new HashMap(), beanCollectionDataSource);
+        }
+    }
+    
+    private void initJasperGestion(int tipo) throws JRException, IOException {
+        List<ReporteSidExpediente> list = expedienteReporteService.listaGestionReporteExport(reporteSidExpediente);
+        for (ReporteSidExpediente ec : list) {
+            
+            ec.setPersonasRecurrentes(personaService.personaPorExpedienteRecurrente(ec.getIdExpediente()));
+            ec.setPersonasAfectados(personaService.personaPorExpedienteAfectado(ec.getIdExpediente()));
+            ec.setEntidades(entidadService.entidadPorExpediente(ec.getIdExpediente()));
+            if (ec.getNumeroExpediente() != null) {
+                ec.setNiveles(expedienteNivelService.expedienteNivelPorExpediente(ec.getNumeroExpediente()));
+            }
+            
+            if (StringUtils.isNotBlank(ec.getNumeroExpediente())) {
+                if (expedienteConsultaService.expedienteConsultaPorExpediente(ec.getNumeroExpediente()).size() > 0) {
+                    ExpedienteConsulta ec1 = expedienteConsultaService.expedienteConsultaPorExpediente(ec.getNumeroExpediente()).get(0);
+                    if (ec1 != null) {
+                        if (ec1.getEtapa() > 0 && ec1.getEtapa() < 6) {
+                            reporteSidExpediente.setEstaEnConsulta("Si");
+                        } else {
+                            reporteSidExpediente.setEstaEnConsulta("No");
+                        }
+                    }
+                    reporteSidExpediente.setEstaEnConsulta("No");
+                }
+            }
+
+        }
+
+        JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(list);
+        if (tipo == 1) {
+            jasperPrint = JasperFillManager.fillReport(retornaRutaPath().concat("/jasper/reporteSidExpedienteGestionPDF.jasper"), new HashMap(), beanCollectionDataSource);
+        }
+        if (tipo == 2) {
+            String ruta = retornaRutaPath().concat("/jasper/reporteSidExpedienteGestionExcel.jasper");
+            jasperPrint = JasperFillManager.fillReport(ruta, new HashMap(), beanCollectionDataSource);
         }
     }
 
@@ -427,6 +465,30 @@ public class ReporteSidController extends AbstractManagedBean implements Seriali
         facesContext.renderResponse();
     }
 
+    public void reporteExpedienteGestionExcel() throws JRException, IOException {
+        Date date = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String fecha = simpleDateFormat.format(date);
+        initJasperGestion(2);
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        HttpServletResponse httpServletResponse = (HttpServletResponse) facesContext.getCurrentInstance().getExternalContext().getResponse();
+        httpServletResponse.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        httpServletResponse.addHeader("Content-disposition", "attachment; filename=" + fecha + "_reporteGestion.xlsx");
+        ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();
+        JRXlsxExporter jrXlsxExporter = new JRXlsxExporter();
+        jrXlsxExporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
+        jrXlsxExporter.setParameter(JRXlsExporterParameter.IS_ONE_PAGE_PER_SHEET, Boolean.TRUE);
+        jrXlsxExporter.setParameter(JRExporterParameter.OUTPUT_STREAM, servletOutputStream);
+        jrXlsxExporter.setParameter(JRXlsExporterParameter.IS_ONE_PAGE_PER_SHEET, Boolean.FALSE);
+        jrXlsxExporter.setParameter(JRXlsExporterParameter.IS_DETECT_CELL_TYPE, Boolean.TRUE);
+        jrXlsxExporter.setParameter(JRXlsExporterParameter.IS_WHITE_PAGE_BACKGROUND, Boolean.FALSE);
+        jrXlsxExporter.setParameter(JRXlsExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_ROWS, Boolean.TRUE);
+        jrXlsxExporter.setParameter(JRXlsExporterParameter.IS_FONT_SIZE_FIX_ENABLED, Boolean.FALSE);
+        jrXlsxExporter.exportReport();
+        facesContext.responseComplete();
+        facesContext.renderResponse();
+    }
+    
     public boolean buscarReporteExpediente(Integer pag) {
         try {
             if (reporteSidExpediente.getFechaIngresoDesde() == null && reporteSidExpediente.getFechaIngresoHasta() == null && reporteSidExpediente.getFechaConclusionDesde() == null && reporteSidExpediente.getFechaConclusionHasta() == null) {

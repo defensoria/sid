@@ -34,4 +34,6 @@ public interface ReporteSidExpedienteService {
     public List<ReporteSidConteo> listaExpedienteReporteDependencia(ReporteSidExpediente reporteSidExpediente);
     
     public List<ReporteSidExpediente> listaExpedienteReporteGestionInterna(ReporteSidExpediente reporteSidExpediente);
+    
+    public List<ReporteSidExpediente> listaGestionReporteExport(ReporteSidExpediente reporteSidExpediente);
 }

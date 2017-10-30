@@ -29,8 +29,8 @@ public abstract class AbstractManagedBean implements Serializable{
     
     protected StringUtil stringUtil;
     
-    protected String separador = "/"; //linux
-    //protected String separador = "\\"; //windows
+    //protected String separador = "/"; //linux
+    protected String separador = "\\"; //windows
 
     protected static String FILE_SYSTEM="/home/glassfish/glassfish4/glassfish/domains/domain1/docroot/filesystem/";//linux
     //protected static String FILE_SYSTEM = "C:/server/glassfish-4.0/glassfish4/glassfish/domains/domain1/docroot/filesystem/";//windows
@@ -61,7 +61,8 @@ public abstract class AbstractManagedBean implements Serializable{
         ExternalContext ec = fc.getExternalContext();
         HttpServletRequest request = (HttpServletRequest) ec.getRequest();
         String path = request.getPathTranslated();
-        return retornapath(retornapath(path));
+        String ruta = retornapath(retornapath(path));
+        return ruta;
     }
 
     public AbstractManagedBean() {
