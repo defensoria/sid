@@ -169,6 +169,12 @@ public class ReporteSidExpediente {
     
     private String codigoGestionOrigen;
     
+    private String tipoAccion;
+    
+    private String dependenciaOrigen;
+    
+    private String dependenciaDestino;
+    
     public Date getFechaIngresoDesde() {
         return fechaIngresoDesde;
     }
@@ -787,6 +793,30 @@ public class ReporteSidExpediente {
 
     public void setCodigoGestionOrigen(String codigoGestionOrigen) {
         this.codigoGestionOrigen = codigoGestionOrigen;
+    }
+
+    public String getDependenciaOrigen() {
+        return dependenciaOrigen;
+    }
+
+    public void setDependenciaOrigen(String dependenciaOrigen) {
+        this.dependenciaOrigen = dependenciaOrigen;
+    }
+
+    public String getDependenciaDestino() {
+        return dependenciaDestino;
+    }
+
+    public void setDependenciaDestino(String dependenciaDestino) {
+        this.dependenciaDestino = dependenciaDestino;
+    }
+
+    public String getTipoAccion() {
+        return tipoAccion;
+    }
+
+    public void setTipoAccion(String tipoAccion) {
+        this.tipoAccion = tipoAccion;
     }
 
 }

@@ -70,6 +70,8 @@ public class ReporteSidController extends AbstractManagedBean implements Seriali
     
     private List<ReporteSidExpediente> listaReporteSidGestion;
     
+    private List<ReporteSidExpediente> listaReporteSidGestionInterna;
+    
     private List<ReporteSidConteo> listaReporteSidEntidad;
     
     private List<ReporteSidConteo> listaReporteSidClasificacion;
@@ -583,18 +585,15 @@ public class ReporteSidController extends AbstractManagedBean implements Seriali
     
     public boolean buscarReporteEntidad(Integer pag) {
         try {
-            if (reporteSidExpediente.getFechaIngresoDesde() == null && reporteSidExpediente.getFechaIngresoHasta() == null && reporteSidExpediente.getFechaConclusionDesde() == null && reporteSidExpediente.getFechaConclusionHasta() == null) {
-                msg.messageAlert("Debe ingresar un rango de fechas ingreso / conclusión", null);
+            if (reporteSidExpediente.getFechaIngresoDesde() != null && reporteSidExpediente.getFechaIngresoHasta() == null) {
+                msg.messageAlert("Debe ingresar la fecha de fin de ingreso", null);
                 return false;
             }
             if (reporteSidExpediente.getFechaIngresoDesde() == null && reporteSidExpediente.getFechaIngresoHasta() != null) {
                 msg.messageAlert("Debe ingresar la fecha de inicio de ingreso", null);
                 return false;
             }
-            if (reporteSidExpediente.getFechaIngresoDesde() != null && reporteSidExpediente.getFechaIngresoHasta() == null) {
-                msg.messageAlert("Debe ingresar la fecha de fin de ingreso", null);
-                return false;
-            }
+            
             DateFormat format = new SimpleDateFormat("yyyyMMdd");
             if (reporteSidExpediente.getFechaIngresoDesde() != null && reporteSidExpediente.getFechaIngresoHasta() != null) {
                 reporteSidExpediente.setFechaIngresoDesdeString(format.format(reporteSidExpediente.getFechaIngresoDesde()));
@@ -661,9 +660,32 @@ public class ReporteSidController extends AbstractManagedBean implements Seriali
     
     public boolean buscarReporteExpedienteClasificacion(Integer pag) {
         try {
-            if (StringUtils.equals(reporteSidExpediente.getIdPrimerNivel(), "0")) {
-                msg.messageAlert("Debe de ingresar como mínimo un nivel ", nombreEntidad);
+            if (reporteSidExpediente.getFechaIngresoDesde() != null && reporteSidExpediente.getFechaIngresoHasta() == null) {
+                msg.messageAlert("Debe ingresar la fecha de fin de ingreso", null);
                 return false;
+            }
+            if (reporteSidExpediente.getFechaIngresoDesde() == null && reporteSidExpediente.getFechaIngresoHasta() != null) {
+                msg.messageAlert("Debe ingresar la fecha de inicio de ingreso", null);
+                return false;
+            }
+            if (reporteSidExpediente.getFechaConclusionDesde() != null && reporteSidExpediente.getFechaConclusionHasta() == null) {
+                msg.messageAlert("Debe ingresar la fecha de fin de conclusión", null);
+                return false;
+            }
+            if (reporteSidExpediente.getFechaConclusionDesde() == null && reporteSidExpediente.getFechaConclusionHasta() != null) {
+                msg.messageAlert("Debe ingresar la fecha de inicio de conclusión", null);
+                return false;
+            }
+            
+            DateFormat format = new SimpleDateFormat("yyyyMMdd");
+            if (reporteSidExpediente.getFechaIngresoDesde() != null && reporteSidExpediente.getFechaIngresoHasta() != null) {
+                reporteSidExpediente.setFechaIngresoDesdeString(format.format(reporteSidExpediente.getFechaIngresoDesde()));
+                reporteSidExpediente.setFechaIngresoHastaString(format.format(reporteSidExpediente.getFechaIngresoHasta()));
+            }
+
+            if (reporteSidExpediente.getFechaConclusionDesde() != null && reporteSidExpediente.getFechaConclusionHasta() != null) {
+                reporteSidExpediente.setFechaConclusionDesdeString(format.format(reporteSidExpediente.getFechaConclusionDesde()));
+                reporteSidExpediente.setFechaConclusionHastaString(format.format(reporteSidExpediente.getFechaConclusionHasta()));
             }
             if (pag > 0) {
                 int paginado = ConstantesUtil.PAGINADO_10;
@@ -695,6 +717,34 @@ public class ReporteSidController extends AbstractManagedBean implements Seriali
     
     public boolean buscarReporteExpedienteComisionado(Integer pag) {
         try {
+            if (reporteSidExpediente.getFechaIngresoDesde() != null && reporteSidExpediente.getFechaIngresoHasta() == null) {
+                msg.messageAlert("Debe ingresar la fecha de fin de ingreso", null);
+                return false;
+            }
+            if (reporteSidExpediente.getFechaIngresoDesde() == null && reporteSidExpediente.getFechaIngresoHasta() != null) {
+                msg.messageAlert("Debe ingresar la fecha de inicio de ingreso", null);
+                return false;
+            }
+            if (reporteSidExpediente.getFechaConclusionDesde() != null && reporteSidExpediente.getFechaConclusionHasta() == null) {
+                msg.messageAlert("Debe ingresar la fecha de fin de conclusión", null);
+                return false;
+            }
+            if (reporteSidExpediente.getFechaConclusionDesde() == null && reporteSidExpediente.getFechaConclusionHasta() != null) {
+                msg.messageAlert("Debe ingresar la fecha de inicio de conclusión", null);
+                return false;
+            }
+            
+            DateFormat format = new SimpleDateFormat("yyyyMMdd");
+            if (reporteSidExpediente.getFechaIngresoDesde() != null && reporteSidExpediente.getFechaIngresoHasta() != null) {
+                reporteSidExpediente.setFechaIngresoDesdeString(format.format(reporteSidExpediente.getFechaIngresoDesde()));
+                reporteSidExpediente.setFechaIngresoHastaString(format.format(reporteSidExpediente.getFechaIngresoHasta()));
+            }
+
+            if (reporteSidExpediente.getFechaConclusionDesde() != null && reporteSidExpediente.getFechaConclusionHasta() != null) {
+                reporteSidExpediente.setFechaConclusionDesdeString(format.format(reporteSidExpediente.getFechaConclusionDesde()));
+                reporteSidExpediente.setFechaConclusionHastaString(format.format(reporteSidExpediente.getFechaConclusionHasta()));
+            }
+            
             if (pag > 0) {
                 int paginado = ConstantesUtil.PAGINADO_10;
                 Integer ini = paginado * (pag - 1) + 1;
@@ -725,6 +775,34 @@ public class ReporteSidController extends AbstractManagedBean implements Seriali
     
     public boolean buscarReporteExpedienteDependencia(Integer pag) {
         try {
+            if (reporteSidExpediente.getFechaIngresoDesde() != null && reporteSidExpediente.getFechaIngresoHasta() == null) {
+                msg.messageAlert("Debe ingresar la fecha de fin de ingreso", null);
+                return false;
+            }
+            if (reporteSidExpediente.getFechaIngresoDesde() == null && reporteSidExpediente.getFechaIngresoHasta() != null) {
+                msg.messageAlert("Debe ingresar la fecha de inicio de ingreso", null);
+                return false;
+            }
+            if (reporteSidExpediente.getFechaConclusionDesde() != null && reporteSidExpediente.getFechaConclusionHasta() == null) {
+                msg.messageAlert("Debe ingresar la fecha de fin de conclusión", null);
+                return false;
+            }
+            if (reporteSidExpediente.getFechaConclusionDesde() == null && reporteSidExpediente.getFechaConclusionHasta() != null) {
+                msg.messageAlert("Debe ingresar la fecha de inicio de conclusión", null);
+                return false;
+            }
+            
+            DateFormat format = new SimpleDateFormat("yyyyMMdd");
+            if (reporteSidExpediente.getFechaIngresoDesde() != null && reporteSidExpediente.getFechaIngresoHasta() != null) {
+                reporteSidExpediente.setFechaIngresoDesdeString(format.format(reporteSidExpediente.getFechaIngresoDesde()));
+                reporteSidExpediente.setFechaIngresoHastaString(format.format(reporteSidExpediente.getFechaIngresoHasta()));
+            }
+
+            if (reporteSidExpediente.getFechaConclusionDesde() != null && reporteSidExpediente.getFechaConclusionHasta() != null) {
+                reporteSidExpediente.setFechaConclusionDesdeString(format.format(reporteSidExpediente.getFechaConclusionDesde()));
+                reporteSidExpediente.setFechaConclusionHastaString(format.format(reporteSidExpediente.getFechaConclusionHasta()));
+            }
+            
             if (pag > 0) {
                 int paginado = ConstantesUtil.PAGINADO_10;
                 Integer ini = paginado * (pag - 1) + 1;
@@ -743,6 +821,63 @@ public class ReporteSidController extends AbstractManagedBean implements Seriali
                 } else {
                     if (reporteSidExpediente.getIni() == 1) {
                         listaReporteSidDependencia = null;
+                    }
+                }
+            }
+            return true;
+        } catch (Exception e) {
+            log.error("ERROR - buscarClasificacion()" + e);
+        }
+        return false;
+    }
+    
+    public boolean buscarReporteSidGestionInterna(Integer pag) {
+        if (reporteSidExpediente.getFechaIngresoDesde() != null && reporteSidExpediente.getFechaIngresoHasta() == null) {
+                msg.messageAlert("Debe ingresar la fecha de fin de ingreso", null);
+                return false;
+            }
+            if (reporteSidExpediente.getFechaIngresoDesde() == null && reporteSidExpediente.getFechaIngresoHasta() != null) {
+                msg.messageAlert("Debe ingresar la fecha de inicio de ingreso", null);
+                return false;
+            }
+            if (reporteSidExpediente.getFechaConclusionDesde() != null && reporteSidExpediente.getFechaConclusionHasta() == null) {
+                msg.messageAlert("Debe ingresar la fecha de fin de conclusión", null);
+                return false;
+            }
+            if (reporteSidExpediente.getFechaConclusionDesde() == null && reporteSidExpediente.getFechaConclusionHasta() != null) {
+                msg.messageAlert("Debe ingresar la fecha de inicio de conclusión", null);
+                return false;
+            }
+            
+            DateFormat format = new SimpleDateFormat("yyyyMMdd");
+            if (reporteSidExpediente.getFechaIngresoDesde() != null && reporteSidExpediente.getFechaIngresoHasta() != null) {
+                reporteSidExpediente.setFechaIngresoDesdeString(format.format(reporteSidExpediente.getFechaIngresoDesde()));
+                reporteSidExpediente.setFechaIngresoHastaString(format.format(reporteSidExpediente.getFechaIngresoHasta()));
+            }
+
+            if (reporteSidExpediente.getFechaConclusionDesde() != null && reporteSidExpediente.getFechaConclusionHasta() != null) {
+                reporteSidExpediente.setFechaConclusionDesdeString(format.format(reporteSidExpediente.getFechaConclusionDesde()));
+                reporteSidExpediente.setFechaConclusionHastaString(format.format(reporteSidExpediente.getFechaConclusionHasta()));
+            }
+        try {
+            if (pag > 0) {
+                int paginado = ConstantesUtil.PAGINADO_10;
+                Integer ini = paginado * (pag - 1) + 1;
+                Integer fin = paginado * pag;
+                if (pag == 0) {
+                    ini = 1;
+                    fin = 10;
+                }
+                reporteSidExpediente.setIni(ini);
+                reporteSidExpediente.setFin(fin);
+                List<ReporteSidExpediente> list = expedienteReporteService.listaExpedienteReporteGestionInterna(reporteSidExpediente);
+                
+                if (list.size() > 0) {
+                    listaReporteSidGestionInterna = list;
+                    pagina = pag;
+                } else {
+                    if (reporteSidExpediente.getIni() == 1) {
+                        listaReporteSidGestionInterna = null;
                     }
                 }
             }
@@ -1444,6 +1579,14 @@ public class ReporteSidController extends AbstractManagedBean implements Seriali
 
     public void setListaReporteSidDependencia(List<ReporteSidConteo> listaReporteSidDependencia) {
         this.listaReporteSidDependencia = listaReporteSidDependencia;
+    }
+
+    public List<ReporteSidExpediente> getListaReporteSidGestionInterna() {
+        return listaReporteSidGestionInterna;
+    }
+
+    public void setListaReporteSidGestionInterna(List<ReporteSidExpediente> listaReporteSidGestionInterna) {
+        this.listaReporteSidGestionInterna = listaReporteSidGestionInterna;
     }
     
     

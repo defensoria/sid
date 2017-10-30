@@ -33,4 +33,5 @@ public interface ReporteSidExpedienteDAO {
     
     public List<ReporteSidConteo> listaExpedienteReporteDependencia(ReporteSidExpediente reporteSidExpediente);
     
+    public List<ReporteSidExpediente> listaExpedienteReporteGestionInterna(ReporteSidExpediente reporteSidExpediente);
 }

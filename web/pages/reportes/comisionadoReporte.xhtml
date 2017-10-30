@@ -66,11 +66,11 @@
                                                             <table style="width: 100%">
                                                                 <tr>
                                                                     <td>
-                                                                        <span style="color: red; font-size: 2em;">*</span><label>Fecha de ingreso desde</label>
+                                                                        <label>Fecha de ingreso desde</label>
                                                                         <gc:calendar value="#{reporteSidController.reporteSidExpediente.fechaIngresoDesde}" />
                                                                     </td>
                                                                     <td>
-                                                                        <span style="color: red; font-size: 2em;">*</span><label>Fecha de ingreso hasta</label>
+                                                                        <label>Fecha de ingreso hasta</label>
                                                                         <gc:calendar value="#{reporteSidController.reporteSidExpediente.fechaIngresoHasta}" />
                                                                     </td>
                                                                 </tr>
@@ -216,11 +216,7 @@
                                                     </tr>
                                                     <tr>
                                                         <td style="padding-right: 5px; padding-bottom: 10px">
-                                                            <label>OD / MAD / Programa</label>
-                                                            <h:selectOneMenu value="#{reporteSidController.reporteSidExpediente.ODBusqueda}">
-                                                                <f:selectItem itemLabel="Seleccione" itemValue="" />
-                                                                <f:selectItems value="#{listasComunesController.buscarListaADOD(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
-                                                            </h:selectOneMenu>
+                                                            
                                                         </td>
                                                         <td style="padding-left: 5px; padding-bottom: 10px">
                                                             <label>Comisionado</label>
@@ -269,299 +265,15 @@
                                                             </table>
                                                         </td>
                                                     </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <label>Grupos vulnerables:</label>
-                                                            <gc:selectMultiBootstrap idSelect="idSelectGrupoViolencia" idHidden="idSelect1" lista="#{listasComunesController.buscarGrupoVulnerable(false,false,false)}" value="#{reporteSidController.reporteSidExpediente.grupoVulnerable}"/>
-                                                        </td>
-                                                        <td>
-                                                            <label>Etiqueta:</label>
-                                                            <h:selectOneMenu value="#{reporteSidController.reporteSidExpediente.etiqueta}">
-                                                                <f:selectItem itemLabel="Seleccione" itemValue="" />
-                                                                <f:selectItems value="#{listasComunesController.buscarExpedienteEtiquetas(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
-                                                            </h:selectOneMenu>
-                                                        </td>
-                                                    </tr>
-                                                        <tr>
-                                                            <td style="width: 50%; padding-right: 5px; padding-bottom: 10px">
-                                                                <span class="text-bold">Buscador de clasificación temática:</span>
-                                                                <a style="cursor: pointer" jsf:action="#{reporteSidController.limpiarModalBusquedaClasificacion()}" jsf:onclick="loadingModal()">
-                                                                    <span class="glyphicon glyphicon-search" style="font-size: large" />
-                                                                    <f:ajax render="idPanelModalBusquedaClasificacion10" onevent="openModalBusquedaClasificacion" />
-                                                                </a>
-                                                            </td>
-                                                            <td style="padding-left: 5px; padding-bottom: 10px">
-                                                                <script>
-                                                                    function openModalBusquedaClasificacion(data) {
-                                                                        if (data.status === 'success') {
-                                                                            $("#loadModal").modal('hide');
-                                                                            $('body').removeClass('modal-open');
-                                                                            $(".modal-backdrop").removeClass("modal-backdrop");
-                                                                            $("#idModalBusquedaClasificacion10").modal('show');
-                                                                        }
-                                                                    }
-                                                                </script>
-                                                                <h:panelGroup id="idPanelModalBusquedaClasificacion10">
-                                                                    <div class="modal fade" data-backdrop="static" data-keyboard="false" id="idModalBusquedaClasificacion10" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                                                        <div class="modal-dialog" style="text-align: left">
-                                                                            <div class="modal-content">
-                                                                                <div class="modal-header">
-                                                                                    <a type="button" class="close" data-dismiss="modal">
-                                                                                        <span style="color:red" class="glyphicon glyphicon-remove"></span>
-                                                                                    </a>
-                                                                                    <span class="text-resalt-primary">Búsqueda de clasificación</span>
-                                                                                </div>
-                                                                                <div class="modal-body" style="padding:5px">
-                                                                                    <div class="panel-body">
-                                                                                        <h:panelGroup id="idPanelBusquedaClasificacion10">
-                                                                                            <table style="width: 100%">
-                                                                                                <tr>
-                                                                                                    <td>
-                                                                                                        <input type="text" autocomplete="off" jsf:value="#{reporteSidController.expedienteClasificacionBusqueda.nombre}" maxlength="100" />
-                                                                                                    </td>
-                                                                                                    <td>
-                                                                                                        <a class="btn btn-primary" jsf:action="#{reporteSidController.buscarClasificacion(1)}" jsf:onclick="loadingModal()">
-                                                                                                            <span class="glyphicon glyphicon-search" />
-                                                                                                            <f:ajax render="idPanelBusquedaClasificacion10" execute="idPanelBusquedaClasificacion10" onevent="closeModal"/>Buscar
-                                                                                                        </a>
-                                                                                                    </td>
-                                                                                                </tr>
-                                                                                            </table>
-                                                                                            <br/>
-                                                                                            <c:forEach var="nivel" items="#{reporteSidController.listaExpedienteNivelModal}">
-                                                                                                <div class="alert alert-warning fade in" style="margin-bottom: 3px; padding: 4px">
-                                                                                                    <table style="width: 100%">
-                                                                                                        <tr>
-                                                                                                            <td style="width: 95%">
-                                                                                                                <h:outputText style="font-weight: bold" value="#{nivel.primerNivel}"/>
-                                                                                                                <h:outputText style="color: gray; font-weight: bold;" value=" > " rendered="#{nivel.segundoNivel != null}"/>
-                                                                                                                <h:outputText style="font-weight: bold" value="#{nivel.segundoNivel}" />
-                                                                                                                <h:outputText style="color: gray; font-weight: bold;" value=" > " rendered="#{nivel.tercerNivel != null}"/>
-                                                                                                                <h:outputText style="font-weight: bold" value="#{nivel.tercerNivel}" />
-                                                                                                                <h:outputText style="color: gray; font-weight: bold;" value=" > " rendered="#{nivel.cuartoNivel != null}"/>
-                                                                                                                <h:outputText style="font-weight: bold" value="#{nivel.cuartoNivel}" />
-                                                                                                                <h:outputText style="color: gray; font-weight: bold;" value=" > " rendered="#{nivel.quintoNivel != null}"/>
-                                                                                                                <h:outputText style="font-weight: bold" value="#{nivel.quintoNivel}" />
-                                                                                                                <h:outputText style="color: gray; font-weight: bold;" value=" > " rendered="#{nivel.sextoNivel != null}"/>
-                                                                                                                <h:outputText style="font-weight: bold" value="#{nivel.sextoNivel}" />
-                                                                                                            </td>
-                                                                                                            <td>
-                                                                                                                <a jsf:action="#{reporteSidController.seleccionarNivel(nivel)}" jsf:onclick="loadingModal()">
-                                                                                                                    <span class="glyphicon glyphicon-plus"  style="color: #007ACC; font-size: medium"/>
-                                                                                                                </a>
-                                                                                                            </td>
-                                                                                                        </tr>
-                                                                                                    </table>    
-                                                                                                </div>             
-                                                                                            </c:forEach>
-                                                                                            <br/>
-                                                                                            <ul class="pager">
-                                                                                                <li>
-                                                                                                    <a jsf:action="#{registroController.buscarClasificacion(registroController.nroPaginaModal -1)}" jsf:rendered="#{!empty registroController.listaExpedienteNivelModal}" jsf:onclick="loadingModal()">Anterior
-                                                                                                        <f:ajax render="idPanelBusquedaClasificacion10" onevent="closeModal"/>
-                                                                                                    </a>
-                                                                                                </li>
-                                                                                                <li>
-                                                                                                    <a jsf:action="#{registroController.buscarClasificacion(registroController.nroPaginaModal +1)}" jsf:rendered="#{!empty registroController.listaExpedienteNivelModal}" jsf:onclick="loadingModal()">Siguiente
-                                                                                                        <f:ajax render="idPanelBusquedaClasificacion10" onevent="closeModal"/>
-                                                                                                    </a>
-                                                                                                </li>
-                                                                                            </ul>
-                                                                                        </h:panelGroup>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </h:panelGroup>
-                                                            </td>
-                                                        </tr> 
-                                                    </table>
-                                                    <h:panelGroup id="idClasificador10">
-                                                        <table style="width: 100%">
-                                                            <tr>
-                                                                <td style="padding-bottom: 10px; padding-right: 5px; width: 50%;">
-                                                                    <span class="text-bold">Tema:</span>
-                                                                    <h:selectOneMenu value="#{reporteSidController.reporteSidExpediente.idPrimerNivel}" onchange="loadingModal()">
-                                                                        <f:selectItem itemLabel="Seleccione" itemValue="0" />
-                                                                        <f:selectItems value="#{reporteSidController.listaClasificacionPrimerLevel}" />
-                                                                        <f:ajax listener="#{reporteSidController.cargarNivelesClasificacion(reporteSidController.reporteSidExpediente.idPrimerNivel, 2)}" 
-                                                                                render="idClasificador10" onevent="closeModal"/>
-                                                                    </h:selectOneMenu>
-                                                                </td>
-                                                                <td style="padding-bottom: 10px; padding-left: 5px">
-                                                                    <h:panelGroup>
-                                                                        <span class="text-bold">Sub tema:</span>
-                                                                    </h:panelGroup>
-                                                                    <h:selectOneMenu value="#{reporteSidController.reporteSidExpediente.idSegundoNivel}" onchange="loadingModal()">
-                                                                        <f:selectItem itemLabel="Seleccione" itemValue="0" />
-                                                                        <f:selectItems value="#{reporteSidController.listaClasificacionSegundoLevel}" />
-                                                                        <f:ajax listener="#{reporteSidController.cargarNivelesClasificacion(reporteSidController.reporteSidExpediente.idSegundoNivel, 3)}"  
-                                                                                render="idClasificador10" onevent="closeModal"/>
-                                                                    </h:selectOneMenu>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td style="padding-bottom: 10px; padding-right: 5px">
-                                                                    <span class="text-bold">Tercer nivel:</span>
-                                                                    <h:selectOneMenu value="#{reporteSidController.reporteSidExpediente.idTercerNivel}" onchange="loadingModal()">
-                                                                        <f:selectItem itemLabel="Seleccione" itemValue="0" />
-                                                                        <f:selectItems value="#{reporteSidController.listaClasificacionTercerLevel}" />
-                                                                        <f:ajax listener="#{reporteSidController.cargarNivelesClasificacion(reporteSidController.reporteSidExpediente.idTercerNivel, 4)}" 
-                                                                                render="idClasificador10" onevent="closeModal"/>
-                                                                    </h:selectOneMenu>
-                                                                </td>
-                                                                <td  style="padding-bottom: 10px; padding-left: 5px">
-                                                                    <span class="text-bold">Cuarto nivel:</span>
-                                                                    <h:selectOneMenu value="#{reporteSidController.reporteSidExpediente.idCuartoNivel}" onchange="loadingModal()">
-                                                                        <f:selectItem itemLabel="Seleccione" itemValue="0" />
-                                                                        <f:selectItems value="#{reporteSidController.listaClasificacionCuartoLevel}" />
-                                                                        <f:ajax listener="#{reporteSidController.cargarNivelesClasificacion(reporteSidController.reporteSidExpediente.idCuartoNivel, 5)}" 
-                                                                                render="idClasificador10" onevent="closeModal"/>
-                                                                    </h:selectOneMenu>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td  style="padding-bottom: 10px; padding-right: 5px">
-                                                                    <span class="text-bold">Quinto nivel:</span>
-                                                                    <h:selectOneMenu value="#{reporteSidController.reporteSidExpediente.idQuintoNivel}" onchange="loadingModal()">
-                                                                        <f:selectItem itemLabel="Seleccione" itemValue="0" />
-                                                                        <f:selectItems value="#{reporteSidController.listaClasificacionQuintoLevel}" />
-                                                                        <f:ajax listener="#{reporteSidController.cargarNivelesClasificacion(reporteSidController.reporteSidExpediente.idQuintoNivel, 6)}" 
-                                                                                render="idClasificador10" onevent="closeModal"/>
-                                                                    </h:selectOneMenu>
-                                                                </td>
-                                                                <td  style="padding-bottom: 10px; padding-left: 5px">
-                                                                    <span class="text-bold">Sexto nivel:</span>
-                                                                    <h:selectOneMenu value="#{reporteSidController.reporteSidExpediente.idSextoNivel}">
-                                                                        <f:selectItem itemLabel="Seleccione" itemValue="0" />
-                                                                        <f:selectItems value="#{reporteSidController.listaClasificacionSextoLevel}" />
-                                                                    </h:selectOneMenu>
-                                                                </td>
-                                                            </tr>
-                                                            
-                                                        </table>
-                                                    </h:panelGroup>
-                                                <table style="width: 100%">
-                                                    <tr>
-                                                        <td style="padding-bottom: 10px; padding-right: 5px; width: 50%">
-                                                            <label>Ubigeo del recurrente</label>
-                                                            <h:panelGroup>
-                                                                <table style="width:100%">
-                                                                    <tr>
-                                                                        <td style="width:33%">
-                                                                            <h:selectOneMenu value="#{reporteSidController.reporteSidExpediente.idDepartamentoRecurrente}" onchange="loadingModal()">
-                                                                                <f:selectItem itemLabel="Departamento" itemValue=""/>
-                                                                                <f:selectItems value="#{listasComunesController.listaDepartamentos(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
-                                                                                <f:ajax listener="#{reporteSidController.comboProvinciaRecurrente()}" render="cmbProvincia10 cmbDistrito10" onevent="closeModal"/>
-                                                                            </h:selectOneMenu>
-                                                                        </td>
-                                                                        <td style="width:33%">
-                                                                            <h:selectOneMenu id="cmbProvincia10" value="#{reporteSidController.reporteSidExpediente.idProvinciaRecurrente}" onchange="loadingModal()">
-                                                                                <f:selectItem itemLabel="Provincia" itemValue=""/>
-                                                                                <f:selectItems value="#{reporteSidController.listaProvincia}" />
-                                                                                <f:ajax listener="#{reporteSidController.comboDistritoRecurrente()}" render="cmbDistrito10" onevent="closeModal"/>
-                                                                            </h:selectOneMenu>
-                                                                        </td>
-                                                                        <td style="width:34%">
-                                                                            <h:selectOneMenu id="cmbDistrito10" value="#{reporteSidController.reporteSidExpediente.idDistritoRecurrente}">
-                                                                                <f:selectItem itemLabel="Distrito" itemValue=""/>
-                                                                                <f:selectItems value="#{reporteSidController.listaDistrito}" />
-                                                                            </h:selectOneMenu>
-                                                                        </td>
-                                                                    </tr>
-                                                                </table>
-                                                            </h:panelGroup>
-                                                        </td>
-                                                        <td style="padding-left: 5px; padding-bottom: 10px;">
-                                                            <label>¿Es persona con discapacidad?</label>
-                                                            <h:selectOneMenu value="#{reporteSidController.reporteSidExpediente.esDiscapacitadoRecurrente}" style="width: 50%">
-                                                                <f:selectItem itemLabel="Seleccione" itemValue=""/>
-                                                                <f:selectItem itemLabel="Si" itemValue="1"/>
-                                                                <f:selectItem itemLabel="No" itemValue="0"/>
-                                                            </h:selectOneMenu>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style="padding-right: 5px; padding-bottom: 10px;">
-                                                            <label>Lengua materna:</label>
-                                                            <h:selectOneMenu value="#{reporteSidController.reporteSidExpediente.tipoLenguaRecurrente}" style="width: 50%">
-                                                                <f:selectItem itemLabel="Seleccione" itemValue=""/>
-                                                                <f:selectItems value="#{listasComunesController.listaLenguaMaterna(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
-                                                            </h:selectOneMenu>
-                                                        </td>
-                                                        <td style="padding-bottom: 10px; padding-left: 5px">
-                                                            <label>Población indígena u originarios:</label>
-                                                            <h:selectOneMenu value="#{reporteSidController.reporteSidExpediente.tipoPuebloRecurrente}" style="width: 50%">
-                                                                <f:selectItem itemLabel="Seleccione" itemValue=""/>
-                                                                <f:selectItems value="#{listasComunesController.listaPuebloIndigena(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
-                                                            </h:selectOneMenu>
-                                                        </td>
-                                                    </tr>
-                                                    
-                                                    <tr>
-                                                        <td style="padding-bottom: 10px; padding-right: 5px; width: 50%">
-                                                            <label>Ubigeo del afectado</label>
-                                                            <h:panelGroup>
-                                                                <table style="width:100%">
-                                                                    <tr>
-                                                                        <td style="width:33%">
-                                                                            <h:selectOneMenu value="#{reporteSidController.reporteSidExpediente.idDepartamentoAfectado}" onchange="loadingModal()">
-                                                                                <f:selectItem itemLabel="Departamento" itemValue=""/>
-                                                                                <f:selectItems value="#{listasComunesController.listaDepartamentos(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
-                                                                                <f:ajax listener="#{reporteSidController.comboProvinciaAfectado()}" render="cmbProvincia3 cmbDistrito3" onevent="closeModal"/>
-                                                                            </h:selectOneMenu>
-                                                                        </td>
-                                                                        <td style="width:33%">
-                                                                            <h:selectOneMenu id="cmbProvincia3" value="#{reporteSidController.reporteSidExpediente.idProvinciaAfectado}" onchange="loadingModal()">
-                                                                                <f:selectItem itemLabel="Provincia" itemValue=""/>
-                                                                                <f:selectItems value="#{reporteSidController.listaProvincia}" />
-                                                                                <f:ajax listener="#{reporteSidController.comboDistritoAfectado()}" render="cmbDistrito3" onevent="closeModal"/>
-                                                                            </h:selectOneMenu>
-                                                                        </td>
-                                                                        <td style="width:34%">
-                                                                            <h:selectOneMenu id="cmbDistrito3" value="#{reporteSidController.reporteSidExpediente.idDistritoAfectado}">
-                                                                                <f:selectItem itemLabel="Distrito" itemValue=""/>
-                                                                                <f:selectItems value="#{reporteSidController.listaDistrito}" />
-                                                                            </h:selectOneMenu>
-                                                                        </td>
-                                                                    </tr>
-                                                                </table>
-                                                            </h:panelGroup>
-                                                        </td>
-                                                        <td style="padding-left: 5px; padding-bottom: 10px;">
-                                                            <label>¿Es persona con discapacidad?</label>
-                                                            <h:selectOneMenu value="#{reporteSidController.reporteSidExpediente.esDiscapacitadoAfectado}" style="width: 50%">
-                                                                <f:selectItem itemLabel="Seleccione" itemValue=""/>
-                                                                <f:selectItem itemLabel="Si" itemValue="1"/>
-                                                                <f:selectItem itemLabel="No" itemValue="0"/>
-                                                            </h:selectOneMenu>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style="padding-right: 5px; padding-bottom: 10px;">
-                                                            <label>Lengua materna:</label>
-                                                            <h:selectOneMenu value="#{reporteSidController.reporteSidExpediente.tipoLenguaAfectado}" style="width: 50%">
-                                                                <f:selectItem itemLabel="Seleccione" itemValue=""/>
-                                                                <f:selectItems value="#{listasComunesController.listaLenguaMaterna(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
-                                                            </h:selectOneMenu>
-                                                        </td>
-                                                        <td style="padding-bottom: 10px; padding-left: 5px">
-                                                            <label>Población indígena u originarios:</label>
-                                                            <h:selectOneMenu value="#{reporteSidController.reporteSidExpediente.tipoPuebloAfectado}" style="width: 50%">
-                                                                <f:selectItem itemLabel="Seleccione" itemValue=""/>
-                                                                <f:selectItems value="#{listasComunesController.listaPuebloIndigena(false,false,false)}" var="y" itemLabel="#{y.nombreParametro}" itemValue="#{y.valorParametro}" />
-                                                            </h:selectOneMenu>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
+                                                   <tr>
                                                         <td colspan="2">
                                                             <a class="btn btn-primary" jsf:action="#{reporteSidController.buscarReporteExpedienteComisionado(1)}" >
                                                                 <span class="glyphicon glyphicon-search" />Buscar
                                                             </a>
                                                         </td>
                                                     </tr>
-                                                </table>
+                                                      
+                                                    </table>
                                             </div>
                                         </div>
                                     </div>
@@ -576,22 +288,9 @@
                                         <!--<img src="../../bootstrap/img/pdf.png" height="45" width="45"/>-->
                                     </a>
                                 </div>
-                                <style>
-                                    .column1 { width: 1%; color: black}
-                                    .column2 { width: 8%; color: black}
-                                    .column3 { width: 7%; color: black}
-                                    .column4 { width: 8%; color: black}
-                                    .column5 { width: 6%; color: black}
-                                    .column6 { width: 8%; color: black; font-size: 0.9em}
-                                    .column7 { width: 6%; color: black}
-                                    .column8 { width: 8%; color: black}
-                                    .column9 { width: 8%; color: black}
-                                    .column10 { width: 8%; color: black; font-size: 0.9em}
-                                    .column11 { width: 8%; color: black; font-size: 0.9em}
-                                    .column12 { width: 24%; color: black}
-                                </style>
+                                
                                 <h:panelGroup id="idPanelBusquedaExpediente10">
-                                    <h:dataTable value="#{reporteSidController.listaReporteSidComisionado}" var="exped" class="table table-hover" binding="#{row36}" width="100%" columnClasses="column1,column2,column3,column4,column5,column6,column7,column8,column9,column10,column11,column12">
+                                    <h:dataTable value="#{reporteSidController.listaReporteSidComisionado}" var="exped" class="table table-hover" binding="#{row36}" width="100%">
                                         <h:column>
                                             <f:facet name="header">Nro</f:facet>
                                             <h:outputText value="#{(row36.rowIndex+1)+(reporteSidController.pagina-1)*10}" />

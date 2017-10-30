@@ -67,5 +67,10 @@ public class ReporteSidExpedienteServiceImpl implements ReporteSidExpedienteServ
         return reporteSidExpedienteDAO.listaExpedienteReporteDependencia(reporteSidExpediente);
     }
 
+    @Override
+    public List<ReporteSidExpediente> listaExpedienteReporteGestionInterna(ReporteSidExpediente reporteSidExpediente) {
+        return reporteSidExpedienteDAO.listaExpedienteReporteGestionInterna(reporteSidExpediente);
+    }
+
     
 }
