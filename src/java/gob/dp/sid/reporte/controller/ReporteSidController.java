@@ -380,7 +380,7 @@ public class ReporteSidController extends AbstractManagedBean implements Seriali
 
         JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(list);
         if (tipo == 1) {
-            jasperPrint = JasperFillManager.fillReport(retornaRutaPath().concat("/jasper/reporteSidExpedientePDF.jasper"), new HashMap(), beanCollectionDataSource);
+            jasperPrint = JasperFillManager.fillReport(retornaRutaPath().concat("/jasper/reporteSidExpedienteGestionPDF.jasper"), new HashMap(), beanCollectionDataSource);
         }
         if (tipo == 2) {
             String ruta = retornaRutaPath().concat("/jasper/reporteSidExpedienteExcel.jasper");
@@ -621,14 +621,6 @@ public class ReporteSidController extends AbstractManagedBean implements Seriali
                 reporteSidExpediente.setIni(ini);
                 reporteSidExpediente.setFin(fin);
                 List<ReporteSidExpediente> list = expedienteReporteService.listaGestionReporte(reporteSidExpediente);
-                for (ReporteSidExpediente ec : list) {
-                    //ec.setPersonasRecurrentes(personaService.personaPorExpedienteRecurrente(ec.getIdExpediente()));
-                    //ec.setPersonasAfectados(personaService.personaPorExpedienteAfectado(ec.getIdExpediente()));
-                    //ec.setEntidades(entidadService.entidadPorExpediente(ec.getIdExpediente()));
-                    /*if (ec.getNumeroExpediente() != null) {
-                        ec.setNiveles(expedienteNivelService.expedienteNivelPorExpediente(ec.getNumeroExpediente()));
-                    }*/
-                }
                 if (list.size() > 0) {
                     listaReporteSidGestion = list;
                     pagina = pag;
@@ -643,6 +635,22 @@ public class ReporteSidController extends AbstractManagedBean implements Seriali
             log.error("ERROR - buscarClasificacion()" + e);
         }
         return false;
+    }
+    
+    public void reporteGestionPdf() throws JRException, IOException {
+        Date date = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        String fecha = simpleDateFormat.format(date);
+        initJasperGestion(1);
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        HttpServletResponse httpServletResponse;
+        httpServletResponse = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+        httpServletResponse.setContentType("application/pdf");
+        httpServletResponse.addHeader("Content-disposition", "attachment; filename=" + fecha + "_caso.pdf");
+        ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();
+        JasperExportManager.exportReportToPdfStream(jasperPrint, servletOutputStream);
+        facesContext.responseComplete();
+        facesContext.renderResponse();
     }
     
     public boolean buscarReporteEntidad(Integer pag) {

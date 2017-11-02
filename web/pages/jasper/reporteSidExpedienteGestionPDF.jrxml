@@ -165,15 +165,14 @@
 	</queryString>
 	<field name="numeroExpediente" class="java.lang.String"/>
 	<field name="tipoExpediente" class="java.lang.String"/>
-	<field name="etapaExpediente" class="java.lang.String"/>
+	<field name="entidadGestion" class="java.lang.String"/>
 	<field name="estadoGeneral" class="java.lang.String"/>
-	<field name="nombreOD" class="java.lang.String"/>
-	<field name="fechaIngreso" class="java.util.Date"/>
+	<field name="fechaRecepcionGestion" class="java.util.Date"/>
 	<field name="comisionado" class="java.lang.String"/>
-	<field name="personasRecurrentes" class="java.util.List"/>
-	<field name="personasAfectados" class="java.util.List"/>
-	<field name="niveles" class="java.util.List"/>
-	<field name="canalIngresoDetalle" class="java.lang.String"/>
+	<field name="respuestaGestion" class="java.lang.String"/>
+	<field name="fechaRespuestaGestion" class="java.util.Date"/>
+	<field name="fechaRegistroGestion" class="java.util.Date"/>
+	<field name="codigoGestion" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -204,7 +203,7 @@
 					<font fontName="Arial" size="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<text><![CDATA[Fecha ingreso]]></text>
+				<text><![CDATA[Fecha de la gestión]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="407" y="0" width="84" height="50" forecolor="#FFFFFF" backcolor="#0066CC" uuid="282acbf5-c8d1-4416-81b9-f9b25b866a96"/>
@@ -215,20 +214,20 @@
 				<text><![CDATA[Estado general]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="491" y="0" width="137" height="50" forecolor="#FFFFFF" backcolor="#0066CC" uuid="90d61ed8-51cc-4741-b74f-b3f2cc2013ba"/>
+				<reportElement mode="Opaque" x="491" y="0" width="65" height="50" forecolor="#FFFFFF" backcolor="#0066CC" uuid="90d61ed8-51cc-4741-b74f-b3f2cc2013ba"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
 					<font fontName="Arial" size="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<text><![CDATA[Oficina defensorial]]></text>
+				<text><![CDATA[Fecha de registro]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="628" y="0" width="178" height="50" forecolor="#FFFFFF" backcolor="#0066CC" uuid="d011c0ea-6b0a-4d00-abb1-3c1e29c50b6a"/>
+				<reportElement mode="Opaque" x="556" y="0" width="92" height="50" forecolor="#FFFFFF" backcolor="#0066CC" uuid="d011c0ea-6b0a-4d00-abb1-3c1e29c50b6a"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
 					<font fontName="Arial" size="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<text><![CDATA[comisionado]]></text>
+				<text><![CDATA[Respuesta]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="309" y="0" width="98" height="50" forecolor="#FFFFFF" backcolor="#0066CC" uuid="b7e8e55e-487e-4b52-ad6d-d07151131531"/>
@@ -236,7 +235,7 @@
 					<font fontName="Arial" size="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<text><![CDATA[Etapa]]></text>
+				<text><![CDATA[Institución]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="225" y="0" width="84" height="50" forecolor="#FFFFFF" backcolor="#0066CC" uuid="d2388467-f5d0-4efd-a8a3-459889d4f870"/>
@@ -244,7 +243,15 @@
 					<font fontName="Arial" size="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<text><![CDATA[Canal de ingreso]]></text>
+				<text><![CDATA[Código de la gestión]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="648" y="0" width="98" height="50" forecolor="#FFFFFF" backcolor="#0066CC" uuid="5bb59c9f-360a-4dbf-bda1-947a4f07a03c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
+					<font fontName="Arial" size="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Fecha de la respuesta]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
@@ -269,14 +276,14 @@
 				<textElement>
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{etapaExpediente}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{entidadGestion}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="162" y="0" width="63" height="20" uuid="afe54859-136b-43be-85d9-4fa4f08440b3"/>
 				<textElement>
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[new SimpleDateFormat("MM/dd/yyyy").format($F{fechaIngreso})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[new SimpleDateFormat("MM/dd/yyyy").format($F{fechaRecepcionGestion})]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="407" y="0" width="84" height="20" uuid="418ce34c-6536-41e6-be9a-86f01a226f14"/>
@@ -285,19 +292,12 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{estadoGeneral}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="491" y="0" width="137" height="20" uuid="c61b0ebc-ed21-40e5-8a75-209684a3a651"/>
-				<textElement>
-					<font fontName="Arial" size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{nombreOD}]]></textFieldExpression>
-			</textField>
 			<textField>
-				<reportElement x="628" y="0" width="178" height="20" uuid="740441fe-0a3e-4faf-85c6-055e6f79ee39"/>
+				<reportElement x="556" y="0" width="92" height="20" uuid="740441fe-0a3e-4faf-85c6-055e6f79ee39"/>
 				<textElement>
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{comisionado}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{respuestaGestion}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="225" y="0" width="84" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="5e434e6a-7de4-4340-b2d3-f97d8939bb8a"/>
@@ -305,7 +305,21 @@
 					<font fontName="Arial" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{canalIngresoDetalle}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{codigoGestion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="491" y="0" width="65" height="20" uuid="bec81b71-e8d5-41d7-8692-034f29b8bef9"/>
+				<textElement>
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new SimpleDateFormat("MM/dd/yyyy").format($F{fechaRegistroGestion})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="648" y="0" width="98" height="20" uuid="d102d473-fe0d-4e65-8997-07bfc1441090"/>
+				<textElement>
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new SimpleDateFormat("MM/dd/yyyy").format($F{fechaRespuestaGestion})]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

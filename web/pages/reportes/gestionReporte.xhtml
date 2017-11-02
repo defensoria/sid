@@ -569,7 +569,7 @@
                                 </div>
                                 <br/>
                                 <div>
-                                    <a jsf:action="#{reporteSidController.reporteExpdienteExcel()}">
+                                    <a jsf:action="#{reporteSidController.reporteGestionPdf()}">
                                         <img src="../../bootstrap/img/excel.png" height="45" width="45"/>
                                     </a>
                                     <a jsf:action="#{reporteSidController.reporteExpdientePdf()}">
@@ -602,7 +602,7 @@
                                             <h:outputText value="#{exped.codigoGestion}" />
                                         </h:column>
                                         <h:column>
-                                            <f:facet name="header">Entidad</f:facet>
+                                            <f:facet name="header">Institución</f:facet>
                                             <h:outputText value="#{exped.entidadGestion}" />
                                         </h:column>
                                         <h:column>
