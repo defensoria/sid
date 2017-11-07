@@ -153,7 +153,7 @@ public class ReporteSidExpediente {
     
     private String codigoGestion;
     
-    private String fechaRecepcionGestion;
+    private Date fechaRecepcionGestion;
     
     private String entidadGestion;
     
@@ -165,7 +165,7 @@ public class ReporteSidExpediente {
     
     private String respuestaGestion;
     
-    private String fechaRespuestaGestion;
+    private Date fechaRespuestaGestion;
     
     private String codigoGestionOrigen;
     
@@ -731,11 +731,11 @@ public class ReporteSidExpediente {
         this.codigoGestion = codigoGestion;
     }
 
-    public String getFechaRecepcionGestion() {
+    public Date getFechaRecepcionGestion() {
         return fechaRecepcionGestion;
     }
 
-    public void setFechaRecepcionGestion(String fechaRecepcionGestion) {
+    public void setFechaRecepcionGestion(Date fechaRecepcionGestion) {
         this.fechaRecepcionGestion = fechaRecepcionGestion;
     }
 
@@ -779,11 +779,11 @@ public class ReporteSidExpediente {
         this.respuestaGestion = respuestaGestion;
     }
 
-    public String getFechaRespuestaGestion() {
+    public Date getFechaRespuestaGestion() {
         return fechaRespuestaGestion;
     }
 
-    public void setFechaRespuestaGestion(String fechaRespuestaGestion) {
+    public void setFechaRespuestaGestion(Date fechaRespuestaGestion) {
         this.fechaRespuestaGestion = fechaRespuestaGestion;
     }
 

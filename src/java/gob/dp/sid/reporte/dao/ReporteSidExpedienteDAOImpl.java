@@ -72,6 +72,26 @@ public class ReporteSidExpedienteDAOImpl extends SqlSessionDaoSupport implements
     public List<ReporteSidExpediente> listaGestionReporteExport(ReporteSidExpediente reporteSidExpediente) {
         return getSqlSession().selectList("gob.dp.sid.reporte.dao.ReporteSidExpedienteDAO.listaGestionReporteExport", reporteSidExpediente);
     }
+
+    @Override
+    public List<ReporteSidConteo> listaEntidadReporteExport(ReporteSidExpediente reporteSidExpediente) {
+        return getSqlSession().selectList("gob.dp.sid.reporte.dao.ReporteSidExpedienteDAO.listaEntidadReporteExport", reporteSidExpediente);
+    }
+
+    @Override
+    public List<ReporteSidConteo> listaExpedienteReporteClasificacionExport(ReporteSidExpediente reporteSidExpediente) {
+        return getSqlSession().selectList("gob.dp.sid.reporte.dao.ReporteSidExpedienteDAO.listaExpedienteReporteClasificacionExport", reporteSidExpediente);
+    }
+
+    @Override
+    public List<ReporteSidConteo> listaExpedienteReporteComisionadoExport(ReporteSidExpediente reporteSidExpediente) {
+        return getSqlSession().selectList("gob.dp.sid.reporte.dao.ReporteSidExpedienteDAO.listaExpedienteReporteComisionadoExport", reporteSidExpediente);
+    }
+
+    @Override
+    public List<ReporteSidConteo> listaExpedienteReporteDependenciaExport(ReporteSidExpediente reporteSidExpediente) {
+        return getSqlSession().selectList("gob.dp.sid.reporte.dao.ReporteSidExpedienteDAO.listaExpedienteReporteDependenciaExport", reporteSidExpediente);
+    }
     
     
     

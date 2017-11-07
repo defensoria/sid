@@ -569,10 +569,10 @@
                                 </div>
                                 <br/>
                                 <div>
-                                    <a jsf:action="#{reporteSidController.reporteGestionPdf()}">
+                                    <a jsf:action="#{reporteSidController.reporteGestionExcel()}">
                                         <img src="../../bootstrap/img/excel.png" height="45" width="45"/>
                                     </a>
-                                    <a jsf:action="#{reporteSidController.reporteExpdientePdf()}">
+                                    <a jsf:action="#{reporteSidController.reporteGestionPdf()}">
                                         <img src="../../bootstrap/img/pdf.png" height="45" width="40"/>
                                     </a>
                                 </div>
@@ -585,7 +585,7 @@
                                         </h:column>
                                         <h:column>
                                             <f:facet name="header">Expediente</f:facet>
-                                            <a data-toggle="tooltip" data-placement="right" title="#{exped.sumilla}">#{exped.numeroExpediente}</a>
+                                            <h:outputText value="#{exped.numeroExpediente}" />
                                         </h:column>
                                         <h:column>
                                             <f:facet name="header">Tipo</f:facet>

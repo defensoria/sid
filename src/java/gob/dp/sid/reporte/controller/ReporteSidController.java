@@ -380,7 +380,7 @@ public class ReporteSidController extends AbstractManagedBean implements Seriali
 
         JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(list);
         if (tipo == 1) {
-            jasperPrint = JasperFillManager.fillReport(retornaRutaPath().concat("/jasper/reporteSidExpedienteGestionPDF.jasper"), new HashMap(), beanCollectionDataSource);
+            jasperPrint = JasperFillManager.fillReport(retornaRutaPath().concat("/jasper/reporteSidExpedientePDF.jasper"), new HashMap(), beanCollectionDataSource);
         }
         if (tipo == 2) {
             String ruta = retornaRutaPath().concat("/jasper/reporteSidExpedienteExcel.jasper");
@@ -389,38 +389,130 @@ public class ReporteSidController extends AbstractManagedBean implements Seriali
     }
     
     private void initJasperGestion(int tipo) throws JRException, IOException {
+        
+            DateFormat format = new SimpleDateFormat("yyyyMMdd");
+            if (reporteSidExpediente.getFechaIngresoDesde() != null && reporteSidExpediente.getFechaIngresoHasta() != null) {
+                reporteSidExpediente.setFechaIngresoDesdeString(format.format(reporteSidExpediente.getFechaIngresoDesde()));
+                reporteSidExpediente.setFechaIngresoHastaString(format.format(reporteSidExpediente.getFechaIngresoHasta()));
+            }
+
+            if (reporteSidExpediente.getFechaConclusionDesde() != null && reporteSidExpediente.getFechaConclusionHasta() != null) {
+                reporteSidExpediente.setFechaConclusionDesdeString(format.format(reporteSidExpediente.getFechaConclusionDesde()));
+                reporteSidExpediente.setFechaConclusionHastaString(format.format(reporteSidExpediente.getFechaConclusionHasta()));
+            }
+            
         List<ReporteSidExpediente> list = expedienteReporteService.listaGestionReporteExport(reporteSidExpediente);
-        for (ReporteSidExpediente ec : list) {
-            
-            ec.setPersonasRecurrentes(personaService.personaPorExpedienteRecurrente(ec.getIdExpediente()));
-            ec.setPersonasAfectados(personaService.personaPorExpedienteAfectado(ec.getIdExpediente()));
-            ec.setEntidades(entidadService.entidadPorExpediente(ec.getIdExpediente()));
-            if (ec.getNumeroExpediente() != null) {
-                ec.setNiveles(expedienteNivelService.expedienteNivelPorExpediente(ec.getNumeroExpediente()));
-            }
-            
-            if (StringUtils.isNotBlank(ec.getNumeroExpediente())) {
-                if (expedienteConsultaService.expedienteConsultaPorExpediente(ec.getNumeroExpediente()).size() > 0) {
-                    ExpedienteConsulta ec1 = expedienteConsultaService.expedienteConsultaPorExpediente(ec.getNumeroExpediente()).get(0);
-                    if (ec1 != null) {
-                        if (ec1.getEtapa() > 0 && ec1.getEtapa() < 6) {
-                            reporteSidExpediente.setEstaEnConsulta("Si");
-                        } else {
-                            reporteSidExpediente.setEstaEnConsulta("No");
-                        }
-                    }
-                    reporteSidExpediente.setEstaEnConsulta("No");
-                }
-            }
-
-        }
-
+        
         JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(list);
         if (tipo == 1) {
             jasperPrint = JasperFillManager.fillReport(retornaRutaPath().concat("/jasper/reporteSidExpedienteGestionPDF.jasper"), new HashMap(), beanCollectionDataSource);
         }
         if (tipo == 2) {
             String ruta = retornaRutaPath().concat("/jasper/reporteSidExpedienteGestionExcel.jasper");
+            jasperPrint = JasperFillManager.fillReport(ruta, new HashMap(), beanCollectionDataSource);
+        }
+    }
+    
+    private void initJasperEntidad(int tipo) throws JRException, IOException {
+        
+            DateFormat format = new SimpleDateFormat("yyyyMMdd");
+            if (reporteSidExpediente.getFechaIngresoDesde() != null && reporteSidExpediente.getFechaIngresoHasta() != null) {
+                reporteSidExpediente.setFechaIngresoDesdeString(format.format(reporteSidExpediente.getFechaIngresoDesde()));
+                reporteSidExpediente.setFechaIngresoHastaString(format.format(reporteSidExpediente.getFechaIngresoHasta()));
+            }
+
+            if (reporteSidExpediente.getFechaConclusionDesde() != null && reporteSidExpediente.getFechaConclusionHasta() != null) {
+                reporteSidExpediente.setFechaConclusionDesdeString(format.format(reporteSidExpediente.getFechaConclusionDesde()));
+                reporteSidExpediente.setFechaConclusionHastaString(format.format(reporteSidExpediente.getFechaConclusionHasta()));
+            }
+            
+        List<ReporteSidConteo> list = expedienteReporteService.listaEntidadReporteExport(reporteSidExpediente);
+        
+        JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(list);
+        if (tipo == 1) {
+            jasperPrint = JasperFillManager.fillReport(retornaRutaPath().concat("/jasper/reporteSidExpedienteEntidadPDF.jasper"), new HashMap(), beanCollectionDataSource);
+        }
+        if (tipo == 2) {
+            String ruta = retornaRutaPath().concat("/jasper/reporteSidExpedienteEntidadExcel.jasper");
+            jasperPrint = JasperFillManager.fillReport(ruta, new HashMap(), beanCollectionDataSource);
+        }
+    }
+    
+    private void initJasperComisionado(int tipo) throws JRException, IOException {
+        
+            DateFormat format = new SimpleDateFormat("yyyyMMdd");
+            if (reporteSidExpediente.getFechaIngresoDesde() != null && reporteSidExpediente.getFechaIngresoHasta() != null) {
+                reporteSidExpediente.setFechaIngresoDesdeString(format.format(reporteSidExpediente.getFechaIngresoDesde()));
+                reporteSidExpediente.setFechaIngresoHastaString(format.format(reporteSidExpediente.getFechaIngresoHasta()));
+            }
+
+            if (reporteSidExpediente.getFechaConclusionDesde() != null && reporteSidExpediente.getFechaConclusionHasta() != null) {
+                reporteSidExpediente.setFechaConclusionDesdeString(format.format(reporteSidExpediente.getFechaConclusionDesde()));
+                reporteSidExpediente.setFechaConclusionHastaString(format.format(reporteSidExpediente.getFechaConclusionHasta()));
+            }
+            
+            
+                List<ReporteSidConteo> list = expedienteReporteService.listaExpedienteReporteComisionado(reporteSidExpediente);
+                
+          
+        JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(list);
+        if (tipo == 1) {
+            jasperPrint = JasperFillManager.fillReport(retornaRutaPath().concat("/jasper/reporteSidExpedienteComisionadoPDF.jasper"), new HashMap(), beanCollectionDataSource);
+        }
+        if (tipo == 2) {
+            String ruta = retornaRutaPath().concat("/jasper/reporteSidExpedienteComisionadoExcel.jasper");
+            jasperPrint = JasperFillManager.fillReport(ruta, new HashMap(), beanCollectionDataSource);
+        }
+    }
+    
+    private void initJasperDependencia(int tipo) throws JRException, IOException {
+        
+            DateFormat format = new SimpleDateFormat("yyyyMMdd");
+            if (reporteSidExpediente.getFechaIngresoDesde() != null && reporteSidExpediente.getFechaIngresoHasta() != null) {
+                reporteSidExpediente.setFechaIngresoDesdeString(format.format(reporteSidExpediente.getFechaIngresoDesde()));
+                reporteSidExpediente.setFechaIngresoHastaString(format.format(reporteSidExpediente.getFechaIngresoHasta()));
+            }
+
+            if (reporteSidExpediente.getFechaConclusionDesde() != null && reporteSidExpediente.getFechaConclusionHasta() != null) {
+                reporteSidExpediente.setFechaConclusionDesdeString(format.format(reporteSidExpediente.getFechaConclusionDesde()));
+                reporteSidExpediente.setFechaConclusionHastaString(format.format(reporteSidExpediente.getFechaConclusionHasta()));
+            }
+            
+            
+                List<ReporteSidConteo> list = expedienteReporteService.listaExpedienteReporteDependencia(reporteSidExpediente);
+                
+          
+        JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(list);
+        if (tipo == 1) {
+            jasperPrint = JasperFillManager.fillReport(retornaRutaPath().concat("/jasper/reporteSidExpedienteEntidadPDF.jasper"), new HashMap(), beanCollectionDataSource);
+        }
+        if (tipo == 2) {
+            String ruta = retornaRutaPath().concat("/jasper/reporteSidExpedienteEntidadExcel.jasper");
+            jasperPrint = JasperFillManager.fillReport(ruta, new HashMap(), beanCollectionDataSource);
+        }
+    }
+    
+    private void initJasperClasificacion(int tipo) throws JRException, IOException {
+        
+            DateFormat format = new SimpleDateFormat("yyyyMMdd");
+            if (reporteSidExpediente.getFechaIngresoDesde() != null && reporteSidExpediente.getFechaIngresoHasta() != null) {
+                reporteSidExpediente.setFechaIngresoDesdeString(format.format(reporteSidExpediente.getFechaIngresoDesde()));
+                reporteSidExpediente.setFechaIngresoHastaString(format.format(reporteSidExpediente.getFechaIngresoHasta()));
+            }
+
+            if (reporteSidExpediente.getFechaConclusionDesde() != null && reporteSidExpediente.getFechaConclusionHasta() != null) {
+                reporteSidExpediente.setFechaConclusionDesdeString(format.format(reporteSidExpediente.getFechaConclusionDesde()));
+                reporteSidExpediente.setFechaConclusionHastaString(format.format(reporteSidExpediente.getFechaConclusionHasta()));
+            }
+            
+        List<ReporteSidConteo> list = expedienteReporteService.listaExpedienteReporteClasificacionExport(reporteSidExpediente);
+        
+        JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(list);
+        if (tipo == 1) {
+            jasperPrint = JasperFillManager.fillReport(retornaRutaPath().concat("/jasper/reporteSidExpedienteClasificacionPDF.jasper"), new HashMap(), beanCollectionDataSource);
+        }
+        if (tipo == 2) {
+            String ruta = retornaRutaPath().concat("/jasper/reporteSidExpedienteClasificacionExcel.jasper");
             jasperPrint = JasperFillManager.fillReport(ruta, new HashMap(), beanCollectionDataSource);
         }
     }
@@ -465,7 +557,7 @@ public class ReporteSidController extends AbstractManagedBean implements Seriali
         facesContext.renderResponse();
     }
 
-    public void reporteExpedienteGestionExcel() throws JRException, IOException {
+    public void reporteGestionExcel() throws JRException, IOException {
         Date date = new Date();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String fecha = simpleDateFormat.format(date);
@@ -485,6 +577,182 @@ public class ReporteSidController extends AbstractManagedBean implements Seriali
         jrXlsxExporter.setParameter(JRXlsExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_ROWS, Boolean.TRUE);
         jrXlsxExporter.setParameter(JRXlsExporterParameter.IS_FONT_SIZE_FIX_ENABLED, Boolean.FALSE);
         jrXlsxExporter.exportReport();
+        facesContext.responseComplete();
+        facesContext.renderResponse();
+    }
+    
+    public void reporteGestionPdf() throws JRException, IOException {
+        Date date = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        String fecha = simpleDateFormat.format(date);
+        initJasperEntidad(1);
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        HttpServletResponse httpServletResponse;
+        httpServletResponse = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+        httpServletResponse.setContentType("application/pdf");
+        httpServletResponse.addHeader("Content-disposition", "attachment; filename=" + fecha + "_caso.pdf");
+        ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();
+        JasperExportManager.exportReportToPdfStream(jasperPrint, servletOutputStream);
+        facesContext.responseComplete();
+        facesContext.renderResponse();
+    }
+    
+    public void reporteEntidadExcel() throws JRException, IOException {
+        Date date = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String fecha = simpleDateFormat.format(date);
+        initJasperEntidad(2);
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        HttpServletResponse httpServletResponse = (HttpServletResponse) facesContext.getCurrentInstance().getExternalContext().getResponse();
+        httpServletResponse.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        httpServletResponse.addHeader("Content-disposition", "attachment; filename=" + fecha + "_reporteGestion.xlsx");
+        ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();
+        JRXlsxExporter jrXlsxExporter = new JRXlsxExporter();
+        jrXlsxExporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
+        jrXlsxExporter.setParameter(JRXlsExporterParameter.IS_ONE_PAGE_PER_SHEET, Boolean.TRUE);
+        jrXlsxExporter.setParameter(JRExporterParameter.OUTPUT_STREAM, servletOutputStream);
+        jrXlsxExporter.setParameter(JRXlsExporterParameter.IS_ONE_PAGE_PER_SHEET, Boolean.FALSE);
+        jrXlsxExporter.setParameter(JRXlsExporterParameter.IS_DETECT_CELL_TYPE, Boolean.TRUE);
+        jrXlsxExporter.setParameter(JRXlsExporterParameter.IS_WHITE_PAGE_BACKGROUND, Boolean.FALSE);
+        jrXlsxExporter.setParameter(JRXlsExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_ROWS, Boolean.TRUE);
+        jrXlsxExporter.setParameter(JRXlsExporterParameter.IS_FONT_SIZE_FIX_ENABLED, Boolean.FALSE);
+        jrXlsxExporter.exportReport();
+        facesContext.responseComplete();
+        facesContext.renderResponse();
+    }
+    
+    public void reporteEntidadPdf() throws JRException, IOException {
+        Date date = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        String fecha = simpleDateFormat.format(date);
+        initJasperEntidad(1);
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        HttpServletResponse httpServletResponse;
+        httpServletResponse = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+        httpServletResponse.setContentType("application/pdf");
+        httpServletResponse.addHeader("Content-disposition", "attachment; filename=" + fecha + "_caso.pdf");
+        ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();
+        JasperExportManager.exportReportToPdfStream(jasperPrint, servletOutputStream);
+        facesContext.responseComplete();
+        facesContext.renderResponse();
+    }
+    
+    public void reporteClasificacionExcel() throws JRException, IOException {
+        Date date = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String fecha = simpleDateFormat.format(date);
+        initJasperClasificacion(2);
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        HttpServletResponse httpServletResponse = (HttpServletResponse) facesContext.getCurrentInstance().getExternalContext().getResponse();
+        httpServletResponse.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        httpServletResponse.addHeader("Content-disposition", "attachment; filename=" + fecha + "_reporteGestion.xlsx");
+        ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();
+        JRXlsxExporter jrXlsxExporter = new JRXlsxExporter();
+        jrXlsxExporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
+        jrXlsxExporter.setParameter(JRXlsExporterParameter.IS_ONE_PAGE_PER_SHEET, Boolean.TRUE);
+        jrXlsxExporter.setParameter(JRExporterParameter.OUTPUT_STREAM, servletOutputStream);
+        jrXlsxExporter.setParameter(JRXlsExporterParameter.IS_ONE_PAGE_PER_SHEET, Boolean.FALSE);
+        jrXlsxExporter.setParameter(JRXlsExporterParameter.IS_DETECT_CELL_TYPE, Boolean.TRUE);
+        jrXlsxExporter.setParameter(JRXlsExporterParameter.IS_WHITE_PAGE_BACKGROUND, Boolean.FALSE);
+        jrXlsxExporter.setParameter(JRXlsExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_ROWS, Boolean.TRUE);
+        jrXlsxExporter.setParameter(JRXlsExporterParameter.IS_FONT_SIZE_FIX_ENABLED, Boolean.FALSE);
+        jrXlsxExporter.exportReport();
+        facesContext.responseComplete();
+        facesContext.renderResponse();
+    }
+    
+    public void reporteClasificacionPdf() throws JRException, IOException {
+        Date date = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        String fecha = simpleDateFormat.format(date);
+        initJasperClasificacion(1);
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        HttpServletResponse httpServletResponse;
+        httpServletResponse = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+        httpServletResponse.setContentType("application/pdf");
+        httpServletResponse.addHeader("Content-disposition", "attachment; filename=" + fecha + "_caso.pdf");
+        ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();
+        JasperExportManager.exportReportToPdfStream(jasperPrint, servletOutputStream);
+        facesContext.responseComplete();
+        facesContext.renderResponse();
+    }
+    
+    public void reporteComisionadoExcel() throws JRException, IOException {
+        Date date = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String fecha = simpleDateFormat.format(date);
+        initJasperComisionado(2);
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        HttpServletResponse httpServletResponse = (HttpServletResponse) facesContext.getCurrentInstance().getExternalContext().getResponse();
+        httpServletResponse.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        httpServletResponse.addHeader("Content-disposition", "attachment; filename=" + fecha + "_reporteGestion.xlsx");
+        ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();
+        JRXlsxExporter jrXlsxExporter = new JRXlsxExporter();
+        jrXlsxExporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
+        jrXlsxExporter.setParameter(JRXlsExporterParameter.IS_ONE_PAGE_PER_SHEET, Boolean.TRUE);
+        jrXlsxExporter.setParameter(JRExporterParameter.OUTPUT_STREAM, servletOutputStream);
+        jrXlsxExporter.setParameter(JRXlsExporterParameter.IS_ONE_PAGE_PER_SHEET, Boolean.FALSE);
+        jrXlsxExporter.setParameter(JRXlsExporterParameter.IS_DETECT_CELL_TYPE, Boolean.TRUE);
+        jrXlsxExporter.setParameter(JRXlsExporterParameter.IS_WHITE_PAGE_BACKGROUND, Boolean.FALSE);
+        jrXlsxExporter.setParameter(JRXlsExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_ROWS, Boolean.TRUE);
+        jrXlsxExporter.setParameter(JRXlsExporterParameter.IS_FONT_SIZE_FIX_ENABLED, Boolean.FALSE);
+        jrXlsxExporter.exportReport();
+        facesContext.responseComplete();
+        facesContext.renderResponse();
+    }
+    
+    public void reporteComisionadoPdf() throws JRException, IOException {
+        Date date = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        String fecha = simpleDateFormat.format(date);
+        initJasperComisionado(1);
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        HttpServletResponse httpServletResponse;
+        httpServletResponse = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+        httpServletResponse.setContentType("application/pdf");
+        httpServletResponse.addHeader("Content-disposition", "attachment; filename=" + fecha + "_caso.pdf");
+        ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();
+        JasperExportManager.exportReportToPdfStream(jasperPrint, servletOutputStream);
+        facesContext.responseComplete();
+        facesContext.renderResponse();
+    }
+    
+    public void reporteDependenciaExcel() throws JRException, IOException {
+        Date date = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String fecha = simpleDateFormat.format(date);
+        initJasperDependencia(2);
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        HttpServletResponse httpServletResponse = (HttpServletResponse) facesContext.getCurrentInstance().getExternalContext().getResponse();
+        httpServletResponse.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        httpServletResponse.addHeader("Content-disposition", "attachment; filename=" + fecha + "_reporteGestion.xlsx");
+        ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();
+        JRXlsxExporter jrXlsxExporter = new JRXlsxExporter();
+        jrXlsxExporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
+        jrXlsxExporter.setParameter(JRXlsExporterParameter.IS_ONE_PAGE_PER_SHEET, Boolean.TRUE);
+        jrXlsxExporter.setParameter(JRExporterParameter.OUTPUT_STREAM, servletOutputStream);
+        jrXlsxExporter.setParameter(JRXlsExporterParameter.IS_ONE_PAGE_PER_SHEET, Boolean.FALSE);
+        jrXlsxExporter.setParameter(JRXlsExporterParameter.IS_DETECT_CELL_TYPE, Boolean.TRUE);
+        jrXlsxExporter.setParameter(JRXlsExporterParameter.IS_WHITE_PAGE_BACKGROUND, Boolean.FALSE);
+        jrXlsxExporter.setParameter(JRXlsExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_ROWS, Boolean.TRUE);
+        jrXlsxExporter.setParameter(JRXlsExporterParameter.IS_FONT_SIZE_FIX_ENABLED, Boolean.FALSE);
+        jrXlsxExporter.exportReport();
+        facesContext.responseComplete();
+        facesContext.renderResponse();
+    }
+    
+    public void reporteDependenciaPdf() throws JRException, IOException {
+        Date date = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        String fecha = simpleDateFormat.format(date);
+        initJasperDependencia(1);
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        HttpServletResponse httpServletResponse;
+        httpServletResponse = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+        httpServletResponse.setContentType("application/pdf");
+        httpServletResponse.addHeader("Content-disposition", "attachment; filename=" + fecha + "_caso.pdf");
+        ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();
+        JasperExportManager.exportReportToPdfStream(jasperPrint, servletOutputStream);
         facesContext.responseComplete();
         facesContext.renderResponse();
     }
@@ -600,16 +868,6 @@ public class ReporteSidController extends AbstractManagedBean implements Seriali
                 reporteSidExpediente.setFechaConclusionDesdeString(format.format(reporteSidExpediente.getFechaConclusionDesde()));
                 reporteSidExpediente.setFechaConclusionHastaString(format.format(reporteSidExpediente.getFechaConclusionHasta()));
             }
-            if (StringUtils.isNotBlank(reporteSidExpediente.getGrupoVulnerable())) {
-                List<String> lis = new ArrayList<>();
-                String[] adArray = reporteSidExpediente.getGrupoVulnerable().split(",");
-                for (String adArray1 : adArray) {
-                    lis.add(adArray1);
-                }
-                if (lis.size() > 0) {
-                    reporteSidExpediente.setGruposVulnerables(lis);
-                }
-            }
             if (pag > 0) {
                 int paginado = ConstantesUtil.PAGINADO_10;
                 Integer ini = paginado * (pag - 1) + 1;
@@ -635,22 +893,6 @@ public class ReporteSidController extends AbstractManagedBean implements Seriali
             log.error("ERROR - buscarClasificacion()" + e);
         }
         return false;
-    }
-    
-    public void reporteGestionPdf() throws JRException, IOException {
-        Date date = new Date();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        String fecha = simpleDateFormat.format(date);
-        initJasperGestion(1);
-        FacesContext facesContext = FacesContext.getCurrentInstance();
-        HttpServletResponse httpServletResponse;
-        httpServletResponse = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
-        httpServletResponse.setContentType("application/pdf");
-        httpServletResponse.addHeader("Content-disposition", "attachment; filename=" + fecha + "_caso.pdf");
-        ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();
-        JasperExportManager.exportReportToPdfStream(jasperPrint, servletOutputStream);
-        facesContext.responseComplete();
-        facesContext.renderResponse();
     }
     
     public boolean buscarReporteEntidad(Integer pag) {
@@ -704,14 +946,6 @@ public class ReporteSidController extends AbstractManagedBean implements Seriali
                 reporteSidExpediente.setIni(ini);
                 reporteSidExpediente.setFin(fin);
                 List<ReporteSidConteo> list = expedienteReporteService.listaEntidadReporte(reporteSidExpediente);
-                for (ReporteSidConteo ec : list) {
-                    //ec.setPersonasRecurrentes(personaService.personaPorExpedienteRecurrente(ec.getIdExpediente()));
-                    //ec.setPersonasAfectados(personaService.personaPorExpedienteAfectado(ec.getIdExpediente()));
-                    //ec.setEntidades(entidadService.entidadPorExpediente(ec.getIdExpediente()));
-                    /*if (ec.getNumeroExpediente() != null) {
-                        ec.setNiveles(expedienteNivelService.expedienteNivelPorExpediente(ec.getNumeroExpediente()));
-                    }*/
-                }
                 if (list.size() > 0) {
                     listaReporteSidEntidad = list;
                     pagina = pag;

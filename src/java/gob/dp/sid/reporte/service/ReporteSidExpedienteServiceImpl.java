@@ -77,5 +77,25 @@ public class ReporteSidExpedienteServiceImpl implements ReporteSidExpedienteServ
         return reporteSidExpedienteDAO.listaGestionReporteExport(reporteSidExpediente);
     }
 
+    @Override
+    public List<ReporteSidConteo> listaEntidadReporteExport(ReporteSidExpediente reporteSidExpediente) {
+        return reporteSidExpedienteDAO.listaEntidadReporteExport(reporteSidExpediente);
+    }
+
+    @Override
+    public List<ReporteSidConteo> listaExpedienteReporteClasificacionExport(ReporteSidExpediente reporteSidExpediente) {
+        return reporteSidExpedienteDAO.listaExpedienteReporteClasificacionExport(reporteSidExpediente);
+    }
+
+    @Override
+    public List<ReporteSidConteo> listaExpedienteReporteComisionadoExport(ReporteSidExpediente reporteSidExpediente) {
+        return reporteSidExpedienteDAO.listaExpedienteReporteComisionadoExport(reporteSidExpediente);
+    }
+
+    @Override
+    public List<ReporteSidConteo> listaExpedienteReporteDependenciaExport(ReporteSidExpediente reporteSidExpediente) {
+        return reporteSidExpedienteDAO.listaExpedienteReporteDependenciaExport(reporteSidExpediente);
+    }
+
     
 }

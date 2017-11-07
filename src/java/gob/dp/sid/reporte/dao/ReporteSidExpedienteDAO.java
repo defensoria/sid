@@ -36,4 +36,14 @@ public interface ReporteSidExpedienteDAO {
     public List<ReporteSidExpediente> listaExpedienteReporteExport(ReporteSidExpediente reporteSidExpediente);
     
     public List<ReporteSidExpediente> listaGestionReporteExport(ReporteSidExpediente reporteSidExpediente);
+    
+    public List<ReporteSidConteo> listaEntidadReporteExport(ReporteSidExpediente reporteSidExpediente);
+    
+    public List<ReporteSidConteo> listaExpedienteReporteClasificacionExport(ReporteSidExpediente reporteSidExpediente);
+    
+    public List<ReporteSidConteo> listaExpedienteReporteComisionadoExport(ReporteSidExpediente reporteSidExpediente);
+    
+    public List<ReporteSidConteo> listaExpedienteReporteDependenciaExport(ReporteSidExpediente reporteSidExpediente);
+            
+            
 }

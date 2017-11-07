@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reporteSidExpedienteGestionExcel" pageWidth="1129" pageHeight="595" orientation="Landscape" columnWidth="1129" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="e8e17cc8-2bb2-4615-af5f-f83f4d9817ad">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reporteSidExpedienteClasificacionPDF" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="806" leftMargin="18" rightMargin="18" topMargin="18" bottomMargin="18" uuid="e8e17cc8-2bb2-4615-af5f-f83f4d9817ad">
 	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="108"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
@@ -149,31 +149,19 @@
 			<bottomPen lineWidth="0.5" lineColor="#FFFFFF"/>
 		</box>
 	</style>
-	<subDataset name="dataset2" uuid="0ba37858-6927-4c31-add4-340acb4ca622">
-		<field name="valor" class="java.lang.String"/>
-	</subDataset>
-	<subDataset name="Dataset1" uuid="8d154a3b-8bd8-443c-8d1f-59977161d319">
-		<field name="primerNivel" class="java.lang.String"/>
-		<field name="segundoNivel" class="java.lang.String"/>
-		<field name="tercerNivel" class="java.lang.String"/>
-		<field name="cuartoNivel" class="java.lang.String"/>
-		<field name="quintoNivel" class="java.lang.String"/>
-		<field name="sextoNivel" class="java.lang.String"/>
-	</subDataset>
 	<queryString language="SQL">
 		<![CDATA[]]>
 	</queryString>
-	<field name="numeroExpediente" class="java.lang.String"/>
-	<field name="tipoExpediente" class="java.lang.String"/>
-	<field name="entidadGestion" class="java.lang.String"/>
-	<field name="descripcionGestion" class="java.lang.String"/>
-	<field name="fechaRecepcionGestion" class="java.util.Date"/>
-	<field name="comisionado" class="java.lang.String"/>
-	<field name="respuestaGestion" class="java.lang.String"/>
-	<field name="fechaRespuestaGestion" class="java.util.Date"/>
-	<field name="fechaRegistroGestion" class="java.util.Date"/>
-	<field name="codigoGestion" class="java.lang.String"/>
-	<field name="codigoGestionOrigen" class="java.lang.String"/>
+	<field name="nombrePrimerNivel" class="java.lang.String"/>
+	<field name="nombreSegundoNivel" class="java.lang.String"/>
+	<field name="nombreTercerNivel" class="java.lang.String"/>
+	<field name="nombreCuartoNivel" class="java.lang.String"/>
+	<field name="nombreQuintoNivel" class="java.lang.String"/>
+	<field name="nombreSextoNivel" class="java.lang.String"/>
+	<field name="totalExpediente" class="java.lang.Integer"/>
+	<field name="totalExpedienteQueja" class="java.lang.Integer"/>
+	<field name="totalExpedienteConsulta" class="java.lang.Integer"/>
+	<field name="totalExpedientePetitorio" class="java.lang.Integer"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -183,166 +171,168 @@
 	<columnHeader>
 		<band height="50">
 			<staticText>
-				<reportElement mode="Opaque" x="0" y="0" width="118" height="50" forecolor="#FFFFFF" backcolor="#0066CC" uuid="b9d4f71b-c42b-4439-8dbe-062b518f16b8"/>
+				<reportElement mode="Opaque" x="0" y="0" width="90" height="50" forecolor="#FFFFFF" backcolor="#0066CC" uuid="b9d4f71b-c42b-4439-8dbe-062b518f16b8"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
 					<font fontName="Arial" size="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<text><![CDATA[Expediente]]></text>
+				<text><![CDATA[Primer nivel]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="118" y="0" width="62" height="50" forecolor="#FFFFFF" backcolor="#0066CC" uuid="f6bd9974-50de-421a-84c5-0c12903b8120"/>
+				<reportElement mode="Opaque" x="90" y="0" width="90" height="50" forecolor="#FFFFFF" backcolor="#0066CC" uuid="f6bd9974-50de-421a-84c5-0c12903b8120"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
 					<font fontName="Arial" size="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<text><![CDATA[Tipo]]></text>
+				<text><![CDATA[Segundo nivel]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="180" y="0" width="76" height="50" forecolor="#FFFFFF" backcolor="#0066CC" uuid="bb2e6085-c706-4237-8226-90b9f685728d"/>
+				<reportElement mode="Opaque" x="180" y="0" width="90" height="50" forecolor="#FFFFFF" backcolor="#0066CC" uuid="bb2e6085-c706-4237-8226-90b9f685728d"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
 					<font fontName="Arial" size="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<text><![CDATA[Fecha de la gestión]]></text>
+				<text><![CDATA[Tercer nivel]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="561" y="0" width="182" height="50" forecolor="#FFFFFF" backcolor="#0066CC" uuid="282acbf5-c8d1-4416-81b9-f9b25b866a96"/>
+				<reportElement mode="Opaque" x="450" y="0" width="102" height="50" forecolor="#FFFFFF" backcolor="#0066CC" uuid="282acbf5-c8d1-4416-81b9-f9b25b866a96"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
 					<font fontName="Arial" size="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<text><![CDATA[Descripción]]></text>
+				<text><![CDATA[Sexto nivel]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="743" y="0" width="99" height="50" forecolor="#FFFFFF" backcolor="#0066CC" uuid="90d61ed8-51cc-4741-b74f-b3f2cc2013ba"/>
+				<reportElement mode="Opaque" x="552" y="0" width="65" height="50" forecolor="#FFFFFF" backcolor="#0066CC" uuid="90d61ed8-51cc-4741-b74f-b3f2cc2013ba"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
 					<font fontName="Arial" size="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<text><![CDATA[Fecha de registro]]></text>
+				<text><![CDATA[Total Expedientes]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="842" y="0" width="66" height="50" forecolor="#FFFFFF" backcolor="#0066CC" uuid="d011c0ea-6b0a-4d00-abb1-3c1e29c50b6a"/>
+				<reportElement mode="Opaque" x="617" y="0" width="65" height="50" forecolor="#FFFFFF" backcolor="#0066CC" uuid="d011c0ea-6b0a-4d00-abb1-3c1e29c50b6a"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
 					<font fontName="Arial" size="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<text><![CDATA[Respuesta]]></text>
+				<text><![CDATA[Total quejas]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="369" y="0" width="192" height="50" forecolor="#FFFFFF" backcolor="#0066CC" uuid="b7e8e55e-487e-4b52-ad6d-d07151131531"/>
+				<reportElement mode="Opaque" x="360" y="0" width="90" height="50" forecolor="#FFFFFF" backcolor="#0066CC" uuid="b7e8e55e-487e-4b52-ad6d-d07151131531"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
 					<font fontName="Arial" size="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<text><![CDATA[Institución]]></text>
+				<text><![CDATA[Quinto nivel]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="256" y="0" width="113" height="50" forecolor="#FFFFFF" backcolor="#0066CC" uuid="d2388467-f5d0-4efd-a8a3-459889d4f870"/>
+				<reportElement mode="Opaque" x="270" y="0" width="90" height="50" forecolor="#FFFFFF" backcolor="#0066CC" uuid="d2388467-f5d0-4efd-a8a3-459889d4f870"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
 					<font fontName="Arial" size="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<text><![CDATA[Código de la gestión]]></text>
+				<text><![CDATA[Cuarto nivel]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="908" y="0" width="113" height="50" forecolor="#FFFFFF" backcolor="#0066CC" uuid="5bb59c9f-360a-4dbf-bda1-947a4f07a03c"/>
+				<reportElement mode="Opaque" x="682" y="0" width="65" height="50" forecolor="#FFFFFF" backcolor="#0066CC" uuid="5bb59c9f-360a-4dbf-bda1-947a4f07a03c"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
 					<font fontName="Arial" size="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<text><![CDATA[Fecha de la respuesta]]></text>
+				<text><![CDATA[Total consultas]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="1021" y="0" width="108" height="50" forecolor="#FFFFFF" backcolor="#0066CC" uuid="e3e93f69-30cb-497d-ba1f-93f00c29f37c"/>
+				<reportElement mode="Opaque" x="747" y="0" width="59" height="50" forecolor="#FFFFFF" backcolor="#0066CC" uuid="47a74e98-02ef-4d76-82ee-0d0155b4af80"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
 					<font fontName="Arial" size="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<text><![CDATA[Origen]]></text>
+				<text><![CDATA[Total petitorios]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="20">
+		<band height="22">
 			<textField isBlankWhenNull="true">
-				<reportElement x="0" y="0" width="118" height="20" uuid="28bfa8f6-c478-4164-8742-324ee32806ee"/>
-				<textElement textAlignment="Center">
+				<reportElement x="0" y="0" width="90" height="20" uuid="c142306c-b295-4e61-875d-48aca98cf92e"/>
+				<textElement>
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{numeroExpediente}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{nombrePrimerNivel}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="118" y="0" width="62" height="20" uuid="43b723ce-ab57-45e8-8cad-dbeae6614ef1"/>
+				<reportElement x="90" y="0" width="90" height="20" uuid="512a6a5d-7d3f-466b-925c-2113f7df3167"/>
 				<textElement>
-					<font fontName="Arial" size="10"/>
+					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{tipoExpediente}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{nombreSegundoNivel}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="369" y="0" width="192" height="20" uuid="e2e97a6f-967e-4325-af44-8c113a4b3557"/>
+				<reportElement x="180" y="0" width="90" height="20" uuid="42ae6f65-dc27-4b3f-a455-ea1b515a6057"/>
 				<textElement>
-					<font fontName="Arial" size="10"/>
+					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{entidadGestion}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{nombreTercerNivel}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="842" y="0" width="66" height="20" uuid="740441fe-0a3e-4faf-85c6-055e6f79ee39"/>
-				<textElement textAlignment="Center">
-					<font fontName="Arial" size="10"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{respuestaGestion}]]></textFieldExpression>
-			</textField>
-			<textField pattern="" isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="256" y="0" width="113" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="5e434e6a-7de4-4340-b2d3-f97d8939bb8a"/>
-				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
-					<font fontName="Arial" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{codigoGestion}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="743" y="0" width="99" height="20" uuid="bec81b71-e8d5-41d7-8692-034f29b8bef9"/>
+				<reportElement x="270" y="0" width="90" height="20" uuid="c66c8207-ed21-45ce-be5d-a7f872bb4de5"/>
 				<textElement>
-					<font fontName="Arial" size="10"/>
+					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[new SimpleDateFormat("dd/MM/yyyy").format($F{fechaRegistroGestion})]]></textFieldExpression>
-			</textField>
-			<textField pattern="" isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="180" y="0" width="76" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="bcba4237-e4a1-4e47-9979-254b097f1bdb"/>
-				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
-					<font fontName="Arial" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA[new SimpleDateFormat("dd/MM/yyyy").format($F{fechaRecepcionGestion})]]></textFieldExpression>
-			</textField>
-			<textField pattern="" isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="561" y="0" width="182" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="9eee0947-c806-4c3e-b454-0eff31273c7d"/>
-				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
-					<font fontName="Arial" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{descripcionGestion}]]></textFieldExpression>
-			</textField>
-			<textField pattern="" isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="908" y="0" width="113" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="a83f9ef4-9f7e-40c8-980d-d2278ba17b46"/>
-				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
-					<font fontName="Arial" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA[new SimpleDateFormat("dd/MM/yyyy").format($F{fechaRespuestaGestion})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{nombreCuartoNivel}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="1021" y="0" width="108" height="20" uuid="8ea51f2d-3eef-4627-b3ea-a71788578112"/>
+				<reportElement x="360" y="0" width="90" height="20" uuid="f15dece5-e100-4a2e-8dc5-ee599eb18db0"/>
 				<textElement>
-					<font fontName="Arial"/>
+					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{codigoGestionOrigen}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{nombreQuintoNivel}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="452" y="0" width="100" height="20" uuid="582401c8-c68e-4a53-9d5c-12933318719d"/>
+				<textElement>
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombreSextoNivel}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="552" y="0" width="65" height="20" uuid="2e8bfd2c-895e-4968-928c-2856bfa4949a"/>
+				<textElement>
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{totalExpediente}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="617" y="0" width="65" height="20" uuid="39163dd9-4fc6-4201-8874-3bdd6db8e9fd"/>
+				<textElement>
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{totalExpedienteQueja}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="682" y="0" width="65" height="20" uuid="c1bde30e-933a-4d7f-8f0d-864d90f29d80"/>
+				<textElement>
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{totalExpedienteConsulta}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="747" y="0" width="59" height="20" uuid="05242ce5-4dea-402d-aa37-56cb65608394"/>
+				<textElement>
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{totalExpedientePetitorio}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
 	<pageFooter>
-		<band height="33"/>
+		<band height="33">
+			<textField>
+				<reportElement x="706" y="12" width="100" height="20" uuid="dd971a18-376e-4951-afe6-ffa3112aaced"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
 	</pageFooter>
 </jasperReport>

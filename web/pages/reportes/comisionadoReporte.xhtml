@@ -281,11 +281,11 @@
                                 </div>
                                 <br/>
                                 <div>
-                                    <a jsf:action="#{reporteSidController.reporteExpdienteExcel()}">
-                                        <!--<img src="../../bootstrap/img/excel.png" height="45" width="45"/>-->
+                                    <a jsf:action="#{reporteSidController.reporteComisionadoExcel()}">
+                                        <img src="../../bootstrap/img/excel.png" height="45" width="45"/>
                                     </a>
-                                    <a jsf:action="#{reporteSidController.reporteExpdientePdf()}">
-                                        <!--<img src="../../bootstrap/img/pdf.png" height="45" width="45"/>-->
+                                    <a jsf:action="#{reporteSidController.reporteComisionadoPdf()}">
+                                        <img src="../../bootstrap/img/pdf.png" height="45" width="45"/>
                                     </a>
                                 </div>
                                 
@@ -296,7 +296,7 @@
                                             <h:outputText value="#{(row36.rowIndex+1)+(reporteSidController.pagina-1)*10}" />
                                         </h:column>
                                         <h:column>
-                                            <f:facet name="header">Código</f:facet>
+                                            <f:facet name="header">Cargo</f:facet>
                                             <h:outputText value="#{exped.codigoComisionado}" />
                                         </h:column>
                                         <h:column>
@@ -329,7 +329,7 @@
                                             <h:outputText value="#{exped.totalExpedienteQuejaConcluido}"/>
                                         </h:column>
                                         <h:column>
-                                            <f:facet name="header">Total quejas en tramite</f:facet>
+                                            <f:facet name="header">Total quejas en trámite</f:facet>
                                             <h:outputText value="#{exped.totalExpedienteQuejaTramite}" />
                                         </h:column>
                                         <h:column>
@@ -341,7 +341,7 @@
                                             <h:outputText value="#{exped.totalExpedienteConsultaConcluido}" />
                                         </h:column>
                                         <h:column>
-                                            <f:facet name="header">Total consultas en tramite</f:facet>
+                                            <f:facet name="header">Total consultas en trámite</f:facet>
                                             <h:outputText value="#{exped.totalExpedienteConsultaTramite}" />
                                         </h:column>
                                         <h:column>
@@ -353,7 +353,7 @@
                                             <h:outputText value="#{exped.totalExpedientePetitorioConcluido}" />
                                         </h:column>
                                         <h:column>
-                                            <f:facet name="header">Total petitorios en tramite</f:facet>
+                                            <f:facet name="header">Total petitorios en trámite</f:facet>
                                             <h:outputText value="#{exped.totalExpedientePetitorioTramite}" />
                                         </h:column>
                                     </h:dataTable>
