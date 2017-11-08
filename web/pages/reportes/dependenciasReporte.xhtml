@@ -270,6 +270,10 @@
                                                             <a class="btn btn-primary" jsf:action="#{reporteSidController.buscarReporteExpedienteDependencia(1)}" >
                                                                 <span class="glyphicon glyphicon-search" />Buscar
                                                             </a>
+                                                            &#160;&#160;&#160;
+                                                            <a class="btn btn-warning" jsf:action="#{reporteSidController.cargarPaginaDependenciaReporte()}" >
+                                                                <span class="glyphicon glyphicon-asterisk" />Limpiar
+                                                            </a>
                                                         </td>
                                                     </tr>
                                                         
@@ -281,12 +285,14 @@
                                 </div>
                                 <br/>
                                 <div>
-                                    <a jsf:action="#{reporteSidController.reporteExpdienteExcel()}">
-                                        <!--<img src="../../bootstrap/img/excel.png" height="45" width="45"/>-->
+                                    <h:panelGroup rendered="#{reporteSidController.listaReporteSidDependencia.size() > 0}">
+                                    <a jsf:action="#{reporteSidController.reporteDependenciaExcel()}">
+                                        <img src="../../bootstrap/img/excel.png" height="45" width="45"/>
                                     </a>
-                                    <a jsf:action="#{reporteSidController.reporteExpdientePdf()}">
-                                        <!--<img src="../../bootstrap/img/pdf.png" height="45" width="45"/>-->
+                                    <a jsf:action="#{reporteSidController.reporteDependenciaPdf()}">
+                                        <img src="../../bootstrap/img/pdf.png" height="45" width="45"/>
                                     </a>
+                                        </h:panelGroup>
                                 </div>
                                 
                                 <h:panelGroup id="idPanelBusquedaExpediente11">

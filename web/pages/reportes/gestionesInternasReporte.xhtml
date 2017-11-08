@@ -270,6 +270,10 @@
                                                             <a class="btn btn-primary" jsf:action="#{reporteSidController.buscarReporteSidGestionInterna(1)}" >
                                                                 <span class="glyphicon glyphicon-search" />Buscar
                                                             </a>
+                                                            &#160;&#160;&#160;
+                                                            <a class="btn btn-warning" jsf:action="#{reporteSidController.cargarPaginaGestionInternaReporte()}" >
+                                                                <span class="glyphicon glyphicon-asterisk" />Limpiar
+                                                            </a>
                                                         </td>
                                                     </tr>
                                                         
@@ -282,12 +286,14 @@
                                 </div>
                                 <br/>
                                 <div>
-                                    <a jsf:action="#{reporteSidController.reporteExpdienteExcel()}">
-                                        <!--<img src="../../bootstrap/img/excel.png" height="45" width="45"/>-->
+                                    <h:panelGroup rendered="#{reporteSidController.listaReporteSidGestionInterna.size() > 0}">
+                                    <a jsf:action="#{reporteSidController.reporteGestionInternaExcel()}">
+                                        <img src="../../bootstrap/img/excel.png" height="45" width="45"/>
                                     </a>
-                                    <a jsf:action="#{reporteSidController.reporteExpdientePdf()}">
-                                        <!--<img src="../../bootstrap/img/pdf.png" height="45" width="45"/>-->
+                                    <a jsf:action="#{reporteSidController.reporteGestionInternaPdf()}">
+                                        <img src="../../bootstrap/img/pdf.png" height="45" width="45"/>
                                     </a>
+                                        </h:panelGroup>
                                 </div>
                                 
                                 <h:panelGroup id="idPanelBusquedaExpediente1">
@@ -298,7 +304,7 @@
                                         </h:column>
                                         <h:column>
                                             <f:facet name="header">Expediente</f:facet>
-                                            <a data-toggle="tooltip" data-placement="right">#{exped.numeroExpediente}</a>
+                                            <h:outputText value="#{exped.numeroExpediente}" />
                                         </h:column>
                                         <h:column>
                                             <f:facet name="header">Tipo</f:facet>
@@ -309,15 +315,15 @@
                                             <h:outputText value="#{exped.codigoGestion}" />
                                         </h:column>
                                         <h:column>
-                                            <f:facet name="header">Tipo accion</f:facet>
+                                            <f:facet name="header">Tipo acción</f:facet>
                                             <h:outputText value="#{exped.tipoAccion}" />
                                         </h:column>
                                         <h:column>
-                                            <f:facet name="header">Dependencia Origen</f:facet>
+                                            <f:facet name="header">Dependencia origen</f:facet>
                                             <h:outputText value="#{exped.dependenciaOrigen}" />
                                         </h:column>
                                         <h:column>
-                                            <f:facet name="header">Dependencia Destino</f:facet>
+                                            <f:facet name="header">Dependencia destino</f:facet>
                                             <h:outputText value="#{exped.dependenciaDestino}" />
                                         </h:column>
                                         <h:column>

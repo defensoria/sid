@@ -560,6 +560,10 @@
                                                             <a class="btn btn-primary" jsf:action="#{reporteSidController.reporte(1,1)}" >
                                                                 <span class="glyphicon glyphicon-search" />Buscar
                                                             </a>
+                                                            &#160;&#160;&#160;
+                                                            <a class="btn btn-warning" jsf:action="#{reporteSidController.cargarPaginaExpedienteReporte()}" >
+                                                                <span class="glyphicon glyphicon-asterisk" />Limpiar
+                                                            </a>
                                                         </td>
                                                     </tr>
                                                 </table>
@@ -570,12 +574,14 @@
                                 </div>
                                 <br/>
                                 <div>
+                                    <h:panelGroup rendered="#{reporteSidController.listaReporteSidExpediente.size() > 0}">
                                     <a jsf:action="#{reporteSidController.reporteExpdienteExcel()}">
                                         <img src="../../bootstrap/img/excel.png" height="45" width="45"/>
                                     </a>
                                     <a jsf:action="#{reporteSidController.reporteExpdientePdf()}">
                                         <img src="../../bootstrap/img/pdf.png" height="45" width="40"/>
                                     </a>
+                                        </h:panelGroup>
                                 </div>
                                 <style>
                                     .column1 { width: 1%; color: black}

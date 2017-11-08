@@ -484,13 +484,41 @@ public class ReporteSidController extends AbstractManagedBean implements Seriali
           
         JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(list);
         if (tipo == 1) {
-            jasperPrint = JasperFillManager.fillReport(retornaRutaPath().concat("/jasper/reporteSidExpedienteEntidadPDF.jasper"), new HashMap(), beanCollectionDataSource);
+            jasperPrint = JasperFillManager.fillReport(retornaRutaPath().concat("/jasper/reporteSidExpedienteDependenciaPDF.jasper"), new HashMap(), beanCollectionDataSource);
         }
         if (tipo == 2) {
-            String ruta = retornaRutaPath().concat("/jasper/reporteSidExpedienteEntidadExcel.jasper");
+            String ruta = retornaRutaPath().concat("/jasper/reporteSidExpedienteDependenciaExcel.jasper");
             jasperPrint = JasperFillManager.fillReport(ruta, new HashMap(), beanCollectionDataSource);
         }
     }
+    
+    private void initJasperGestionInterna(int tipo) throws JRException, IOException {
+        
+            DateFormat format = new SimpleDateFormat("yyyyMMdd");
+            if (reporteSidExpediente.getFechaIngresoDesde() != null && reporteSidExpediente.getFechaIngresoHasta() != null) {
+                reporteSidExpediente.setFechaIngresoDesdeString(format.format(reporteSidExpediente.getFechaIngresoDesde()));
+                reporteSidExpediente.setFechaIngresoHastaString(format.format(reporteSidExpediente.getFechaIngresoHasta()));
+            }
+
+            if (reporteSidExpediente.getFechaConclusionDesde() != null && reporteSidExpediente.getFechaConclusionHasta() != null) {
+                reporteSidExpediente.setFechaConclusionDesdeString(format.format(reporteSidExpediente.getFechaConclusionDesde()));
+                reporteSidExpediente.setFechaConclusionHastaString(format.format(reporteSidExpediente.getFechaConclusionHasta()));
+            }
+            
+            
+                List<ReporteSidExpediente> list = expedienteReporteService.listaExpedienteReporteGestionInternaExport(reporteSidExpediente);
+                
+          
+        JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(list);
+        if (tipo == 1) {
+            jasperPrint = JasperFillManager.fillReport(retornaRutaPath().concat("/jasper/reporteSidExpedienteGestionInternaPDF.jasper"), new HashMap(), beanCollectionDataSource);
+        }
+        if (tipo == 2) {
+            String ruta = retornaRutaPath().concat("/jasper/reporteSidExpedienteGestionInternaExcel.jasper");
+            jasperPrint = JasperFillManager.fillReport(ruta, new HashMap(), beanCollectionDataSource);
+        }
+    }
+    
     
     private void initJasperClasificacion(int tipo) throws JRException, IOException {
         
@@ -526,7 +554,7 @@ public class ReporteSidController extends AbstractManagedBean implements Seriali
         HttpServletResponse httpServletResponse;
         httpServletResponse = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
         httpServletResponse.setContentType("application/pdf");
-        httpServletResponse.addHeader("Content-disposition", "attachment; filename=" + fecha + "_caso.pdf");
+        httpServletResponse.addHeader("Content-disposition", "attachment; filename=" + fecha + "_expediente.pdf");
         ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();
         JasperExportManager.exportReportToPdfStream(jasperPrint, servletOutputStream);
         facesContext.responseComplete();
@@ -541,7 +569,7 @@ public class ReporteSidController extends AbstractManagedBean implements Seriali
         FacesContext facesContext = FacesContext.getCurrentInstance();
         HttpServletResponse httpServletResponse = (HttpServletResponse) facesContext.getCurrentInstance().getExternalContext().getResponse();
         httpServletResponse.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-        httpServletResponse.addHeader("Content-disposition", "attachment; filename=" + fecha + "_reporteCasos.xlsx");
+        httpServletResponse.addHeader("Content-disposition", "attachment; filename=" + fecha + "_expediente.xlsx");
         ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();
         JRXlsxExporter jrXlsxExporter = new JRXlsxExporter();
         jrXlsxExporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
@@ -565,7 +593,7 @@ public class ReporteSidController extends AbstractManagedBean implements Seriali
         FacesContext facesContext = FacesContext.getCurrentInstance();
         HttpServletResponse httpServletResponse = (HttpServletResponse) facesContext.getCurrentInstance().getExternalContext().getResponse();
         httpServletResponse.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-        httpServletResponse.addHeader("Content-disposition", "attachment; filename=" + fecha + "_reporteGestion.xlsx");
+        httpServletResponse.addHeader("Content-disposition", "attachment; filename=" + fecha + "_gestion.xlsx");
         ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();
         JRXlsxExporter jrXlsxExporter = new JRXlsxExporter();
         jrXlsxExporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
@@ -585,12 +613,12 @@ public class ReporteSidController extends AbstractManagedBean implements Seriali
         Date date = new Date();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String fecha = simpleDateFormat.format(date);
-        initJasperEntidad(1);
+        initJasperGestion(1);
         FacesContext facesContext = FacesContext.getCurrentInstance();
         HttpServletResponse httpServletResponse;
         httpServletResponse = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
         httpServletResponse.setContentType("application/pdf");
-        httpServletResponse.addHeader("Content-disposition", "attachment; filename=" + fecha + "_caso.pdf");
+        httpServletResponse.addHeader("Content-disposition", "attachment; filename=" + fecha + "_gestion.pdf");
         ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();
         JasperExportManager.exportReportToPdfStream(jasperPrint, servletOutputStream);
         facesContext.responseComplete();
@@ -605,7 +633,7 @@ public class ReporteSidController extends AbstractManagedBean implements Seriali
         FacesContext facesContext = FacesContext.getCurrentInstance();
         HttpServletResponse httpServletResponse = (HttpServletResponse) facesContext.getCurrentInstance().getExternalContext().getResponse();
         httpServletResponse.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-        httpServletResponse.addHeader("Content-disposition", "attachment; filename=" + fecha + "_reporteGestion.xlsx");
+        httpServletResponse.addHeader("Content-disposition", "attachment; filename=" + fecha + "_entidad.xlsx");
         ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();
         JRXlsxExporter jrXlsxExporter = new JRXlsxExporter();
         jrXlsxExporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
@@ -630,7 +658,7 @@ public class ReporteSidController extends AbstractManagedBean implements Seriali
         HttpServletResponse httpServletResponse;
         httpServletResponse = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
         httpServletResponse.setContentType("application/pdf");
-        httpServletResponse.addHeader("Content-disposition", "attachment; filename=" + fecha + "_caso.pdf");
+        httpServletResponse.addHeader("Content-disposition", "attachment; filename=" + fecha + "_entidad.pdf");
         ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();
         JasperExportManager.exportReportToPdfStream(jasperPrint, servletOutputStream);
         facesContext.responseComplete();
@@ -645,7 +673,7 @@ public class ReporteSidController extends AbstractManagedBean implements Seriali
         FacesContext facesContext = FacesContext.getCurrentInstance();
         HttpServletResponse httpServletResponse = (HttpServletResponse) facesContext.getCurrentInstance().getExternalContext().getResponse();
         httpServletResponse.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-        httpServletResponse.addHeader("Content-disposition", "attachment; filename=" + fecha + "_reporteGestion.xlsx");
+        httpServletResponse.addHeader("Content-disposition", "attachment; filename=" + fecha + "_clasificacion.xlsx");
         ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();
         JRXlsxExporter jrXlsxExporter = new JRXlsxExporter();
         jrXlsxExporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
@@ -670,7 +698,7 @@ public class ReporteSidController extends AbstractManagedBean implements Seriali
         HttpServletResponse httpServletResponse;
         httpServletResponse = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
         httpServletResponse.setContentType("application/pdf");
-        httpServletResponse.addHeader("Content-disposition", "attachment; filename=" + fecha + "_caso.pdf");
+        httpServletResponse.addHeader("Content-disposition", "attachment; filename=" + fecha + "_clasificacion.pdf");
         ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();
         JasperExportManager.exportReportToPdfStream(jasperPrint, servletOutputStream);
         facesContext.responseComplete();
@@ -685,7 +713,7 @@ public class ReporteSidController extends AbstractManagedBean implements Seriali
         FacesContext facesContext = FacesContext.getCurrentInstance();
         HttpServletResponse httpServletResponse = (HttpServletResponse) facesContext.getCurrentInstance().getExternalContext().getResponse();
         httpServletResponse.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-        httpServletResponse.addHeader("Content-disposition", "attachment; filename=" + fecha + "_reporteGestion.xlsx");
+        httpServletResponse.addHeader("Content-disposition", "attachment; filename=" + fecha + "_comisionado.xlsx");
         ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();
         JRXlsxExporter jrXlsxExporter = new JRXlsxExporter();
         jrXlsxExporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
@@ -710,7 +738,7 @@ public class ReporteSidController extends AbstractManagedBean implements Seriali
         HttpServletResponse httpServletResponse;
         httpServletResponse = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
         httpServletResponse.setContentType("application/pdf");
-        httpServletResponse.addHeader("Content-disposition", "attachment; filename=" + fecha + "_caso.pdf");
+        httpServletResponse.addHeader("Content-disposition", "attachment; filename=" + fecha + "_comisionado.pdf");
         ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();
         JasperExportManager.exportReportToPdfStream(jasperPrint, servletOutputStream);
         facesContext.responseComplete();
@@ -725,7 +753,7 @@ public class ReporteSidController extends AbstractManagedBean implements Seriali
         FacesContext facesContext = FacesContext.getCurrentInstance();
         HttpServletResponse httpServletResponse = (HttpServletResponse) facesContext.getCurrentInstance().getExternalContext().getResponse();
         httpServletResponse.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-        httpServletResponse.addHeader("Content-disposition", "attachment; filename=" + fecha + "_reporteGestion.xlsx");
+        httpServletResponse.addHeader("Content-disposition", "attachment; filename=" + fecha + "_dependencia.xlsx");
         ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();
         JRXlsxExporter jrXlsxExporter = new JRXlsxExporter();
         jrXlsxExporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
@@ -750,7 +778,47 @@ public class ReporteSidController extends AbstractManagedBean implements Seriali
         HttpServletResponse httpServletResponse;
         httpServletResponse = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
         httpServletResponse.setContentType("application/pdf");
-        httpServletResponse.addHeader("Content-disposition", "attachment; filename=" + fecha + "_caso.pdf");
+        httpServletResponse.addHeader("Content-disposition", "attachment; filename=" + fecha + "_dependencia.pdf");
+        ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();
+        JasperExportManager.exportReportToPdfStream(jasperPrint, servletOutputStream);
+        facesContext.responseComplete();
+        facesContext.renderResponse();
+    }
+    
+    public void reporteGestionInternaExcel() throws JRException, IOException {
+        Date date = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String fecha = simpleDateFormat.format(date);
+        initJasperGestionInterna(2);
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        HttpServletResponse httpServletResponse = (HttpServletResponse) facesContext.getCurrentInstance().getExternalContext().getResponse();
+        httpServletResponse.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        httpServletResponse.addHeader("Content-disposition", "attachment; filename=" + fecha + "_gestionInterna.xlsx");
+        ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();
+        JRXlsxExporter jrXlsxExporter = new JRXlsxExporter();
+        jrXlsxExporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
+        jrXlsxExporter.setParameter(JRXlsExporterParameter.IS_ONE_PAGE_PER_SHEET, Boolean.TRUE);
+        jrXlsxExporter.setParameter(JRExporterParameter.OUTPUT_STREAM, servletOutputStream);
+        jrXlsxExporter.setParameter(JRXlsExporterParameter.IS_ONE_PAGE_PER_SHEET, Boolean.FALSE);
+        jrXlsxExporter.setParameter(JRXlsExporterParameter.IS_DETECT_CELL_TYPE, Boolean.TRUE);
+        jrXlsxExporter.setParameter(JRXlsExporterParameter.IS_WHITE_PAGE_BACKGROUND, Boolean.FALSE);
+        jrXlsxExporter.setParameter(JRXlsExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_ROWS, Boolean.TRUE);
+        jrXlsxExporter.setParameter(JRXlsExporterParameter.IS_FONT_SIZE_FIX_ENABLED, Boolean.FALSE);
+        jrXlsxExporter.exportReport();
+        facesContext.responseComplete();
+        facesContext.renderResponse();
+    }
+    
+    public void reporteGestionInternaPdf() throws JRException, IOException {
+        Date date = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        String fecha = simpleDateFormat.format(date);
+        initJasperGestionInterna(1);
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        HttpServletResponse httpServletResponse;
+        httpServletResponse = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+        httpServletResponse.setContentType("application/pdf");
+        httpServletResponse.addHeader("Content-disposition", "attachment; filename=" + fecha + "_gestionInterna.pdf");
         ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();
         JasperExportManager.exportReportToPdfStream(jasperPrint, servletOutputStream);
         facesContext.responseComplete();
