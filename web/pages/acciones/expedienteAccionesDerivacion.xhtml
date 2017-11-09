@@ -136,7 +136,7 @@
                                                         <h:inputFile rendered="#{registroController.expedienteDerivacionEnvia.id == null}" class="cMedio" value="#{registroController.file4}"/>
                                                         <br/>
                                                         <h:panelGroup rendered="#{registroController.expedienteDerivacionEnvia.ruta != null}">
-                                                            <a target="_blank" href="/filesystem/#{registroController.expedienteDerivacionEnvia.ruta}">
+                                                            <a target="_blank" href="/sid/DownloadFileServlet?fileName=#{registroController.expedienteDerivacionEnvia.ruta}">
                                                                 <span style="font-size: large" class="glyphicon glyphicon-link" />
                                                             </a>
                                                         </h:panelGroup>

@@ -190,6 +190,7 @@ public class ReporteSidController extends AbstractManagedBean implements Seriali
         reporteSidExpediente = new ReporteSidExpediente();
         expedienteClasificacionBusqueda = new ExpedienteClasificacion();
         listaReporteSidGestion = null;
+        listaReporteSidDependencia = null;
         entidadReporte = new Entidad();
         usuarioSession();
         expedienteNivel = new ExpedienteNivel();
@@ -201,6 +202,7 @@ public class ReporteSidController extends AbstractManagedBean implements Seriali
         reporteSidExpediente = new ReporteSidExpediente();
         expedienteClasificacionBusqueda = new ExpedienteClasificacion();
         listaReporteSidGestion = null;
+        listaReporteSidGestionInterna = null;
         entidadReporte = new Entidad();
         usuarioSession();
         expedienteNivel = new ExpedienteNivel();
@@ -212,6 +214,7 @@ public class ReporteSidController extends AbstractManagedBean implements Seriali
         reporteSidExpediente = new ReporteSidExpediente();
         expedienteClasificacionBusqueda = new ExpedienteClasificacion();
         listaReporteSidGestion = null;
+        listaReporteSidClasificacion = null;
         entidadReporte = new Entidad();
         usuarioSession();
         expedienteNivel = new ExpedienteNivel();
@@ -222,6 +225,7 @@ public class ReporteSidController extends AbstractManagedBean implements Seriali
     public String cargarPaginaComisionadoReporte() {
         reporteSidExpediente = new ReporteSidExpediente();
         expedienteClasificacionBusqueda = new ExpedienteClasificacion();
+        listaReporteSidComisionado = null;
         listaReporteSidGestion = null;
         entidadReporte = new Entidad();
         usuarioSession();

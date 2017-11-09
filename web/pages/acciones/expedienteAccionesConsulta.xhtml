@@ -126,7 +126,7 @@
                                                                     <h:inputFile id="file0" value="#{registroController.file3}"/>
                                                                     <br/>
                                                                     <h:panelGroup rendered="#{registroController.expedienteConsultaEnvia.ruta != null}">
-                                                                        <a target="_blank" href="/filesystem/#{registroController.expedienteConsultaEnvia.ruta}">
+                                                                        <a target="_blank" href="/sid/DownloadFileServlet?fileName=#{registroController.expedienteConsultaEnvia.ruta}">
                                                                             <span style="font-size: large" class="glyphicon glyphicon-link" />
                                                                         </a>
                                                                     </h:panelGroup>

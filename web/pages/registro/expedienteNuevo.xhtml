@@ -1170,11 +1170,11 @@
                                                     <td style="padding-top: 20px">
                                                         <label><span style="font-size: large" class="glyphicon glyphicon-paperclip" />Adjuntar archivo:</label>
 
-                                                        <input type="file"  jsf:value="#{registroController.file5}"/>
+                                                        <input type="file" jsf:value="#{registroController.file5}"/>
                                                     </td>
                                                     <td>
                                                         <h:panelGroup rendered="#{registroController.expediente.ruta != null}">
-                                                            <a target="_blank" href="/filesystem/#{registroController.expediente.ruta}">
+                                                            <a target="_blank" href="/sid/DownloadFileServlet?fileName=#{registroController.expediente.ruta}">
                                                                 <span style="font-size: large" class="glyphicon glyphicon-link" />
                                                             </a>
                                                             &#160;&#160;&#160;

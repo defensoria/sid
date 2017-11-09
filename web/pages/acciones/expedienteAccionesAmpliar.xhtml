@@ -134,7 +134,7 @@
                                                         <h:inputFile rendered="#{registroController.expedienteAmpliacionEnvia.id == null}" class="cMedio" value="#{registroController.file4}"/>
                                                         <br/>
                                                         <h:panelGroup rendered="#{registroController.expedienteAmpliacionEnvia.ruta != null}">
-                                                            Descargar archivo: <a target="_blank" href="/filesystem/#{registroController.expedienteAmpliacionEnvia.ruta}">
+                                                            Descargar archivo: <a target="_blank" href="/sid/DownloadFileServlet?fileName=#{registroController.expedienteAmpliacionEnvia.ruta}">
                                                                 <span style="font-size: large" class="glyphicon glyphicon-link" />
                                                             </a>
                                                         </h:panelGroup>
@@ -246,7 +246,7 @@
                                                         <h:inputFile rendered="#{registroController.expedienteAmpliacionAprueba.id == null}" class="cMedio" value="#{registroController.file4}"/>
                                                         <br/>
                                                         <h:panelGroup rendered="#{registroController.expedienteAmpliacionAprueba.ruta != null}">
-                                                            Descargar archivo: <a target="_blank" href="/filesystem/#{registroController.expedienteAmpliacionAprueba.ruta}">
+                                                            Descargar archivo: <a target="_blank" href="/sid/DownloadFileServlet?fileName=#{registroController.expedienteAmpliacionAprueba.ruta}">
                                                                 <span style="font-size: large" class="glyphicon glyphicon-link" />
                                                             </a>
                                                         </h:panelGroup>

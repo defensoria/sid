@@ -290,13 +290,13 @@ public class UsuarioDetalleController extends AbstractManagedBean implements Ser
             DateFormat fechaHora = new SimpleDateFormat("yyyyMMddHHmmss");
             String formato = fechaHora.format(new Date());
             String ruta = formato + extencion;
-            File file = new File(RutaType.URL_FILE_SYSTEM.getValue() + ruta);
+            File file = new File(FILE_SYSTEM + ruta);
             try (InputStream input = file1.getInputStream()) {
                 Files.copy(input, file.toPath());
             } catch (IOException ex) {
                 log.error("agregarImagen()" + ex);
             }
-            usuario.setRuta("/filesystem/" + ruta);
+            usuario.setRuta(ruta);
             usuarioService.modificarUsuarioSimple(usuario);
             verDetallePerfil();
         }
