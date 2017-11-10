@@ -32,7 +32,6 @@ import gob.dp.sid.comun.type.ExpedienteType;
 import gob.dp.sid.comun.type.HistorialType;
 import gob.dp.sid.comun.type.MensajeType;
 import gob.dp.sid.comun.type.RolType;
-import gob.dp.sid.comun.type.RutaType;
 import gob.dp.sid.registro.entity.Entidad;
 import gob.dp.sid.registro.entity.EtapaEstado;
 import gob.dp.sid.registro.entity.Expediente;
@@ -987,7 +986,7 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         list.add(ficha);
         JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(list);
         
-        jasperPrint = JasperFillManager.fillReport(RutaType.URL_FILE_SYSTEM.getValue()+"expedienteConsulta.jasper", new HashMap(), beanCollectionDataSource);
+        //jasperPrint = JasperFillManager.fillReport(RutaType.URL_FILE_SYSTEM.getValue()+"expedienteConsulta.jasper", new HashMap(), beanCollectionDataSource);
     }
 
     public void initPetitorio() throws JRException {
@@ -1116,7 +1115,8 @@ public class RegistroController extends AbstractManagedBean implements Serializa
         ficha.setExpedienteGestions(listaGestiones);
         list.add(ficha);
         JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(list);
-        jasperPrint = JasperFillManager.fillReport(RutaType.URL_FILE_SYSTEM.getValue()+"fichaExpediente.jasper",new HashMap(), beanCollectionDataSource);
+        //jasperPrint = JasperFillManager.fillReport(RutaType.URL_FILE_SYSTEM.getValue()+"fichaExpediente.jasper",new HashMap(), beanCollectionDataSource);
+        jasperPrint = JasperFillManager.fillReport(retornaRutaPath().concat("/jasper/fichaExpediente.jasper"), new HashMap(), beanCollectionDataSource);
     }
 
     public void ordenar(int tipo) {

@@ -8,7 +8,6 @@ package gob.dp.sid.registro.controller;
 import gob.dp.sid.comun.controller.AbstractManagedBean;
 import gob.dp.sid.comun.type.EtapaType;
 import gob.dp.sid.comun.type.ExpedienteType;
-import gob.dp.sid.comun.type.RutaType;
 import gob.dp.sid.registro.entity.EtapaEstado;
 import gob.dp.sid.registro.entity.Expediente;
 import gob.dp.sid.registro.entity.ExpedienteGestion;

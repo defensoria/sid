@@ -6,7 +6,6 @@
 package gob.dp.sid.reporte.entity;
 
 import gob.dp.sid.comun.controller.AbstractManagedBean;
-import gob.dp.sid.comun.type.RutaType;
 import gob.dp.sid.registro.entity.ExpedienteEntidad;
 import gob.dp.sid.registro.entity.ExpedienteGestion;
 import gob.dp.sid.registro.entity.ExpedienteNivel;
@@ -60,13 +59,13 @@ public class ExpedienteFicha extends AbstractManagedBean implements Serializable
     
     private List<ExpedienteGestion> expedienteGestions;
     
-    private String basePathImage = constantesUtil.BASE_URL_IMAGEPATH+"defensoria-Large.jpg";
+    private String basePathImage = retornaRutaPath().concat("/images/defensoria.jpg");
     
     private String tieneOrientacion;
     
     private String orientacion;
     
-    private String rutaJasper = RutaType.URL_FILE_SYSTEM.getValue();
+    private String rutaJasper = retornaRutaPath().concat("/jasper/");
 
     public String getOficinaDefensorial() {
         return oficinaDefensorial;

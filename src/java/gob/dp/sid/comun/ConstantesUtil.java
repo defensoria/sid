@@ -46,8 +46,8 @@ public class ConstantesUtil implements Serializable{
     public static final String LISTA_VALOR_SELECCIONE_CODIGO = "-3000";
     public static final String LISTA_VALOR_SELECCIONE_NOMBRE = "SELECCIONE";
     
-    public static String FILE_DONWLOAD = "C:/filesystem";
+    //public static String FILE_DONWLOAD = "C:/filesystem";
     
-    //public static String FILE_DONWLOAD = "/srv/sid/filesystem/";
+    public static String FILE_DONWLOAD = "/srv/sid/filesystem";
     
 }
